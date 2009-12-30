@@ -141,20 +141,21 @@ class Request {
             if (is_subclass_of($className, 'Resource')) {
                 $resourceReflector = new ReflectionClass($className);
                 $comment = $resourceReflector->getDocComment();
-                preg_match('/@uri\s+(.+)/', $comment, $uri);
-                if (isset($uri[1])) {
-                    $uri = $uri[1];
+                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
+                if (isset($annotations[1])) {
+                    $uris = $annotations[1];
                 } else {
-                    $uri = '/';
+                    $uris = array('/');
                 }
-                if (preg_match('|^'.str_replace('|', '\|', $uri).'|', $this->uri)) {
-                    preg_match('/@priority\s+(.+)/', $comment, $priority);
-                    if (isset($priority[1]) && is_numeric($priority[1])) {
-                        $priority = $priority[1];
-                    } else {
-                        $priority = 0;
+                foreach ($uris as $index => $uri) {
+                    if (preg_match('|^'.str_replace('|', '\|', $uri).'|', $this->uri)) {
+                        if (isset($annotations[2][$index]) && is_numeric($annotations[2][$index])) {
+                            $priority = $annotations[2][$index];
+                        } else {
+                            $priority = 0;
+                        }
+                        $uriMatches[$priority] = $className;
                     }
-                    $uriMatches[$priority] = $className;
                 }
             }
         }

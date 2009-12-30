@@ -35,7 +35,7 @@ class RequestTester extends UnitTestCase {
         
         $config = array(
             'uri' => '/one/two.html',
-            'accept' => '*/*',
+            'accept' => '',
             'acceptLang' => ''
         );
         
@@ -205,6 +205,19 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testResourceLoaderWithRegexURIMatch() {
+        
+        $config = array(
+            'uri' => '/three/something/four'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'NewResource');
+        
+    }
+    
 }
 
 
@@ -212,6 +225,7 @@ class RequestTester extends UnitTestCase {
 
 /**
  * @uri /one
+ * @uri /three/.+/four 12
  */
 class NewResource extends Resource {
 
