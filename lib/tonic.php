@@ -201,7 +201,7 @@ class Resource {
     }
     
     function get() {
-        return new Response();
+        return new Response(200, 'Something');
     }
     
     
@@ -209,9 +209,22 @@ class Resource {
 
 class Response {
     
+    var $output;
+    
+    /**
+     * Create a response object
+     * @var int code
+     * @var str body
+     */
+    function __construct($code, $body) {
+        
+        $this->output = $body;
+        
+    }
+    
     function output() {
         
-        var_dump($this);
+        echo $this->output;
         
     }
     
