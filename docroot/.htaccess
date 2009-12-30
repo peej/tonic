@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !dispatch\.php$
+    RewriteRule .* dispatch.php [L,QSA]
+</IfModule>
