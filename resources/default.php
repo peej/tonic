@@ -6,7 +6,11 @@
  */
 class DefaultResource extends Resource {
     
-    
+    function get() {
+        
+        return parent::get();
+        
+    }
     
 }
 

@@ -31,7 +31,8 @@ class Request {
             'mov' => 'video/quicktime',
             'mp3' => 'audio/mpeg'
         ),
-        $resourcePath = '../resources';
+        $method,
+        $data;
     
     /**
      * Set a default configuration option
@@ -50,7 +51,7 @@ class Request {
     function __construct($config = array()) {
         
         // set defaults
-        $config['uri'] = $this->setDefault($config['uri'], $_SERVER['REQUEST_URI']);
+        $config['uri'] = $this->setDefault($config['uri'], $_SERVER['REDIRECT_URL']);
         $config['accept'] = $this->setDefault($config['accept'], $_SERVER['HTTP_ACCEPT']);
         $config['acceptLang'] = $this->setDefault($config['acceptLang'], $_SERVER['HTTP_ACCEPT_LANGUAGE']);
         
@@ -59,8 +60,6 @@ class Request {
                 $this->mimetypes[$ext] = $mimetype;
             }
         }
-            
-        $this->resourcePath = $this->setDefault($config['resourcePath'], $this->resourcePath);
         
         // get request URI
         $parts = explode('/', $config['uri']);
@@ -129,10 +128,22 @@ class Request {
         }
         $this->uris[] = $this->uri;
         $this->uris = array_values(array_unique($this->uris));
+        
+        // get HTTP method
+        $this->method = strtoupper($this->setDefault($config['method'], $_SERVER['REQUEST_METHOD'], $this->method));
+        
+        // get HTTP request data
+        if (isset($config['data'])) {
+            $this->data = $config['data'];
+        } else {
+            $this->data = file_get_contents("php://input");
+        }
+        
     }
     
     /**
      * Instantiate the resource class that matches the request URI the best
+     * @return Resource
      */
     function loadResource() {
         
@@ -173,11 +184,26 @@ class Request {
 
 class Resource {
     
-    function exec() {
+    /**
+     * Execute a request on this resource
+     * @var Request request
+     * @return Response
+     */
+    function exec($request) {
         
-        return new Response();
+        if (method_exists($this, $request->method)) {
+            return $this->{$request->method}();
+        }
+        
+        throw(new Exception('No method found in resource class for "'.$request->method.'"'));
+        exit;
         
     }
+    
+    function get() {
+        return new Response();
+    }
+    
     
 }
 
@@ -185,7 +211,7 @@ class Response {
     
     function output() {
         
-        echo "hi";
+        var_dump($this);
         
     }
     

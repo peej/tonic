@@ -16,6 +16,32 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testGetRequestMethod() {
+        
+        $config = array(
+            'method' => 'get'
+        );
+        
+        $request = new Request($config);
+        
+        $this->assertEqual($request->method, 'GET');
+        
+    }
+    
+    function testPutRequestMethodWithData() {
+        
+        $config = array(
+            'method' => 'put',
+            'data' => 'some data'
+        );
+        
+        $request = new Request($config);
+        
+        $this->assertEqual($request->method, 'PUT');
+        $this->assertEqual($request->data, 'some data');
+        
+    }
+    
     function testConnegOnBareURI() {
         
         $config = array(
