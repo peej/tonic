@@ -1,7 +1,7 @@
 <?php
 
 require_once '../lib/tonic.php';
-require_once '../resources/default.php';
+require_once '../resources/filesystem.php';
 
 $request = new Request();
 $resource = $request->loadResource();
