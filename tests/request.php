@@ -7,7 +7,7 @@ class RequestTester extends UnitTestCase {
     function testRequestURI() {
         
         $config = array(
-            'uri' => '/one/two'
+            'uri' => '/requesttest/one/two'
         );
         
         $request = new Request($config);
@@ -18,9 +18,7 @@ class RequestTester extends UnitTestCase {
     
     function testGetRequestMethod() {
         
-        $config = array(
-            'method' => 'get'
-        );
+        $config = array();
         
         $request = new Request($config);
         
@@ -45,47 +43,49 @@ class RequestTester extends UnitTestCase {
     function testConnegOnBareURI() {
         
         $config = array(
-            'uri' => '/one/two',
+            'uri' => '/requesttest/one/two',
             'accept' => '',
             'acceptLang' => ''
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two'
+            '/requesttest/one/two'
         ));
+        $this->assertEqual($request->uri, '/requesttest/one/two');
     
     }
     
     function testConnegOnExtensionURI() {
         
         $config = array(
-            'uri' => '/one/two.html',
+            'uri' => '/requesttest/one/two.html',
             'accept' => '',
             'acceptLang' => ''
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two.html',
-            '/one/two'
+            '/requesttest/one/two.html',
+            '/requesttest/one/two'
         ));
+        $this->assertEqual($request->uri, '/requesttest/one/two');
         
     }
     
     function testConnegOnBareURIWithAccept() {
         
         $config = array(
-            'uri' => '/one/two',
+            'uri' => '/requesttest/one/two',
             'accept' => 'image/png;q=0.5,text/html',
             'acceptLang' => ''
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two.html',
-            '/one/two.png',
-            '/one/two'
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two'
         ));
         
     }
@@ -93,17 +93,17 @@ class RequestTester extends UnitTestCase {
     function testConnegOnExtensionURIWithAccept() {
         
         $config = array(
-            'uri' => '/one/two.html',
+            'uri' => '/requesttest/one/two.html',
             'accept' => 'image/png;q=0.5,text/html',
             'acceptLang' => ''
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two.html',
-            '/one/two.png.html',
-            '/one/two.png',
-            '/one/two'
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png.html',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two'
         ));
         
     }
@@ -111,16 +111,16 @@ class RequestTester extends UnitTestCase {
     function testConnegOnBareURIWithAcceptLang() {
         
         $config = array(
-            'uri' => '/one/two',
+            'uri' => '/requesttest/one/two',
             'accept' => '',
             'acceptLang' => 'fr;q=0.5,en'
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two.en',
-            '/one/two.fr',
-            '/one/two'
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
         ));
         
     }
@@ -128,19 +128,19 @@ class RequestTester extends UnitTestCase {
     function testConnegOnExtensionURIWithAcceptLang() {
         
         $config = array(
-            'uri' => '/one/two.html',
+            'uri' => '/requesttest/one/two.html',
             'accept' => '',
             'acceptLang' => 'fr;q=0.5,en'
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two.html.en',
-            '/one/two.html.fr',
-            '/one/two.html',
-            '/one/two.en',
-            '/one/two.fr',
-            '/one/two'
+            '/requesttest/one/two.html.en',
+            '/requesttest/one/two.html.fr',
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
         ));
         
     }
@@ -148,22 +148,22 @@ class RequestTester extends UnitTestCase {
     function testConnegOnBareURIWithAcceptAndAcceptLang() {
         
         $config = array(
-            'uri' => '/one/two',
+            'uri' => '/requesttest/one/two',
             'accept' => 'image/png;q=0.5,text/html',
             'acceptLang' => 'fr;q=0.5,en'
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two.html.en',
-            '/one/two.html.fr',
-            '/one/two.html',
-            '/one/two.png.en',
-            '/one/two.png.fr',
-            '/one/two.png',
-            '/one/two.en',
-            '/one/two.fr',
-            '/one/two'
+            '/requesttest/one/two.html.en',
+            '/requesttest/one/two.html.fr',
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png.en',
+            '/requesttest/one/two.png.fr',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
         ));
         
     }
@@ -171,23 +171,23 @@ class RequestTester extends UnitTestCase {
     function testConnegOnExtensionURIWithAcceptAndAcceptLang() {
         
         $config = array(
-            'uri' => '/one/two.html',
+            'uri' => '/requesttest/one/two.html',
             'accept' => 'image/png;q=0.5,text/html',
             'acceptLang' => 'fr;q=0.5,en'
         );
         
         $request = new Request($config);
         $this->assertEqual($request->uris, array(
-            '/one/two.html.en',
-            '/one/two.html.fr',
-            '/one/two.html',
-            '/one/two.png.html',
-            '/one/two.png.en',
-            '/one/two.png.fr',
-            '/one/two.png',
-            '/one/two.en',
-            '/one/two.fr',
-            '/one/two'
+            '/requesttest/one/two.html.en',
+            '/requesttest/one/two.html.fr',
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png.html',
+            '/requesttest/one/two.png.en',
+            '/requesttest/one/two.png.fr',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
         ));
         
     }
@@ -201,14 +201,14 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'Resource');
+        $this->assertEqual(get_class($resource), 'NoResource');
         
     }
     
     function testResourceLoaderWithAResources() {
         
         $config = array(
-            'uri' => '/one'
+            'uri' => '/requesttest/one'
         );
         
         $request = new Request($config);
@@ -221,7 +221,7 @@ class RequestTester extends UnitTestCase {
     function testResourceLoaderWithAChildResources() {
         
         $config = array(
-            'uri' => '/one/two'
+            'uri' => '/requesttest/one/two'
         );
         
         $request = new Request($config);
@@ -234,7 +234,7 @@ class RequestTester extends UnitTestCase {
     function testResourceLoaderWithRegexURIMatch() {
         
         $config = array(
-            'uri' => '/three/something/four'
+            'uri' => '/requesttest/three/something/four'
         );
         
         $request = new Request($config);
@@ -250,15 +250,15 @@ class RequestTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
- * @uri /one
- * @uri /three/.+/four 12
+ * @uri /requesttest/one
+ * @uri /requesttest/three/.+/four 12
  */
 class NewResource extends Resource {
 
 }
 
 /**
- * @uri /one/two
+ * @uri /requesttest/one/two
  */
 class ChildResource extends NewResource {
 

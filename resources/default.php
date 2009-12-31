@@ -2,13 +2,17 @@
 
 /**
  * Default resource to use, matches all URIs
- * @uri / 9999
+ * @uri /woo 9999
  */
 class DefaultResource extends Resource {
     
-    function get() {
+    function get($request) {
         
-        return parent::get();
+        $response = new Response($request);
+        $response->code = Response::OK;
+        $response->addHeader('content-type', 'text/plain');
+        $response->body = $request->__toString();
+        return $response;
         
     }
     
@@ -16,11 +20,18 @@ class DefaultResource extends Resource {
 
 
 /**
- *  @uri /one 10
+ *  @uri /hidden 10
  */
 class SpecificResource extends Resource {
     
-    
+    function get($request) {
+        
+        $response = new Response($request);
+        $response->code = Response::OK;
+        $response->body = 'Hidden somewhere';
+        return $response;
+        
+    }
     
 }
 

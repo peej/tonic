@@ -6,6 +6,7 @@ class Request {
         $uris,
         $accept = array(),
         $acceptLang = array(),
+        $acceptEncoding = array(),
         $mimetypes = array(
             'html' => 'text/html',
             'txt' => 'text/plain',
@@ -31,7 +32,7 @@ class Request {
             'mov' => 'video/quicktime',
             'mp3' => 'audio/mpeg'
         ),
-        $method,
+        $method = 'GET',
         $data;
     
     /**
@@ -54,6 +55,7 @@ class Request {
         $config['uri'] = $this->setDefault($config['uri'], $_SERVER['REDIRECT_URL']);
         $config['accept'] = $this->setDefault($config['accept'], $_SERVER['HTTP_ACCEPT']);
         $config['acceptLang'] = $this->setDefault($config['acceptLang'], $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        $config['acceptEncoding'] = $this->setDefault($config['acceptEncoding'], $_SERVER['HTTP_ACCEPT_ENCODING']);
         
         if (isset($config['mimetypes']) && is_array($config['mimetypes'])) {
             foreach ($config['mimetypes'] as $ext => $mimetype) {
@@ -104,6 +106,13 @@ class Request {
         }
         krsort($this->acceptLang);
         
+        // get encoding accept headers
+		if ($config['acceptEncoding']) {
+            foreach (explode(',', $config['acceptEncoding']) as $key => $accept) {
+				$this->acceptEncoding[$key] = trim($accept);
+            }
+		}
+        
         // create candidate URI list from accept headers and request URI
         foreach ($this->accept as $typeOrder) {
             foreach ($typeOrder as $type) {
@@ -135,11 +144,28 @@ class Request {
         // get HTTP request data
         if (isset($config['data'])) {
             $this->data = $config['data'];
+        } elseif ($this->method == 'GET') {
+            $this->data = $_SERVER['QUERY_STRING'];
         } else {
             $this->data = file_get_contents("php://input");
         }
         
     }
+    
+	/**
+	 * Convert the object into a string suitable for printing
+	 * @return str
+	 */
+	function __toString() {
+		$str = 'URI: '.$this->uri."\n";
+        $str .= 'Method: '.$this->method."\n";
+        $str .= 'Data: '.$this->data."\n";
+        $str .= 'Candidate URIs:'."\n";
+        foreach ($this->uris as $uri) {
+            $str .= "\t".$uri."\n";
+        }
+		return $str;
+	}
     
     /**
      * Instantiate the resource class that matches the request URI the best
@@ -176,7 +202,7 @@ class Request {
             $className = array_shift($uriMatches);
             return new $className();
         }
-        return new Resource();
+        return new NoResource();
         
     }
     
@@ -192,39 +218,144 @@ class Resource {
     function exec($request) {
         
         if (method_exists($this, $request->method)) {
-            return $this->{$request->method}();
+            return $this->{$request->method}($request);
         }
         
-        throw(new Exception('No method found in resource class for "'.$request->method.'"'));
-        exit;
+        // send 405 method not allowed
+        $response = new Response($request);
+        $response->code = Response::METHODNOTALLOWED;
+        $response->body = sprintf(
+            'The HTTP method "%s" used for the request is not allowed for the resource "%s".',
+            $request->method,
+            $request->uri
+        );
+        return $response;
         
     }
     
-    function get() {
-        return new Response(200, 'Something');
-    }
+}
+
+class NoResource extends Resource {
     
+    function exec($request) {
+        
+        // send 404 not found
+        $response = new Response($request);
+        $response->code = Response::NOTFOUND;
+        $response->body = sprintf(
+            'Nothing was found for the resource "%s".',
+            $request->uri
+        );
+        return $response;
+        
+    }
     
 }
 
 class Response {
     
-    var $output;
+    const OK = 200,
+		CREATED = 201,
+		NOCONTENT = 204,
+		MOVEDPERMANENTLY = 301,
+		FOUND = 302,
+		SEEOTHER = 303,
+		NOTMODIFIED = 304,
+		TEMPORARYREDIRECT = 307,
+		BADREQUEST = 400,
+		UNAUTHORIZED = 401,
+		FORBIDDEN = 403,
+		NOTFOUND = 404,
+		METHODNOTALLOWED = 405,
+		NOTACCEPTABLE = 406,
+		GONE = 410,
+		LENGTHREQUIRED = 411,
+		PRECONDITIONFAILED = 412,
+		UNSUPPORTEDMEDIATYPE = 415,
+		INTERNALSERVERERROR = 500;
+    
+    var $request,
+    $code = Response::OK,
+        $headers = array(),
+        $body;
     
     /**
      * Create a response object
-     * @var int code
-     * @var str body
+     * @var Request request
      */
-    function __construct($code, $body) {
+    function __construct($request) {
         
-        $this->output = $body;
+        $this->request = $request;
         
     }
     
+	/**
+	 * Convert the object into a string suitable for printing
+	 * @return str
+	 */
+	function __toString() {
+		$str = 'HTTP/1.1 '.$this->statusCode;
+		foreach ($this->headers as $name => $value) {
+			$str .= "\n".$name.': '.$value;
+		}
+		return $str;
+	}
+    
+    function addHeader($header, $value) {
+        $this->headers[$header] = $value;
+    }
+    
+	/**
+	 * Add content encoding headers and encode the response body
+	 */
+	function doContentEncoding()
+	{
+		if (ini_get('zlib.output_compression') == 0) { // do nothing if PHP will do the compression for us
+			foreach ($this->request->acceptEncoding as $encoding) {
+				switch($encoding) {
+				case 'gzip':
+					$this->addHeader('Content-Encoding', 'gzip');
+					$this->body = gzencode($this->body);
+					return;
+				case 'deflate':
+					$this->addHeader('Content-Encoding', 'deflate');
+					$this->body = gzdeflate($this->body);
+					return;
+				case 'compress':
+					$this->addHeader('Content-Encoding', 'compress');
+					$this->body = gzcompress($this->body);
+					return;
+				case 'identity':
+					return;
+				}
+			}
+		}
+	}
+	
+	function addCacheHeader($time = 86400) {
+	    if ($time) {
+	        $this->addHeader('Cache-Control', 'max-age='.$time.', must-revalidate');
+	    } else {
+	        $this->addHeader('Cache-Control', 'no-cache');
+	    }
+	}
+    
     function output() {
         
-        echo $this->output;
+        if (php_sapi_name() != 'cli' && !headers_sent()) {
+            
+            if ($this->body) {
+                $this->doContentEncoding();
+                $this->addHeader('Content-Length', strlen($this->body));
+            }
+            
+            header('HTTP/1.1 '.$this->code);
+            foreach ($this->headers as $header => $value) {
+                header($header.': '.$value);
+            }
+        }
+        
+        echo $this->body;
         
     }
     

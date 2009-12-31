@@ -6,6 +6,7 @@ require_once('simpletest/reporter.php');
 $core = &new GroupTest('Core');
 
 $core->addTestFile('request.php');
+$core->addTestFile('resource.php');
 
 $test = &new GroupTest('Tonic');
 $test->addTestCase($core);
