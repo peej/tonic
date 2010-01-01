@@ -327,11 +327,14 @@ div#date {
 /* Syntax highlighter */
 
 div#content .syntaxhighlighter {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
+    border: 1px solid #6CE26C !important;
+    margin: 0 10px !important;
+    width: auto !important;
+    padding: 0 !important;
 }
 
 div#content p.caption {
+    display: block;
     text-align: center;
     font-size: 90%;
     color: #000;
