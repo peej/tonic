@@ -1,0 +1,10 @@
+PHP library/framework for building Web apps while respecting the 5 principles
+of RESTful design.
+
+ * Give every "thing" an ID (aka URIs)
+ * Link things together (HATEOAS)
+ * Use standard methods (aka the standard interface)
+ * Resources with multiple representations (aka standard document formats)
+ * Communicate statelessly
+
+No documentation as yet. See http://github.com/peej/tonic for more info.
