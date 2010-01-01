@@ -152,20 +152,20 @@ class Request {
         
     }
     
-	/**
-	 * Convert the object into a string suitable for printing
-	 * @return str
-	 */
-	function __toString() {
-		$str = 'URI: '.$this->uri."\n";
+    /**
+     * Convert the object into a string suitable for printing
+     * @return str
+     */
+    function __toString() {
+        $str = 'URI: '.$this->uri."\n";
         $str .= 'Method: '.$this->method."\n";
         $str .= 'Data: '.$this->data."\n";
         $str .= 'Candidate URIs:'."\n";
         foreach ($this->uris as $uri) {
             $str .= "\t".$uri."\n";
         }
-		return $str;
-	}
+        return $str;
+    }
     
     /**
      * Instantiate the resource class that matches the request URI the best
@@ -255,27 +255,27 @@ class NoResource extends Resource {
 class Response {
     
     const OK = 200,
-		CREATED = 201,
-		NOCONTENT = 204,
-		MOVEDPERMANENTLY = 301,
-		FOUND = 302,
-		SEEOTHER = 303,
-		NOTMODIFIED = 304,
-		TEMPORARYREDIRECT = 307,
-		BADREQUEST = 400,
-		UNAUTHORIZED = 401,
-		FORBIDDEN = 403,
-		NOTFOUND = 404,
-		METHODNOTALLOWED = 405,
-		NOTACCEPTABLE = 406,
-		GONE = 410,
-		LENGTHREQUIRED = 411,
-		PRECONDITIONFAILED = 412,
-		UNSUPPORTEDMEDIATYPE = 415,
-		INTERNALSERVERERROR = 500;
+          CREATED = 201,
+          NOCONTENT = 204,
+          MOVEDPERMANENTLY = 301,
+          FOUND = 302,
+          SEEOTHER = 303,
+          NOTMODIFIED = 304,
+          TEMPORARYREDIRECT = 307,
+          BADREQUEST = 400,
+          UNAUTHORIZED = 401,
+          FORBIDDEN = 403,
+          NOTFOUND = 404,
+          METHODNOTALLOWED = 405,
+          NOTACCEPTABLE = 406,
+          GONE = 410,
+          LENGTHREQUIRED = 411,
+          PRECONDITIONFAILED = 412,
+          UNSUPPORTEDMEDIATYPE = 415,
+          INTERNALSERVERERROR = 500;
     
     var $request,
-    $code = Response::OK,
+        $code = Response::OK,
         $headers = array(),
         $body;
     
@@ -289,56 +289,55 @@ class Response {
         
     }
     
-	/**
-	 * Convert the object into a string suitable for printing
-	 * @return str
-	 */
-	function __toString() {
-		$str = 'HTTP/1.1 '.$this->statusCode;
-		foreach ($this->headers as $name => $value) {
-			$str .= "\n".$name.': '.$value;
-		}
-		return $str;
-	}
+    /**
+     * Convert the object into a string suitable for printing
+     * @return str
+     */
+    function __toString() {
+        $str = 'HTTP/1.1 '.$this->statusCode;
+        foreach ($this->headers as $name => $value) {
+            $str .= "\n".$name.': '.$value;
+        }
+        return $str;
+    }
     
     function addHeader($header, $value) {
         $this->headers[$header] = $value;
     }
     
-	/**
-	 * Add content encoding headers and encode the response body
-	 */
-	function doContentEncoding()
-	{
-		if (ini_get('zlib.output_compression') == 0) { // do nothing if PHP will do the compression for us
-			foreach ($this->request->acceptEncoding as $encoding) {
-				switch($encoding) {
-				case 'gzip':
-					$this->addHeader('Content-Encoding', 'gzip');
-					$this->body = gzencode($this->body);
-					return;
-				case 'deflate':
-					$this->addHeader('Content-Encoding', 'deflate');
-					$this->body = gzdeflate($this->body);
-					return;
-				case 'compress':
-					$this->addHeader('Content-Encoding', 'compress');
-					$this->body = gzcompress($this->body);
-					return;
-				case 'identity':
-					return;
-				}
-			}
-		}
-	}
-	
-	function addCacheHeader($time = 86400) {
-	    if ($time) {
-	        $this->addHeader('Cache-Control', 'max-age='.$time.', must-revalidate');
-	    } else {
-	        $this->addHeader('Cache-Control', 'no-cache');
-	    }
-	}
+    /**
+     * Add content encoding headers and encode the response body
+     */
+    function doContentEncoding() {
+        if (ini_get('zlib.output_compression') == 0) { // do nothing if PHP will do the compression for us
+            foreach ($this->request->acceptEncoding as $encoding) {
+                switch($encoding) {
+                case 'gzip':
+                    $this->addHeader('Content-Encoding', 'gzip');
+                    $this->body = gzencode($this->body);
+                    return;
+                case 'deflate':
+                    $this->addHeader('Content-Encoding', 'deflate');
+                    $this->body = gzdeflate($this->body);
+                    return;
+                case 'compress':
+                    $this->addHeader('Content-Encoding', 'compress');
+                    $this->body = gzcompress($this->body);
+                    return;
+                case 'identity':
+                    return;
+                }
+            }
+        }
+    }
+
+    function addCacheHeader($time = 86400) {
+        if ($time) {
+            $this->addHeader('Cache-Control', 'max-age='.$time.', must-revalidate');
+        } else {
+            $this->addHeader('Cache-Control', 'no-cache');
+        }
+    }
     
     function output() {
         
