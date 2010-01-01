@@ -53,13 +53,52 @@
             to scale, extend and work with other systems easily.</p> 
             
             <h3>Quick Example</h3>
+            
             <h4>Front controller</h4>
             <p>Tonic uses the common front controller pattern to push all required traffic to
             a single script that then dispatches the request to the correct piece of developer
             logic to handle the request. The typical dispatcher PHP file looks like:</p>
             <script type="syntaxhighlighter" class="brush: php"><![CDATA[
-                $request = new Request();
-            ]]></script>
+<?php
+
+require_once '../lib/tonic.php';
+require_once '../resources/example.php';
+
+$request = new Request();
+$resource = $request->loadResource();
+$response = $resource->exec($request);
+$response->output();
+
+?>
+            ]]></script><p class="caption">docroot/dispatch.php</p>
+            
+            <h4>Defining resources</h4>
+            <p>With the dispatcher set up and all requests being forwarded to it by the
+            Web server, we can then define a resource class to handle a request to a
+            specific URL:</p>
+            <script type="syntaxhighlighter" class="brush: php"><![CDATA[
+<?php
+ 
+/**
+ * An example resource
+ * @uri /example
+ */
+class ExampleResource extends Resource {
+    
+    function get($request) {
+        
+        $response = new Response($request);
+        $response->code = Response::OK;
+        $response->addHeader('content-type', 'text/plain');
+        $response->body = 'This is only an example';
+        return $response;
+        
+    }
+    
+}
+
+?>
+            ]]></script><p class="caption">resource/example.php</p>
             
             <div id="date">Created Jan 1, 2010, last modified Jan 1, 2010</div>
         </div>

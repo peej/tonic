@@ -326,124 +326,15 @@ div#date {
 
 /* Syntax highlighter */
 
-span.code-caption {
-    display: block;
+div#content .syntaxhighlighter {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+div#content p.caption {
     text-align: center;
     font-size: 90%;
-    color: #999;
+    color: #000;
+    background-color: #6CE26C;
 	margin: 0 10px 10px;
 }
-
-div#content pre {
-	padding: 10px;
-}
-
-div#content pre,
-div#content .dp-highlighter
-{
-	font-family: "Consolas", "Courier New", Courier, mono, serif;
-	font-size: 12px;
-	background-color: #E7E5DC;
-	overflow: auto;
-	padding-top: 1px; /* adds a little border on top when controls are hidden */
-    margin: 10px 10px 0;
-    -moz-border-radius: 10px;
-	border: 1px solid #ddd;
-}
-
-/* clear styles */
-.dp-highlighter ol,
-.dp-highlighter ol li,
-.dp-highlighter ol li span
-{
-	margin: 0;
-	padding: 0;
-	border: none;
-}
-
-.dp-highlighter a,
-.dp-highlighter a:hover
-{
-	background: none;
-	border: none;
-	padding: 0;
-	margin: 0;
-}
-
-.dp-highlighter .bar
-{
-	padding-left: 45px;
-}
-
-.dp-highlighter.collapsed .bar,
-.dp-highlighter.nogutter .bar
-{
-	padding-left: 0px;
-}
-
-.dp-highlighter ol
-{
-	list-style: decimal; /* for ie */
-	background-color: #fff;
-	margin: 0px 0px 1px 45px !important; /* 1px bottom margin seems to fix occasional Firefox scrolling */
-	padding: 0px;
-	color: #5C5C5C;
-}
-
-.dp-highlighter ol li,
-.dp-highlighter .columns div
-{
-	list-style: decimal-leading-zero; /* better look for others, override cascade from OL */
-	list-style-position: outside !important;
-	border-left: 3px solid #a91;
-	background-color: #F8F8F8;
-	color: #5C5C5C;
-	padding: 0 3px 0 10px !important;
-	margin: 0 !important;
-	line-height: 14px;
-	width: auto;
-}
-
-.dp-highlighter .columns
-{
-	background-color: #F8F8F8;
-	color: gray;
-	overflow: hidden;
-	width: 100%;
-}
-
-.dp-highlighter .columns div
-{
-	padding-bottom: 5px;
-}
-
-.dp-highlighter ol li.alt
-{
-	background-color: #FFF;
-	color: inherit;
-}
-
-.dp-highlighter ol li span
-{
-	color: black;
-	background-color: inherit;
-}
-
-/* Adjust some properties when collapsed */
-
-.dp-highlighter.collapsed ol
-{
-	margin: 0px;
-}
-
-.dp-highlighter.collapsed ol li
-{
-	display: none;
-}
-
-/* Language specific styles */
-
-.dp-highlighter .comment, .dp-highlighter .comments { color: #008200; background-color: inherit; }
-.dp-highlighter .string { color: blue; background-color: inherit; }
-.dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
-.dp-highlighter .preprocessor { color: gray; background-color: inherit; }
