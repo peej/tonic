@@ -94,7 +94,7 @@ div#content h2 {
 
 div#content h3 {
     font-size: 120%;
-    margin-top: 20px;
+    margin-top: 40px;
     border-bottom: 1px solid #666;
 }
 
@@ -124,18 +124,6 @@ div#content li {
     margin: 4px 0;
 }
 
-div#content dl {
-    background-color: #eee;
-    padding: 10px;
-    border: 1px solid #ddd;
-    -moz-border-radius: 10px;
-}
-
-div#content div.info-box dl {
-    padding: 0;
-    border: none;
-}
-
 div#content dt {
     font-weight: bold;
     color: #689;
@@ -153,6 +141,7 @@ blockquote {
     font-style: italic;
     border: 1px solid #ddd;
     -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }
 
 div#content img {
@@ -202,6 +191,7 @@ div#content div.note {
     margin: 10px;
     border: 1px solid #acd;
     -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
     color: #000;
 }
 
@@ -231,6 +221,7 @@ div#content div.box {
     background-color: #bde;
     border: 1px solid #9bc;
     -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
     margin: 20px 10px;
 }
 
@@ -248,7 +239,7 @@ div#content div.box a {
 
 div#content div.half-box {
     margin: 0;
-    width: 370px;
+    width: 40%;
 }
 
 /* info box */
@@ -257,6 +248,7 @@ div#content div.info-box {
     background-color: #eee;
     border: 1px solid #ddd;
     -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
     line-height: 1.6em;
     margin: 20px 10px;
 }
@@ -267,6 +259,7 @@ div#content div.info-box h3 {
     font-size: 140%;
     background-color: #bde;
     -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -327,7 +320,6 @@ div#date {
 /* Syntax highlighter */
 
 div#content .syntaxhighlighter {
-    border: 1px solid #6CE26C !important;
     margin: 0 10px !important;
     width: auto !important;
     padding: 0 !important;
