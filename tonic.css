@@ -1,0 +1,449 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+	font-size: 80%;	
+	font-family: verdana, helvetica, arial, sans-serif;
+    background: #fff url(header.png) repeat-x top left;
+	text-align: center;
+    color: #000;
+}
+
+/* header */
+
+div#header {
+    width: 750px;
+    margin: 0 auto;
+    height: 154px;
+    background: url(logo.png) no-repeat bottom left;
+    text-align: left;
+}
+
+div#header h1 {
+    display: none;
+}
+
+div#header h2 {
+    padding: 60px 0 0 170px;
+    font-size: 160%;
+    color: #a91;
+    height: 20px;
+}
+
+div#header ul#nav {
+    padding: 40px 0 0 170px;
+    list-style: none;
+}
+
+div#header ul#nav li {
+    display: inline;
+    border-right: 1px solid #666;
+    padding-right: 10px;
+    margin-right: 6px;
+	font-weight: bold;
+}
+
+div#header ul#nav li.last {
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+}
+
+div#header ul#nav li a {
+    color: #000;
+    text-decoration: none;
+	font-weight: normal;
+}
+
+div#header ul#nav li.selected a {
+	font-weight: bold;
+}
+
+div#header ul#nav li a:hover {
+    text-decoration: underline;
+}
+
+/* content */
+
+div#content {
+    width: 750px;
+    margin: 0 auto;
+    text-align: left;
+	line-height: 1.6em;
+}
+
+div#content a {
+    color: #a91;
+}
+
+div#content a:visited {
+    color: #860;
+}
+
+
+div#content h1, div#content h2, div#content h3, div#content h4, div#content h5, div#content h6,
+div#content p, div#content div, div#content ul, div#content ol, div#content blockquote, div#content dl, div#content table {
+    margin: 10px;
+}
+
+div#content h2 {
+    font-size: 150%;
+}
+
+div#content h3 {
+    font-size: 120%;
+    margin-top: 20px;
+    border-bottom: 1px solid #666;
+}
+
+div#content h4 {
+	color: #666;
+    font-size: 100%;
+	margin-top: 20px;
+}
+
+div#content h1, div#content h2, div#content h3, div#content h4 {
+    clear: both;
+}
+
+div#content li h1, div#content li h2, div#content li h3, div#content li h4 {
+    clear: none;
+}
+
+div#content ul, div#content ol {
+    margin-left: 40px;
+}
+
+div#content ul {
+    list-style-type: square;
+}
+
+div#content li {
+    margin: 4px 0;
+}
+
+div#content dl {
+    background-color: #eee;
+    padding: 10px;
+    border: 1px solid #ddd;
+    -moz-border-radius: 10px;
+}
+
+div#content div.info-box dl {
+    padding: 0;
+    border: none;
+}
+
+div#content dt {
+    font-weight: bold;
+    color: #689;
+    margin: 5px 0;
+}
+
+div#content dd {
+    margin-left: 20px;
+}
+
+blockquote {
+    background-color: #eee;
+    margin: 10px;
+    padding: 0;
+    font-style: italic;
+    border: 1px solid #ddd;
+    -moz-border-radius: 10px;
+}
+
+div#content img {
+    margin: 10px;
+}
+
+div#content table {
+    border-collapse: collapse;
+    border: 1px solid #9bc;
+    font-size: 100%;
+}
+
+div#content caption {
+    font-size: 90%;
+    font-weight: bold;
+}
+
+div#content th, div#content td {
+    border: 1px solid #9bc;
+    padding: 5px;
+}
+
+div#content th {
+    background-color: #bde;
+    color: #000;
+}
+
+div#content tr.subtitle th {
+    background-color: #ffd;
+    color: #000;
+}
+
+div#content td {
+    vertical-align: top;
+}
+
+div#content .left {
+    float: left;
+}
+
+div#content .right {
+    float: right;
+}
+
+div#content div.note {
+    background-color: #bde;
+    margin: 10px;
+    border: 1px solid #acd;
+    -moz-border-radius: 10px;
+    color: #000;
+}
+
+div#content div.note h3 {
+	border: none;
+	margin: 10px;
+	padding-right: 1em;
+	color: #59a;
+	float: left;
+}
+
+div#content p.note {
+    color: #069;
+    padding: 5px 8px;
+    background-color: #cef;
+}
+
+a.more {
+    font-size: 90%;
+    float: right;
+}
+
+/* content box */
+
+div#content div.box {
+    padding: 0;
+    background-color: #bde;
+    border: 1px solid #9bc;
+    -moz-border-radius: 10px;
+    margin: 20px 10px;
+}
+
+div#content div#elevator.box {
+    padding: 10px;
+    font-size: 130%;
+    line-height: 1.6em;
+}
+
+div#content div.box a {
+    color: #000;
+}
+
+/* content half size box */
+
+div#content div.half-box {
+    margin: 0;
+    width: 370px;
+}
+
+/* info box */
+
+div#content div.info-box {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    -moz-border-radius: 10px;
+    line-height: 1.6em;
+    margin: 20px 10px;
+}
+
+div#content div.info-box h3 {
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 140%;
+    background-color: #bde;
+    -moz-border-radius: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+div#content div.info-box a {
+    color: #000;
+}
+
+div#content div.info-box table, div#content div.info-box th, div#content div.info-box td {
+    border-color: #a91;
+    background-color: #ffd;
+}
+
+div#content div.info-box th {
+    background-color: #cb5;
+}
+
+/* documentation nav */
+
+div#chapter-nav {
+    clear: both;
+}
+
+a.contents {
+    display: block;
+    text-align: center;
+}
+
+a.previous-chapter {
+    display: block;
+    float: left;
+}
+
+a.next-chapter {
+    display: block;
+    float: right;
+}
+
+/* config settings table */
+
+td.config-value {
+    white-space: pre;
+    font-family: monospace;
+}
+
+td.config-value span.comment {
+    color: #393;
+}
+
+/* footer */
+
+div#date {
+    clear: both;
+    font-size: 90%;
+    text-align: right;
+    color: #999;
+}
+
+/* Syntax highlighter */
+
+span.code-caption {
+    display: block;
+    text-align: center;
+    font-size: 90%;
+    color: #999;
+	margin: 0 10px 10px;
+}
+
+div#content pre {
+	padding: 10px;
+}
+
+div#content pre,
+div#content .dp-highlighter
+{
+	font-family: "Consolas", "Courier New", Courier, mono, serif;
+	font-size: 12px;
+	background-color: #E7E5DC;
+	overflow: auto;
+	padding-top: 1px; /* adds a little border on top when controls are hidden */
+    margin: 10px 10px 0;
+    -moz-border-radius: 10px;
+	border: 1px solid #ddd;
+}
+
+/* clear styles */
+.dp-highlighter ol,
+.dp-highlighter ol li,
+.dp-highlighter ol li span
+{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.dp-highlighter a,
+.dp-highlighter a:hover
+{
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+.dp-highlighter .bar
+{
+	padding-left: 45px;
+}
+
+.dp-highlighter.collapsed .bar,
+.dp-highlighter.nogutter .bar
+{
+	padding-left: 0px;
+}
+
+.dp-highlighter ol
+{
+	list-style: decimal; /* for ie */
+	background-color: #fff;
+	margin: 0px 0px 1px 45px !important; /* 1px bottom margin seems to fix occasional Firefox scrolling */
+	padding: 0px;
+	color: #5C5C5C;
+}
+
+.dp-highlighter ol li,
+.dp-highlighter .columns div
+{
+	list-style: decimal-leading-zero; /* better look for others, override cascade from OL */
+	list-style-position: outside !important;
+	border-left: 3px solid #a91;
+	background-color: #F8F8F8;
+	color: #5C5C5C;
+	padding: 0 3px 0 10px !important;
+	margin: 0 !important;
+	line-height: 14px;
+	width: auto;
+}
+
+.dp-highlighter .columns
+{
+	background-color: #F8F8F8;
+	color: gray;
+	overflow: hidden;
+	width: 100%;
+}
+
+.dp-highlighter .columns div
+{
+	padding-bottom: 5px;
+}
+
+.dp-highlighter ol li.alt
+{
+	background-color: #FFF;
+	color: inherit;
+}
+
+.dp-highlighter ol li span
+{
+	color: black;
+	background-color: inherit;
+}
+
+/* Adjust some properties when collapsed */
+
+.dp-highlighter.collapsed ol
+{
+	margin: 0px;
+}
+
+.dp-highlighter.collapsed ol li
+{
+	display: none;
+}
+
+/* Language specific styles */
+
+.dp-highlighter .comment, .dp-highlighter .comments { color: #008200; background-color: inherit; }
+.dp-highlighter .string { color: blue; background-color: inherit; }
+.dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
+.dp-highlighter .preprocessor { color: gray; background-color: inherit; }

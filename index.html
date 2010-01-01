@@ -1,82 +1,75 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-	<title>peej/tonic @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #cda613;
-		  font-family: "Helvetica,Arial,FreeSans"; 
-  		color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #3259ec; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #3259ec; }
-    h3 { text-align: center; color: #3259ec; }
-    a { color: #3259ec; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
-</head>
-
-<body>
-  <a href="http://github.com/peej/tonic"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-  
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/peej/tonic/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/peej/tonic/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-      
-    <h1><a href="http://github.com/peej/tonic">tonic</a> 
-      <span class="small">by <a href="http://github.com/peej">peej</a></span></h1>
-
-    <div class="description">
-      RESTful PHP library/framework
-    </div>
-
-    <p>Insert content here</p><h2>Dependencies</h2>
-<p>PHP 5.0+</p>
-<h2>Authors</h2>
-<p>Paul James (paul@peej.co.uk)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Paul James (paul@peej.co.uk)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/peej/tonic/zipball/master">zip</a> or
-      <a href="http://github.com/peej/tonic/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/peej/tonic</pre>
-    </p>
-      
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/peej/tonic">peej/tonic</a>
-    </div>
-    
-  </div>
-
-  
-</body>
+<html>
+    <head>
+	    <title>Tonic: A RESTful Web App Development PHP Library</title>
+        <link rel="stylesheet" type="text/css" href="tonic.css">
+	</head>
+	<body>
+	    <div id="header">
+            <h1>Tonic</h1>
+            <h2>A RESTful Web App Development PHP Library</h2>
+            <ul id="nav">
+                <li class="selected"><a href="/tonic">Homepage</a></li>
+				<li class="last"><a href="http://github.com/peej/tonic">GitHub Project</a></li>
+            </ul>
+        </div>
+       
+        <div id="content">
+			
+			<div id="elevator" class="box">
+                Tonic is an open source less is more, <a href="http://rest.blueoxen.net/cgi-bin/wiki.pl?FrontPage" title="The REST Wiki">RESTful</a> Web application development
+                <a href="http://www.php.net/">PHP</a> library designed to do things "<strong><a href="http://adambosworth.net/2004/11/18/iscoc04-talk/" title="Adam Bosworth on the Web">the right way</a></strong>", where
+                <strong>resources are king</strong> and the library <strong>gets out of the way</strong> and leaves the
+                developer to get on with it.
+            </div>
+            
+            <div class="half-box info-box right">
+                <h3>History</h3>
+                <p>Tonic as a project was started in 2007 as a tool to aid the building
+                of Web applications while supporting the 5 principles of REST. As the
+                project grew, I realised that the code placed too much restriction
+                on data sources forcing the developer to coerce them into resources in
+                a too abstract way.</p>
+                <p>As such, over the winter holidays of 2009 I started to think about
+                how to improve this and the result was a new version 2 codebase. <a href="http://tonic.sourceforge.net/">The old
+                version 1 code can still be found on SourceForge</a>.</p>
+            </div>
+            
+            <p>To understand Tonic, you need to <strong>get</strong> the Web, so forget everything you know for a minute and think about how the Web
+            really works, it's not about HTML pages, it's about resources:</p> 
+            <ul> 
+                <li><strong>Everything useful is a resource</strong>, not a file, not a <abbr title="common gateway interface">CGI</abbr> script, a resource, an abstract concept of something
+                useful that the client wants to grab hold of.</li> 
+                <li><strong>Resources are located by <abbr title="Uniform resource locator">URL</abbr>s</strong>, URLs are cheap and form the
+                universal addressing system of the Web.</li> 
+                <li>Clients can issue a <strong>standard number of HTTP methods</strong> upon an infinite number of resources and receive
+                something useful in return.</li> 
+                <li><strong>Representations of resources</strong> are sent back to the client, a representation is just a way of turning the abstract
+                concept of a resource into something more concrete, like a HTML page or a XML file. One resource can have many
+                different representations.</li> 
+            </ul> 
+            <p>Tonic helps you develop Web applications that embrace the way the Web really works, enabling your applications
+            to scale, extend and work with other systems easily.</p> 
+            
+            <h3>Quick Example</h3>
+            <h4>Front controller</h4>
+            <p>Tonic uses the common front controller pattern to push all required traffic to
+            a single script that then dispatches the request to the correct piece of developer
+            logic to handle the request. The typical dispatcher PHP file looks like:</p>
+            <script type="syntaxhighlighter" class="brush: php"><![CDATA[
+                $request = new Request();
+            ]]></script>
+            
+            <div id="date">Created Jan 1, 2010, last modified Jan 1, 2010</div>
+        </div>
+        
+        <script type="text/javascript" src="syntaxhighlighter/shCore.js"></script>
+        <script type="text/javascript" src="syntaxhighlighter/shBrushPhp.js"></script>
+        <link type="text/css" rel="stylesheet" href="syntaxhighlighter/shCore.css">
+        <link type="text/css" rel="stylesheet" href="syntaxhighlighter/shThemeDefault.css">
+        <script type="text/javascript">
+            SyntaxHighlighter.all();
+        </script>
+	</body>
 </html>
