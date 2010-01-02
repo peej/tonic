@@ -23,12 +23,23 @@ class FilesystemResource extends Resource {
                 
                 $response = new Response($request);
                 
-                $extension = array_pop(explode('.', $filePath));
-                if (isset($request->mimetypes[$extension])) {
-                    $response->addHeader('content-type', $request->mimetypes[$extension]);
+                $etag = md5(filemtime($filePath));
+                if ($request->ifNoneMatch == $etag) {
+                    
+                    $response->code = Response::NOTMODIFIED;
+                    
+                } else {
+                    
+                    $extension = array_pop(explode('.', $filePath));
+                    if (isset($request->mimetypes[$extension])) {
+                        $response->addHeader('Content-Type', $request->mimetypes[$extension]);
+                    }
+                    
+                    $response->addHeader('Etag', $etag);
+                    
+                    $response->body = file_get_contents($filePath);
+                    
                 }
-                
-                $response->body = file_get_contents($filePath);
                 return $response;
                 
             }

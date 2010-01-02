@@ -33,7 +33,9 @@ class Request {
             'mp3' => 'audio/mpeg'
         ),
         $method = 'GET',
-        $data;
+        $data,
+        $ifNoneMatch,
+        $ifMatch;
     
     /**
      * Set a default configuration option
@@ -149,6 +151,10 @@ class Request {
         } else {
             $this->data = file_get_contents("php://input");
         }
+        
+        // if (none) match
+        $this->ifNoneMatch = $this->setDefault($_SERVER['HTTP_IF_NONE_MATCH']);
+        $this->ifMatch = $this->setDefault($_SERVER['HTTP_IF_MATCH']);
         
     }
     
