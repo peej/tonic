@@ -1,34 +1,29 @@
 <?php
 
 /**
- * Default resource to use, matches all URIs
- * @uri /woo 9999
+ * Example resource
+ * @uri /example
  */
-class DefaultResource extends Resource {
+class ExampleResource extends Resource {
     
     function get($request) {
         
         $response = new Response($request);
-        $response->code = Response::OK;
-        $response->addHeader('content-type', 'text/plain');
-        $response->body = $request->__toString();
-        return $response;
         
-    }
-    
-}
-
-
-/**
- *  @uri /hidden 10
- */
-class SpecificResource extends Resource {
-    
-    function get($request) {
+        $etag = md5($request->uri);
+        if ($request->ifNoneMatch($etag)) {
+            
+            $response->code = Response::NOTMODIFIED;
+            
+        } else {
+            
+            $response->code = Response::OK;
+            $response->addHeader('content-type', 'text/plain');
+            $response->addEtag($etag);
+            $response->body = $request->__toString();
+            
+        }
         
-        $response = new Response($request);
-        $response->code = Response::OK;
-        $response->body = 'Hidden somewhere';
         return $response;
         
     }

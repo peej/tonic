@@ -34,8 +34,8 @@ class Request {
         ),
         $method = 'GET',
         $data,
-        $ifNoneMatch,
-        $ifMatch;
+        $ifMatch = array(),
+        $ifNoneMatch = array();
     
     /**
      * Set a default configuration option
@@ -152,9 +152,21 @@ class Request {
             $this->data = file_get_contents("php://input");
         }
         
-        // if (none) match
-        $this->ifNoneMatch = $this->setDefault($_SERVER['HTTP_IF_NONE_MATCH']);
-        $this->ifMatch = $this->setDefault($_SERVER['HTTP_IF_MATCH']);
+        // conditional requests
+        $ifMatch = $this->setDefault($_SERVER['HTTP_IF_MATCH']);
+        if ($ifMatch) {
+            $ifMatch = explode(',', $ifMatch);
+            foreach ($ifMatch as $etag) {
+                $this->ifMatch[] = trim($etag, '" ');
+            }
+        }
+        $ifNoneMatch = $this->setDefault($_SERVER['HTTP_IF_NONE_MATCH']);
+        if ($ifNoneMatch) {
+            $ifNoneMatch = explode(',', $ifNoneMatch);
+            foreach ($ifNoneMatch as $etag) {
+                $this->ifNoneMatch[] = trim($etag, '" ');
+            }
+        }
         
     }
     
@@ -169,6 +181,20 @@ class Request {
         $str .= 'Candidate URIs:'."\n";
         foreach ($this->uris as $uri) {
             $str .= "\t".$uri."\n";
+        }
+        if ($this->ifMatch) {
+            $str .= 'If Match:';
+            foreach ($this->ifMatch as $etag) {
+                $str .= ' '.$etag;
+            }
+            $str .= "\n";
+        }
+        if ($this->ifNoneMatch) {
+            $str .= 'If None Match:';
+            foreach ($this->ifNoneMatch as $etag) {
+                $str .= ' '.$etag;
+            }
+            $str .= "\n";
         }
         return $str;
     }
@@ -210,6 +236,14 @@ class Request {
         }
         return new NoResource();
         
+    }
+    
+    function ifMatch($etag) {
+        return in_array($etag, $this->ifMatch);
+    }
+    
+    function ifNoneMatch($etag) {
+        return in_array($etag, $this->ifNoneMatch);
     }
     
 }
@@ -336,13 +370,25 @@ class Response {
             }
         }
     }
-
+    
+    /**
+     * Send a cache control header with the response
+     * @var int time Cache length in seconds
+     */
     function addCacheHeader($time = 86400) {
         if ($time) {
             $this->addHeader('Cache-Control', 'max-age='.$time.', must-revalidate');
         } else {
             $this->addHeader('Cache-Control', 'no-cache');
         }
+    }
+    
+    /**
+     * Send an etag with the response
+     * @var str etag Etag value
+     */
+    function addEtag($etag) {
+        $this->addHeader('Etag', '"'.$etag.'"');
     }
     
     function output() {

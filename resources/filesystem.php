@@ -24,7 +24,7 @@ class FilesystemResource extends Resource {
                 $response = new Response($request);
                 
                 $etag = md5(filemtime($filePath));
-                if ($request->ifNoneMatch == $etag) {
+                if ($request->ifNoneMatch($etag)) {
                     
                     $response->code = Response::NOTMODIFIED;
                     
@@ -35,7 +35,7 @@ class FilesystemResource extends Resource {
                         $response->addHeader('Content-Type', $request->mimetypes[$extension]);
                     }
                     
-                    $response->addHeader('Etag', $etag);
+                    $response->addEtag($etag);
                     
                     $response->body = file_get_contents($filePath);
                     
