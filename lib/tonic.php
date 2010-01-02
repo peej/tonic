@@ -239,10 +239,12 @@ class Request {
     }
     
     function ifMatch($etag) {
+        if ($this->ifMatch[0] == '*') return TRUE;
         return in_array($etag, $this->ifMatch);
     }
     
     function ifNoneMatch($etag) {
+        if ($this->ifMatch[0] == '*') return FALSE;
         return in_array($etag, $this->ifNoneMatch);
     }
     

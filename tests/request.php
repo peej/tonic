@@ -273,6 +273,17 @@ class RequestTester extends UnitTestCase {
         );
         $request = new Request($config);
         $this->assertEqual($request->ifMatch, array('123123', '456456'));
+        $this->assertTrue($request->ifMatch('123123'));
+        $this->assertFalse($request->ifMatch('123456'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifMatch' => '*'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifMatch, array('*'));
+        $this->assertTrue($request->ifMatch('123123'));
+        $this->assertTrue($request->ifMatch('123456'));
         
     }
     
@@ -305,6 +316,17 @@ class RequestTester extends UnitTestCase {
         );
         $request = new Request($config);
         $this->assertEqual($request->ifNoneMatch, array('123123', '456456'));
+        $this->assertTrue($request->ifNoneMatch('123123'));
+        $this->assertFalse($request->ifNoneMatch('123456'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifNoneMatch' => '*'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifNoneMatch, array('*'));
+        $this->assertFalse($request->ifNoneMatch('123123'));
+        $this->assertFalse($request->ifNoneMatch('123456'));
         
     }
     
