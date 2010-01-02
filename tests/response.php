@@ -95,6 +95,23 @@ class ResponseTester extends UnitTestCase {
         
     }
     
+    function testAddEtag() {
+        
+        $config = array(
+            'uri' => '/responsetest'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        $response = $resource->exec($request);
+        $response->addEtag("123123");
+        
+        $this->assertEqual($response->headers, array(
+            'Etag' => '"123123"'
+        ));
+        
+    }
+    
 }
 
 
