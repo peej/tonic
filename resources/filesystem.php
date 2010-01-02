@@ -11,33 +11,41 @@ class FilesystemResource extends Resource {
     
     function get($request) {
         
+        // look at all candidate URIs in turn and stop when we find a file that matches one
         foreach ($request->uris as $uri) {
             
+            // convert URI into filesystem path
             $filePath = $this->path.str_replace('/', DIRECTORY_SEPARATOR, $uri);
             
-            if (substr($filePath, -1, 1) == '/') {
+            if (substr($filePath, -1, 1) == '/') { // add a default filename to the path
                 $filePath .= $this->defaultDocument;
+                $uri .= $this->defaultDocument;
             }
             
-            if (file_exists($filePath)) {
+            if (file_exists($filePath)) { // use this file
                 
                 $response = new Response($request);
                 
+                // generate etag for the resource based on the files modified date
                 $etag = md5(filemtime($filePath));
-                if ($request->ifNoneMatch($etag)) {
+                if ($request->ifNoneMatch($etag)) { // client has matching etag
                     
                     $response->code = Response::NOTMODIFIED;
                     
                 } else {
                     
                     $extension = array_pop(explode('.', $filePath));
-                    if (isset($request->mimetypes[$extension])) {
+                    if (isset($request->mimetypes[$extension])) { // add content type header
                         $response->addHeader('Content-Type', $request->mimetypes[$extension]);
                     }
                     
-                    $response->addEtag($etag);
+                    if ($uri != $request->uri) { // add content location header
+                        $response->addHeader('Content-Location', $uri);
+                    }
                     
-                    $response->body = file_get_contents($filePath);
+                    $response->addEtag($etag); // add etag header
+                    
+                    $response->body = file_get_contents($filePath); // set contents
                     
                 }
                 return $response;
@@ -46,6 +54,7 @@ class FilesystemResource extends Resource {
             
         }
         
+        // nothing found, send 404 response
         $response = new Response($request);
         $response->code = Response::NOTFOUND;
         return $response;
