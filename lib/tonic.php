@@ -58,6 +58,8 @@ class Request {
         $config['accept'] = $this->setDefault($config['accept'], $_SERVER['HTTP_ACCEPT']);
         $config['acceptLang'] = $this->setDefault($config['acceptLang'], $_SERVER['HTTP_ACCEPT_LANGUAGE']);
         $config['acceptEncoding'] = $this->setDefault($config['acceptEncoding'], $_SERVER['HTTP_ACCEPT_ENCODING']);
+        $config['ifMatch'] = $this->setDefault($config['ifMatch'], $_SERVER['HTTP_IF_MATCH']);
+        $config['ifNoneMatch'] = $this->setDefault($config['ifNoneMatch'], $_SERVER['HTTP_IF_NONE_MATCH']);
         
         if (isset($config['mimetypes']) && is_array($config['mimetypes'])) {
             foreach ($config['mimetypes'] as $ext => $mimetype) {
@@ -153,16 +155,14 @@ class Request {
         }
         
         // conditional requests
-        $ifMatch = $this->setDefault($_SERVER['HTTP_IF_MATCH']);
-        if ($ifMatch) {
-            $ifMatch = explode(',', $ifMatch);
+        if ($config['ifMatch']) {
+            $ifMatch = explode(',', $config['ifMatch']);
             foreach ($ifMatch as $etag) {
                 $this->ifMatch[] = trim($etag, '" ');
             }
         }
-        $ifNoneMatch = $this->setDefault($_SERVER['HTTP_IF_NONE_MATCH']);
-        if ($ifNoneMatch) {
-            $ifNoneMatch = explode(',', $ifNoneMatch);
+        if ($config['ifNoneMatch']) {
+            $ifNoneMatch = explode(',', $config['ifNoneMatch']);
             foreach ($ifNoneMatch as $etag) {
                 $this->ifNoneMatch[] = trim($etag, '" ');
             }
