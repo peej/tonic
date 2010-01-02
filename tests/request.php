@@ -244,6 +244,70 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testIfMatch() {
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifMatch' => '123123'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifMatch, array('123123'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifMatch' => '"123123"'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifMatch, array('123123'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifMatch' => '"123123","456456"'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifMatch, array('123123', '456456'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifMatch' => '"123123", "456456"'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifMatch, array('123123', '456456'));
+        
+    }
+    
+    function testIfNoneMatch() {
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifNoneMatch' => '123123'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifNoneMatch, array('123123'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifNoneMatch' => '"123123"'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifNoneMatch, array('123123'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifNoneMatch' => '"123123","456456"'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifNoneMatch, array('123123', '456456'));
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifNoneMatch' => '123123, 456456'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifNoneMatch, array('123123', '456456'));
+        
+    }
+    
 }
 
 
