@@ -2,6 +2,9 @@
 
 require_once('../lib/tonic.php');
 
+/**
+ * @package Tonic/Tests
+ */
 class ResourceTester extends UnitTestCase {
     
     function testStandardResourceExec() {
@@ -40,6 +43,7 @@ class ResourceTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
+ * @package Tonic/Tests
  * @uri /resourcetest/one
  */
 class TestResource extends Resource {

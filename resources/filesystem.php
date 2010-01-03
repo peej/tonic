@@ -2,13 +2,28 @@
 
 /**
  * Load files from the filesystem as resource representations
+ * @package Tonic/Resources
  * @uri / 9999
  */
 class FilesystemResource extends Resource {
     
-    var $path = '../representations',
-        $defaultDocument = 'default.html';
+    /**
+     * Path to the files to use
+     * @var str
+     */
+    var $path = '../representations';
     
+    /**
+     * The default document to use if the request is for a URI that maps to a directory
+     * @var str
+     */
+    var $defaultDocument = 'default.html';
+    
+    /**
+     * Handle a GET request for this resource by returning the contents of a file matching the request URI
+     * @param Request request
+     * @return Response
+     */
     function get($request) {
         
         // look at all candidate URIs in turn and stop when we find a file that matches one

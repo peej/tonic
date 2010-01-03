@@ -2,6 +2,9 @@
 
 require_once('../lib/tonic.php');
 
+/**
+ * @package Tonic/Tests
+ */
 class RequestTester extends UnitTestCase {
     
     function testRequestURI() {
@@ -406,6 +409,7 @@ class RequestTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
+ * @package Tonic/Tests
  * @uri /requesttest/one
  * @uri /requesttest/three/.+/four 12
  */
@@ -414,6 +418,7 @@ class NewResource extends Resource {
 }
 
 /**
+ * @package Tonic/Tests
  * @uri /requesttest/one/two
  */
 class ChildResource extends NewResource {

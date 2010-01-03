@@ -1,15 +1,58 @@
 <?php
 
+/**
+ * Model the data of the incoming HTTP request
+ * @package Tonic/Lib
+ */
 class Request {
     
-    var $uri,
-        $negotiatedUris = array(),
-        $formatNegotiatedUris = array(),
-        $languageNegotiatedUris = array(),
-        $accept = array(),
-        $acceptLang = array(),
-        $acceptEncoding = array(),
-        $mimetypes = array(
+    /**
+     * The requested URI
+     * @var str
+     */
+    var $uri;
+    
+    /**
+     * Array of possible URIs based upon accept and accept-language request headers in order of preference
+     * @var str[]
+     */
+    var $negotiatedUris = array();
+    
+    /**
+     * Array of possible URIs based upon accept request headers in order of preference
+     * @var str[]
+     */
+    var $formatNegotiatedUris = array();
+    
+    /**
+     * Array of possible URIs based upon accept-language request headers in order of preference
+     * @var str[]
+     */
+    var $languageNegotiatedUris = array();
+    
+    /**
+     * Array of accept headers in order of preference
+     * @var str[][]
+     */
+    var $accept = array();
+    
+    /**
+     * Array of accept-language headers in order of preference
+     * @var str[][]
+     */
+    var $acceptLang = array();
+    
+    /**
+     * Array of accept-encoding headers in order of preference
+     * @var str[]
+     */
+    var $acceptEncoding = array();
+    
+    /**
+     * Map of file/URI extensions to mimetypes
+     * @var str[]
+     */
+    var $mimetypes = array(
             'html' => 'text/html',
             'txt' => 'text/plain',
             'php' => 'application/php',
@@ -33,11 +76,31 @@ class Request {
             'mpg' => 'video/mpeg',
             'mov' => 'video/quicktime',
             'mp3' => 'audio/mpeg'
-        ),
-        $method = 'GET',
-        $data,
-        $ifMatch = array(),
-        $ifNoneMatch = array();
+        );
+        
+    /**
+     * HTTP request method of incoming request
+     * @var str
+     */
+    var $method = 'GET';
+    
+    /**
+     * Body data of incoming request
+     * @var str
+     */
+    var $data;
+    
+    /**
+     * Array of if-match etags
+     * @var str[]
+     */
+    var $ifMatch = array();
+    
+    /**
+     * Array of if-none-match etags
+     * @var str[]
+     */
+    var $ifNoneMatch = array();
     
     /**
      * Set a default configuration option
@@ -50,8 +113,24 @@ class Request {
     }
     
     /**
-     * Create a request object using the given options
-     * @var mixed[] config Configuration options
+     * Create a request object using the given configuration options.
+     *
+     * The configuration options array can contain the following:
+     *
+     * <dl>
+     * <dt>uri</dt> <dd>The URI of the request</dd>
+     * <dt>method</dt> <dd>The HTTP method of the request</dd>
+     * <dt>data</dt> <dd>The body data of the request</dd>
+     * <dt>accept</dt> <dd>An accept header</dd>
+     * <dt>acceptLang</dt> <dd>An accept-language header</dd>
+     * <dt>acceptEncoding</dt> <dd>An accept-encoding header</dd>
+     * <dt>ifMatch</dt> <dd>An if-match header</dd>
+     * <dt>ifNoneMatch</dt> <dd>An if-none-match header</dd>
+     * <dt>mimetypes</dt> <dd>A map of file/URI extenstions to mimetypes, these
+     * will be added to the default map of mimetypes</dd>
+     * </dl>
+     *
+     * @param mixed[] config Configuration options
      */
     function __construct($config = array()) {
         
@@ -255,11 +334,21 @@ class Request {
         
     }
     
+    /**
+     * Check if an etag matches the requests if-match header
+     * @param str etag Etag to match
+     * @return bool
+     */
     function ifMatch($etag) {
         if ($this->ifMatch[0] == '*') return TRUE;
         return in_array($etag, $this->ifMatch);
     }
     
+    /**
+     * Check if an etag matches the requests if-none-match header
+     * @param str etag Etag to match
+     * @return bool
+     */
     function ifNoneMatch($etag) {
         if ($this->ifMatch[0] == '*') return FALSE;
         return in_array($etag, $this->ifNoneMatch);
@@ -267,11 +356,15 @@ class Request {
     
 }
 
+/**
+ * Base resource class
+ * @package Tonic/Lib
+ */
 class Resource {
     
     /**
-     * Execute a request on this resource
-     * @var Request request
+     * Execute a request on this resource.
+     * @param Request request
      * @return Response
      */
     function exec($request) {
@@ -294,8 +387,17 @@ class Resource {
     
 }
 
+/**
+ * 404 resource class
+ * @package Tonic/Lib
+ */
 class NoResource extends Resource {
     
+    /**
+     * Always return a 404 response.
+     * @param Request request
+     * @return Response
+     */
     function exec($request) {
         
         // send 404 not found
@@ -311,8 +413,15 @@ class NoResource extends Resource {
     
 }
 
+/**
+ * Model the data of the outgoing HTTP response
+ * @package Tonic/Lib
+ */
 class Response {
     
+    /**
+     * HTTP response code constant
+     */
     const OK = 200,
           CREATED = 201,
           NOCONTENT = 204,
@@ -333,15 +442,34 @@ class Response {
           UNSUPPORTEDMEDIATYPE = 415,
           INTERNALSERVERERROR = 500;
     
-    var $request,
-        $code = Response::OK,
-        $headers = array(),
-        $body;
+    /**
+     * The request object generating this response
+     * @var Request
+     */
+    var $request;
     
     /**
-     * Create a response object
-     * @var Request request
-     * @var str uri
+     * The HTTP response code to send
+     * @var int
+     */
+    var $code = Response::OK;
+    
+    /**
+     * The HTTP headers to send
+     * @var str[]
+     */
+    var $headers = array();
+    
+    /**
+     * The HTTP response body to send
+     * @var str
+     */
+    var $body;
+    
+    /**
+     * Create a response object.
+     * @param Request request The request object generating this response
+     * @param str uri The URL of the actual resource being used to build the response
      */
     function __construct($request, $uri = NULL) {
         
@@ -367,6 +495,11 @@ class Response {
         return $str;
     }
     
+    /**
+     * Add a header to the response
+     * @param str header
+     * @param str value
+     */
     function addHeader($header, $value) {
         $this->headers[$header] = $value;
     }
@@ -402,7 +535,7 @@ class Response {
     
     /**
      * Send a cache control header with the response
-     * @var int time Cache length in seconds
+     * @param int time Cache length in seconds
      */
     function addCacheHeader($time = 86400) {
         if ($time) {
@@ -414,7 +547,7 @@ class Response {
     
     /**
      * Send an etag with the response
-     * @var str etag Etag value
+     * @param str etag Etag value
      */
     function addEtag($etag) {
         $this->addHeader('Etag', '"'.$etag.'"');

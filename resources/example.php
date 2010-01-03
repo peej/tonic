@@ -2,10 +2,16 @@
 
 /**
  * Example resource
+ * @package Tonic/Resources
  * @uri /example
  */
 class ExampleResource extends Resource {
     
+    /**
+     * Handle a GET request for this resource
+     * @param Request request
+     * @return Response
+     */
     function get($request) {
         
         $response = new Response($request);

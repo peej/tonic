@@ -2,6 +2,9 @@
 
 require_once('../lib/tonic.php');
 
+/**
+ * @package Tonic/Tests
+ */
 class ResponseTester extends UnitTestCase {
     
     function testGZipOutputEncoding() {
@@ -106,6 +109,7 @@ class ResponseTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
+ * @package Tonic/Tests
  * @uri /responsetest
  */
 class TestResponse extends Resource {
