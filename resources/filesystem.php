@@ -3,7 +3,6 @@
 /**
  * Load files from the filesystem as resource representations
  * @package Tonic/Resources
- * @uri / 9999
  */
 class FilesystemResource extends Resource {
     
@@ -12,6 +11,12 @@ class FilesystemResource extends Resource {
      * @var str
      */
     var $path = '../representations';
+    
+    /**
+     * URI stub
+     * @var str
+     */
+    var $uriStub = '/';
     
     /**
      * The default document to use if the request is for a URI that maps to a directory
@@ -30,7 +35,7 @@ class FilesystemResource extends Resource {
         foreach ($request->negotiatedUris as $uri) {
             
             // convert URI into filesystem path
-            $filePath = $this->path.str_replace('/', DIRECTORY_SEPARATOR, $uri);
+            $filePath = $this->path.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, substr($uri, strlen($this->uriStub)));
             
             if (substr($filePath, -1, 1) == '/') { // add a default filename to the path
                 $filePath .= $this->defaultDocument;
