@@ -16,9 +16,7 @@ class ResponseTester extends UnitTestCase {
         $response = $resource->exec($request);
         $response->doContentEncoding();
         
-        $this->assertEqual($response->headers, array(
-            'Content-Encoding' => 'gzip'
-        ));
+        $this->assertEqual($response->headers['Content-Encoding'], 'gzip');
         $this->assertEqual($response->body, gzencode('test'));
         
     }
@@ -35,9 +33,7 @@ class ResponseTester extends UnitTestCase {
         $response = $resource->exec($request);
         $response->doContentEncoding();
         
-        $this->assertEqual($response->headers, array(
-            'Content-Encoding' => 'deflate'
-        ));
+        $this->assertEqual($response->headers['Content-Encoding'], 'deflate');
         $this->assertEqual($response->body, gzdeflate('test'));
         
     }
@@ -54,9 +50,7 @@ class ResponseTester extends UnitTestCase {
         $response = $resource->exec($request);
         $response->doContentEncoding();
         
-        $this->assertEqual($response->headers, array(
-            'Content-Encoding' => 'compress'
-        ));
+        $this->assertEqual($response->headers['Content-Encoding'], 'compress');
         $this->assertEqual($response->body, gzcompress('test'));
         
     }
@@ -72,9 +66,7 @@ class ResponseTester extends UnitTestCase {
         $response = $resource->exec($request);
         $response->addCacheHeader();
         
-        $this->assertEqual($response->headers, array(
-            'Cache-Control' => 'max-age=86400, must-revalidate'
-        ));
+        $this->assertEqual($response->headers['Cache-Control'], 'max-age=86400, must-revalidate');
         
     }
     
@@ -89,9 +81,7 @@ class ResponseTester extends UnitTestCase {
         $response = $resource->exec($request);
         $response->addCacheHeader(0);
         
-        $this->assertEqual($response->headers, array(
-            'Cache-Control' => 'no-cache'
-        ));
+        $this->assertEqual($response->headers['Cache-Control'], 'no-cache');
         
     }
     
@@ -106,9 +96,7 @@ class ResponseTester extends UnitTestCase {
         $response = $resource->exec($request);
         $response->addEtag("123123");
         
-        $this->assertEqual($response->headers, array(
-            'Etag' => '"123123"'
-        ));
+        $this->assertEqual($response->headers['Etag'], '"123123"');
         
     }
     
