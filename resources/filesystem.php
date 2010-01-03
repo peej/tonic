@@ -24,7 +24,7 @@ class FilesystemResource extends Resource {
             
             if (file_exists($filePath)) { // use this file
                 
-                $response = new Response($request);
+                $response = new Response($request, $uri);
                 
                 // generate etag for the resource based on the files modified date
                 $etag = md5(filemtime($filePath));
@@ -37,10 +37,6 @@ class FilesystemResource extends Resource {
                     $extension = array_pop(explode('.', $filePath));
                     if (isset($request->mimetypes[$extension])) { // add content type header
                         $response->addHeader('Content-Type', $request->mimetypes[$extension]);
-                    }
-                    
-                    if ($uri != $request->uri) { // add content location header
-                        $response->addHeader('Content-Location', $uri);
                     }
                     
                     $response->addEtag($etag); // add etag header

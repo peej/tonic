@@ -324,10 +324,17 @@ class Response {
     /**
      * Create a response object
      * @var Request request
+     * @var str uri
      */
-    function __construct($request) {
+    function __construct($request, $uri = NULL) {
         
         $this->request = $request;
+        
+        if ($uri != $request->uri) { // add content location header
+            $this->addHeader('Content-Location', $uri);
+            $this->addVary('Accept');
+            $this->addVary('Accept-Language');
+        }
         
     }
     
@@ -356,14 +363,17 @@ class Response {
                 switch($encoding) {
                 case 'gzip':
                     $this->addHeader('Content-Encoding', 'gzip');
+                    $this->addVary('Accept-Encoding');
                     $this->body = gzencode($this->body);
                     return;
                 case 'deflate':
                     $this->addHeader('Content-Encoding', 'deflate');
+                    $this->addVary('Accept-Encoding');
                     $this->body = gzdeflate($this->body);
                     return;
                 case 'compress':
                     $this->addHeader('Content-Encoding', 'compress');
+                    $this->addVary('Accept-Encoding');
                     $this->body = gzcompress($this->body);
                     return;
                 case 'identity':
@@ -391,6 +401,14 @@ class Response {
      */
     function addEtag($etag) {
         $this->addHeader('Etag', '"'.$etag.'"');
+    }
+    
+    function addVary($header) {
+        if (isset($this->headers['Vary'])) {
+            $this->headers['Vary'] .= ' '.$header;
+        } else {
+            $this->addHeader('Vary', $header);
+        }
     }
     
     function output() {
