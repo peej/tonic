@@ -49,7 +49,13 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
             '/requesttest/one/two'
         ));
         $this->assertEqual($request->uri, '/requesttest/one/two');
@@ -65,7 +71,15 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
+            '/requesttest/one/two.html',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two.html',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
             '/requesttest/one/two.html',
             '/requesttest/one/two'
         ));
@@ -82,9 +96,17 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html',
             '/requesttest/one/two.png',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
             '/requesttest/one/two'
         ));
         
@@ -99,10 +121,19 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html',
             '/requesttest/one/two.png.html',
             '/requesttest/one/two.png',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
+            '/requesttest/one/two.html',
             '/requesttest/one/two'
         ));
         
@@ -117,7 +148,15 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
             '/requesttest/one/two.en',
             '/requesttest/one/two.fr',
             '/requesttest/one/two'
@@ -134,9 +173,19 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html.en',
             '/requesttest/one/two.html.fr',
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two.html',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
             '/requesttest/one/two.html',
             '/requesttest/one/two.en',
             '/requesttest/one/two.fr',
@@ -154,13 +203,23 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html.en',
             '/requesttest/one/two.html.fr',
             '/requesttest/one/two.html',
             '/requesttest/one/two.png.en',
             '/requesttest/one/two.png.fr',
             '/requesttest/one/two.png',
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
             '/requesttest/one/two.en',
             '/requesttest/one/two.fr',
             '/requesttest/one/two'
@@ -177,7 +236,7 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $this->assertEqual($request->uris, array(
+        $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html.en',
             '/requesttest/one/two.html.fr',
             '/requesttest/one/two.html',
@@ -185,6 +244,17 @@ class RequestTester extends UnitTestCase {
             '/requesttest/one/two.png.en',
             '/requesttest/one/two.png.fr',
             '/requesttest/one/two.png',
+            '/requesttest/one/two.en',
+            '/requesttest/one/two.fr',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->formatNegotiatedUris, array(
+            '/requesttest/one/two.html',
+            '/requesttest/one/two.png',
+            '/requesttest/one/two'
+        ));
+        $this->assertEqual($request->languageNegotiatedUris, array(
+            '/requesttest/one/two.html',
             '/requesttest/one/two.en',
             '/requesttest/one/two.fr',
             '/requesttest/one/two'

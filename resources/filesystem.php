@@ -12,7 +12,7 @@ class FilesystemResource extends Resource {
     function get($request) {
         
         // look at all candidate URIs in turn and stop when we find a file that matches one
-        foreach ($request->uris as $uri) {
+        foreach ($request->negotiatedUris as $uri) {
             
             // convert URI into filesystem path
             $filePath = $this->path.str_replace('/', DIRECTORY_SEPARATOR, $uri);

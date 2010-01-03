@@ -3,7 +3,9 @@
 class Request {
     
     var $uri,
-        $uris,
+        $negotiatedUris = array(),
+        $formatNegotiatedUris = array(),
+        $languageNegotiatedUris = array(),
         $accept = array(),
         $acceptLang = array(),
         $acceptEncoding = array(),
@@ -117,30 +119,37 @@ class Request {
             }
 		}
         
-        // create candidate URI list from accept headers and request URI
+        // create negotaied URI lists from accept headers and request URI
         foreach ($this->accept as $typeOrder) {
             foreach ($typeOrder as $type) {
                 if ($type) {
                     foreach ($this->acceptLang as $langOrder) {
                         foreach ($langOrder as $lang) {
                             if ($lang && $lang != $type) {
-                                $this->uris[] = $this->uri.'.'.$type.'.'.$lang;
+                                $this->negotiatedUris[] = $this->uri.'.'.$type.'.'.$lang;
                             }
                         }
                     }
-                    $this->uris[] = $this->uri.'.'.$type;
+                    $this->negotiatedUris[] = $this->uri.'.'.$type;
+                    $this->formatNegotiatedUris[] = $this->uri.'.'.$type;
                 }
             }
         }
         foreach ($this->acceptLang as $langOrder) {
             foreach ($langOrder as $lang) {
                 if ($lang) {
-                    $this->uris[] = $this->uri.'.'.$lang;
+                    $this->negotiatedUris[] = $this->uri.'.'.$lang;
+                    $this->languageNegotiatedUris[] = $this->uri.'.'.$lang;
                 }
             }
         }
-        $this->uris[] = $this->uri;
-        $this->uris = array_values(array_unique($this->uris));
+        $this->negotiatedUris[] = $this->uri;
+        $this->formatNegotiatedUris[] = $this->uri;
+        $this->languageNegotiatedUris[] = $this->uri;
+        
+        $this->negotiatedUris = array_values(array_unique($this->negotiatedUris));
+        $this->formatNegotiatedUris = array_values(array_unique($this->formatNegotiatedUris));
+        $this->languageNegotiatedUris = array_values(array_unique($this->languageNegotiatedUris));
         
         // get HTTP method
         $this->method = strtoupper($this->setDefault($config['method'], $_SERVER['REQUEST_METHOD'], $this->method));
@@ -178,8 +187,16 @@ class Request {
         $str = 'URI: '.$this->uri."\n";
         $str .= 'Method: '.$this->method."\n";
         $str .= 'Data: '.$this->data."\n";
-        $str .= 'Candidate URIs:'."\n";
-        foreach ($this->uris as $uri) {
+        $str .= 'Negotated URIs:'."\n";
+        foreach ($this->negotiatedUris as $uri) {
+            $str .= "\t".$uri."\n";
+        }
+        $str .= 'Format Negotated URIs:'."\n";
+        foreach ($this->formatNegotiatedUris as $uri) {
+            $str .= "\t".$uri."\n";
+        }
+        $str .= 'Language Negotated URIs:'."\n";
+        foreach ($this->languageNegotiatedUris as $uri) {
             $str .= "\t".$uri."\n";
         }
         if ($this->ifMatch) {
