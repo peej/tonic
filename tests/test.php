@@ -8,6 +8,7 @@ $core = &new GroupTest('Core');
 $core->addTestFile('request.php');
 $core->addTestFile('resource.php');
 $core->addTestFile('response.php');
+$core->addTestFile('filesystem.php');
 
 $test = &new GroupTest('Tonic');
 $test->addTestCase($core);
