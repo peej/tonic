@@ -475,7 +475,7 @@ class Response {
         
         $this->request = $request;
         
-        if ($uri != $request->uri) { // add content location header
+        if ($uri && $uri != $request->uri) { // add content location header
             $this->addHeader('Content-Location', $uri);
             $this->addVary('Accept');
             $this->addVary('Accept-Language');

@@ -3,6 +3,7 @@
 /**
  * Load files from the filesystem as resource representations
  * @package Tonic/Resources
+ * @uri /collection/
  */
 class FilesystemResource extends Resource {
     
@@ -24,6 +25,10 @@ class FilesystemResource extends Resource {
      */
     var $defaultDocument = 'default.html';
     
+    protected function turnUriIntoFilePath($uri) {
+        return $this->path.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, substr($uri, strlen($this->uriStub)));
+    }
+    
     /**
      * Handle a GET request for this resource by returning the contents of a file matching the request URI
      * @param Request request
@@ -35,7 +40,7 @@ class FilesystemResource extends Resource {
         foreach ($request->negotiatedUris as $uri) {
             
             // convert URI into filesystem path
-            $filePath = $this->path.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, substr($uri, strlen($this->uriStub)));
+            $filePath = $this->turnUriIntoFilePath($uri);
             
             if (substr($filePath, -1, 1) == '/') { // add a default filename to the path
                 $filePath .= $this->defaultDocument;
