@@ -64,6 +64,17 @@ class FilesystemCollectionTester extends UnitTestCase {
         
         $config = array(
             'uri' => '/filesystemcollection/collectionIndex',
+            'method' => 'POST'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        $response = $resource->exec($request);
+        
+        $this->assertEqual($response->code, 411);
+        
+        $config = array(
+            'uri' => '/filesystemcollection/collectionIndex',
             'method' => 'POST',
             'data' => 'three'
         );

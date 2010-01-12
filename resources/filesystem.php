@@ -82,6 +82,62 @@ class FilesystemResource extends Resource {
         
     }
     
+    /**
+     * Handle a PUT request for this resource by overwriting the resources contents
+     * @param Request request
+     * @return Response
+     */
+    function put($request) {
+        
+        $response = new Response($request);
+        
+        if ($request->data) {
+            
+            $filePath = $this->turnUriIntoFilePath($request->uri);
+            
+            file_put_contents($filePath, $request->data);
+            
+            $response->code = Response::NOCONTENT;
+            
+        } else {
+            
+            $response->code = Response::LENGTHREQUIRED;
+            
+        }
+        
+        return $response;
+        
+    }
+    
+    /**
+     * Handle a DELETE request for this resource by removing the resources file
+     * @param Request request
+     * @return Response
+     */
+    function delete($request) {
+        
+        $response = new Response($request);
+        
+        $filePath = $this->turnUriIntoFilePath($request->uri);
+        
+        if (file_exists($filePath)) {
+            
+            if (unlink($filePath)) {
+                $response->code = Response::NOCONTENT;
+            } else {
+                $response->code = Response::INTERNALSERVERERROR;
+            }
+            
+            return $response;
+            
+        } else { // nothing found, send 404 response
+            $response->code = Response::NOTFOUND;
+        }
+        
+        return $response;
+        
+    }
+    
 }
 
 ?>
