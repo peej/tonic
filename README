@@ -7,4 +7,48 @@ of RESTful design.
  * Resources with multiple representations (aka standard document formats)
  * Communicate statelessly
 
-No documentation as yet. See http://github.com/peej/tonic for more info.
+See http://github.com/peej/tonic for more info.
+
+
+How it works
+------------
+
+Everything is a resource, and a resource is defined as a PHP class. An annotation
+wires a URI (or a collection of URIs) to the resource, and methods that match
+the HTTP methods by name allow interaction with it.
+
+
+/**
+ * This class defines an example resource that is wired into the URI /example
+ * @uri /example
+ */
+class ExampleResource extends Resource { }
+
+
+The incoming HTTP request is turned into a list of negotiated URIs based on the
+accept request headers which can then be used to pick the best representation
+for the response.
+
+
+/**
+ * This class defines an example resource that is wired into the URI /example
+ * @uri /example
+ */
+class ExampleResource extends Resource {
+    
+    function get($request) {
+        
+        $response = new Response($request);
+        
+        $response->code = Response::OK;
+        $response->body = 'Example response';
+        
+        return $response;
+        
+    }
+  
+}
+
+
+For more information, read the code. Start with the dispatcher docroot/dispatch.php
+and then resources/example.php
