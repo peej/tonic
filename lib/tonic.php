@@ -198,7 +198,7 @@ class Request {
             }
 		}
         
-        // create negotaied URI lists from accept headers and request URI
+        // create negotiated URI lists from accept headers and request URI
         foreach ($this->accept as $typeOrder) {
             foreach ($typeOrder as $type) {
                 if ($type) {
@@ -313,7 +313,7 @@ class Request {
                     $uris = array('/');
                 }
                 foreach ($uris as $index => $uri) {
-                    if (preg_match('|^'.str_replace('|', '\|', $uri).'|', $this->uri)) {
+                    if (preg_match('|^'.str_replace('|', '\|', $uri).'$|', $this->uri)) {
                         if (isset($annotations[2][$index]) && is_numeric($annotations[2][$index])) {
                             $priority = $annotations[2][$index];
                         } else {
@@ -370,17 +370,25 @@ class Resource {
     function exec($request) {
         
         if (method_exists($this, $request->method)) {
-            return $this->{$request->method}($request);
+            
+            $response = $this->{$request->method}($request);
+            
+        } else {
+            
+            // send 405 method not allowed
+            $response = new Response($request);
+            $response->code = Response::METHODNOTALLOWED;
+            $response->body = sprintf(
+                'The HTTP method "%s" used for the request is not allowed for the resource "%s".',
+                $request->method,
+                $request->uri
+            );
+            
         }
         
-        // send 405 method not allowed
-        $response = new Response($request);
-        $response->code = Response::METHODNOTALLOWED;
-        $response->body = sprintf(
-            'The HTTP method "%s" used for the request is not allowed for the resource "%s".',
-            $request->method,
-            $request->uri
-        );
+        # good for debugging, remove this at some point
+        $response->addHeader('X-Resource', get_class($this));
+        
         return $response;
         
     }

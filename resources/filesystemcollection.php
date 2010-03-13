@@ -3,7 +3,7 @@
 /**
  * Collection resource
  * @package Tonic/Resources
- * @uri /collection 10
+ * @uri /collection
  */
 class FilesystemCollection extends FilesystemResource {
     

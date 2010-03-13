@@ -3,7 +3,7 @@
 /**
  * Load files from the filesystem as resource representations
  * @package Tonic/Resources
- * @uri /collection/
+ * @uri /collection/.+
  */
 class FilesystemResource extends Resource {
     
