@@ -132,7 +132,7 @@ class FilesystemTester extends UnitTestCase {
 
 /**
  * @package Tonic/Tests
- * @uri /filesystem/one
+ * @uri /filesystem/one/.*
  */
 class TestFileSystem extends FilesystemResource {
     

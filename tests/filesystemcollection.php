@@ -45,7 +45,7 @@ class FilesystemCollectionTester extends UnitTestCase {
         
     }
     
-    function testReadDefaultDocument() {
+    function testReadCollectionItem() {
         
         $config = array(
             'uri' => '/filesystemcollection/collection/1'
@@ -106,7 +106,7 @@ class FilesystemCollectionTester extends UnitTestCase {
 
 /**
  * @package Tonic/Tests
- * @uri /filesystemcollection/collection
+ * @uri /filesystemcollection/collection/.*
  */
 class TestFileSystemCollectionItem extends FilesystemResource {
     
