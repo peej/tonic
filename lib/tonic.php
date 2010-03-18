@@ -105,11 +105,14 @@ class Request {
     /**
      * Set a default configuration option
      */
-    private function setDefault() {
-        foreach (func_get_args() as $arg) {
-            if (isset($arg)) return $arg;
+    private function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
+        if (isset($config[$configVar])) {
+            return $config[$configVar];
+        } elseif (isset($_SERVER[$serverVar])) {
+            return $_SERVER[$serverVar];
+        } else {
+            return $default;
         }
-        return NULL;
     }
     
     /**
@@ -135,12 +138,12 @@ class Request {
     function __construct($config = array()) {
         
         // set defaults
-        $config['uri'] = $this->setDefault($config['uri'], $_SERVER['REDIRECT_URL']);
-        $config['accept'] = $this->setDefault($config['accept'], $_SERVER['HTTP_ACCEPT']);
-        $config['acceptLang'] = $this->setDefault($config['acceptLang'], $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-        $config['acceptEncoding'] = $this->setDefault($config['acceptEncoding'], $_SERVER['HTTP_ACCEPT_ENCODING']);
-        $config['ifMatch'] = $this->setDefault($config['ifMatch'], $_SERVER['HTTP_IF_MATCH']);
-        $config['ifNoneMatch'] = $this->setDefault($config['ifNoneMatch'], $_SERVER['HTTP_IF_NONE_MATCH']);
+        $config['uri'] = $this->getConfig($config, 'uri', 'REDIRECT_URL');
+        $config['accept'] = $this->getConfig($config, 'accept', 'HTTP_ACCEPT');
+        $config['acceptLang'] = $this->getConfig($config, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE');
+        $config['acceptEncoding'] = $this->getConfig($config, 'acceptEncoding', 'HTTP_ACCEPT_ENCODING');
+        $config['ifMatch'] = $this->getConfig($config, 'ifMatch', 'HTTP_IF_MATCH');
+        $config['ifNoneMatch'] = $this->getConfig($config, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH');
         
         if (isset($config['mimetypes']) && is_array($config['mimetypes'])) {
             foreach ($config['mimetypes'] as $ext => $mimetype) {
@@ -166,7 +169,7 @@ class Request {
         $accept = explode(',', strtolower($config['accept']));
         foreach ($accept as $mimetype) {
             $parts = explode(';q=', $mimetype);
-            if ($parts[1]) {
+            if (isset($parts) && isset($parts[1]) && $parts[1]) {
                 $num = $parts[1] * 10;
             } else {
                 $num = 10;
@@ -182,7 +185,7 @@ class Request {
         $accept = explode(',', strtolower($config['acceptLang']));
         foreach ($accept as $mimetype) {
             $parts = explode(';q=', $mimetype);
-            if ($parts[1]) {
+            if (isset($parts) && isset($parts[1]) && $parts[1]) {
                 $num = $parts[1] * 10;
             } else {
                 $num = 10;
@@ -231,7 +234,7 @@ class Request {
         $this->languageNegotiatedUris = array_values(array_unique($this->languageNegotiatedUris));
         
         // get HTTP method
-        $this->method = strtoupper($this->setDefault($config['method'], $_SERVER['REQUEST_METHOD'], $this->method));
+        $this->method = strtoupper($this->getConfig($config, 'method', 'REQUEST_METHOD', $this->method));
         
         // get HTTP request data
         if (isset($config['data'])) {
