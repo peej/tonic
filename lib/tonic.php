@@ -103,6 +103,12 @@ class Request {
     var $ifNoneMatch = array();
     
     /**
+     * Name of resource class to use for when nothing is found
+     * @var str
+     */
+    var $noResource = 'NoResource';
+    
+    /**
      * Set a default configuration option
      */
     private function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
@@ -259,6 +265,15 @@ class Request {
             }
         }
         
+        // 404 resource
+        if (isset($config['404'])) {
+            if (is_subclass_of($config['404'], 'NoResource')) {
+                $this->noResource = $config['404'];
+            } else {
+                throw new Exception('404 resource "'.$config['404'].'" must be a subclass of "NoResource"');
+            }
+        }
+        
     }
     
     /**
@@ -333,7 +348,7 @@ class Request {
             $className = array_shift($uriMatches);
             return new $className();
         }
-        return new NoResource();
+        return new $this->noResource();
         
     }
     

@@ -403,6 +403,35 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testResourceLoaderWithNewNoResourceResource() {
+        
+        $config = array(
+            'uri' => '/three',
+            '404' => 'NewNoResource'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'NewNoResource');
+        
+    }
+    
+    function testResourceLoaderWithBadNoResourceResource() {
+        
+        $config = array(
+            'uri' => '/three',
+            '404' => 'NewResource'
+        );
+        
+        try {
+            $request = new Request($config);
+            $resource = $request->loadResource();
+        } catch(Exception $e) {
+            $this->assertEqual($e->getMessage(), '404 resource "NewResource" must be a subclass of "NoResource"');
+        }
+        
+    }
 }
 
 
@@ -425,5 +454,10 @@ class ChildResource extends NewResource {
 
 }
 
+/**
+ * @package Tonic/Tests
+ */
+class NewNoResource extends NoResource {
 
+}
 ?>
