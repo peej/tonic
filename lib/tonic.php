@@ -109,6 +109,12 @@ class Request {
     var $noResource = 'NoResource';
     
     /**
+     * The resource classes loaded and how they are wired to URIs
+     * @var str[]
+     */
+    var $resources = array();
+    
+    /**
      * Set a default configuration option
      */
     private function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
@@ -274,6 +280,28 @@ class Request {
             }
         }
         
+        // resource classes
+        foreach (get_declared_classes() as $className) {
+            if (is_subclass_of($className, 'Resource')) {
+                $resourceReflector = new ReflectionClass($className);
+                $comment = $resourceReflector->getDocComment();
+                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
+                if (isset($annotations[1])) {
+                    $uris = $annotations[1];
+                } else {
+                    $uris = array('/');
+                }
+                foreach ($uris as $index => $uri) {
+                    $this->resources[$uri] = array(
+                        'class' => $className,
+                        'filename' => $resourceReflector->getFileName(),
+                        'line' => $resourceReflector->getStartLine(),
+                        'priority' => isset($annotations[2][$index]) && is_numeric($annotations[2][$index]) ? intval($annotations[2][$index]) : 0
+                    );
+                }
+            }
+        }
+        
     }
     
     /**
@@ -283,7 +311,9 @@ class Request {
     function __toString() {
         $str = 'URI: '.$this->uri."\n";
         $str .= 'Method: '.$this->method."\n";
-        $str .= 'Data: '.$this->data."\n";
+        if ($this->data) {
+            $str .= 'Data: '.$this->data."\n";
+        }
         $str .= 'Negotated URIs:'."\n";
         foreach ($this->negotiatedUris as $uri) {
             $str .= "\t".$uri."\n";
@@ -310,6 +340,12 @@ class Request {
             }
             $str .= "\n";
         }
+        $str .= 'Loaded Resources:'."\n";
+        foreach ($this->resources as $uri => $resource) {
+            $str .= "\t".$uri."\n";
+            $str .= "\t\t".$resource['class']."\n";
+            $str .= "\t\t".$resource['filename'].'#'.$resource['line']."\n";
+        }
         return $str;
     }
     
@@ -320,26 +356,9 @@ class Request {
     function loadResource() {
         
         $uriMatches = array();
-        foreach (get_declared_classes() as $className) {
-            if (is_subclass_of($className, 'Resource')) {
-                $resourceReflector = new ReflectionClass($className);
-                $comment = $resourceReflector->getDocComment();
-                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
-                if (isset($annotations[1])) {
-                    $uris = $annotations[1];
-                } else {
-                    $uris = array('/');
-                }
-                foreach ($uris as $index => $uri) {
-                    if (preg_match('|^'.str_replace('|', '\|', $uri).'$|', $this->uri)) {
-                        if (isset($annotations[2][$index]) && is_numeric($annotations[2][$index])) {
-                            $priority = $annotations[2][$index];
-                        } else {
-                            $priority = 0;
-                        }
-                        $uriMatches[$priority] = $className;
-                    }
-                }
+        foreach ($this->resources as $uri => $resource) {
+            if (preg_match('|^'.str_replace('|', '\|', $uri).'$|', $this->uri)) {
+                $uriMatches[$resource['priority']] = $resource['class'];
             }
         }
         ksort($uriMatches);

@@ -432,6 +432,24 @@ class RequestTester extends UnitTestCase {
         }
         
     }
+    
+    function testResourceDataLoading() {
+        
+        $config = array(
+            'uri' => '/requesttest/one/two'
+        );
+        
+        $request = new Request($config);
+        
+        $this->assertEqual($request->resources['/requesttest/one/two'], array(
+            'class' => 'ChildResource',
+            'filename' => __FILE__,
+            'line' => 471,
+            'priority' => 0
+        ));
+        
+    }
+    
 }
 
 
