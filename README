@@ -50,5 +50,5 @@ class ExampleResource extends Resource {
 }
 
 
-For more information, read the code. Start with the dispatcher docroot/dispatch.php
-and then resources/example.php
+For more information, read the code. Start with the dispatcher "docroot/dispatch.php"
+and then the examples in the "examples" directory.
