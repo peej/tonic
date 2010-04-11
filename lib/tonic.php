@@ -377,7 +377,9 @@ class Request {
      * @return bool
      */
     function ifMatch($etag) {
-        if ($this->ifMatch[0] == '*') return TRUE;
+        if (isset($this->ifMatch[0]) && $this->ifMatch[0] == '*') {
+            return TRUE;
+        }
         return in_array($etag, $this->ifMatch);
     }
     
@@ -387,7 +389,9 @@ class Request {
      * @return bool
      */
     function ifNoneMatch($etag) {
-        if ($this->ifMatch[0] == '*') return FALSE;
+        if (isset($this->ifMatch[0]) && $this->ifMatch[0] == '*') {
+            return FALSE;
+        }
         return in_array($etag, $this->ifNoneMatch);
     }
     
@@ -533,7 +537,7 @@ class Response {
      * @return str
      */
     function __toString() {
-        $str = 'HTTP/1.1 '.$this->statusCode;
+        $str = 'HTTP/1.1 '.$this->code;
         foreach ($this->headers as $name => $value) {
             $str .= "\n".$name.': '.$value;
         }

@@ -1,8 +1,8 @@
 <?php
 
 require_once('../lib/tonic.php');
-require_once('../resources/filesystem.php');
-require_once('../resources/filesystemcollection.php');
+require_once('../examples/filesystem/filesystem.php');
+require_once('../examples/filesystem/filesystemcollection.php');
 
 /**
  * @package Tonic/Tests

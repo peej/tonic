@@ -3,12 +3,8 @@
 // load Tonic library
 require_once '../lib/tonic.php';
 
-// example resource mounted at /example
-require_once '../resources/example.php';
-
-// example basic filesysystem resource collection mounted at /collection
-require_once '../resources/filesystem.php';
-require_once '../resources/filesystemcollection.php';
+// load examples
+require_once '../examples/examples.php';
 
 // handle request
 $request = new Request();

@@ -2,8 +2,8 @@
 
 /**
  * Collection resource
- * @package Tonic/Resources
- * @uri /collection
+ * @package Tonic/Examples/Filesystem
+ * @uri /filesystem/collection
  */
 class FilesystemCollection extends FilesystemResource {
     
@@ -11,7 +11,7 @@ class FilesystemCollection extends FilesystemResource {
      * Path to the collections files
      * @var str
      */
-    var $collection = '../representations/collection';
+    var $collection = '../examples/filesystem/representations/collection';
     
     /**
      * Handle a GET request
@@ -20,7 +20,7 @@ class FilesystemCollection extends FilesystemResource {
      */
     function get($request) {
         
-        $response = parent::get($request);
+        $response = new Response($request);
         
         $resourceUris = '';
         $files = glob($this->collection.DIRECTORY_SEPARATOR.'*');
@@ -32,7 +32,7 @@ class FilesystemCollection extends FilesystemResource {
             $resourceUris .= '<li>Empty collection</li>';
         }
         
-        $response->body = str_replace('{{resources}}', $resourceUris, $response->body);
+        $response->body = '<ul>'.$resourceUris.'</ul>';
         
         return $response;
         

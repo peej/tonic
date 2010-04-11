@@ -1,9 +1,15 @@
 <?php
 
 /**
- * Load files from the filesystem as resource representations
- * @package Tonic/Resources
- * @uri /collection/.+
+ * Use the filesystem as resource representations
+ *
+ * This example loads files from the filesystem to be used as resource representations
+ * and provides a resource collection to contain them within. It also demonstrates
+ * the ability to add resources to the collection, and update and delete resources
+ * from within the collection.
+ *
+ * @package Tonic/Examples/Filesystem
+ * @uri /filesystem(/.*)?
  */
 class FilesystemResource extends Resource {
     
@@ -11,13 +17,13 @@ class FilesystemResource extends Resource {
      * Path to the files to use
      * @var str
      */
-    var $path = '../representations';
+    var $path = '../examples/filesystem/representations';
     
     /**
      * URI stub
      * @var str
      */
-    var $uriStub = '/';
+    var $uriStub = '/filesystem/';
     
     /**
      * The default document to use if the request is for a URI that maps to a directory
@@ -78,6 +84,8 @@ class FilesystemResource extends Resource {
         // nothing found, send 404 response
         $response = new Response($request);
         $response->code = Response::NOTFOUND;
+        $response->addHeader('Content-Type', $request->mimetypes['html']);
+        $response->body = '<p>404, nothing found</p>';
         return $response;
         
     }
