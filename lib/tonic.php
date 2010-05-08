@@ -357,15 +357,19 @@ class Request {
         
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
-            if (preg_match('|^'.str_replace('|', '\|', $uri).'$|', $this->uri)) {
-                $uriMatches[$resource['priority']] = $resource['class'];
+            if (preg_match('|^'.str_replace('|', '\|', $uri).'$|', $this->uri, $matches)) {
+                array_shift($matches);
+                $uriMatches[$resource['priority']] = array(
+                    $resource['class'],
+                    $matches
+                );
             }
         }
         ksort($uriMatches);
         
         if ($uriMatches) {
-            $className = array_shift($uriMatches);
-            return new $className();
+            $resourceDetails = array_shift($uriMatches);
+            return new $resourceDetails[0]($resourceDetails[1]);
         }
         return new $this->noResource();
         
@@ -403,6 +407,16 @@ class Request {
  */
 class Resource {
     
+    var $parameters = array();
+    
+    /**
+     * Resource constructor
+     * @param str[] parameters Parameters passed in from the URL as matched from the URI regex
+     */
+    function resource($parameters = array()) {
+        $this->parameters = $parameters;
+    }
+    
     /**
      * Execute a request on this resource.
      * @param Request request
@@ -412,7 +426,13 @@ class Resource {
         
         if (method_exists($this, $request->method)) {
             
-            $response = $this->{$request->method}($request);
+            $parameters = $this->parameters;
+            array_unshift($parameters, $request);
+            
+            $response = call_user_func_array(
+                array($this, $request->method),
+                $parameters
+            );
             
         } else {
             
