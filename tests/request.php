@@ -441,13 +441,27 @@ class RequestTester extends UnitTestCase {
         
         $request = new Request($config);
         
-        $this->assertEqual($request->resources['/requesttest/one/two'], array(
-            'namespace' => 'Tonic/Tests',
-            'class' => 'ChildResource',
-            'filename' => __FILE__,
-            'line' => 472,
-            'priority' => 0
-        ));
+        $this->assertEqual($request->resources['/requesttest/one/two']['namespace'], 'Tonic/Tests');
+        $this->assertEqual($request->resources['/requesttest/one/two']['class'], 'ChildResource');
+        $this->assertEqual($request->resources['/requesttest/one/two']['filename'], __FILE__);
+        $this->assertEqual($request->resources['/requesttest/one/two']['priority'], 0);
+        
+    }
+    
+    function testNamespaceMounting() {
+        
+        $config = array(
+            'uri' => '/foo/bar/requesttest/one',
+            'mount' => array(
+                'Tonic/Tests' => '/foo/bar'
+            )
+        );
+        
+        $request = new Request($config);
+        
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'NewResource');
         
     }
     
