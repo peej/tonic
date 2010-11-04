@@ -115,6 +115,13 @@ class Request {
     var $resources = array();
     
     /**
+     * A list of URL to namespace/package mappings for routing requests to a
+     * group of resources that are wired into a different URL-space
+     * @var str[]
+     */
+    var $mounts = array();
+    
+    /**
      * Set a default configuration option
      */
     private function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
@@ -150,7 +157,7 @@ class Request {
     function __construct($config = array()) {
         
         // set defaults
-        $config['uri'] = $this->getConfig($config, 'uri', 'REDIRECT_URL');
+        $config['uri'] = $this->getConfig($config, 'uri', 'SCRIPT_URL');
         $config['accept'] = $this->getConfig($config, 'accept', 'HTTP_ACCEPT');
         $config['acceptLang'] = $this->getConfig($config, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE');
         $config['acceptEncoding'] = $this->getConfig($config, 'acceptEncoding', 'HTTP_ACCEPT_ENCODING');
@@ -280,19 +287,45 @@ class Request {
             }
         }
         
+        // mounts
+        if (isset($config['mount']) && is_array($config['mount'])) {
+            $this->mounts = $config['mount'];
+        }
+        
         // resource classes
         foreach (get_declared_classes() as $className) {
             if (is_subclass_of($className, 'Resource')) {
+                
                 $resourceReflector = new ReflectionClass($className);
                 $comment = $resourceReflector->getDocComment();
+                
+                $className = $resourceReflector->getName();
+                $namespaceName = $resourceReflector->getNamespaceName();
+                
+                if (!$namespaceName) {
+                    preg_match('/@(?:package|namespace)\s+([^\s]+)/', $comment, $package);
+                    if (isset($package[1])) {
+                        $namespaceName = $package[1];
+                    }
+                }
+                
                 preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
                 if (isset($annotations[1])) {
                     $uris = $annotations[1];
                 } else {
                     $uris = array('/');
                 }
+                
+                // adjust URI for mountpoint
+                if (isset($this->mounts[$namespaceName])) {
+                    $mountPoint = $this->mounts[$namespaceName];
+                } else {
+                    $mountPoint = '';
+                }
+                
                 foreach ($uris as $index => $uri) {
-                    $this->resources[$uri] = array(
+                    $this->resources[$mountPoint.$uri] = array(
+                        'namespace' => $namespaceName,
                         'class' => $className,
                         'filename' => $resourceReflector->getFileName(),
                         'line' => $resourceReflector->getStartLine(),
@@ -343,8 +376,9 @@ class Request {
         $str .= 'Loaded Resources:'."\n";
         foreach ($this->resources as $uri => $resource) {
             $str .= "\t".$uri."\n";
-            $str .= "\t\t".$resource['class']."\n";
-            $str .= "\t\t".$resource['filename'].'#'.$resource['line']."\n";
+            if ($resource['namespace']) $str .= "\t\tNamespace: ".$resource['namespace']."\n";
+            $str .= "\t\tClass: ".$resource['class']."\n";
+            $str .= "\t\tFile: ".$resource['filename'].'#'.$resource['line']."\n";
         }
         return $str;
     }

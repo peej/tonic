@@ -442,9 +442,10 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         
         $this->assertEqual($request->resources['/requesttest/one/two'], array(
+            'namespace' => 'Tonic/Tests',
             'class' => 'ChildResource',
             'filename' => __FILE__,
-            'line' => 471,
+            'line' => 472,
             'priority' => 0
         ));
         
