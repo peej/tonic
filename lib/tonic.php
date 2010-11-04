@@ -178,6 +178,10 @@ class Request {
         $parts = explode('.', $lastPart);
         $this->uri .= '/'.$parts[0];
         
+        if (substr($this->uri, -1, 1) == '/') { // remove trailing slash problem
+            $this->uri = substr($this->uri, 0, -1);
+        }
+        
         array_shift($parts);
         foreach ($parts as $part) {
             $this->accept[10][] = $part;
@@ -318,6 +322,9 @@ class Request {
                 }
                 
                 foreach ($uris as $index => $uri) {
+                    if (substr($uri, -1, 1) == '/') { // remove trailing slash problem
+                        $uri = substr($uri, 0, -1);
+                    }
                     $this->resources[$mountPoint.$uri] = array(
                         'namespace' => $namespaceName,
                         'class' => $className,
