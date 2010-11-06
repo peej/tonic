@@ -157,7 +157,7 @@ class Request {
     function __construct($config = array()) {
         
         // set defaults
-        $config['uri'] = $this->getConfig($config, 'uri', 'SCRIPT_URL');
+        $config['uri'] = $this->getConfig($config, 'uri', 'REQUEST_URI');
         $config['accept'] = $this->getConfig($config, 'accept', 'HTTP_ACCEPT');
         $config['acceptLang'] = $this->getConfig($config, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE');
         $config['acceptEncoding'] = $this->getConfig($config, 'acceptEncoding', 'HTTP_ACCEPT_ENCODING');
@@ -278,11 +278,7 @@ class Request {
         
         // 404 resource
         if (isset($config['404'])) {
-            if (is_subclass_of($config['404'], 'NoResource')) {
-                $this->noResource = $config['404'];
-            } else {
-                throw new Exception('404 resource "'.$config['404'].'" must be a subclass of "NoResource"');
-            }
+            $this->noResource = $config['404'];
         }
         
         // mounts
