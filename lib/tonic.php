@@ -294,7 +294,11 @@ class Request {
                 $comment = $resourceReflector->getDocComment();
                 
                 $className = $resourceReflector->getName();
-                $namespaceName = $resourceReflector->getNamespaceName();
+                if (method_exists($resourceReflector, 'getNamespaceName')) {
+                    $namespaceName = $resourceReflector->getNamespaceName();
+                } else {
+                    $namespaceName = FALSE;
+                }
                 
                 if (!$namespaceName) {
                     preg_match('/@(?:package|namespace)\s+([^\s]+)/', $comment, $package);
