@@ -127,7 +127,7 @@ class Request {
     private function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
         if (isset($config[$configVar])) {
             return $config[$configVar];
-        } elseif (isset($_SERVER[$serverVar])) {
+        } elseif (isset($_SERVER[$serverVar]) && $_SERVER[$serverVar] != '') {
             return $_SERVER[$serverVar];
         } else {
             return $default;
