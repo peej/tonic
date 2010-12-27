@@ -4,7 +4,6 @@ require_once __DIR__.'/../../lib/tonic.php';
 
 $world->config = array();
 
-
 /* Test resource definitions */
 
 if (!class_exists('NewResource')) {

@@ -13,10 +13,19 @@ Feature: HTTP request object
     When I create a request object
     Then I should see a request method of "GET"
     
+  Scenario: Receive the request querystring
+    Given the request URI of "/something/otherthing"
+    And the request method of "GET"
+    And the querystring is "?foo=bar"
+    When I create a request object
+    Then I should see a querystring of "foo=bar"
+    
   Scenario: Have access to the HTTP request method
     Given the request method of "post"
+    And the request data of "some data"
     When I create a request object
     Then I should see a request method of "POST"
+    And I should see the request data "some data"
     
   Scenario: Have access to the HTTP request data
     Given the request method of "PUT"

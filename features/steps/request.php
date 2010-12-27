@@ -36,6 +36,10 @@ $steps->Given('/^a mounting of "([^"]*)" to "([^"]*)"$/', function($world, $arg1
     $world->config['mount'][$arg1] = $arg2;
 });
 
+$steps->Given('/^the querystring is "([^"]*)"$/', function($world, $arg1) {
+    $_SERVER['QUERY_STRING'] = $arg1;
+});
+
 $steps->When('/^I create a request object$/', function($world) {
     $world->request = new Request($world->config);
 });
@@ -94,5 +98,9 @@ $steps->Then('/^if none match should not match "([^"]*)"$/', function($world, $a
 
 $steps->Then('/^I should see resource "([^"]*)" metadata of "([^"]*)"$/', function($world, $arg1, $arg2) {
     if ($world->request->resources[$world->request->uri][$arg1] != $arg2) throw new Exception;
+});
+
+$steps->Then('/^I should see a querystring of "([^"]*)"$/', function($world, $arg1) {
+    if ($world->request->data != '?'.$arg1) throw new Exception("$arg1 does not equal {$world->request->data}");
 });
 
