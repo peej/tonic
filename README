@@ -50,5 +50,36 @@ class ExampleResource extends Resource {
 }
 
 
+How to set it up
+----------------
+In general terms:
+ * Make your webserver have it's document root pointed to the folder `docroot`.
+ * Point your browser to the webserver with this setting and your done.
+
+
+	If you do not yet have a virtual host, you might like to create one.
+		This can be done by:
+			creating an alias in your /etc/hosts file
+			creating a server-configuration for that server and
+			make the documentroot for that server point to the folder `docroot`.
+				an example for Apache( using GIN as name of the host/webserver) :
+				<VirtualHost *:80>
+					ServerName GIN
+					Documentroot /var/www/tonic/docroot
+					<Directory /var/www/tonic/docroot>
+						Options +FollowSymLinks
+						AllowOverride All
+						Order Allow,Deny
+						Allow From All
+					</Directory>
+				</VirtualHost>
+		Another option of course is to use your localhost as webserver.
+			the documentroot of that webserver will still need to be
+			configured to be the folder `docroot` though.
+	Hopefully you will now be able to see a welcoming screen
+		when the browser is directed to the server configured in the previous step.
+
+
+
 For more information, read the code. Start with the dispatcher "docroot/dispatch.php"
 and then the examples in the "examples" directory.
