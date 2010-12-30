@@ -61,7 +61,7 @@ find it. By default on Windows this will probably be in "c:\php\includes\tonic" 
 on Linux/Unix it will be "/usr/share/php/tonic"
 
 Copy "docroot/dispatch.php" into your servers document root and edit it so that the
-require_once statement paths so that the Tonic library and the examples.
+require_once statement paths point to the Tonic library and the examples.
 
 Finally you need to route all incoming requests to dispatch.php. How you do this
 depends on your web server. If you are using Apache, the simplest way is to copy
