@@ -21,11 +21,13 @@ class FilesystemCollection extends FilesystemResource {
     function get($request) {
         
         $response = new Response($request);
+        $collection = str_replace('/', DIRECTORY_SEPARATOR, $this->collection);
         
         $resourceUris = '';
-        $files = glob($this->collection.DIRECTORY_SEPARATOR.'*');
+        $files = glob( $collection.DIRECTORY_SEPARATOR.'*' );
         if ($files) {
             foreach ($files as $filepath) {
+            	$filepath = str_replace( DIRECTORY_SEPARATOR, '/', $filepath);
                 $resourceUris .= '<li><a href="'.$this->uriStub.substr($filepath, strlen($this->path) + 1).'">'.basename($filepath).'</a></li>';
             }
         } else {
@@ -39,11 +41,12 @@ class FilesystemCollection extends FilesystemResource {
     }
     
     protected function getNextAvailableItemUri() {
+    	$collection = str_replace('/', DIRECTORY_SEPARATOR, $this->collection);
         $filename = 1;
-        while (file_exists($this->collection.DIRECTORY_SEPARATOR.$filename)) {
+        while (file_exists($collection.DIRECTORY_SEPARATOR.$filename)) {
             $filename++;
         }
-        return $this->uriStub.substr($this->collection, strlen($this->path) + 1).DIRECTORY_SEPARATOR.$filename;
+        return $this->uriStub.substr($this->collection, strlen($this->path) + 1).'/'.$filename;
     }
     
     function post($request) {

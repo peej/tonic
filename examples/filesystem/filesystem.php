@@ -48,7 +48,7 @@ class FilesystemResource extends Resource {
             // convert URI into filesystem path
             $filePath = $this->turnUriIntoFilePath($uri);
             
-            if (substr($filePath, -1, 1) == '/') { // add a default filename to the path
+            if (substr($filePath, -1, 1) == DIRECTORY_SEPARATOR) { // add a default filename to the path
                 $filePath .= $this->defaultDocument;
                 $uri .= $this->defaultDocument;
             }

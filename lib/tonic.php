@@ -13,6 +13,12 @@ class Request {
     var $uri;
     
     /**
+     * The subdir where is the docroot
+     * @var str
+     */
+    var $docroot;
+    
+    /**
      * Array of possible URIs based upon accept and accept-language request headers in order of preference
      * @var str[]
      */
@@ -158,6 +164,7 @@ class Request {
         
         // set defaults
         $config['uri'] = $this->getConfig($config, 'uri', 'REQUEST_URI');
+        $config['docroot'] = $this->getConfig($config, 'docroot', '');
         $config['accept'] = $this->getConfig($config, 'accept', 'HTTP_ACCEPT');
         $config['acceptLang'] = $this->getConfig($config, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE');
         $config['acceptEncoding'] = $this->getConfig($config, 'acceptEncoding', 'HTTP_ACCEPT_ENCODING');
@@ -169,6 +176,9 @@ class Request {
                 $this->mimetypes[$ext] = $mimetype;
             }
         }
+        
+        // set docroot
+        $this->docroot = $config['docroot'];
         
         // get request URI
         $parts = explode('/', $config['uri']);
@@ -392,7 +402,7 @@ class Request {
         
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
-            if (preg_match('|^'.str_replace('|', '\|', $uri).'$|', $this->uri, $matches)) {
+            if (preg_match('|^'.$this->docroot.str_replace('|', '\|', $uri).'$|', $this->uri, $matches)) {
                 array_shift($matches);
                 $uriMatches[$resource['priority']] = array(
                     $resource['class'],
