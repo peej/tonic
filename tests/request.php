@@ -18,6 +18,18 @@ class RequestTester extends UnitTestCase {
         $this->assertEqual($request->uri, $config['uri']);
         
     }
+
+    function testRequestBaseUri() {
+        
+        $config = array(
+            'baseUri' => '/some/sub/dir'
+        );
+        
+        $request = new Request($config);
+        
+        $this->assertEqual($request->baseUri, $config['baseUri']);
+        
+    }
     
     function testGetRequestMethod() {
         
