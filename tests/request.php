@@ -19,15 +19,15 @@ class RequestTester extends UnitTestCase {
         
     }
 
-    function testRequestDocroot() {
+    function testRequestBaseUri() {
         
         $config = array(
-            'docroot' => '/some/sub/dir'
+            'baseUri' => '/some/sub/dir'
         );
         
         $request = new Request($config);
         
-        $this->assertEqual($request->docroot, $config['docroot']);
+        $this->assertEqual($request->baseUri, $config['baseUri']);
         
     }
     
