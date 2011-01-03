@@ -7,7 +7,7 @@ of RESTful design.
  * Resources with multiple representations (aka standard document formats)
  * Communicate statelessly
 
-See http://peej.github.com/tonic/ for more info.
+[See the Tonic site for more info](http://peej.github.com/tonic/).
 
 
 How it works
