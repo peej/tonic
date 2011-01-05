@@ -163,7 +163,7 @@ class Request {
     function __construct($config = array()) {
         
         // set defaults
-        $config['uri'] = $this->getConfig($config, 'uri', 'REQUEST_URI');
+        $config['uri'] = $this->getConfig($config, 'uri', 'SCRIPT_NAME');
         $config['baseUri'] = $this->getConfig($config, 'baseUri', '');
         $config['accept'] = $this->getConfig($config, 'accept', 'HTTP_ACCEPT');
         $config['acceptLang'] = $this->getConfig($config, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE');
