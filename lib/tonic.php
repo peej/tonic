@@ -402,7 +402,7 @@ class Request {
         
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
-            if (preg_match('#^'.$this->baseUri.'$#', $this->uri, $matches)) {
+            if (preg_match('#^'.$this->baseUri.$uri.'$#', $this->uri, $matches)) {
                 array_shift($matches);
                 $uriMatches[$resource['priority']] = array(
                     $resource['class'],
