@@ -270,7 +270,7 @@ class Request {
         $this->method = strtoupper($this->getConfig($config, 'method', 'REQUEST_METHOD', $this->method));
         
         // get HTTP request data
-        $this->data = $this->getConfig($config, 'data', 'QUERY_STRING', file_get_contents("php://input"));
+        $this->data = $this->getConfig($config, 'data', NULL, file_get_contents("php://input"));
         
         // conditional requests
         if ($config['ifMatch']) {
