@@ -163,7 +163,7 @@ class Request {
     function __construct($config = array()) {
         
         // set defaults
-        $config['uri'] = $this->getConfig($config, 'uri', 'SCRIPT_NAME');
+        $config['uri'] = $this->getConfig($config, 'uri', 'REDIRECT_URL');
         $config['baseUri'] = $this->getConfig($config, 'baseUri', '');
         $config['accept'] = $this->getConfig($config, 'accept', 'HTTP_ACCEPT');
         $config['acceptLang'] = $this->getConfig($config, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE');
@@ -402,7 +402,7 @@ class Request {
         
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
-            if (preg_match('|^'.$this->baseUri.str_replace('|', '\|', $uri).'$|', $this->uri, $matches)) {
+            if (preg_match('#^'.$this->baseUri.'$#', $this->uri, $matches)) {
                 array_shift($matches);
                 $uriMatches[$resource['priority']] = array(
                     $resource['class'],
