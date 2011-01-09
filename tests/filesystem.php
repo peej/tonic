@@ -4,7 +4,7 @@ require_once('../lib/tonic.php');
 require_once('../examples/filesystem/filesystem.php');
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  */
 class FilesystemTester extends UnitTestCase {
     
@@ -132,7 +132,7 @@ class FilesystemTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  * @uri /filesystem/one
  * @uri /filesystem/one/.*
  */

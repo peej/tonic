@@ -2,7 +2,7 @@
 
 /**
  * Model the data of the incoming HTTP request
- * @package Tonic/Lib
+ * @namespace Tonic\Lib
  */
 class Request {
     
@@ -448,7 +448,7 @@ class Request {
 
 /**
  * Base resource class
- * @package Tonic/Lib
+ * @namespace Tonic\Lib
  */
 class Resource {
     
@@ -503,7 +503,7 @@ class Resource {
 
 /**
  * 404 resource class
- * @package Tonic/Lib
+ * @namespace Tonic\Lib
  */
 class NoResource extends Resource {
     
@@ -529,7 +529,7 @@ class NoResource extends Resource {
 
 /**
  * Model the data of the outgoing HTTP response
- * @package Tonic/Lib
+ * @namespace Tonic\Lib
  */
 class Response {
     

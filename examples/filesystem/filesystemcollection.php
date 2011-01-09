@@ -2,7 +2,7 @@
 
 /**
  * Collection resource
- * @package Tonic/Examples/Filesystem
+ * @namespace Tonic\Examples\Filesystem
  * @uri /filesystem/collection
  */
 class FilesystemCollection extends FilesystemResource {

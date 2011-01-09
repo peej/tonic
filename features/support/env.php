@@ -9,7 +9,7 @@ $world->config = array();
 if (!class_exists('NewResource')) {
     
     /**
-     * @package Tonic/Tests
+     * @namespace Tonic\Tests
      * @uri /requesttest/one
      * @uri /requesttest/three/.+/four 12
      */
@@ -22,7 +22,7 @@ if (!class_exists('NewResource')) {
 if (!class_exists('ChildResource')) {
 
     /**
-     * @package Tonic/Tests
+     * @namespace Tonic\Tests
      * @uri /requesttest/one/two
      */
     class ChildResource extends NewResource {
@@ -34,7 +34,7 @@ if (!class_exists('ChildResource')) {
 if (!class_exists('NewNoResource')) {
 
     /**
-     * @package Tonic/Tests
+     * @namespace Tonic\Tests
      */
     class NewNoResource extends NoResource {
     
@@ -45,7 +45,7 @@ if (!class_exists('NewNoResource')) {
 if (!class_exists('TestResource')) {
     
     /**
-     * @package Tonic/Tests
+     * @namespace Tonic\Tests
      * @uri /resourcetest/one
      */
     class TestResource extends Resource {

@@ -5,7 +5,7 @@ require_once('../examples/filesystem/filesystem.php');
 require_once('../examples/filesystem/filesystemcollection.php');
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  */
 class FilesystemCollectionTester extends UnitTestCase {
     
@@ -105,7 +105,7 @@ class FilesystemCollectionTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  * @uri /filesystemcollection/collection/.*
  */
 class TestFileSystemCollectionItem extends FilesystemResource {
@@ -120,7 +120,7 @@ class TestFileSystemCollectionItem extends FilesystemResource {
 }
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  * @uri /filesystemcollection/collectionIndex
  */
 class TestFileSystemCollection extends FilesystemCollection {

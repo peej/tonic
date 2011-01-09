@@ -7,7 +7,7 @@ require_once 'smarty/smarty.php';
 
 /**
  * Examples listing
- * @package Tonic/Examples
+ * @namespace Tonic\Examples
  * @uri /
  */
 class ExamplesListResource extends Resource {

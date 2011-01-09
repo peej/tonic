@@ -8,7 +8,7 @@
  * the ability to add resources to the collection, and update and delete resources
  * from within the collection.
  *
- * @package Tonic/Examples/Filesystem
+ * @namespace Tonic\Examples\Filesystem
  * @uri /filesystem(/.*)?
  */
 class FilesystemResource extends Resource {

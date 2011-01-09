@@ -3,7 +3,7 @@
 require_once('../lib/tonic.php');
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  */
 class RequestTester extends UnitTestCase {
     
@@ -483,7 +483,7 @@ class RequestTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  * @uri /requesttest/one
  * @uri /requesttest/three/.+/four 12
  */
@@ -492,7 +492,7 @@ class NewResource extends Resource {
 }
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  * @uri /requesttest/one/two
  */
 class ChildResource extends NewResource {
@@ -500,7 +500,7 @@ class ChildResource extends NewResource {
 }
 
 /**
- * @package Tonic/Tests
+ * @namespace Tonic\Tests
  */
 class NewNoResource extends NoResource {
 

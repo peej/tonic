@@ -7,7 +7,7 @@ require_once 'smarty/Smarty.class.php';
  *
  * Using Smarty for representation generation
  *
- * @package Tonic/Examples/Filesystem
+ * @namespace Tonic\Examples\Filesystem
  * @uri /smarty
  */
 class SmartyResource extends Resource {
