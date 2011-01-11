@@ -10,55 +10,55 @@ class Request {
      * The requested URI
      * @var str
      */
-    var $uri;
+    public $uri;
     
     /**
      * The URI where the front controller is positioned in the server URI-space
      * @var str
      */
-    var $baseUri = '';
+    public $baseUri = '';
     
     /**
      * Array of possible URIs based upon accept and accept-language request headers in order of preference
      * @var str[]
      */
-    var $negotiatedUris = array();
+    public $negotiatedUris = array();
     
     /**
      * Array of possible URIs based upon accept request headers in order of preference
      * @var str[]
      */
-    var $formatNegotiatedUris = array();
+    public $formatNegotiatedUris = array();
     
     /**
      * Array of possible URIs based upon accept-language request headers in order of preference
      * @var str[]
      */
-    var $languageNegotiatedUris = array();
+    public $languageNegotiatedUris = array();
     
     /**
      * Array of accept headers in order of preference
      * @var str[][]
      */
-    var $accept = array();
+    public $accept = array();
     
     /**
      * Array of accept-language headers in order of preference
      * @var str[][]
      */
-    var $acceptLang = array();
+    public $acceptLang = array();
     
     /**
      * Array of accept-encoding headers in order of preference
      * @var str[]
      */
-    var $acceptEncoding = array();
+    public $acceptEncoding = array();
     
     /**
      * Map of file/URI extensions to mimetypes
      * @var str[]
      */
-    var $mimetypes = array(
+    public $mimetypes = array(
             'html' => 'text/html',
             'txt' => 'text/plain',
             'php' => 'application/php',
@@ -88,44 +88,44 @@ class Request {
      * HTTP request method of incoming request
      * @var str
      */
-    var $method = 'GET';
+    public $method = 'GET';
     
     /**
      * Body data of incoming request
      * @var str
      */
-    var $data;
+    public $data;
     
     /**
      * Array of if-match etags
      * @var str[]
      */
-    var $ifMatch = array();
+    private $ifMatch = array();
     
     /**
      * Array of if-none-match etags
      * @var str[]
      */
-    var $ifNoneMatch = array();
+    private $ifNoneMatch = array();
     
     /**
      * Name of resource class to use for when nothing is found
      * @var str
      */
-    var $noResource = 'NoResource';
+    private $noResource = 'NoResource';
     
     /**
      * The resource classes loaded and how they are wired to URIs
      * @var str[]
      */
-    var $resources = array();
+    private $resources = array();
     
     /**
      * A list of URL to namespace/package mappings for routing requests to a
      * group of resources that are wired into a different URL-space
      * @var str[]
      */
-    var $mounts = array();
+    private $mounts = array();
     
     /**
      * Set a default configuration option
@@ -452,7 +452,7 @@ class Request {
  */
 class Resource {
     
-    var $parameters = array();
+    private $parameters = array();
     
     /**
      * Resource constructor
@@ -560,25 +560,25 @@ class Response {
      * The request object generating this response
      * @var Request
      */
-    var $request;
+    private $request;
     
     /**
      * The HTTP response code to send
      * @var int
      */
-    var $code = Response::OK;
+    public $code = Response::OK;
     
     /**
      * The HTTP headers to send
      * @var str[]
      */
-    var $headers = array();
+    private $headers = array();
     
     /**
      * The HTTP response body to send
      * @var str
      */
-    var $body;
+    public $body;
     
     /**
      * Create a response object.
