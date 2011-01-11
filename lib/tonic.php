@@ -156,6 +156,10 @@ class Request {
      * <dt>ifNoneMatch</dt> <dd>An if-none-match header</dd>
      * <dt>mimetypes</dt> <dd>A map of file/URI extenstions to mimetypes, these
      * will be added to the default map of mimetypes</dd>
+     * <dt>baseUri</dt> <dd>The base relative URI to use when dispatcher isn't
+     * at th root of the domain. Do not put a trailing slash</dd>
+     * <dt>404</dt> <dd>Class name to use when no resource is found</dd>
+     * <dt>mounts</dt> <dd>an array of namespace to baseUri prefix mappings</dd>
      * </dl>
      *
      * @param mixed[] config Configuration options
