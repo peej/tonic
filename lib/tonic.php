@@ -458,7 +458,7 @@ class Resource {
      * Resource constructor
      * @param str[] parameters Parameters passed in from the URL as matched from the URI regex
      */
-    function resource($parameters = array()) {
+    function  __construct($parameters = array()) {
         $this->parameters = $parameters;
     }
     
