@@ -228,11 +228,11 @@ class Request {
         krsort($this->acceptLang);
         
         // get encoding accept headers
-		if ($config['acceptEncoding']) {
+        if ($config['acceptEncoding']) {
             foreach (explode(',', $config['acceptEncoding']) as $key => $accept) {
-				$this->acceptEncoding[$key] = trim($accept);
+                $this->acceptEncoding[$key] = trim($accept);
             }
-		}
+        }
         
         // create negotiated URI lists from accept headers and request URI
         foreach ($this->accept as $typeOrder) {
