@@ -10,11 +10,11 @@ require_once 'smarty/smarty.php';
  * @namespace Tonic\Examples
  * @uri /
  */
-class ExamplesListResource extends Resource {
+class ExamplesListResource extends Tonic_Resource {
     
     function get($request) {
         
-        $response = new Response($request);
+        $response = new Tonic_Response($request);
         
         $examples = '';
         $dirs = glob('..'.DIRECTORY_SEPARATOR.'examples'.DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR);
