@@ -1,6 +1,8 @@
 <?php
 
-require_once('../lib/tonic.php');
+require_once('../lib/Tonic/Request.php');
+require_once('../lib/Tonic/Response.php');
+require_once('../lib/Tonic/Resource.php');
 require_once('../examples/filesystem/filesystem.php');
 
 /**
@@ -17,7 +19,7 @@ class FilesystemTester extends UnitTestCase {
             'uri' => '/filesystem/one/tonicFilesystemTest'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -37,7 +39,7 @@ class FilesystemTester extends UnitTestCase {
             'uri' => '/filesystem/one/'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         
         $resource = $request->loadResource();
         $response = $resource->exec($request);
@@ -55,7 +57,7 @@ class FilesystemTester extends UnitTestCase {
             'uri' => '/filesystem/one/tonicFilesystemTestDoesntExist'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -72,7 +74,7 @@ class FilesystemTester extends UnitTestCase {
             'method' => 'PUT'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -80,7 +82,7 @@ class FilesystemTester extends UnitTestCase {
         
         $config['data'] = 'test';
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -102,7 +104,7 @@ class FilesystemTester extends UnitTestCase {
             'method' => 'DELETE'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -118,7 +120,7 @@ class FilesystemTester extends UnitTestCase {
             'method' => 'DELETE'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         

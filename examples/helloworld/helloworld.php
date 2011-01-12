@@ -10,25 +10,25 @@
  * @namespace Tonic\Examples\Helloworld
  * @uri /helloworld
  */
-class HelloWorldResource extends Resource {
+class HelloWorldResource extends Tonic_Resource {
     
     /**
      * Handle a GET request for this resource
-     * @param Request request
-     * @return Response
+     * @param Tonic_Request request
+     * @return Tonic_Response
      */
     function get($request) {
         
-        $response = new Response($request);
+        $response = new Tonic_Response($request);
         
         $etag = md5($request->uri);
         if ($request->ifNoneMatch($etag)) {
             
-            $response->code = Response::NOTMODIFIED;
+            $response->code = Tonic_Response::NOTMODIFIED;
             
         } else {
             
-            $response->code = Response::OK;
+            $response->code = Tonic_Response::OK;
             $response->addHeader('Content-type', 'text/plain');
             $response->addEtag($etag);
             $response->body =

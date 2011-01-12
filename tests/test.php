@@ -2,23 +2,24 @@
 
 error_reporting(error_reporting() & ~2048 & ~8192); // Make sure E_STRICT and E_DEPRECATED are disabled
 
-require_once('simpletest/unit_tester.php');
-require_once('simpletest/reporter.php');
+require_once (dirname(__FILE__).'/simpletest/autorun.php');
+require_once (dirname(__FILE__).'/simpletest/web_tester.php');
 
-$core = new GroupTest('Core');
+// Enter the url of the host at which tonic is located to enable web tests.
+// e.g. define('EXAMPLE_BASE_URL', 'http://localhost/');
+define('EXAMPLE_BASE_URL', '');
 
-$core->addTestFile('request.php');
-$core->addTestFile('resource.php');
-$core->addTestFile('response.php');
-$core->addTestFile('filesystem.php');
-$core->addTestFile('filesystemcollection.php');
+class AllFileTests extends TestSuite {
+    function __construct() {
+        parent::__construct('All Tonic Tests');
+        $this->addFile(dirname(__FILE__).'/Tonic/core.php');
+        if (EXAMPLE_BASE_URL != '') $this->addFile(dirname(__FILE__).'/Tonic/web.php');
+    }
+}
 
-$test = new GroupTest('Tonic');
-$test->addTestCase($core);
+$all = new AllFileTests();
 
 if (TextReporter::inCli()) {
-	exit ($test->run(new TextReporter()) ? 0 : 1);
+	exit ($all->run(new TextReporter()) ? 0 : 1);
 }
-$test->run(new HtmlReporter());
-
-?>
+$all->run(new HtmlReporter());

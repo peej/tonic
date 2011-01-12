@@ -10,7 +10,7 @@ require_once 'smarty/Smarty.class.php';
  * @namespace Tonic\Examples\Filesystem
  * @uri /smarty
  */
-class SmartyResource extends Resource {
+class SmartyResource extends Tonic_Resource {
     
     protected $smarty;
     
@@ -24,7 +24,7 @@ class SmartyResource extends Resource {
     
     function get($request) {
         
-        $response = new Response($request);
+        $response = new Tonic_Response($request);
         
         $this->smarty->assign('title', 'Smarty template');
         $body = $this->render('default');
@@ -32,11 +32,11 @@ class SmartyResource extends Resource {
         $etag = md5($body);
         if ($request->ifNoneMatch($etag)) {
             
-            $response->code = Response::NOTMODIFIED;
+            $response->code = Tonic_Response::NOTMODIFIED;
             
         } else {
         
-            $response->code = Response::OK;
+            $response->code = Tonic_Response::OK;
             $response->addHeader('Content-type', 'text/html');
             $response->body = $body;
             

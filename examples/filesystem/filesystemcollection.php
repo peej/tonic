@@ -15,12 +15,12 @@ class FilesystemCollection extends FilesystemResource {
     
     /**
      * Handle a GET request
-     * @param Request request
-     * @return Response
+     * @param Tonic_Request request
+     * @return Tonic_Response
      */
     function get($request) {
         
-        $response = new Response($request);
+        $response = new Tonic_Response($request);
         $collection = str_replace('/', DIRECTORY_SEPARATOR, $this->collection);
         
         $resourceUris = '';
@@ -51,19 +51,19 @@ class FilesystemCollection extends FilesystemResource {
     
     function post($request) {
         
-        $response = new Response($request);
+        $response = new Tonic_Response($request);
         
         if ($request->data) {
             $uri = $this->getNextAvailableItemUri();
             $filePath = $this->turnUriIntoFilePath($uri);
             if (file_put_contents($filePath, $request->data)) {
-                $response->code = Response::CREATED;
+                $response->code = Tonic_Response::CREATED;
                 $response->addHeader('Location', $uri);
             } else {
-                $response->code = Response::INTERNALSERVERERROR;
+                $response->code = Tonic_Response::INTERNALSERVERERROR;
             }
         } else {
-            $response->code = Response::LENGTHREQUIRED;
+            $response->code = Tonic_Response::LENGTHREQUIRED;
         }
         
         return $response;

@@ -1,6 +1,8 @@
 <?php
 
-require_once('../lib/tonic.php');
+require_once('../lib/Tonic/Request.php');
+require_once('../lib/Tonic/Response.php');
+require_once('../lib/Tonic/Resource.php');
 require_once('../examples/filesystem/filesystem.php');
 require_once('../examples/filesystem/filesystemcollection.php');
 
@@ -36,7 +38,7 @@ class FilesystemCollectionTester extends UnitTestCase {
             'uri' => '/filesystemcollection/collectionIndex'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -51,7 +53,7 @@ class FilesystemCollectionTester extends UnitTestCase {
             'uri' => '/filesystemcollection/collection/1'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -67,7 +69,7 @@ class FilesystemCollectionTester extends UnitTestCase {
             'method' => 'POST'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -79,7 +81,7 @@ class FilesystemCollectionTester extends UnitTestCase {
             'data' => 'three'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -90,7 +92,7 @@ class FilesystemCollectionTester extends UnitTestCase {
             'uri' => '/filesystemcollection/collectionIndex'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         

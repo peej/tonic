@@ -1,6 +1,6 @@
 <?php
 
-require_once('../lib/tonic.php');
+require_once ('../lib/Tonic/Resource.php');
 
 /**
  * @namespace Tonic\Tests
@@ -13,7 +13,7 @@ class ResourceTester extends UnitTestCase {
             'uri' => '/resourcetest'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -28,7 +28,7 @@ class ResourceTester extends UnitTestCase {
             'uri' => '/resourcetest/one'
         );
         
-        $request = new Request($config);
+        $request = new Tonic_Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -46,16 +46,14 @@ class ResourceTester extends UnitTestCase {
  * @namespace Tonic\Tests
  * @uri /resourcetest/one
  */
-class TestResource extends Resource {
+class TestResource extends Tonic_Resource {
     
     function get($request) {
         
-        $response = new Response($request);
+        $response = new Tonic_Response($request);
         $response->body = 'test';
         return $response;
         
     }
     
 }
-
-?>
