@@ -1,3 +1,4 @@
+
 PHP library/framework for building Web apps while respecting the 5 principles
 of RESTful design.
 
@@ -105,6 +106,23 @@ tied to a range of URIs:
 
     /**
      * @uri /example/([a-z]+)
+     */
+    class ExampleResource extends Resource { }
+    
+Parameters can also be specified in a similar fashion to Rails routes. Any tokens
+parsed from the @uri are used to name the parameters passed to the Tonic_Request:
+
+    /**
+     * @uri /example/:parameter
+     */
+    class ExampleResource extends Resource { }
+    
+Uri specifications can be arbitarily complex. However, if parameters and regex are 
+used together you will lose the naming capability and the variables will be passed
+in a standard number indexed array to the Tonic_Request
+
+    /**
+     * @uri /example/:parameter/action/:actionId/([a-z]+)
      */
     class ExampleResource extends Resource { }
 
