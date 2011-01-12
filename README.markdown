@@ -22,7 +22,7 @@ the HTTP methods by name allow interaction with it.
      * This class defines an example resource that is wired into the URI /example
      * @uri /example
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic_Resource { }
 
 The incoming HTTP request is turned into a list of negotiated URIs based on the
 accept request headers which can then be used to pick the best representation
@@ -32,13 +32,13 @@ for the response.
      * This class defines an example resource that is wired into the URI /example
      * @uri /example
      */
-    class ExampleResource extends Resource {
+    class ExampleResource extends Tonic_Resource {
         
         function get($request) {
             
-            $response = new Response($request);
+            $response = new Tonic_Response($request);
             
-            $response->code = Response::OK;
+            $response->code = Tonic_Response::OK;
             $response->body = 'Example response';
             
             return $response;
@@ -78,7 +78,7 @@ is gather by default from the REQUEST_URI Apache variable. If you need to gather
 the URI from another $_SERVER variable or somewhere else then you can pass it into
 the Request objects constructor as a configuration option:
 
-    $request = new Request(array(
+    $request = new Tonic_Request(array(
         'uri' => $_SERVER['PATH_INFO']
     ));
 
@@ -90,7 +90,7 @@ If you want to put your Tonic dispatcher at a URL that isn't the root of a domai
 then you'll need to let the Request object know so that the @uri annotations ignore
 it:
 
-    $request = new Request(array(
+    $request = new Tonic_Request(array(
         'baseUri' => '/some/base/uri'
     ));
 
@@ -107,7 +107,7 @@ tied to a range of URIs:
     /**
      * @uri /example/([a-z]+)
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic_Resource { }
     
 Parameters can also be specified in a similar fashion to Rails routes. Any tokens
 parsed from the @uri are used to name the parameters passed to the Tonic_Request:
@@ -115,7 +115,7 @@ parsed from the @uri are used to name the parameters passed to the Tonic_Request
     /**
      * @uri /example/:parameter
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic_Resource { }
     
 Uri specifications can be arbitarily complex. However, if parameters and regex are 
 used together you will lose the naming capability and the variables will be passed
@@ -124,7 +124,7 @@ in a standard number indexed array to the Tonic_Request
     /**
      * @uri /example/:parameter/action/:actionId/([a-z]+)
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic_Resource { }
 
 It is also possible for multiple resource to match the same URI, so you can
 prioritise which resource should be used by specifying a priority level as part
@@ -133,12 +133,12 @@ of the annotation:
     /**
      * @uri /example/([a-z]+)
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic_Resource { }
 
     /**
      * @uri /example/apple 2
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic_Resource { }
 
 By postfixing the @uri annotation with a number, of all the matching resources,
 the one with the highest postfixed number will be used.
@@ -152,7 +152,7 @@ HTTP Accept header, a mapping between extensions and mimetypes can be provided.
 By default this list contains a number of common mappings, if you need to add one
 or more of your own, pass them into the constructor as an array:
 
-    $request = new Request(array(
+    $request = new Tonic_Request(array(
         'mimetypes' => array(
             'ogv' => 'video/ogg'
         )
@@ -166,7 +166,7 @@ To make resources more portable, it is possible to "mount" them into your URL-sp
 by providing a namespace name to URL-space mapping. Every resource within that
 namespace will in effect have the URL-space prefixed to their @uri annotation.
 
-    $request = new Request(array(
+    $request = new Tonic_Request(array(
         'mount' => array(
             'namespaceName' => '/some/mounted/uri'
         )
