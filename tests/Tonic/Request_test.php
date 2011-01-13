@@ -3,6 +3,9 @@
 require_once ('../lib/Tonic/Request.php');
 require_once ('../lib/Tonic/Resource.php');
 require_once ('../lib/Tonic/NoResource.php');
+require_once ('../lib/Tonic/Cache/Type.php');
+require_once ('../lib/Tonic/Cache/FileCache.php');
+require_once ('../lib/Tonic/Cache/Factory.php');
 
 /**
  * @namespace Tonic\Tests
