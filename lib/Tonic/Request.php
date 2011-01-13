@@ -172,6 +172,9 @@ class Tonic_Request {
         $config['ifMatch'] = $this->getConfig($config, 'ifMatch', 'HTTP_IF_MATCH');
         $config['ifNoneMatch'] = $this->getConfig($config, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH');
         
+        $config['cache'] = $this->getConfig($config, 'cache', '');
+        $config['cache.options'] = $this->getConfig($config, 'cache.options', array());
+        
         if (isset($config['mimetypes']) && is_array($config['mimetypes'])) {
             foreach ($config['mimetypes'] as $ext => $mimetype) {
                 $this->mimetypes[$ext] = $mimetype;
@@ -298,70 +301,84 @@ class Tonic_Request {
         }
         
         // resource classes
-        foreach (get_declared_classes() as $className) {
-            if (is_subclass_of($className, 'Tonic_Resource')) {
-                
-                $resourceReflector = new ReflectionClass($className);
-                $comment = $resourceReflector->getDocComment();
-                
-                $className = $resourceReflector->getName();
-                if (method_exists($resourceReflector, 'getNamespaceName')) {
-                    $namespaceName = $resourceReflector->getNamespaceName();
-                } else {
-                    $namespaceName = FALSE;
-                }
-                
-                if (!$namespaceName) {
-                    preg_match('/@(?:package|namespace)\s+([^\s]+)/', $comment, $package);
-                    if (isset($package[1])) {
-                        $namespaceName = $package[1];
-                    }
-                }
-                
-                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
-                if (isset($annotations[1])) {
-                    $uris = $annotations[1];
-                } else {
-                    $uris = array('/');
-                }
-                
-                // adjust URI for mountpoint
-                if (isset($this->mounts[$namespaceName])) {
-                    $mountPoint = $this->mounts[$namespaceName];
-                } else {
-                    $mountPoint = '';
-                }
-                
-                foreach ($uris as $index => $uri) {
-                    if (substr($uri, -1, 1) == '/') { // remove trailing slash problem
-                        $uri = substr($uri, 0, -1);
-                    }
-                    
-                    // parse uri into tokens
-                    $uriparts = explode('/', $uri);
-                    $uriparts = array_slice($uriparts, 2);
-                    // build parameter array from tokens
-                    $uriparams = array();
-                    foreach($uriparts as $token) {
-                    	if (substr($token, 0, 1) == ':') { // check for colon because token may be hardcoded value
-                    		$uriparams[] = substr($token, 1);
-                    	}
-                    }
-                    // build regexp to match uri
-                    foreach($uriparams as $param) {
-                    	$uri = preg_replace('#:'.$param.'(?=\b)#', '([^/]+)', $uri);
-                    }
-                    
-                    $this->resources[$mountPoint.$uri] = array(
-                        'namespace' => $namespaceName,
-                        'class' => $className,
-                        'filename' => $resourceReflector->getFileName(),
-                        'line' => $resourceReflector->getStartLine(),
-                        'priority' => isset($annotations[2][$index]) && is_numeric($annotations[2][$index]) ? intval($annotations[2][$index]) : 0,
-                    	'params' => $uriparams
-                    );
-                }
-            }
+        // try to load from cache first
+        if ($config['cache']) {
+        	$cache = Tonic_Cache_Factory::getCache($config['cache']);
+        	$resources = $cache->get('tonic.resources', $config['cache.options']);
+        }
+        
+        // if that fails then parse Tonic_Resources for data
+        if (!isset($resources) || !$resources) {
+	        foreach (get_declared_classes() as $className) {
+	            if (is_subclass_of($className, 'Tonic_Resource')) {
+	                
+	                $resourceReflector = new ReflectionClass($className);
+	                $comment = $resourceReflector->getDocComment();
+	                
+	                $className = $resourceReflector->getName();
+	                if (method_exists($resourceReflector, 'getNamespaceName')) {
+	                    $namespaceName = $resourceReflector->getNamespaceName();
+	                } else {
+	                    $namespaceName = FALSE;
+	                }
+	                
+	                if (!$namespaceName) {
+	                    preg_match('/@(?:package|namespace)\s+([^\s]+)/', $comment, $package);
+	                    if (isset($package[1])) {
+	                        $namespaceName = $package[1];
+	                    }
+	                }
+	                
+	                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
+	                if (isset($annotations[1])) {
+	                    $uris = $annotations[1];
+	                } else {
+	                    $uris = array('/');
+	                }
+	                
+	                // adjust URI for mountpoint
+	                if (isset($this->mounts[$namespaceName])) {
+	                    $mountPoint = $this->mounts[$namespaceName];
+	                } else {
+	                    $mountPoint = '';
+	                }
+	                
+	                foreach ($uris as $index => $uri) {
+	                    if (substr($uri, -1, 1) == '/') { // remove trailing slash problem
+	                        $uri = substr($uri, 0, -1);
+	                    }
+	                    
+	                    // parse uri into tokens
+	                    $uriparts = explode('/', $uri);
+	                    $uriparts = array_slice($uriparts, 2);
+	                    // build parameter array from tokens
+	                    $uriparams = array();
+	                    foreach($uriparts as $token) {
+	                    	if (substr($token, 0, 1) == ':') { // check for colon because token may be hardcoded value
+	                    		$uriparams[] = substr($token, 1);
+	                    	}
+	                    }
+	                    // build regexp to match uri
+	                    foreach($uriparams as $param) {
+	                    	$uri = preg_replace('#:'.$param.'(?=\b)#', '([^/]+)', $uri);
+	                    }
+	                    
+	                    $this->resources[$mountPoint.$uri] = array(
+	                        'namespace' => $namespaceName,
+	                        'class' => $className,
+	                        'filename' => $resourceReflector->getFileName(),
+	                        'line' => $resourceReflector->getStartLine(),
+	                        'priority' => isset($annotations[2][$index]) && is_numeric($annotations[2][$index]) ? intval($annotations[2][$index]) : 0,
+	                    	'params' => $uriparams
+	                    );
+	                }
+	            }
+	        }
+	        
+	        // save to cache
+	        if ($config['cache']) $cachewritesuccess = $cache->set('tonic.resources', $this->resources);
+        } else {
+        	$this->resources = $resources;
         }
         
     }
