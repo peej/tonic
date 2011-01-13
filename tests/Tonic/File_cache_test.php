@@ -15,13 +15,14 @@ class FileCacheTester extends UnitTestCase {
 	private $testItemName = 'test.item';
 	private $testItemPath;
     
-    function __construct() {
-        $this->testItemPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->testItemName;
-    }	
+	function __construct() {
+		$this->testItemPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->testItemName;
+	}	
 	
 	function tearDown() {
-        @unlink($this->testItemPath);
-    }
+		
+		@unlink($this->testItemPath);
+	}
 	
 	function testLoadAFileCache() {
 		
@@ -51,6 +52,7 @@ class FileCacheTester extends UnitTestCase {
 		
 		$readItem = $fileCache->get($this->testItemName);
 		$this->assertEqual($readItem, $testItem);		
+		
 	}
 	
 	function testOverwriteTheCacheItemInFileCache() {
