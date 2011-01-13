@@ -301,7 +301,7 @@ class Tonic_Request {
         // try to load from cache first
         if ($cacheConfig = $this->getConfig($config, 'cache')) {
         	$cache = Tonic_Cache_Factory::getCache($cacheConfig['type']);
-        	$resources = $cache->get('tonic.resources', $this->getConfig($cacheConfig, 'options', null, array()));
+        	$resources = $cache->get('resources', $this->getConfig($cacheConfig, 'options', null, array()));
         }
         
         // if that fails then parse Tonic_Resources for data

@@ -18,7 +18,11 @@ require_once '../examples/examples.php';
 $request = new Tonic_Request(array(
 		'cache'=>array(
 				'type'=>'Tonic_Cache_FileCache', 
-				'options'=>array('ttl'=>'60')
+				'options'=>array(
+						'ttl'=>'60',
+						'cachepath'=>sys_get_temp_dir() . DIRECTORY_SEPARATOR,
+						'prefix'=>'tonic.'
+				)
 		)
 ));
 $resource = $request->loadResource();
