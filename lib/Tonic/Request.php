@@ -376,7 +376,7 @@ class Tonic_Request {
 	        }
 	        
 	        // save to cache
-	        if ($config['cache']) $cachewritesuccess = $cache->set('tonic.resources', $this->resources);
+	        if ($cache instanceof Tonic_Cache_Type) $cachewritesuccess = $cache->set('tonic.resources', $this->resources);
         } else {
         	$this->resources = $resources;
         }
