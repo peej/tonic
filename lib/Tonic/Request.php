@@ -172,9 +172,6 @@ class Tonic_Request {
         $config['ifMatch'] = $this->getConfig($config, 'ifMatch', 'HTTP_IF_MATCH');
         $config['ifNoneMatch'] = $this->getConfig($config, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH');
         
-        $config['cache'] = $this->getConfig($config, 'cache', '');
-        $config['cache.options'] = $this->getConfig($config, 'cache.options', array());
-        
         if (isset($config['mimetypes']) && is_array($config['mimetypes'])) {
             foreach ($config['mimetypes'] as $ext => $mimetype) {
                 $this->mimetypes[$ext] = $mimetype;
@@ -302,9 +299,9 @@ class Tonic_Request {
         
         // resource classes
         // try to load from cache first
-        if ($config['cache']) {
-        	$cache = Tonic_Cache_Factory::getCache($config['cache']);
-        	$resources = $cache->get('tonic.resources', $config['cache.options']);
+        if ($cacheConfig = $this->getConfig($config, 'cache')) {
+        	$cache = Tonic_Cache_Factory::getCache($cacheConfig['type']);
+        	$resources = $cache->get('tonic.resources', $this->getConfig($cacheConfig, 'options', null, array()));
         }
         
         // if that fails then parse Tonic_Resources for data
@@ -376,7 +373,7 @@ class Tonic_Request {
 	        }
 	        
 	        // save to cache
-	        if ($cache instanceof Tonic_Cache_Type) $cachewritesuccess = $cache->set('tonic.resources', $this->resources);
+	        if (isset($cache) && $cache instanceof Tonic_Cache_Type) $cachewritesuccess = $cache->set('tonic.resources', $this->resources);
         } else {
         	$this->resources = $resources;
         }

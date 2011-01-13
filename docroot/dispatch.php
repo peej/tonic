@@ -15,7 +15,12 @@ require_once '../lib/Tonic/Cache/FileCache.php';
 require_once '../examples/examples.php';
 
 // handle request
-$request = new Tonic_Request(array('cache'=>'Tonic_Cache_FileCache', 'cache.options'=>array('ttl'=>'60')));
+$request = new Tonic_Request(array(
+		'cache'=>array(
+				'type'=>'Tonic_Cache_FileCache', 
+				'options'=>array('ttl'=>'60')
+		)
+));
 $resource = $request->loadResource();
 $response = $resource->exec($request);
 $response->output();
