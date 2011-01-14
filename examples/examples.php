@@ -1,5 +1,9 @@
 <?php
 
+namespace Tonic\Examples;
+
+use Tonic as Tonic;
+
 require_once 'helloworld/helloworld.php';
 require_once 'filesystem/filesystem.php';
 require_once 'filesystem/filesystemcollection.php';
@@ -7,14 +11,14 @@ require_once 'smarty/smarty.php';
 
 /**
  * Examples listing
- * @namespace Tonic\Examples
+ * 
  * @uri /
  */
-class ExamplesListResource extends Tonic_Resource {
+class ExamplesListResource extends Tonic\Resource {
     
     function get($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         
         $examples = '';
         $dirs = glob('..'.DIRECTORY_SEPARATOR.'examples'.DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR);

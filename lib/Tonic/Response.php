@@ -1,10 +1,11 @@
 <?php
 
+namespace Tonic;
+
 /**
  * Model the data of the outgoing HTTP response
- * @namespace Tonic\Lib
  */
-class Tonic_Response {
+class Response {
     
     /**
      * HTTP response code constant
@@ -39,7 +40,7 @@ class Tonic_Response {
      * The HTTP response code to send
      * @var int
      */
-    var $code = Tonic_Response::OK;
+    var $code = Response::OK;
     
     /**
      * The HTTP headers to send
@@ -55,7 +56,7 @@ class Tonic_Response {
     
     /**
      * Create a response object.
-     * @param Tonic_Request $request The request object generating this response
+     * @param Tonic\Request $request The request object generating this response
      * @param string $uri The URL of the actual resource being used to build the response
      */
     function __construct($request, $uri = NULL) {

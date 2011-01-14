@@ -1,26 +1,30 @@
 <?php
 
+namespace Tonic\Examples\Filesystem;
+
+use Tonic as Tonic;
+
 /**
  * Collection resource
- * @namespace Tonic\Examples\Filesystem
+ *
  * @uri /filesystem/collection
  */
 class FilesystemCollection extends FilesystemResource {
     
     /**
      * Path to the collections files
-     * @var str
+     * @var string
      */
-    var $collection = '../examples/filesystem/representations/collection';
+    protected $collection = '../examples/filesystem/representations/collection';
     
     /**
      * Handle a GET request
-     * @param Tonic_Request request
-     * @return Tonic_Response
+     * @param Tonic\Request request
+     * @return Tonic\Response
      */
     function get($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         $collection = str_replace('/', DIRECTORY_SEPARATOR, $this->collection);
         
         $resourceUris = '';
@@ -51,19 +55,19 @@ class FilesystemCollection extends FilesystemResource {
     
     function post($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         
         if ($request->data) {
             $uri = $this->getNextAvailableItemUri();
             $filePath = $this->turnUriIntoFilePath($uri);
             if (file_put_contents($filePath, $request->data)) {
-                $response->code = Tonic_Response::CREATED;
+                $response->code = Tonic\Response::CREATED;
                 $response->addHeader('Location', $uri);
             } else {
-                $response->code = Tonic_Response::INTERNALSERVERERROR;
+                $response->code = Tonic\Response::INTERNALSERVERERROR;
             }
         } else {
-            $response->code = Tonic_Response::LENGTHREQUIRED;
+            $response->code = Tonic\Response::LENGTHREQUIRED;
         }
         
         return $response;

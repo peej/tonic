@@ -1,10 +1,11 @@
 <?php
 
+namespace Tonic;
+
 /**
  * Base resource class
- * @namespace Tonic\Lib
  */
-class Tonic_Resource {
+class Resource {
 	
     var $parameters = array();
     
@@ -18,8 +19,8 @@ class Tonic_Resource {
     
     /**
      * Execute a request on this resource.
-     * @param Tonic_Request $request
-     * @return Tonic_Response
+     * @param Tonic\Request $request
+     * @return Tonic\Response
      */
     function exec($request) {
         if (method_exists($this, $request->method)) {
@@ -32,8 +33,8 @@ class Tonic_Resource {
             );
         } else {
             // send 405 method not allowed
-            $response = new Tonic_Response($request);
-            $response->code = Tonic_Response::METHODNOTALLOWED;
+            $response = new Response($request);
+            $response->code = Response::METHODNOTALLOWED;
             $response->body = sprintf(
                 'The HTTP method "%s" used for the request is not allowed for the resource "%s".',
                 $request->method,

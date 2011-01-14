@@ -15,9 +15,9 @@ require_once '../lib/Tonic/Cache/FileCache.php';
 require_once '../examples/examples.php';
 
 // handle request
-$request = new Tonic_Request(array(
+$request = new Tonic\Request(array(
 		'cache'=>array(
-				'type'=>'Tonic_Cache_FileCache', 
+				'type'=>'Tonic\Cache\FileCache', 
 				'options'=>array(
 						'ttl'=>'60',
 						'cachepath'=>sys_get_temp_dir() . DIRECTORY_SEPARATOR,

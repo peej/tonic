@@ -1,11 +1,13 @@
 <?php
 
+namespace Tonic\Cache;
+
 /**
  * Implements a cache using a filesystem file.
  * @author Adam Cooper <adam@networkpie.co.uk>
  *
  */
-class Tonic_Cache_FileCache implements Tonic_Cache_Type {
+class FileCache implements Type {
 	
 	const DEFAULT_CACHE_TTL = 60;
 	const DEFAULT_CACHE_PREFIX = 'tonic.';
@@ -22,6 +24,9 @@ class Tonic_Cache_FileCache implements Tonic_Cache_Type {
 	public function get($key, $config = array()) {
 		
 		$this->cleanupConfig($config);
+		
+		if (!file_exists($this->config['cachepath'] . $this->config['prefix'] . $key))
+			return false;
 		
 		$filemtime = filemtime($this->config['cachepath'] . $this->config['prefix'] . $key);
 		if (!$filemtime || (time() - $filemtime >= $this->config['ttl']))

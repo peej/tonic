@@ -1,5 +1,9 @@
 <?php
 
+namespace Tonic\Examples\Filesystem;
+
+use Tonic as Tonic;
+
 /**
  * Use the filesystem as resource representations
  *
@@ -8,28 +12,27 @@
  * the ability to add resources to the collection, and update and delete resources
  * from within the collection.
  *
- * @namespace Tonic\Examples\Filesystem
  * @uri /filesystem(/.*)?
  */
-class FilesystemResource extends Tonic_Resource {
+class FilesystemResource extends Tonic\Resource {
     
     /**
      * Path to the files to use
-     * @var str
+     * @var string
      */
-    var $path = '../examples/filesystem/representations';
+    protected $path = '../examples/filesystem/representations';
     
     /**
      * URI stub
-     * @var str
+     * @var string
      */
-    var $uriStub = '/filesystem/';
+    protected $uriStub = '/filesystem/';
     
     /**
      * The default document to use if the request is for a URI that maps to a directory
-     * @var str
+     * @var string
      */
-    var $defaultDocument = 'default.html';
+    protected $defaultDocument = 'default.html';
     
     protected function turnUriIntoFilePath($uri) {
         return $this->path.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, substr($uri, strlen($this->uriStub)));
@@ -37,8 +40,8 @@ class FilesystemResource extends Tonic_Resource {
     
     /**
      * Handle a GET request for this resource by returning the contents of a file matching the request URI
-     * @param Tonic_Request request
-     * @return Tonic_Response
+     * @param Tonic\Request request
+     * @return Tonic\Response
      */
     function get($request) {
         
@@ -55,13 +58,13 @@ class FilesystemResource extends Tonic_Resource {
             
             if (file_exists($filePath)) { // use this file
                 
-                $response = new Tonic_Response($request, $uri);
+                $response = new Tonic\Response($request, $uri);
                 
                 // generate etag for the resource based on the files modified date
                 $etag = md5(filemtime($filePath));
                 if ($request->ifNoneMatch($etag)) { // client has matching etag
                     
-                    $response->code = Tonic_Response::NOTMODIFIED;
+                    $response->code = Tonic\Response::NOTMODIFIED;
                     
                 } else {
                     
@@ -82,8 +85,8 @@ class FilesystemResource extends Tonic_Resource {
         }
         
         // nothing found, send 404 response
-        $response = new Tonic_Response($request);
-        $response->code = Tonic_Response::NOTFOUND;
+        $response = new Tonic\Response($request);
+        $response->code = Tonic\Response::NOTFOUND;
         $response->addHeader('Content-Type', $request->mimetypes['html']);
         $response->body = '<p>404, nothing found</p>';
         return $response;
@@ -92,12 +95,12 @@ class FilesystemResource extends Tonic_Resource {
     
     /**
      * Handle a PUT request for this resource by overwriting the resources contents
-     * @param Tonic_Request request
-     * @return Tonic_Response
+     * @param Tonic\Request request
+     * @return Tonic\Response
      */
     function put($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         
         if ($request->data) {
             
@@ -105,11 +108,11 @@ class FilesystemResource extends Tonic_Resource {
             
             file_put_contents($filePath, $request->data);
             
-            $response->code = Tonic_Response::NOCONTENT;
+            $response->code = Tonic\Response::NOCONTENT;
             
         } else {
             
-            $response->code = Tonic_Response::LENGTHREQUIRED;
+            $response->code = Tonic\Response::LENGTHREQUIRED;
             
         }
         
@@ -119,27 +122,27 @@ class FilesystemResource extends Tonic_Resource {
     
     /**
      * Handle a DELETE request for this resource by removing the resources file
-     * @param Tonic_Request request
-     * @return Tonic_Response
+     * @param Tonic\Request request
+     * @return Tonic\Response
      */
     function delete($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         
         $filePath = $this->turnUriIntoFilePath($request->uri);
         
         if (file_exists($filePath)) {
             
             if (unlink($filePath)) {
-                $response->code = Tonic_Response::NOCONTENT;
+                $response->code = Tonic\Response::NOCONTENT;
             } else {
-                $response->code = Tonic_Response::INTERNALSERVERERROR;
+                $response->code = Tonic\Response::INTERNALSERVERERROR;
             }
             
             return $response;
             
         } else { // nothing found, send 404 response
-            $response->code = Tonic_Response::NOTFOUND;
+            $response->code = Tonic\Response::NOTFOUND;
         }
         
         return $response;

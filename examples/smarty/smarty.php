@@ -1,5 +1,10 @@
 <?php
 
+namespace Tonic\Examples\Smarty;
+
+use Tonic as Tonic;
+use Smarty as Smarty; // smarty not namespace aware yet so mapping to root.
+
 require_once 'smarty/Smarty.class.php';
 
 /**
@@ -7,16 +12,15 @@ require_once 'smarty/Smarty.class.php';
  *
  * Using Smarty for representation generation
  *
- * @namespace Tonic\Examples\Filesystem
  * @uri /smarty
  */
-class SmartyResource extends Tonic_Resource {
+class SmartyResource extends Tonic\Resource {
     
     protected $smarty;
     
     function __construct() {
         
-        $this->smarty = new Smarty();
+        $this->smarty = new Smarty(); 
         $this->smarty->template_dir = '../examples/smarty/representations';
         $this->smarty->compile_dir = sys_get_temp_dir();
         
@@ -24,7 +28,7 @@ class SmartyResource extends Tonic_Resource {
     
     function get($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         
         $this->smarty->assign('title', 'Smarty template');
         $body = $this->render('default');
@@ -32,11 +36,11 @@ class SmartyResource extends Tonic_Resource {
         $etag = md5($body);
         if ($request->ifNoneMatch($etag)) {
             
-            $response->code = Tonic_Response::NOTMODIFIED;
+            $response->code = Tonic\Response::NOTMODIFIED;
             
         } else {
         
-            $response->code = Tonic_Response::OK;
+            $response->code = Tonic\Response::OK;
             $response->addHeader('Content-type', 'text/html');
             $response->body = $body;
             

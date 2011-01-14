@@ -1,11 +1,13 @@
 <?php
 
+namespace Tonic\Cache;
+
 /**
  * Interface providing basic methods for a caching system.
  * @author Adam Cooper <adam@networkpie.co.uk>
  *
  */
-interface Tonic_Cache_Type {
+interface Type {
 	
 	/**
 	 * Requests an item from the cache using the specified key

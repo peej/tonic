@@ -1,10 +1,13 @@
 <?php
 
+namespace Tonic;
+
+use Tonic\Cache as Cache;
+
 /**
  * Model the data of the incoming HTTP request
- * @namespace Tonic\Lib
  */
-class Tonic_Request {
+class Request {
 	
     /**
      * The requested URI
@@ -112,7 +115,7 @@ class Tonic_Request {
      * Name of resource class to use for when nothing is found
      * @var string
      */
-    var $noResource = 'Tonic_NoResource';
+    var $noResource = 'Tonic\NoResource';
     
     /**
      * The resource classes loaded and how they are wired to URIs
@@ -300,31 +303,20 @@ class Tonic_Request {
         // resource classes
         // try to load from cache first
         if ($cacheConfig = $this->getConfig($config, 'cache')) {
-        	$cache = Tonic_Cache_Factory::getCache($cacheConfig['type']);
+        	$cache = Cache\Factory::getCache($cacheConfig['type']);
         	$resources = $cache->get('resources', $this->getConfig($cacheConfig, 'options', null, array()));
         }
         
-        // if that fails then parse Tonic_Resources for data
+        // if that fails then parse Tonic\Resource classes for data
         if (!isset($resources) || !$resources) {
 	        foreach (get_declared_classes() as $className) {
-	            if (is_subclass_of($className, 'Tonic_Resource')) {
+	            if (is_subclass_of($className, 'Tonic\Resource')) {
 	                
-	                $resourceReflector = new ReflectionClass($className);
-	                $comment = $resourceReflector->getDocComment();
+	                $resourceReflector = new \ReflectionClass($className);
 	                
-	                $className = $resourceReflector->getName();
-	                if (method_exists($resourceReflector, 'getNamespaceName')) {
-	                    $namespaceName = $resourceReflector->getNamespaceName();
-	                } else {
-	                    $namespaceName = FALSE;
-	                }
-	                
-	                if (!$namespaceName) {
-	                    preg_match('/@(?:package|namespace)\s+([^\s]+)/', $comment, $package);
-	                    if (isset($package[1])) {
-	                        $namespaceName = $package[1];
-	                    }
-	                }
+	                $comment = $resourceReflector->getDocComment();	                
+	                $className = $resourceReflector->getName();	                    
+	                $namespaceName = $resourceReflector->getNamespaceName();
 	                
 	                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
 	                if (isset($annotations[1])) {
@@ -373,7 +365,7 @@ class Tonic_Request {
 	        }
 	        
 	        // save to cache
-	        if (isset($cache) && $cache instanceof Tonic_Cache_Type) $cachewritesuccess = $cache->set('tonic.resources', $this->resources);
+	        if (isset($cache) && $cache instanceof Cache\Type) $cachewritesuccess = $cache->set('resources', $this->resources);
         } else {
         	$this->resources = $resources;
         }
@@ -382,7 +374,7 @@ class Tonic_Request {
     
     /**
      * Convert the object into a string suitable for printing
-     * @return str
+     * @return string
      */
     function __toString() {
         $str = 'URI: '.$this->uri."\n";
@@ -436,7 +428,7 @@ class Tonic_Request {
     
     /**
      * Instantiate the resource class that matches the request URI the best
-     * @return Resource
+     * @return Tonic\Resource
      */
     function loadResource() {
     	$uriMatches = array();
@@ -461,7 +453,7 @@ class Tonic_Request {
     
     /**
      * Check if an etag matches the requests if-match header
-     * @param str etag Etag to match
+     * @param string etag Etag to match
      * @return bool
      */
     function ifMatch($etag) {
@@ -473,7 +465,7 @@ class Tonic_Request {
     
     /**
      * Check if an etag matches the requests if-none-match header
-     * @param str etag Etag to match
+     * @param string etag Etag to match
      * @return bool
      */
     function ifNoneMatch($etag) {
