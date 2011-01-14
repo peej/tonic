@@ -1,5 +1,10 @@
 <?php
 
+namespace Tonic\Tests;
+
+use Tonic as Tonic;
+use UnitTestCase as UnitTestCase;
+
 require_once ('../lib/Tonic/Request.php');
 require_once ('../lib/Tonic/Resource.php');
 require_once ('../lib/Tonic/NoResource.php');
@@ -7,9 +12,6 @@ require_once ('../lib/Tonic/Cache/Type.php');
 require_once ('../lib/Tonic/Cache/FileCache.php');
 require_once ('../lib/Tonic/Cache/Factory.php');
 
-/**
- * @namespace Tonic\Tests
- */
 class RequestTester extends UnitTestCase {
     
     function testRequestURI() {
@@ -18,7 +20,7 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
         $this->assertEqual($request->uri, $config['uri']);
         
@@ -30,7 +32,7 @@ class RequestTester extends UnitTestCase {
             'baseUri' => '/some/sub/dir'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
         $this->assertEqual($request->baseUri, $config['baseUri']);
         
@@ -40,7 +42,7 @@ class RequestTester extends UnitTestCase {
         
         $config = array();
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
         $this->assertEqual($request->method, 'GET');
         
@@ -53,7 +55,7 @@ class RequestTester extends UnitTestCase {
             'data' => 'some data'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
         $this->assertEqual($request->method, 'PUT');
         $this->assertEqual($request->data, 'some data');
@@ -68,7 +70,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => ''
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two'
         ));
@@ -90,7 +92,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => ''
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html',
             '/requesttest/one/two'
@@ -115,7 +117,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => ''
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html',
             '/requesttest/one/two.png',
@@ -140,7 +142,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => ''
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html',
             '/requesttest/one/two.png.html',
@@ -167,7 +169,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => 'fr;q=0.5,en'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.en',
             '/requesttest/one/two.fr',
@@ -192,7 +194,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => 'fr;q=0.5,en'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html.en',
             '/requesttest/one/two.html.fr',
@@ -222,7 +224,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => 'fr;q=0.5,en'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html.en',
             '/requesttest/one/two.html.fr',
@@ -255,7 +257,7 @@ class RequestTester extends UnitTestCase {
             'acceptLang' => 'fr;q=0.5,en'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->negotiatedUris, array(
             '/requesttest/one/two.html.en',
             '/requesttest/one/two.html.fr',
@@ -288,10 +290,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/three'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'Tonic_NoResource');
+        $this->assertEqual(get_class($resource), 'Tonic\NoResource');
         
     }
     
@@ -301,10 +303,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\NewResource');
         
     }
     
@@ -314,10 +316,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'ChildResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\ChildResource');
         
     }
     
@@ -327,10 +329,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/three/something/four'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\NewResource');
         
     }
     
@@ -340,10 +342,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two/aVariable'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'ChildResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\ChildResource');
         $this->assertIsA($resource->parameters, 'array');
         $this->assertEqual($resource->parameters, array('variable'=>'aVariable'));
         
@@ -355,10 +357,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two/aVariable/static/anotherVariable'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'GrandChildResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\GrandChildResource');
         $this->assertIsA($resource->parameters, 'array');
         $this->assertEqual($resource->parameters, array('variable'=>'aVariable', 'variable2'=>'anotherVariable'));
         
@@ -370,10 +372,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two/aVariable/number'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'GrandChildResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\GrandChildResource');
         $this->assertEqual($resource->parameters, array('aVariable', 'number'));
         
     }
@@ -384,28 +386,28 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one',
             'ifMatch' => '123123'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifMatch, array('123123'));
         
         $config = array(
             'uri' => '/requesttest/one',
             'ifMatch' => '"123123"'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifMatch, array('123123'));
         
         $config = array(
             'uri' => '/requesttest/one',
             'ifMatch' => '"123123","456456"'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifMatch, array('123123', '456456'));
         
         $config = array(
             'uri' => '/requesttest/one',
             'ifMatch' => '"123123", "456456"'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifMatch, array('123123', '456456'));
         $this->assertTrue($request->ifMatch('123123'));
         $this->assertFalse($request->ifMatch('123456'));
@@ -414,7 +416,7 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one',
             'ifMatch' => '*'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifMatch, array('*'));
         $this->assertTrue($request->ifMatch('123123'));
         $this->assertTrue($request->ifMatch('123456'));
@@ -427,28 +429,28 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one',
             'ifNoneMatch' => '123123'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifNoneMatch, array('123123'));
         
         $config = array(
             'uri' => '/requesttest/one',
             'ifNoneMatch' => '"123123"'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifNoneMatch, array('123123'));
         
         $config = array(
             'uri' => '/requesttest/one',
             'ifNoneMatch' => '"123123","456456"'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifNoneMatch, array('123123', '456456'));
         
         $config = array(
             'uri' => '/requesttest/one',
             'ifNoneMatch' => '123123, 456456'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifNoneMatch, array('123123', '456456'));
         $this->assertTrue($request->ifNoneMatch('123123'));
         $this->assertFalse($request->ifNoneMatch('123456'));
@@ -457,7 +459,7 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one',
             'ifNoneMatch' => '*'
         );
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $this->assertEqual($request->ifNoneMatch, array('*'));
         $this->assertFalse($request->ifNoneMatch('123123'));
         $this->assertFalse($request->ifNoneMatch('123456'));
@@ -468,13 +470,13 @@ class RequestTester extends UnitTestCase {
         
         $config = array(
             'uri' => '/three',
-            '404' => 'NewNoResource'
+            '404' => 'Tonic\Tests\NewNoResource'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewNoResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\NewNoResource');
         
     }
     
@@ -482,11 +484,11 @@ class RequestTester extends UnitTestCase {
         
         $config = array(
             'uri' => '/three',
-            '404' => 'NewResource'
+            '404' => 'Tonic\Tests\NewResource'
         );
         
         try {
-            $request = new Tonic_Request($config);
+            $request = new Tonic\Request($config);
             $resource = $request->loadResource();
         } catch(Exception $e) {
             $this->assertEqual($e->getMessage(), '404 resource "NewResource" must be a subclass of "NoResource"');
@@ -500,10 +502,10 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
         $this->assertEqual($request->resources['/requesttest/one/two']['namespace'], 'Tonic\Tests');
-        $this->assertEqual($request->resources['/requesttest/one/two']['class'], 'ChildResource');
+        $this->assertEqual($request->resources['/requesttest/one/two']['class'], 'Tonic\Tests\ChildResource');
         $this->assertEqual($request->resources['/requesttest/one/two']['filename'], __FILE__);
         $this->assertEqual($request->resources['/requesttest/one/two']['priority'], 0);
         
@@ -515,7 +517,7 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two/aVariable'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
         $this->assertEqual($request->resources['/requesttest/one/two/([^/]+)']['params'], array('variable'));
         
@@ -527,9 +529,9 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one/two/aVariable/number'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
-        $this->assertEqual($request->resources['/requesttest/one/two/([^/]+)/([a-z]+)']['class'], 'GrandChildResource');
+        $this->assertEqual($request->resources['/requesttest/one/two/([^/]+)/([a-z]+)']['class'], 'Tonic\Tests\GrandChildResource');
         $this->assertEqual($request->resources['/requesttest/one/two/([^/]+)/([a-z]+)']['params'], array('variable'));
         
     }
@@ -543,11 +545,11 @@ class RequestTester extends UnitTestCase {
             )
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewResource');
+        $this->assertEqual(get_class($resource), 'Tonic\Tests\NewResource');
         
     }
     
@@ -557,16 +559,14 @@ class RequestTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
- * @namespace Tonic\Tests
  * @uri /requesttest/one
  * @uri /requesttest/three/.+/four 12
  */
-class NewResource extends Tonic_Resource {
+class NewResource extends Tonic\Resource {
 
 }
 
 /**
- * @namespace Tonic\Tests
  * @uri /requesttest/one/two
  * @uri /requesttest/one/two/:variable
  */
@@ -575,7 +575,6 @@ class ChildResource extends NewResource {
 }
 
 /**
- * @namespace Tonic\Tests
  * @uri /requesttest/one/two/:variable/([a-z]+)
  * @uri /requesttest/one/two/:variable/static/:variable2
  */
@@ -583,9 +582,6 @@ class GrandChildResource extends NewResource {
 
 }
 
-/**
- * @namespace Tonic\Tests
- */
-class NewNoResource extends Tonic_NoResource {
+class NewNoResource extends Tonic\NoResource {
 
 }

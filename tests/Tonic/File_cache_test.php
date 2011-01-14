@@ -1,5 +1,10 @@
 <?php
 
+namespace Tonic\Tests;
+
+use Tonic as Tonic;
+use UnitTestCase as UnitTestCase;
+
 require_once ('../lib/Tonic/Cache/Type.php');
 require_once ('../lib/Tonic/Cache/FileCache.php');
 require_once ('../lib/Tonic/Cache/Factory.php');
@@ -11,12 +16,19 @@ require_once ('../lib/Tonic/Cache/Factory.php');
  */
 class FileCacheTester extends UnitTestCase {
 	
-	private $fileCacheName = 'Tonic_Cache_FileCache';
-	private $testItemName = 'test.item';
+	const FILE_CACHE_CLASSNAME = 'Tonic\Cache\FileCache';
+	const CACHE_PREFIX = 'tonic.';
+	const ITEM_NAME = 'test.item';
+	
 	private $testItemPath;
+	private $testCacheConfig;
     
 	function __construct() {
-		$this->testItemPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->testItemName;
+		$this->testItemPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::CACHE_PREFIX . self::ITEM_NAME;
+		$this->testCacheConfig = array(
+				'cachepath' => sys_get_temp_dir() . DIRECTORY_SEPARATOR,
+				'prefix' => self::CACHE_PREFIX
+		);
 	}	
 	
 	function tearDown() {
@@ -26,46 +38,46 @@ class FileCacheTester extends UnitTestCase {
 	
 	function testLoadAFileCache() {
 		
-		$fileCache = Tonic_Cache_Factory::getCache($this->fileCacheName);
+		$fileCache = Tonic\Cache\Factory::getCache(self::FILE_CACHE_CLASSNAME);
 				
-		$this->assertIsA($fileCache, $this->fileCacheName);
+		$this->assertIsA($fileCache, self::FILE_CACHE_CLASSNAME);
 		
 	}
 	
 	function testCacheAnItemWithFileCache() {
 		
-		$fileCache = Tonic_Cache_Factory::getCache($this->fileCacheName);
+		$fileCache = Tonic\Cache\Factory::getCache(self::FILE_CACHE_CLASSNAME);
 		
 		$testItem = array('test');
 	
-		$this->assertTrue($fileCache->set($this->testItemName, $testItem));
+		$this->assertTrue($fileCache->set(self::ITEM_NAME, $testItem, $this->testCacheConfig));
 		$this->assertTrue(file_exists($this->testItemPath));
 		
 	}
 	
 	function testGetAnItemFromFileCache() {
 		
-		$fileCache = Tonic_Cache_Factory::getCache($this->fileCacheName);
+		$fileCache = Tonic\Cache\Factory::getCache(self::FILE_CACHE_CLASSNAME);
 		
 		$testItem = array('test');
-		$fileCache->set($this->testItemName, $testItem);
+		$fileCache->set(self::ITEM_NAME, $testItem, $this->testCacheConfig);
 		
-		$readItem = $fileCache->get($this->testItemName);
+		$readItem = $fileCache->get(self::ITEM_NAME);
 		$this->assertEqual($readItem, $testItem);		
 		
 	}
 	
 	function testOverwriteTheCacheItemInFileCache() {
 		
-		$fileCache = Tonic_Cache_Factory::getCache($this->fileCacheName);
+		$fileCache = Tonic\Cache\Factory::getCache(self::FILE_CACHE_CLASSNAME);
 		
 		$testItem = array('test');
-		$fileCache->set($this->testItemName, $testItem);
+		$fileCache->set(self::ITEM_NAME, $testItem, $this->testCacheConfig);
 		
 		$testItem = array('test.two');
-		$fileCache->set($this->testItemName, $testItem);
+		$fileCache->set(self::ITEM_NAME, $testItem, $this->testCacheConfig);
 		
-		$readItem = $fileCache->get($this->testItemName);
+		$readItem = $fileCache->get(self::ITEM_NAME, $this->testCacheConfig);
 		$this->assertEqual($readItem, $testItem);
 		
 	}

@@ -1,10 +1,12 @@
 <?php
 
+namespace Tonic\Tests;
+
+use Tonic as Tonic;
+use UnitTestCase as UnitTestCase;
+
 require_once ('../lib/Tonic/Response.php');
 
-/**
- * @namespace Tonic\Tests
- */
 class ResponseTester extends UnitTestCase {
     
     function testGZipOutputEncoding() {
@@ -14,7 +16,7 @@ class ResponseTester extends UnitTestCase {
             'acceptEncoding' => 'gzip'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         $response->doContentEncoding();
@@ -31,7 +33,7 @@ class ResponseTester extends UnitTestCase {
             'acceptEncoding' => 'deflate'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         $response->doContentEncoding();
@@ -48,7 +50,7 @@ class ResponseTester extends UnitTestCase {
             'acceptEncoding' => 'compress'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         $response->doContentEncoding();
@@ -64,7 +66,7 @@ class ResponseTester extends UnitTestCase {
             'uri' => '/responsetest'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         $response->addCacheHeader();
@@ -79,7 +81,7 @@ class ResponseTester extends UnitTestCase {
             'uri' => '/responsetest'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         $response->addCacheHeader(0);
@@ -94,7 +96,7 @@ class ResponseTester extends UnitTestCase {
             'uri' => '/responsetest'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         $response->addEtag("123123");
@@ -109,14 +111,13 @@ class ResponseTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
- * @namespace Tonic\Tests
  * @uri /responsetest
  */
-class TestResponse extends Tonic_Resource {
+class TestResponse extends Tonic\Resource {
     
     function get($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         $response->body = 'test';
         return $response;
         

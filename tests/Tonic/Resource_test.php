@@ -1,10 +1,12 @@
 <?php
 
+namespace Tonic\Tests;
+
+use Tonic as Tonic;
+use UnitTestCase as UnitTestCase;
+
 require_once ('../lib/Tonic/Resource.php');
 
-/**
- * @namespace Tonic\Tests
- */
 class ResourceTester extends UnitTestCase {
     
     function testStandardResourceExec() {
@@ -13,7 +15,7 @@ class ResourceTester extends UnitTestCase {
             'uri' => '/resourcetest'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -28,7 +30,7 @@ class ResourceTester extends UnitTestCase {
             'uri' => '/resourcetest/one'
         );
         
-        $request = new Tonic_Request($config);
+        $request = new Tonic\Request($config);
         $resource = $request->loadResource();
         $response = $resource->exec($request);
         
@@ -43,14 +45,13 @@ class ResourceTester extends UnitTestCase {
 /* Test resource definitions */
 
 /**
- * @namespace Tonic\Tests
  * @uri /resourcetest/one
  */
-class TestResource extends Tonic_Resource {
+class TestResource extends Tonic\Resource {
     
     function get($request) {
         
-        $response = new Tonic_Response($request);
+        $response = new Tonic\Response($request);
         $response->body = 'test';
         return $response;
         
