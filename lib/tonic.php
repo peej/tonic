@@ -100,32 +100,32 @@ class Request {
      * Array of if-match etags
      * @var str[]
      */
-    private $ifMatch = array();
+    public $ifMatch = array();
     
     /**
      * Array of if-none-match etags
      * @var str[]
      */
-    private $ifNoneMatch = array();
+    public $ifNoneMatch = array();
     
     /**
      * Name of resource class to use for when nothing is found
      * @var str
      */
-    private $noResource = 'NoResource';
+    public $noResource = 'NoResource';
     
     /**
      * The resource classes loaded and how they are wired to URIs
      * @var str[]
      */
-    private $resources = array();
+    public $resources = array();
     
     /**
      * A list of URL to namespace/package mappings for routing requests to a
      * group of resources that are wired into a different URL-space
      * @var str[]
      */
-    private $mounts = array();
+    public $mounts = array();
     
     /**
      * Set a default configuration option
@@ -576,7 +576,7 @@ class Response {
      * The HTTP headers to send
      * @var str[]
      */
-    private $headers = array();
+    public $headers = array();
     
     /**
      * The HTTP response body to send

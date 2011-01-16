@@ -453,7 +453,7 @@ class RequestTester extends UnitTestCase {
         
         $request = new Request($config);
         
-        $this->assertEqual($request->resources['/requesttest/one/two']['namespace'], 'Tonic/Tests');
+        $this->assertEqual($request->resources['/requesttest/one/two']['namespace'], 'Tonic\Tests');
         $this->assertEqual($request->resources['/requesttest/one/two']['class'], 'ChildResource');
         $this->assertEqual($request->resources['/requesttest/one/two']['filename'], __FILE__);
         $this->assertEqual($request->resources['/requesttest/one/two']['priority'], 0);
@@ -465,7 +465,7 @@ class RequestTester extends UnitTestCase {
         $config = array(
             'uri' => '/foo/bar/requesttest/one',
             'mount' => array(
-                'Tonic/Tests' => '/foo/bar'
+                'Tonic\Tests' => '/foo/bar'
             )
         );
         
