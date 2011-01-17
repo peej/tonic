@@ -309,6 +309,15 @@ class Request {
         
         // if that fails then parse Tonic\Resource classes for data
         if (!isset($resources) || !$resources) {
+        	
+        	// autoloading means that get_declared_classes does not return the 
+        	// classes we're interested in. Load them manually here.
+        	if (isset($config['resources']) && is_array($config['resources'])) {
+        		foreach ($config['resources'] as $class) {
+        			class_exists($class);
+        		}
+        	}
+        	
 	        foreach (get_declared_classes() as $className) {
 	            if (is_subclass_of($className, 'Tonic\Resource')) {
 	                
