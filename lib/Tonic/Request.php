@@ -13,62 +13,62 @@ class Request {
      * The requested URI
      * @var string
      */
-    var $uri;
+    public $uri;
     
     /**
      * The URI where the front controller is positioned in the server URI-space
      * @var string
      */
-    var $baseUri = '';
+    public $baseUri = '';
     
     /**
      * Array of possible URIs based upon accept and accept-language request headers in order of preference
      * @var string[]
      */
-    var $negotiatedUris = array();
+    public $negotiatedUris = array();
     
     /**
      * Array of possible URIs based upon accept request headers in order of preference
      * @var string[]
      */
-    var $formatNegotiatedUris = array();
+    public $formatNegotiatedUris = array();
     
     /**
      * Array of possible URIs based upon accept-language request headers in order of preference
      * @var string[]
      */
-    var $languageNegotiatedUris = array();
+    public $languageNegotiatedUris = array();
     
     /**
      * Array of accept headers in order of preference
      * @var string[][]
      */
-    var $accept = array();
+    public $accept = array();
     
     /**
      * Array of accept-language headers in order of preference
      * @var string[][]
      */
-    var $acceptLang = array();
+    public $acceptLang = array();
     
     /**
      * Array of accept-encoding headers in order of preference
      * @var string[]
      */
-    var $acceptEncoding = array();
+    public $acceptEncoding = array();
     
     /**
      * Map of file/URI extensions to mimetypes
      * @var string[]
      */
-    var $mimetypes = array(
+    public $mimetypes = array(
             'html' => 'text/html',
             'txt' => 'text/plain',
             'php' => 'application/php',
             'css' => 'text/css',
             'js' => 'application/javascript',
             'json' => 'application/json',
-            'xml' => 'text/xml',
+            'xml' => 'application/xml',
             'rss' => 'application/rss+xml',
             'atom' => 'application/atom+xml',
             'gz' => 'application/x-gzip',
@@ -91,44 +91,44 @@ class Request {
      * HTTP request method of incoming request
      * @var string
      */
-    var $method = 'GET';
+    public $method = 'GET';
     
     /**
      * Body data of incoming request
      * @var string
      */
-    var $data;
+    public $data;
     
     /**
      * Array of if-match etags
      * @var string[]
      */
-    var $ifMatch = array();
+    public $ifMatch = array();
     
     /**
      * Array of if-none-match etags
      * @var string[]
      */
-    var $ifNoneMatch = array();
+    public $ifNoneMatch = array();
     
     /**
      * Name of resource class to use for when nothing is found
      * @var string
      */
-    var $noResource = 'Tonic\NoResource';
+    public $noResource = 'Tonic\NoResource';
     
     /**
      * The resource classes loaded and how they are wired to URIs
      * @var string[]
      */
-    var $resources = array();
+    public $resources = array();
     
     /**
      * A list of URL to namespace/package mappings for routing requests to a
      * group of resources that are wired into a different URL-space
      * @var string[]
      */
-    var $mounts = array();
+    public $mounts = array();
     
     /**
      * Set a default configuration option
