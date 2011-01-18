@@ -100,6 +100,12 @@ class Request {
     public $data;
     
     /**
+     * Content type of body data
+     * @var string
+     */
+    public $dataType = 'json';
+    
+    /**
      * Array of if-match etags
      * @var string[]
      */
@@ -275,6 +281,13 @@ class Request {
         
         // get HTTP request data
         $this->data = $this->getConfig($config, 'data', NULL, file_get_contents("php://input"));
+        
+        // get HTTP request data type
+        $rawDataType = $this->getConfig($config, 'dataType', 'CONTENT_TYPE', $this->dataType);
+    	$key = array_search($rawDataType, $this->mimetypes);
+        if ($key) {
+            $this->dataType = $key;
+        }
         
         // conditional requests
         if ($config['ifMatch']) {
