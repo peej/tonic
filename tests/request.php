@@ -326,6 +326,7 @@ class RequestTester extends UnitTestCase {
         $resource = $request->loadResource();
         
         $this->assertEqual(get_class($resource), 'NewResource');
+        $this->assertPattern('/0: something/', $resource);
         
     }
     
@@ -477,6 +478,20 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testRailsStyleUriParameters() {
+        
+        $config = array(
+            'uri' => '/requesttest/railsstyle/woo/yay'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'RailsStyleUriParam');
+        $this->assertPattern('/param: woo/', $resource);
+        $this->assertPattern('/param2: yay/', $resource);
+    }
+    
 }
 
 
@@ -485,7 +500,7 @@ class RequestTester extends UnitTestCase {
 /**
  * @namespace Tonic\Tests
  * @uri /requesttest/one
- * @uri /requesttest/three/.+/four 12
+ * @uri /requesttest/three/(.+)/four 12
  */
 class NewResource extends Resource {
 
@@ -505,4 +520,12 @@ class ChildResource extends NewResource {
 class NewNoResource extends NoResource {
 
 }
-?>
+
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/railsstyle/:param/:param2
+ */
+class RailsStyleUriParam extends Resource {
+
+}
+

@@ -412,6 +412,23 @@ class Request {
                     $resource['class'],
                     $matches
                 );
+            } else { // rails style uri parameters
+                preg_match_all('|(:[^/]+)|', $uri, $params, PREG_OFFSET_CAPTURE);
+                $offset = 0;
+                foreach ($params[0] as $param) {
+                    $uri = substr($uri, 0, $param[1] + $offset).'([^/]+)'.substr($uri, $param[1] + strlen($param[0]) + $offset);
+                    $offset += 7 - strlen($param[0]);
+                }
+                if (preg_match('#^'.$this->baseUri.$uri.'$#', $this->uri, $matches)) {
+                    array_shift($matches);
+                    foreach ($matches as $field => $value) {
+                        $matches[substr($params[0][$field][0], 1)] = $value;
+                    }
+                    $uriMatches[$resource['priority']] = array(
+                        $resource['class'],
+                        $matches
+                    );
+                }
             }
         }
         ksort($uriMatches);
@@ -464,6 +481,18 @@ class Resource {
      */
     function  __construct($parameters = array()) {
         $this->parameters = $parameters;
+    }
+    
+    /**
+     * Convert the object into a string suitable for printing
+     * @return str
+     */
+    function __toString() {
+        $str = get_class($this);
+        foreach ($this->parameters as $name => $value) {
+            $str .= "\n".$name.': '.$value;
+        }
+        return $str;
     }
     
     /**
