@@ -406,29 +406,25 @@ class Request {
         
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
+            preg_match_all('#(:[^/]+|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
+            $uri = preg_replace('#(:[^/]+)#', '(.+)', $uri);
+            
             if (preg_match('#^'.$this->baseUri.$uri.'$#', $this->uri, $matches)) {
                 array_shift($matches);
+                
+                if (isset($params[1])) {
+                    foreach ($params[1] as $index => $param) {
+                        if (substr($param, 0, 1) == ':' && isset($matches[$index])) {
+                            $matches[substr($param, 1)] = $matches[$index];
+                        }
+                    }
+                }
+                
                 $uriMatches[$resource['priority']] = array(
                     $resource['class'],
                     $matches
                 );
-            } else { // rails style uri parameters
-                preg_match_all('|(:[^/]+)|', $uri, $params, PREG_OFFSET_CAPTURE);
-                $offset = 0;
-                foreach ($params[0] as $param) {
-                    $uri = substr($uri, 0, $param[1] + $offset).'([^/]+)'.substr($uri, $param[1] + strlen($param[0]) + $offset);
-                    $offset += 7 - strlen($param[0]);
-                }
-                if (preg_match('#^'.$this->baseUri.$uri.'$#', $this->uri, $matches)) {
-                    array_shift($matches);
-                    foreach ($matches as $field => $value) {
-                        $matches[substr($params[0][$field][0], 1)] = $value;
-                    }
-                    $uriMatches[$resource['priority']] = array(
-                        $resource['class'],
-                        $matches
-                    );
-                }
+                
             }
         }
         ksort($uriMatches);

@@ -488,8 +488,26 @@ class RequestTester extends UnitTestCase {
         $resource = $request->loadResource();
         
         $this->assertEqual(get_class($resource), 'RailsStyleUriParam');
+        $this->assertPattern('/0: woo/', $resource);
         $this->assertPattern('/param: woo/', $resource);
+        $this->assertPattern('/1: yay/', $resource);
         $this->assertPattern('/param2: yay/', $resource);
+        
+        
+        $config = array(
+            'uri' => '/requesttest/mixedstyle/woo/yay/foo/bar'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'MixedRegexAndRailsStyleUriParam');
+        $this->assertPattern('/0: woo/', $resource);
+        $this->assertPattern('/param: woo/', $resource);
+        $this->assertPattern('/1: yay/', $resource);
+        $this->assertPattern('/2: foo/', $resource);
+        $this->assertPattern('/param2: foo/', $resource);
+        $this->assertPattern('/3: bar/', $resource);
     }
     
 }
@@ -526,6 +544,14 @@ class NewNoResource extends NoResource {
  * @uri /requesttest/railsstyle/:param/:param2
  */
 class RailsStyleUriParam extends Resource {
+
+}
+
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/mixedstyle/:param/(.+)/:param2/(.+)
+ */
+class MixedRegexAndRailsStyleUriParam extends Resource {
 
 }
 
