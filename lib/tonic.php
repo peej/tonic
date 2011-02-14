@@ -406,17 +406,23 @@ class Request {
         
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
-            preg_match_all('#(:[^/]+|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
-            $uri = preg_replace('#(:[^/]+)#', '(.+)', $uri);
+            
+            preg_match_all('#(:[^/]+|{[^}]+}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
+            $uri = preg_replace('#(:[^/]+|{[^}]+})#', '(.+)', $uri);
             
             if (preg_match('#^'.$this->baseUri.$uri.'$#', $this->uri, $matches)) {
                 array_shift($matches);
                 
                 if (isset($params[1])) {
                     foreach ($params[1] as $index => $param) {
-                        if (substr($param, 0, 1) == ':' && isset($matches[$index])) {
-                            $matches[substr($param, 1)] = $matches[$index];
-                            unset($matches[$index]);
+                        if (isset($matches[$index])) {
+                            if (substr($param, 0, 1) == ':') {
+                                $matches[substr($param, 1)] = $matches[$index];
+                                unset($matches[$index]);
+                            } elseif (substr($param, 0, 1) == '{' && substr($param, -1, 1) == '}') {
+                                $matches[substr($param, 1, -1)] = $matches[$index];
+                                unset($matches[$index]);
+                            }
                         }
                     }
                 }
