@@ -99,14 +99,44 @@ Don't put a trailing slash on the end.
 URI annotations
 ---------------
 
-Resources are attached to their URL by their @uri annotation. As well as a straight
-forward URI string, you can also use a regular expression so that a resource is
-tied to a range of URIs:
+Resources are attached to their URL by their @uri annotation:
+
+    /**
+     * @uri /example
+     */
+    class ExampleResource extends Resource { }
+
+As well as a straight forward URI string, you can also use a regular expression
+so that a resource is tied to a range of URIs:
 
     /**
      * @uri /example/([a-z]+)
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Resource {
+        function get($request, $parameter) {
+            ...
+        }
+    }
+
+URL template and Rails route style @uri annotations are also supported:
+
+    /**
+     * @uri /users/{username}
+     */
+    class ExampleResource extends Resource {
+        function get($request, $username) {
+            ...
+        }
+    }
+    
+    /**
+     * @uri /users/:username
+     */
+    class ExampleResource extends Resource {
+        function get($request, $username) {
+            ...
+        }
+    }
 
 It is also possible for multiple resource to match the same URI, so you can
 prioritise which resource should be used by specifying a priority level as part
@@ -154,7 +184,8 @@ namespace will in effect have the URL-space prefixed to their @uri annotation.
         )
     ));
 
-Again, don't put a trailing slash on the end.
+Again, don't put a trailing slash on the end, and if you aren't using PHP5.3 and
+namespaces, you can use the @namespace annotation.
 
 
 
