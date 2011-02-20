@@ -1,6 +1,7 @@
 <?php
 
 require_once('../lib/tonic.php');
+require_once('def/response.php');
 
 /**
  * @namespace Tonic\Tests
@@ -105,23 +106,3 @@ class ResponseTester extends UnitTestCase {
     
 }
 
-
-/* Test resource definitions */
-
-/**
- * @namespace Tonic\Tests
- * @uri /responsetest
- */
-class TestResponse extends Resource {
-    
-    function get($request) {
-        
-        $response = new Response($request);
-        $response->body = 'test';
-        return $response;
-        
-    }
-    
-}
-
-?>

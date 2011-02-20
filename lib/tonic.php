@@ -300,56 +300,94 @@ class Request {
             $this->mounts = $config['mount'];
         }
         
-        // resource classes
+        // prime named resources for autoloading
+        if (isset($config['autoload']) && is_array($config['autoload'])) {
+            foreach ($config['autoload'] as $uri => $filename) {
+                $parts = preg_split('|[/\\\\]|', $filename);
+                $filename = join(DIRECTORY_SEPARATOR, $parts);
+                $parts = explode('.', array_pop($parts));
+                $className = $parts[0];
+                if (file_exists($filename)) {
+                    $this->resources[$uri] = array(
+                        'class' => $className,
+                        'filename' => $filename,
+                        'loaded' => FALSE
+                    );
+                }
+            }
+        }
+        
+        // load definitions of already loaded resource classes
         foreach (get_declared_classes() as $className) {
             if (is_subclass_of($className, 'Resource')) {
                 
-                $resourceReflector = new ReflectionClass($className);
-                $comment = $resourceReflector->getDocComment();
+                $resourceDetails = $this->getResourceClassDetails($className);
                 
-                $className = $resourceReflector->getName();
-                if (method_exists($resourceReflector, 'getNamespaceName')) {
-                    $namespaceName = $resourceReflector->getNamespaceName();
-                } else {
-                    $namespaceName = FALSE;
-                }
-                
-                if (!$namespaceName) {
-                    preg_match('/@(?:package|namespace)\s+([^\s]+)/', $comment, $package);
-                    if (isset($package[1])) {
-                        $namespaceName = $package[1];
-                    }
-                }
-                
-                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $comment, $annotations);
+                preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $resourceDetails['comment'], $annotations);
                 if (isset($annotations[1])) {
                     $uris = $annotations[1];
                 } else {
                     $uris = array('/');
                 }
                 
-                // adjust URI for mountpoint
-                if (isset($this->mounts[$namespaceName])) {
-                    $mountPoint = $this->mounts[$namespaceName];
-                } else {
-                    $mountPoint = '';
-                }
-                
                 foreach ($uris as $index => $uri) {
                     if (substr($uri, -1, 1) == '/') { // remove trailing slash problem
                         $uri = substr($uri, 0, -1);
                     }
-                    $this->resources[$mountPoint.$uri] = array(
-                        'namespace' => $namespaceName,
-                        'class' => $className,
-                        'filename' => $resourceReflector->getFileName(),
-                        'line' => $resourceReflector->getStartLine(),
-                        'priority' => isset($annotations[2][$index]) && is_numeric($annotations[2][$index]) ? intval($annotations[2][$index]) : 0
+                    $this->resources[$resourceDetails['mountPoint'].$uri] = array(
+                        'namespace' => $resourceDetails['namespaceName'],
+                        'class' => $resourceDetails['className'],
+                        'filename' => $resourceDetails['filename'],
+                        'line' => $resourceDetails['line'],
+                        'priority' => isset($annotations[2][$index]) && is_numeric($annotations[2][$index]) ? intval($annotations[2][$index]) : 0,
+                        'loaded' => TRUE
                     );
                 }
             }
         }
         
+    }
+    
+    /**
+     * Get the details of a Resource class by reflection
+     * @param str className
+     * @return str[]
+     */
+    private function getResourceClassDetails($className) {
+        
+        $resourceReflector = new ReflectionClass($className);
+        $comment = $resourceReflector->getDocComment();
+        
+        $className = $resourceReflector->getName();
+        if (method_exists($resourceReflector, 'getNamespaceName')) {
+            $namespaceName = $resourceReflector->getNamespaceName();
+        } else {
+            $namespaceName = FALSE;
+        }
+        
+        if (!$namespaceName) {
+            preg_match('/@(?:package|namespace)\s+([^\s]+)/', $comment, $package);
+            if (isset($package[1])) {
+                $namespaceName = $package[1];
+            }
+        }
+        
+        // adjust URI for mountpoint
+        if (isset($this->mounts[$namespaceName])) {
+            $mountPoint = $this->mounts[$namespaceName];
+        } else {
+            $mountPoint = '';
+        }
+        
+        return array(
+            'comment' => $comment,
+            'className' => $className,
+            'namespaceName' => $namespaceName,
+            'filename' => $resourceReflector->getFileName(),
+            'line' => $resourceReflector->getStartLine(),
+            'mountPoint' => $mountPoint
+        );
+    
     }
     
     /**
@@ -391,9 +429,11 @@ class Request {
         $str .= 'Loaded Resources:'."\n";
         foreach ($this->resources as $uri => $resource) {
             $str .= "\t".$uri."\n";
-            if ($resource['namespace']) $str .= "\t\tNamespace: ".$resource['namespace']."\n";
+            if (isset($resource['namespace']) && $resource['namespace']) $str .= "\t\tNamespace: ".$resource['namespace']."\n";
             $str .= "\t\tClass: ".$resource['class']."\n";
-            $str .= "\t\tFile: ".$resource['filename'].'#'.$resource['line']."\n";
+            $str .= "\t\tFile: ".$resource['filename'];
+            if (isset($resource['line']) && $resource['line']) $str .= '#'.$resource['line'];
+            $str .= "\n";
         }
         return $str;
     }
@@ -408,9 +448,9 @@ class Request {
         foreach ($this->resources as $uri => $resource) {
             
             preg_match_all('#(:[^/]+|{[^}]+}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
-            $uri = preg_replace('#(:[^/]+|{[^}]+})#', '(.+)', $uri);
+            $uriRegex = preg_replace('#(:[^/]+|{[^}]+})#', '(.+)', $uri);
             
-            if (preg_match('#^'.$this->baseUri.$uri.'$#', $this->uri, $matches)) {
+            if (preg_match('#^'.$this->baseUri.$uriRegex.'$#', $this->uri, $matches)) {
                 array_shift($matches);
                 
                 if (isset($params[1])) {
@@ -427,8 +467,9 @@ class Request {
                     }
                 }
                 
-                $uriMatches[$resource['priority']] = array(
-                    $resource['class'],
+                $uriMatches[isset($resource['priority']) ? $resource['priority'] : 0] = array(
+                    $uri,
+                    $resource,
                     $matches
                 );
                 
@@ -437,8 +478,22 @@ class Request {
         ksort($uriMatches);
         
         if ($uriMatches) {
-            $resourceDetails = array_shift($uriMatches);
-            return new $resourceDetails[0]($resourceDetails[1]);
+            list($uri, $resource, $parameters) = array_shift($uriMatches);
+            if (!$resource['loaded']) { // autoload
+                if (!class_exists($resource['class'])) {
+                    include $resource['filename'];
+                }
+                $resourceDetails = $this->getResourceClassDetails($resource['class']);
+                $resource = $this->resources[$uri] = array(
+                    'namespace' => $resourceDetails['namespaceName'],
+                    'class' => $resourceDetails['className'],
+                    'filename' => $resourceDetails['filename'],
+                    'line' => $resourceDetails['line'],
+                    'priority' => 0,
+                    'loaded' => TRUE
+                );
+            }
+            return new $resource['class']($parameters);
         }
         return new $this->noResource();
         
