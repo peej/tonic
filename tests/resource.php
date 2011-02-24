@@ -37,6 +37,20 @@ class ResourceTester extends UnitTestCase {
         $this->assertEqual($response->body, 'test');
         
     }
+    
+    function testNoParametersArgumentToResourceConstructor() {
+        
+        $config = array(
+            'uri' => '/resourcetest/badconstructor'
+        );
+        
+        $this->expectError(new PatternExpectation('/Missing argument 1 for Resource::__construct/'));
+        $this->expectError(new PatternExpectation('/Undefined variable: parameters/'));
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+    }
 
 }
 

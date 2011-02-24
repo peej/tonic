@@ -18,3 +18,17 @@ class TestResource extends Resource {
     
 }
 
+/**
+ * @namespace Tonic\Tests
+ * @uri /resourcetest/badconstructor
+ */
+class TestBadResourceConstructor extends Resource {
+    
+    function __construct() {
+        
+        parent::__construct();
+        
+    }
+    
+}
+
