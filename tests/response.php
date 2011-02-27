@@ -59,6 +59,22 @@ class ResponseTester extends UnitTestCase {
         
     }
     
+    function testIdentityOutputEncoding() {
+        
+        $config = array(
+            'uri' => '/responsetest',
+            'acceptEncoding' => 'identity'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        $response = $resource->exec($request);
+        $response->doContentEncoding();
+        
+        $this->assertEqual($response->body, 'test');
+        
+    }
+    
     function testDefaultCacheHeader() {
         
         $config = array(

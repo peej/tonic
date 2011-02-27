@@ -429,6 +429,18 @@ class RequestTester extends UnitTestCase {
         $this->assertFalse($request->ifNoneMatch('123123'));
         $this->assertFalse($request->ifNoneMatch('123456'));
         
+        $config = array(
+            'uri' => '/requesttest/one',
+            'ifNoneMatch' => '123123, 456456',
+            'ifMatch' => '*'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->ifMatch, array('*'));
+        $this->assertTrue($request->ifMatch('123123'));
+        $this->assertTrue($request->ifMatch('123456'));
+        $this->assertFalse($request->ifNoneMatch('123123'));
+        $this->assertFalse($request->ifNoneMatch('123456'));
+        
     }
     
     function testResourceLoaderWithNewNoResourceResource() {

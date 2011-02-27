@@ -324,7 +324,7 @@ class Request {
                 $resourceDetails = $this->getResourceClassDetails($className);
                 
                 preg_match_all('/@uri\s+([^\s]+)(?:\s([0-9]+))?/', $resourceDetails['comment'], $annotations);
-                if (isset($annotations[1])) {
+                if (isset($annotations[1]) && $annotations[1]) {
                     $uris = $annotations[1];
                 } else {
                     $uris = array('/');
@@ -362,7 +362,9 @@ class Request {
         if (method_exists($resourceReflector, 'getNamespaceName')) {
             $namespaceName = $resourceReflector->getNamespaceName();
         } else {
+            // @codeCoverageIgnoreStart
             $namespaceName = FALSE;
+            // @codeCoverageIgnoreEnd
         }
         
         if (!$namespaceName) {
@@ -393,6 +395,7 @@ class Request {
     /**
      * Convert the object into a string suitable for printing
      * @return str
+     * @codeCoverageIgnore
      */
     function __toString() {
         $str = 'URI: '.$this->uri."\n";
@@ -544,6 +547,7 @@ class Resource {
     /**
      * Convert the object into a string suitable for printing
      * @return str
+     * @codeCoverageIgnore
      */
     function __toString() {
         $str = get_class($this);
@@ -706,6 +710,7 @@ class Response {
     /**
      * Convert the object into a string suitable for printing
      * @return str
+     * @codeCoverageIgnore
      */
     function __toString() {
         $str = 'HTTP/1.1 '.$this->code;
@@ -735,19 +740,19 @@ class Response {
                     $this->addHeader('Content-Encoding', 'gzip');
                     $this->addVary('Accept-Encoding');
                     $this->body = gzencode($this->body);
-                    return;
+                    break 2;
                 case 'deflate':
                     $this->addHeader('Content-Encoding', 'deflate');
                     $this->addVary('Accept-Encoding');
                     $this->body = gzdeflate($this->body);
-                    return;
+                    break 2;
                 case 'compress':
                     $this->addHeader('Content-Encoding', 'compress');
                     $this->addVary('Accept-Encoding');
                     $this->body = gzcompress($this->body);
-                    return;
+                    break 2;
                 case 'identity':
-                    return;
+                    break 2;
                 }
             }
         }
@@ -781,6 +786,10 @@ class Response {
         }
     }
     
+    /**
+     * Output the response
+     * @codeCoverageIgnore
+     */
     function output() {
         
         if (php_sapi_name() != 'cli' && !headers_sent()) {

@@ -75,10 +75,3 @@ class TrailingSlashUrl extends Resource {
 
 }
 
-/**
- * @namespace Tonic\Tests
- */
-class MissingUrlAnnotation extends Resource {
-
-}
-
