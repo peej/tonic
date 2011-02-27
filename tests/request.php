@@ -13,9 +13,11 @@ class RequestTester extends UnitTestCase {
         $config = array(
             'uri' => '/requesttest/one/two'
         );
-        
         $request = new Request($config);
+        $this->assertEqual($request->uri, $config['uri']);
         
+        $_SERVER['REDIRECT_URL'] = '/requesttest/one/two';
+        $request = new Request();
         $this->assertEqual($request->uri, $config['uri']);
         
     }
@@ -29,6 +31,18 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         
         $this->assertEqual($request->baseUri, $config['baseUri']);
+        
+    }
+    
+    function testAssignMimetypes() {
+        
+        $config = array(
+            'mimetypes' => array(
+                'some' => 'text/something'
+            )
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->mimetypes['some'], 'text/something');
         
     }
     
@@ -610,5 +624,28 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testTrailingSlashRemoval() {
+        
+        $config = array(
+            'uri' => '/requesttest/trailingslashurl/'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->uri, substr($config['uri'], 0, -1));
+        
+    }
+    
+    function testMethodNotAllowed() {
+        
+        $config = array(
+            'uri' => '/requesttest/one',
+            'method' => 'PUT'
+        );
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        $response = $resource->exec($request);
+        
+        $this->assertEqual($response->code, 405);
+        
+    }
 }
 

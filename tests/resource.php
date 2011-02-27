@@ -51,6 +51,20 @@ class ResourceTester extends UnitTestCase {
         $resource = $request->loadResource();
         
     }
+    
+    function testMethodDoesNotReturnResponseObject() {
+        
+        $config = array(
+            'uri' => '/resourcetest/badmethodresponse'
+        );
+        
+        $this->expectException(new PatternExpectation('/Method GET of TestBadMethodResponse did not return a Response object/'));
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        $response = $resource->exec($request);
+        
+    }
 
 }
 

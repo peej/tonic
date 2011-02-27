@@ -16,9 +16,25 @@ $core->addTestFile('filesystemcollection.php');
 $test = new GroupTest('Tonic');
 $test->addTestCase($core);
 
-if (TextReporter::inCli()) {
-	exit ($test->run(new TextReporter()) ? 0 : 1);
+@include_once 'PHP/CodeCoverage.php';
+if (class_exists('PHP_CodeCoverage')) {
+    $coverage = new PHP_CodeCoverage;
+    $coverage->start('Tonic');
 }
-$test->run(new HtmlReporter());
+
+if (TextReporter::inCli()) {
+	$test->run(new TextReporter());
+} else {
+    $test->run(new HtmlReporter());
+}
+
+if (isset($coverage)) {
+    $coverage->stop();
+    
+    require_once 'PHP/CodeCoverage/Report/HTML.php';
+    
+    $writer = new PHP_CodeCoverage_Report_HTML;
+    $writer->process($coverage, 'report');
+}
 
 ?>

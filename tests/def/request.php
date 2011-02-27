@@ -67,3 +67,18 @@ class FourUriParams extends Resource {
     
 }
 
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/trailingslashurl/
+ */
+class TrailingSlashUrl extends Resource {
+
+}
+
+/**
+ * @namespace Tonic\Tests
+ */
+class MissingUrlAnnotation extends Resource {
+
+}
+

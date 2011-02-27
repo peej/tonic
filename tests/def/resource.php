@@ -32,3 +32,16 @@ class TestBadResourceConstructor extends Resource {
     
 }
 
+/**
+ * @namespace Tonic\Tests
+ * @uri /resourcetest/badmethodresponse
+ */
+class TestBadMethodResponse extends Resource {
+    
+    function get($request) {
+        
+        return TRUE;
+        
+    }
+    
+}
