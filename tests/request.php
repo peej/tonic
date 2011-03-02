@@ -56,6 +56,20 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testPostRequestMethodWithData() {
+        
+        $config = array(
+            'method' => 'post',
+            'data' => 'some data'
+        );
+        
+        $request = new Request($config);
+        
+        $this->assertEqual($request->method, 'POST');
+        $this->assertEqual($request->data, 'some data');
+        
+    }
+    
     function testPutRequestMethodWithData() {
         
         $config = array(

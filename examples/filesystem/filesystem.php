@@ -65,7 +65,8 @@ class FilesystemResource extends Resource {
                     
                 } else {
                     
-                    $extension = array_pop(explode('.', $filePath));
+                    $explodedPath = explode('.', $filePath);
+                    $extension = array_pop($explodedPath);
                     if (isset($request->mimetypes[$extension])) { // add content type header
                         $response->addHeader('Content-Type', $request->mimetypes[$extension]);
                     }
@@ -80,6 +81,8 @@ class FilesystemResource extends Resource {
             }
             
         }
+        echo "hi";
+        die;
         
         // nothing found, send 404 response
         $response = new Response($request);
