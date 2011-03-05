@@ -1,0 +1,483 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Sat, 05 Mar 2011 10:58:20 +0000">
+
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css">
+<link rel="start" href="../../overview-summary.html">
+
+<title>RequestTester (Tonic)</title>
+
+</head>
+<body id="definition" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>Tonic</h1>
+<ul>
+<li><a href="../../overview-summary.html">Overview</a></li>
+<li><a href="../../tonic/tests/package-summary.html">Namespace</a></li>
+<li class="active">Class</li>
+<li><a href="../../tonic/tests/package-tree.html">Tree</a></li>
+<li><a href="../../overview-files.html">Files</a></li>
+<li><a href="../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../todo-list.html">Todo</a></li>
+<li><a href="../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../index.html" target="_top">Frames</a>
+<a href="../../tonic/tests/requesttester.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<div class="qualifiedName">Tonic\Tests\RequestTester</div>
+<a href="../../source/tests/request.php.html#line9" class="location">tests/request.php at line 9</a>
+
+<h1>Class RequestTester</h1>
+
+<pre class="tree">UnitTestCase<br> └─<strong>RequestTester</strong><br /></pre>
+
+<hr>
+
+<p class="signature">public  class <strong>RequestTester</strong><br>extends UnitTestCase
+
+</p>
+
+<div class="comment" id="overview_description"><p></p></div>
+
+<hr>
+
+<table id="summary_method">
+<tr><th colspan="2">Method Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testAssignMimetypes()">testAssignMimetypes</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testAutoloadingOfResouces()">testAutoloadingOfResouces</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnBareURI()">testConnegOnBareURI</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnBareURIWithAccept()">testConnegOnBareURIWithAccept</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnBareURIWithAcceptAndAcceptLang()">testConnegOnBareURIWithAcceptAndAcceptLang</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnBareURIWithAcceptLang()">testConnegOnBareURIWithAcceptLang</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnExtensionURI()">testConnegOnExtensionURI</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnExtensionURIWithAccept()">testConnegOnExtensionURIWithAccept</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnExtensionURIWithAcceptAndAcceptLang()">testConnegOnExtensionURIWithAcceptAndAcceptLang</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testConnegOnExtensionURIWithAcceptLang()">testConnegOnExtensionURIWithAcceptLang</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testGetRequestMethod()">testGetRequestMethod</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testIfMatch()">testIfMatch</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testIfNoneMatch()">testIfNoneMatch</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testMethodNotAllowed()">testMethodNotAllowed</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testMixedStyleUriParameters()">testMixedStyleUriParameters</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testNamespaceMounting()">testNamespaceMounting</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testPostRequestMethodWithData()">testPostRequestMethodWithData</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testPutRequestMethodWithData()">testPutRequestMethodWithData</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testRailsStyleUriParameters()">testRailsStyleUriParameters</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testRequestBaseUri()">testRequestBaseUri</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testRequestURI()">testRequestURI</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testResourceDataLoading()">testResourceDataLoading</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testResourceLoaderWithAChildResources()">testResourceLoaderWithAChildResources</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testResourceLoaderWithAResources()">testResourceLoaderWithAResources</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testResourceLoaderWithBadNoResourceResource()">testResourceLoaderWithBadNoResourceResource</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testResourceLoaderWithNewNoResourceResource()">testResourceLoaderWithNewNoResourceResource</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testResourceLoaderWithNoResources()">testResourceLoaderWithNoResources</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testResourceLoaderWithRegexURIMatch()">testResourceLoaderWithRegexURIMatch</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testTrailingSlashRemoval()">testTrailingSlashRemoval</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testURITemplateStyleUriParameters()">testURITemplateStyleUriParameters</a>()</p></td>
+</tr>
+</table>
+
+<h2 id="detail_method">Method Detail</h2>
+<a href="../../source/tests/request.php.html#line37" class="location">tests/request.php at line 37</a>
+
+<h3 id="testAssignMimetypes()">testAssignMimetypes</h3>
+<code class="signature">public  void <strong>testAssignMimetypes</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line620" class="location">tests/request.php at line 620</a>
+
+<h3 id="testAutoloadingOfResouces()">testAutoloadingOfResouces</h3>
+<code class="signature">public  void <strong>testAutoloadingOfResouces</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line87" class="location">tests/request.php at line 87</a>
+
+<h3 id="testConnegOnBareURI()">testConnegOnBareURI</h3>
+<code class="signature">public  void <strong>testConnegOnBareURI</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line134" class="location">tests/request.php at line 134</a>
+
+<h3 id="testConnegOnBareURIWithAccept()">testConnegOnBareURIWithAccept</h3>
+<code class="signature">public  void <strong>testConnegOnBareURIWithAccept</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line241" class="location">tests/request.php at line 241</a>
+
+<h3 id="testConnegOnBareURIWithAcceptAndAcceptLang()">testConnegOnBareURIWithAcceptAndAcceptLang</h3>
+<code class="signature">public  void <strong>testConnegOnBareURIWithAcceptAndAcceptLang</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line186" class="location">tests/request.php at line 186</a>
+
+<h3 id="testConnegOnBareURIWithAcceptLang()">testConnegOnBareURIWithAcceptLang</h3>
+<code class="signature">public  void <strong>testConnegOnBareURIWithAcceptLang</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line109" class="location">tests/request.php at line 109</a>
+
+<h3 id="testConnegOnExtensionURI()">testConnegOnExtensionURI</h3>
+<code class="signature">public  void <strong>testConnegOnExtensionURI</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line159" class="location">tests/request.php at line 159</a>
+
+<h3 id="testConnegOnExtensionURIWithAccept()">testConnegOnExtensionURIWithAccept</h3>
+<code class="signature">public  void <strong>testConnegOnExtensionURIWithAccept</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line274" class="location">tests/request.php at line 274</a>
+
+<h3 id="testConnegOnExtensionURIWithAcceptAndAcceptLang()">testConnegOnExtensionURIWithAcceptAndAcceptLang</h3>
+<code class="signature">public  void <strong>testConnegOnExtensionURIWithAcceptAndAcceptLang</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line211" class="location">tests/request.php at line 211</a>
+
+<h3 id="testConnegOnExtensionURIWithAcceptLang()">testConnegOnExtensionURIWithAcceptLang</h3>
+<code class="signature">public  void <strong>testConnegOnExtensionURIWithAcceptLang</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line49" class="location">tests/request.php at line 49</a>
+
+<h3 id="testGetRequestMethod()">testGetRequestMethod</h3>
+<code class="signature">public  void <strong>testGetRequestMethod</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line362" class="location">tests/request.php at line 362</a>
+
+<h3 id="testIfMatch()">testIfMatch</h3>
+<code class="signature">public  void <strong>testIfMatch</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line405" class="location">tests/request.php at line 405</a>
+
+<h3 id="testIfNoneMatch()">testIfNoneMatch</h3>
+<code class="signature">public  void <strong>testIfNoneMatch</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line663" class="location">tests/request.php at line 663</a>
+
+<h3 id="testMethodNotAllowed()">testMethodNotAllowed</h3>
+<code class="signature">public  void <strong>testMethodNotAllowed</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line598" class="location">tests/request.php at line 598</a>
+
+<h3 id="testMixedStyleUriParameters()">testMixedStyleUriParameters</h3>
+<code class="signature">public  void <strong>testMixedStyleUriParameters</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line505" class="location">tests/request.php at line 505</a>
+
+<h3 id="testNamespaceMounting()">testNamespaceMounting</h3>
+<code class="signature">public  void <strong>testNamespaceMounting</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line59" class="location">tests/request.php at line 59</a>
+
+<h3 id="testPostRequestMethodWithData()">testPostRequestMethodWithData</h3>
+<code class="signature">public  void <strong>testPostRequestMethodWithData</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line73" class="location">tests/request.php at line 73</a>
+
+<h3 id="testPutRequestMethodWithData()">testPutRequestMethodWithData</h3>
+<code class="signature">public  void <strong>testPutRequestMethodWithData</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line560" class="location">tests/request.php at line 560</a>
+
+<h3 id="testRailsStyleUriParameters()">testRailsStyleUriParameters</h3>
+<code class="signature">public  void <strong>testRailsStyleUriParameters</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line25" class="location">tests/request.php at line 25</a>
+
+<h3 id="testRequestBaseUri()">testRequestBaseUri</h3>
+<code class="signature">public  void <strong>testRequestBaseUri</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line11" class="location">tests/request.php at line 11</a>
+
+<h3 id="testRequestURI()">testRequestURI</h3>
+<code class="signature">public  void <strong>testRequestURI</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line490" class="location">tests/request.php at line 490</a>
+
+<h3 id="testResourceDataLoading()">testResourceDataLoading</h3>
+<code class="signature">public  void <strong>testResourceDataLoading</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line335" class="location">tests/request.php at line 335</a>
+
+<h3 id="testResourceLoaderWithAChildResources()">testResourceLoaderWithAChildResources</h3>
+<code class="signature">public  void <strong>testResourceLoaderWithAChildResources</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line322" class="location">tests/request.php at line 322</a>
+
+<h3 id="testResourceLoaderWithAResources()">testResourceLoaderWithAResources</h3>
+<code class="signature">public  void <strong>testResourceLoaderWithAResources</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line474" class="location">tests/request.php at line 474</a>
+
+<h3 id="testResourceLoaderWithBadNoResourceResource()">testResourceLoaderWithBadNoResourceResource</h3>
+<code class="signature">public  void <strong>testResourceLoaderWithBadNoResourceResource</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line460" class="location">tests/request.php at line 460</a>
+
+<h3 id="testResourceLoaderWithNewNoResourceResource()">testResourceLoaderWithNewNoResourceResource</h3>
+<code class="signature">public  void <strong>testResourceLoaderWithNewNoResourceResource</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line309" class="location">tests/request.php at line 309</a>
+
+<h3 id="testResourceLoaderWithNoResources()">testResourceLoaderWithNoResources</h3>
+<code class="signature">public  void <strong>testResourceLoaderWithNoResources</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line348" class="location">tests/request.php at line 348</a>
+
+<h3 id="testResourceLoaderWithRegexURIMatch()">testResourceLoaderWithRegexURIMatch</h3>
+<code class="signature">public  void <strong>testResourceLoaderWithRegexURIMatch</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line653" class="location">tests/request.php at line 653</a>
+
+<h3 id="testTrailingSlashRemoval()">testTrailingSlashRemoval</h3>
+<code class="signature">public  void <strong>testTrailingSlashRemoval</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line522" class="location">tests/request.php at line 522</a>
+
+<h3 id="testURITemplateStyleUriParameters()">testURITemplateStyleUriParameters</h3>
+<code class="signature">public  void <strong>testURITemplateStyleUriParameters</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<div class="header">
+<h1>Tonic</h1>
+<ul>
+<li><a href="../../overview-summary.html">Overview</a></li>
+<li><a href="../../tonic/tests/package-summary.html">Namespace</a></li>
+<li class="active">Class</li>
+<li><a href="../../tonic/tests/package-tree.html">Tree</a></li>
+<li><a href="../../overview-files.html">Files</a></li>
+<li><a href="../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../todo-list.html">Todo</a></li>
+<li><a href="../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../index.html" target="_top">Frames</a>
+<a href="../../tonic/tests/requesttester.html" target="_top">No frames</a>
+</div>
+<div class="small_links">
+Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
+Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> | <a href="#summary_constr">Constr</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>
