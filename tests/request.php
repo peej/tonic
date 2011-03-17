@@ -21,7 +21,7 @@ class RequestTester extends UnitTestCase {
         $this->assertEqual($request->uri, $config['uri']);
         
     }
-
+    
     function testRequestBaseUri() {
         
         $config = array(
@@ -660,6 +660,20 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testRequestRootURI() {
+        
+        $config = array(
+            'uri' => '/'
+        );
+        $request = new Request($config);
+        $this->assertEqual($request->uri, $config['uri']);
+        
+        $_SERVER['REDIRECT_URL'] = '/';
+        $request = new Request();
+        $this->assertEqual($request->uri, $config['uri']);
+        
+    }
+    
     function testMethodNotAllowed() {
         
         $config = array(
@@ -673,5 +687,6 @@ class RequestTester extends UnitTestCase {
         $this->assertEqual($response->code, 405);
         
     }
+    
 }
 

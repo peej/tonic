@@ -192,7 +192,7 @@ class Request {
         $parts = explode('.', $lastPart);
         $this->uri .= '/'.$parts[0];
         
-        if (substr($this->uri, -1, 1) == '/') { // remove trailing slash problem
+        if ($this->uri != '/' && substr($this->uri, -1, 1) == '/') { // remove trailing slash problem
             $this->uri = substr($this->uri, 0, -1);
         }
         
@@ -327,11 +327,11 @@ class Request {
                 if (isset($annotations[1]) && $annotations[1]) {
                     $uris = $annotations[1];
                 } else {
-                    $uris = array('/');
+                    $uris = array();
                 }
                 
                 foreach ($uris as $index => $uri) {
-                    if (substr($uri, -1, 1) == '/') { // remove trailing slash problem
+                    if ($uri != '/' && substr($uri, -1, 1) == '/') { // remove trailing slash problem
                         $uri = substr($uri, 0, -1);
                     }
                     $this->resources[$resourceDetails['mountPoint'].$uri] = array(
