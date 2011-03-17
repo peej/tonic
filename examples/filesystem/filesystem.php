@@ -81,8 +81,6 @@ class FilesystemResource extends Resource {
             }
             
         }
-        echo "hi";
-        die;
         
         // nothing found, send 404 response
         $response = new Response($request);
