@@ -7,6 +7,8 @@ require_once('simpletest/reporter.php');
 
 $core = new GroupTest('Core');
 
+require_once('../lib/tonic.php');
+
 $core->addTestFile('request.php');
 $core->addTestFile('resource.php');
 $core->addTestFile('response.php');

@@ -33,7 +33,7 @@ class NewNoResource extends NoResource {
  */
 class TwoUriParams extends Resource {
 
-    var $params;
+    var $receivedParams;
     
     function get($request, $param, $param2) {
         $this->receivedParams = array(
@@ -53,7 +53,7 @@ class TwoUriParams extends Resource {
  */
 class FourUriParams extends Resource {
     
-    var $params;
+    var $receivedParams;
     
     function get($request, $something, $otherthing, $param, $param2) {
         $this->receivedParams = array(
@@ -75,3 +75,11 @@ class TrailingSlashUrl extends Resource {
 
 }
 
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/optional(?:/param1/([^/]*))?
+ * @uri /requesttest/optional(?:/([a-z]+))?
+ */
+class OptionalParams extends Resource {
+    
+}

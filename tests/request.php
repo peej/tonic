@@ -1,6 +1,5 @@
 <?php
 
-require_once('../lib/tonic.php');
 require_once('def/request.php');
 
 /**
@@ -685,6 +684,40 @@ class RequestTester extends UnitTestCase {
         $response = $resource->exec($request);
         
         $this->assertEqual($response->code, 405);
+        
+    }
+    
+    function testOptionalRegexURIParams() {
+        
+        $config = array(
+            'uri' => '/requesttest/optional'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'OptionalParams');
+        $this->assertNoPattern('/0: /', $resource);
+        
+        $config = array(
+            'uri' => '/requesttest/optional/param1/woo'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'OptionalParams');
+        $this->assertPattern('/0: woo/', $resource);
+        
+        $config = array(
+            'uri' => '/requesttest/optional/something'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'OptionalParams');
+        $this->assertPattern('/0: something/', $resource);
         
     }
     

@@ -1,6 +1,5 @@
 <?php
 
-require_once('../lib/tonic.php');
 require_once('def/resource.php');
 
 /**

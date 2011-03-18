@@ -451,7 +451,7 @@ class Request {
         foreach ($this->resources as $uri => $resource) {
             
             preg_match_all('#(:[^/]+|{[^}]+}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
-            $uriRegex = preg_replace('#(:[^/]+|{[^}]+})#', '(.+)', $uri);
+            $uriRegex = preg_replace('#(:[^(/]+|{[^}]+})#', '(.+)', $uri);
             
             if (preg_match('#^'.$this->baseUri.$uriRegex.'$#', $this->uri, $matches)) {
                 array_shift($matches);
