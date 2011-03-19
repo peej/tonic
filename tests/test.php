@@ -9,6 +9,13 @@ $core = new GroupTest('Core');
 
 require_once('../lib/tonic.php');
 
+if (class_exists('Tonic\Request')) {
+    class Request extends Tonic\Request {}
+    class Resource extends Tonic\Resource {}
+    class NoResource extends Tonic\NoResource {}
+    class Response extends Tonic\Response {}
+}
+
 $core->addTestFile('request.php');
 $core->addTestFile('resource.php');
 $core->addTestFile('response.php');
