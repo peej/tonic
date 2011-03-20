@@ -6,7 +6,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-#namespace Tonic; // Turn on namespace in PHP5.3 if you have namespace collisions from the Tonic classnames
+
+/* Turn on namespace in PHP5.3 if you have namespace collisions from the Tonic classnames
+namespace Tonic;
+use \ReflectionClass as ReflectionClass;
+use \ReflectionMethod as ReflectionMethod;
+use \Exception as Exception;
+//*/
 
 /**
  * Model the data of the incoming HTTP request
@@ -363,8 +369,7 @@ class Request {
      */
     private function getResourceClassDetails($className) {
         
-        $reflectionClassName = class_exists('\\ReflectionClass') ? '\\ReflectionClass' : 'ReflectionClass';
-        $resourceReflector = new $reflectionClassName($className);
+        $resourceReflector = new ReflectionClass($className);
         $comment = $resourceReflector->getDocComment();
         
         $className = $resourceReflector->getName();
@@ -575,8 +580,7 @@ class Resource {
         
         if (method_exists($this, $request->method)) {
             
-            $reflectionMethodName = class_exists('\\ReflectionMethod') ? '\\ReflectionMethod' : 'ReflectionMethod';
-            $method = new $reflectionMethodName($this, $request->method);
+            $method = new ReflectionMethod($this, $request->method);
             $parameters = array();
             foreach ($method->getParameters() as $param) {
                 if ($param->name == 'request') {
@@ -596,8 +600,7 @@ class Resource {
             );
             
             if (!$response || !is_a($response, 'Response')) {
-                $exceptionName = class_exists('\\Exception') ? '\\Exception' : 'Exception';
-                throw new $exceptionName('Method '.$request->method.' of '.get_class($this).' did not return a Response object');
+                throw new Exception('Method '.$request->method.' of '.get_class($this).' did not return a Response object');
             }
             
         } else {
