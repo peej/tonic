@@ -9,13 +9,6 @@ $core = new GroupTest('Core');
 
 require_once('../lib/tonic.php');
 
-if (class_exists('Tonic\Request')) {
-    class Request extends Tonic\Request {}
-    class Resource extends Tonic\Resource {}
-    class NoResource extends Tonic\NoResource {}
-    class Response extends Tonic\Response {}
-}
-
 $core->addTestFile('request.php');
 $core->addTestFile('resource.php');
 $core->addTestFile('response.php');
@@ -25,11 +18,13 @@ $core->addTestFile('filesystemcollection.php');
 $test = new GroupTest('Tonic');
 $test->addTestCase($core);
 
+//*
 @include_once 'PHP/CodeCoverage.php';
 if (class_exists('PHP_CodeCoverage')) {
     $coverage = new PHP_CodeCoverage;
     $coverage->start('Tonic');
 }
+//*/
 
 if (TextReporter::inCli()) {
 	$test->run(new TextReporter());

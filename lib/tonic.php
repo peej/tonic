@@ -308,6 +308,9 @@ class Request {
         if (isset($config['404'])) {
             $this->noResource = $config['404'];
         }
+        if (class_exists('Tonic\\'.$this->noResource)) {
+            $this->noResource = 'Tonic\\'.$this->noResource;
+        }
         
         // mounts
         if (isset($config['mount']) && is_array($config['mount'])) {
@@ -333,7 +336,8 @@ class Request {
         
         // load definitions of already loaded resource classes
         foreach (get_declared_classes() as $className) {
-            if (is_subclass_of($className, 'Resource')) {
+            $resourceClassName = class_exists('Tonic\\Resource') ? 'Tonic\\Resource' : 'Resource';
+            if (is_subclass_of($className, $resourceClassName)) {
                 
                 $resourceDetails = $this->getResourceClassDetails($className);
                 
@@ -599,7 +603,8 @@ class Resource {
                 $parameters
             );
             
-            if (!$response || !is_a($response, 'Response')) {
+            $responseClassName = class_exists('Tonic\\Response') ? 'Tonic\\Response' : 'Response';
+            if (!$response || !is_a($response, $responseClassName)) {
                 throw new Exception('Method '.$request->method.' of '.get_class($this).' did not return a Response object');
             }
             

@@ -314,7 +314,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NoResource');
+        $this->assertPattern('/NoResource/', get_class($resource));
         
     }
     
@@ -327,7 +327,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewResource');
+        $this->assertPattern('/NewResource/', get_class($resource));
         
     }
     
@@ -340,7 +340,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'ChildResource');
+        $this->assertPattern('/ChildResource/', get_class($resource));
         
     }
     
@@ -353,7 +353,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewResource');
+        $this->assertPattern('/NewResource/', get_class($resource));
         $this->assertPattern('/0: something/', $resource);
         
     }
@@ -466,7 +466,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewNoResource');
+        $this->assertPattern('/NewNoResource/', get_class($resource));
         
     }
     
@@ -495,7 +495,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         
         $this->assertEqual($request->resources['/requesttest/one/two']['namespace'], 'Tonic\Tests');
-        $this->assertEqual($request->resources['/requesttest/one/two']['class'], 'ChildResource');
+        $this->assertPattern('/ChildResource/', $request->resources['/requesttest/one/two']['class']);
         $this->assertPattern('|def/request\.php|', $request->resources['/requesttest/one/two']['filename']);
         $this->assertEqual($request->resources['/requesttest/one/two']['priority'], 0);
         
@@ -514,7 +514,7 @@ class RequestTester extends UnitTestCase {
         
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'NewResource');
+        $this->assertPattern('/NewResource/', get_class($resource));
         
     }
     
@@ -527,7 +527,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'TwoUriParams');
+        $this->assertPattern('/TwoUriParams/', get_class($resource));
         $this->assertPattern('/param: woo/', $resource);
         $this->assertPattern('/param2: yay/', $resource);
         
@@ -543,7 +543,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'FourUriParams');
+        $this->assertPattern('/FourUriParams/', get_class($resource));
         $this->assertPattern('/param: woo/', $resource);
         $this->assertPattern('/1: yay/', $resource);
         $this->assertPattern('/param2: foo/', $resource);
@@ -565,7 +565,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'TwoUriParams');
+        $this->assertPattern('/TwoUriParams/', get_class($resource));
         $this->assertPattern('/param: woo/', $resource);
         $this->assertPattern('/param2: yay/', $resource);
         
@@ -581,7 +581,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'FourUriParams');
+        $this->assertPattern('/FourUriParams/', get_class($resource));
         $this->assertPattern('/param: woo/', $resource);
         $this->assertPattern('/1: yay/', $resource);
         $this->assertPattern('/param2: foo/', $resource);
@@ -603,7 +603,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'FourUriParams');
+        $this->assertPattern('/FourUriParams/', get_class($resource));
         $this->assertPattern('/param: woo/', $resource);
         $this->assertPattern('/1: yay/', $resource);
         $this->assertPattern('/param2: foo/', $resource);
@@ -628,7 +628,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'Autoload');
+        $this->assertPattern('/Autoload/', get_class($resource));
         $this->assertPattern('/Class: Autoload/', $request);
         $this->assertPattern('|File: '.dirname(__FILE__).DIRECTORY_SEPARATOR.'def/Autoload.php|', $request);
         
@@ -696,7 +696,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'OptionalParams');
+        $this->assertPattern('/OptionalParams/', get_class($resource));
         $this->assertNoPattern('/0: /', $resource);
         
         $config = array(
@@ -706,7 +706,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'OptionalParams');
+        $this->assertPattern('/OptionalParams/', get_class($resource));
         $this->assertPattern('/0: woo/', $resource);
         
         $config = array(
@@ -716,7 +716,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $resource = $request->loadResource();
         
-        $this->assertEqual(get_class($resource), 'OptionalParams');
+        $this->assertPattern('/OptionalParams/', get_class($resource));
         $this->assertPattern('/0: something/', $resource);
         
     }
