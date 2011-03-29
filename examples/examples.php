@@ -25,7 +25,7 @@ class ExamplesListResource extends Resource {
                 $location = basename($path);
                 $readme = $path.DIRECTORY_SEPARATOR.$location.'.php';
                 if (file_exists($readme)) {
-                    preg_match('|/\*\*\n\s*\*\s*(.+?)\*/|s', file_get_contents($readme), $match);
+                    preg_match('|/\*\*\s*\*\s*(.+?)\*/|s', file_get_contents($readme), $match);
                     $comment = preg_replace('|\s*\*\s*(@.+)?|', "\n", $match[1]);
                     $parts = explode("\n\n", $comment);
                     $name = array_shift($parts);
