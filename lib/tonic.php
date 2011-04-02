@@ -742,35 +742,6 @@ class Response {
     }
     
     /**
-     * Add content encoding headers and encode the response body
-     */
-    function doContentEncoding() {
-        if (ini_get('zlib.output_compression') == 0) { // do nothing if PHP will do the compression for us
-            foreach ($this->request->acceptEncoding as $encoding) {
-                switch($encoding) {
-                case 'gzip':
-                    $this->addHeader('Content-Encoding', 'gzip');
-                    $this->addVary('Accept-Encoding');
-                    $this->body = gzencode($this->body);
-                    break 2;
-                case 'deflate':
-                    $this->addHeader('Content-Encoding', 'deflate');
-                    $this->addVary('Accept-Encoding');
-                    $this->body = gzdeflate($this->body);
-                    break 2;
-                case 'compress':
-                    $this->addHeader('Content-Encoding', 'compress');
-                    $this->addVary('Accept-Encoding');
-                    $this->body = gzcompress($this->body);
-                    break 2;
-                case 'identity':
-                    break 2;
-                }
-            }
-        }
-    }
-    
-    /**
      * Send a cache control header with the response
      * @param int time Cache length in seconds
      */
@@ -807,7 +778,6 @@ class Response {
         if (php_sapi_name() != 'cli' && !headers_sent()) {
             
             if ($this->body) {
-                $this->doContentEncoding();
                 $this->addHeader('Content-Length', strlen($this->body));
             }
             
