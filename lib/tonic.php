@@ -682,7 +682,7 @@ class Response {
      * The request object generating this response
      * @var Request
      */
-    private $request;
+    public $request;
     
     /**
      * The HTTP response code to send
