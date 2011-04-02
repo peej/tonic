@@ -319,18 +319,11 @@ class Request {
         
         // prime named resources for autoloading
         if (isset($config['autoload']) && is_array($config['autoload'])) {
-            foreach ($config['autoload'] as $uri => $filename) {
-                $parts = preg_split('|[/\\\\]|', $filename);
-                $filename = join(DIRECTORY_SEPARATOR, $parts);
-                $parts = explode('.', array_pop($parts));
-                $className = $parts[0];
-                if (file_exists($filename)) {
-                    $this->resources[$uri] = array(
-                        'class' => $className,
-                        'filename' => $filename,
-                        'loaded' => FALSE
-                    );
-                }
+            foreach ($config['autoload'] as $uri => $className) {
+                $this->resources[$uri] = array(
+                    'class' => $className,
+                    'loaded' => FALSE
+                );
             }
         }
         
@@ -502,7 +495,7 @@ class Request {
             list($uri, $resource, $parameters) = array_shift($uriMatches);
             if (!$resource['loaded']) { // autoload
                 if (!class_exists($resource['class'])) {
-                    include $resource['filename'];
+                    throw new Exception('Unable to load resource');
                 }
                 $resourceDetails = $this->getResourceClassDetails($resource['class']);
                 $resource = $this->resources[$uri] = array(
