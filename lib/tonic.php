@@ -777,10 +777,6 @@ class Response {
         
         if (php_sapi_name() != 'cli' && !headers_sent()) {
             
-            if ($this->body) {
-                $this->addHeader('Content-Length', strlen($this->body));
-            }
-            
             header('HTTP/1.1 '.$this->code);
             foreach ($this->headers as $header => $value) {
                 header($header.': '.$value);
