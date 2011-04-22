@@ -15,7 +15,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $this->assertEqual($request->uri, $config['uri']);
         
-        $_SERVER['REDIRECT_URL'] = '/requesttest/one/two';
+        $_SERVER['REQUEST_URI'] = '/requesttest/one/two';
         $request = new Request();
         $this->assertEqual($request->uri, $config['uri']);
         
@@ -616,34 +616,40 @@ class RequestTester extends UnitTestCase {
         $this->assertEqual($resource->receivedParams['otherthing'], 'bar');
     }
     
-    function testAutoloadingOfResouces() {
+    function testAutoloadingOfResourcesWithoutAutoloadFunction() {
         
         $config = array(
             'uri' => '/requesttest/autoload',
             'autoload' => array(
-                '/requesttest/autoload' => 'def/Autoload.php'
+                '/requesttest/autoload' => 'Autoload'
             )
         );
+        
+        $this->expectException(new PatternExpectation('/Unable to load resource/'));
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+    }
+    
+    function testAutoloadingOfResources() {
+        
+        $config = array(
+            'uri' => '/requesttest/autoload',
+            'autoload' => array(
+                '/requesttest/autoload' => 'Autoload'
+            )
+        );
+        
+        function __autoload($className) {
+            if (file_exists('def/'.$className.'.php')) {
+                require_once 'def/'.$className.'.php';
+            }
+        }
         
         $request = new Request($config);
         $resource = $request->loadResource();
         
         $this->assertPattern('/Autoload/', get_class($resource));
-        $this->assertPattern('/Class: Autoload/', $request);
-        $this->assertPattern('|File: '.dirname(__FILE__).DIRECTORY_SEPARATOR.'def/Autoload.php|', $request);
-        
-        
-        $config = array(
-            'uri' => '/requesttest/autoload2',
-            'autoload' => array(
-                '/requesttest/autoload2' => 'def\Autoload.php'
-            )
-        );
-        
-        $request = new Request($config);
-        $resource = $request->loadResource();
-        
-        $this->assertEqual(get_class($resource), 'Autoload');
         $this->assertPattern('/Class: Autoload/', $request);
         $this->assertPattern('|File: '.dirname(__FILE__).DIRECTORY_SEPARATOR.'def/Autoload.php|', $request);
         
@@ -667,7 +673,7 @@ class RequestTester extends UnitTestCase {
         $request = new Request($config);
         $this->assertEqual($request->uri, $config['uri']);
         
-        $_SERVER['REDIRECT_URL'] = '/';
+        $_SERVER['REQUEST_URI'] = '/';
         $request = new Request();
         $this->assertEqual($request->uri, $config['uri']);
         
