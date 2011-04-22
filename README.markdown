@@ -188,6 +188,23 @@ Again, don't put a trailing slash on the end, and if you aren't using PHP5.3 and
 namespaces, you can use the @namespace annotation.
 
 
+Autoloading classes
+-------------------
+
+If you've got lots of resource classes and don't fancy including them all in your
+dispatcher, you can use the autoload function to load a resource class for a given
+URL-space.
+
+    $request = new Request(array(
+        'autoload' => array(
+            '/example/[a-z]+' => 'ClassName'
+        )
+    ));
+
+In this example, the class ClassName will be autoloaded via [the standard PHP
+__autoload method](http://php.net/manual/en/language.oop5.autoload.php).
+
+
 
 For more information, read the code. Start with the dispatcher "docroot/dispatch.php"
 and then the examples in the "examples" directory.
