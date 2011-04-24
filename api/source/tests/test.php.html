@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:27 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:24:00 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -45,38 +45,42 @@
 <a name="line7"></a>&nbsp;
 <a name="line8"></a><span style="color: #000088;">$core</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> GroupTest<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Core'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line9"></a>&nbsp;
-<a name="line10"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'request.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line11"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'resource.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line12"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'response.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line13"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'filesystem.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line14"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'filesystemcollection.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line15"></a>&nbsp;
-<a name="line16"></a><span style="color: #000088;">$test</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> GroupTest<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Tonic'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line17"></a><span style="color: #000088;">$test</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestCase</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$core</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line18"></a>&nbsp;
-<a name="line19"></a><span style="color: #339933;">@</span><span style="color: #b1b100;">include_once</span> <span style="color: #0000ff;">'PHP/CodeCoverage.php'</span><span style="color: #339933;">;</span>
-<a name="line20"></a><span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/class_exists"><span style="color: #990000;">class_exists</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'PHP_CodeCoverage'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line21"></a>    <span style="color: #000088;">$coverage</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> PHP_CodeCoverage<span style="color: #339933;">;</span>
-<a name="line22"></a>    <span style="color: #000088;">$coverage</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">start</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Tonic'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line23"></a><span style="color: #009900;">&#125;</span>
-<a name="line24"></a>&nbsp;
-<a name="line25"></a><span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>TextReporter<span style="color: #339933;">::</span><span style="color: #004000;">inCli</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line26"></a>	<span style="color: #000088;">$test</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">run</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> TextReporter<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line27"></a><span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
-<a name="line28"></a>    <span style="color: #000088;">$test</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">run</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> HtmlReporter<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line29"></a><span style="color: #009900;">&#125;</span>
-<a name="line30"></a>&nbsp;
-<a name="line31"></a><span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$coverage</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line32"></a>    <span style="color: #000088;">$coverage</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">stop</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line33"></a>&nbsp;
-<a name="line34"></a>    <span style="color: #b1b100;">require_once</span> <span style="color: #0000ff;">'PHP/CodeCoverage/Report/HTML.php'</span><span style="color: #339933;">;</span>
-<a name="line35"></a>&nbsp;
-<a name="line36"></a>    <span style="color: #000088;">$writer</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> PHP_CodeCoverage_Report_HTML<span style="color: #339933;">;</span>
-<a name="line37"></a>    <span style="color: #000088;">$writer</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">process</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$coverage</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'report'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line38"></a><span style="color: #009900;">&#125;</span>
+<a name="line10"></a><span style="color: #b1b100;">require_once</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'../lib/tonic.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line11"></a>&nbsp;
+<a name="line12"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'request.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line13"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'resource.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line14"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'response.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line15"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'filesystem.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line16"></a><span style="color: #000088;">$core</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestFile</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'filesystemcollection.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line17"></a>&nbsp;
+<a name="line18"></a><span style="color: #000088;">$test</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> GroupTest<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Tonic'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line19"></a><span style="color: #000088;">$test</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addTestCase</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$core</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line20"></a>&nbsp;
+<a name="line21"></a><span style="color: #666666; font-style: italic;">//*</span>
+<a name="line22"></a><span style="color: #339933;">@</span><span style="color: #b1b100;">include_once</span> <span style="color: #0000ff;">'PHP/CodeCoverage.php'</span><span style="color: #339933;">;</span>
+<a name="line23"></a><span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/class_exists"><span style="color: #990000;">class_exists</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'PHP_CodeCoverage'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line24"></a>    <span style="color: #000088;">$coverage</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> PHP_CodeCoverage<span style="color: #339933;">;</span>
+<a name="line25"></a>    <span style="color: #000088;">$coverage</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">start</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Tonic'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line26"></a><span style="color: #009900;">&#125;</span>
+<a name="line27"></a><span style="color: #666666; font-style: italic;">//*/</span>
+<a name="line28"></a>&nbsp;
+<a name="line29"></a><span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span>TextReporter<span style="color: #339933;">::</span><span style="color: #004000;">inCli</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line30"></a>	<span style="color: #000088;">$test</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">run</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> TextReporter<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line31"></a><span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+<a name="line32"></a>    <span style="color: #000088;">$test</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">run</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> HtmlReporter<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line33"></a><span style="color: #009900;">&#125;</span>
+<a name="line34"></a>&nbsp;
+<a name="line35"></a><span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$coverage</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line36"></a>    <span style="color: #000088;">$coverage</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">stop</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line37"></a>&nbsp;
+<a name="line38"></a>    <span style="color: #b1b100;">require_once</span> <span style="color: #0000ff;">'PHP/CodeCoverage/Report/HTML.php'</span><span style="color: #339933;">;</span>
 <a name="line39"></a>&nbsp;
-<a name="line40"></a><span style="color: #000000; font-weight: bold;">?&gt;</span>
-<a name="line41"></a>&nbsp;</pre>
+<a name="line40"></a>    <span style="color: #000088;">$writer</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> PHP_CodeCoverage_Report_HTML<span style="color: #339933;">;</span>
+<a name="line41"></a>    <span style="color: #000088;">$writer</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">process</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$coverage</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'report'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line42"></a><span style="color: #009900;">&#125;</span>
+<a name="line43"></a>&nbsp;
+<a name="line44"></a><span style="color: #000000; font-weight: bold;">?&gt;</span>
+<a name="line45"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

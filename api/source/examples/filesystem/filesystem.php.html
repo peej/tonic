@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:21 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:23:54 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
 <link rel="start" href="../../../overview-summary.html">
@@ -119,78 +119,76 @@
 <a name="line81"></a>            <span style="color: #009900;">&#125;</span>
 <a name="line82"></a>&nbsp;
 <a name="line83"></a>        <span style="color: #009900;">&#125;</span>
-<a name="line84"></a>        <span style="color: #b1b100;">echo</span> <span style="color: #0000ff;">&quot;hi&quot;</span><span style="color: #339933;">;</span>
-<a name="line85"></a>        <a href="http://www.php.net/die"><span style="color: #990000;">die</span></a><span style="color: #339933;">;</span>
-<a name="line86"></a>&nbsp;
-<a name="line87"></a>        <span style="color: #666666; font-style: italic;">// nothing found, send 404 response</span>
-<a name="line88"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line89"></a>        <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTFOUND</span><span style="color: #339933;">;</span>
-<a name="line90"></a>        <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addHeader</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Content-Type'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">mimetypes</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'html'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line91"></a>        <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'&lt;p&gt;404, nothing found&lt;/p&gt;'</span><span style="color: #339933;">;</span>
-<a name="line92"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
+<a name="line84"></a>&nbsp;
+<a name="line85"></a>        <span style="color: #666666; font-style: italic;">// nothing found, send 404 response</span>
+<a name="line86"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line87"></a>        <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTFOUND</span><span style="color: #339933;">;</span>
+<a name="line88"></a>        <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addHeader</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Content-Type'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">mimetypes</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'html'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line89"></a>        <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'&lt;p&gt;404, nothing found&lt;/p&gt;'</span><span style="color: #339933;">;</span>
+<a name="line90"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
+<a name="line91"></a>&nbsp;
+<a name="line92"></a>    <span style="color: #009900;">&#125;</span>
 <a name="line93"></a>&nbsp;
-<a name="line94"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line95"></a>&nbsp;
-<a name="line96"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line97"></a>     * Handle a PUT request for this resource by overwriting the resources contents
-<a name="line98"></a>     * @param Request request
-<a name="line99"></a>     * @return Response
-<a name="line100"></a>     */</span>
-<a name="line101"></a>    <span style="color: #000000; font-weight: bold;">function</span> put<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line94"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line95"></a>     * Handle a PUT request for this resource by overwriting the resources contents
+<a name="line96"></a>     * @param Request request
+<a name="line97"></a>     * @return Response
+<a name="line98"></a>     */</span>
+<a name="line99"></a>    <span style="color: #000000; font-weight: bold;">function</span> put<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line100"></a>&nbsp;
+<a name="line101"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line102"></a>&nbsp;
-<a name="line103"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line103"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
 <a name="line104"></a>&nbsp;
-<a name="line105"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line105"></a>            <span style="color: #000088;">$filePath</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">turnUriIntoFilePath</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">uri</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line106"></a>&nbsp;
-<a name="line107"></a>            <span style="color: #000088;">$filePath</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">turnUriIntoFilePath</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">uri</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line107"></a>            <a href="http://www.php.net/file_put_contents"><span style="color: #990000;">file_put_contents</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$filePath</span><span style="color: #339933;">,</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line108"></a>&nbsp;
-<a name="line109"></a>            <a href="http://www.php.net/file_put_contents"><span style="color: #990000;">file_put_contents</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$filePath</span><span style="color: #339933;">,</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line109"></a>            <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOCONTENT</span><span style="color: #339933;">;</span>
 <a name="line110"></a>&nbsp;
-<a name="line111"></a>            <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOCONTENT</span><span style="color: #339933;">;</span>
+<a name="line111"></a>        <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
 <a name="line112"></a>&nbsp;
-<a name="line113"></a>        <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+<a name="line113"></a>            <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">LENGTHREQUIRED</span><span style="color: #339933;">;</span>
 <a name="line114"></a>&nbsp;
-<a name="line115"></a>            <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">LENGTHREQUIRED</span><span style="color: #339933;">;</span>
+<a name="line115"></a>        <span style="color: #009900;">&#125;</span>
 <a name="line116"></a>&nbsp;
-<a name="line117"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line117"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
 <a name="line118"></a>&nbsp;
-<a name="line119"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
+<a name="line119"></a>    <span style="color: #009900;">&#125;</span>
 <a name="line120"></a>&nbsp;
-<a name="line121"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line122"></a>&nbsp;
-<a name="line123"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line124"></a>     * Handle a DELETE request for this resource by removing the resources file
-<a name="line125"></a>     * @param Request request
-<a name="line126"></a>     * @return Response
-<a name="line127"></a>     */</span>
-<a name="line128"></a>    <span style="color: #000000; font-weight: bold;">function</span> delete<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line121"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line122"></a>     * Handle a DELETE request for this resource by removing the resources file
+<a name="line123"></a>     * @param Request request
+<a name="line124"></a>     * @return Response
+<a name="line125"></a>     */</span>
+<a name="line126"></a>    <span style="color: #000000; font-weight: bold;">function</span> delete<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line127"></a>&nbsp;
+<a name="line128"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line129"></a>&nbsp;
-<a name="line130"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line130"></a>        <span style="color: #000088;">$filePath</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">turnUriIntoFilePath</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">uri</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line131"></a>&nbsp;
-<a name="line132"></a>        <span style="color: #000088;">$filePath</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">turnUriIntoFilePath</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">uri</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line132"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/file_exists"><span style="color: #990000;">file_exists</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$filePath</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
 <a name="line133"></a>&nbsp;
-<a name="line134"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/file_exists"><span style="color: #990000;">file_exists</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$filePath</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line135"></a>&nbsp;
-<a name="line136"></a>            <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/unlink"><span style="color: #990000;">unlink</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$filePath</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line137"></a>                <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOCONTENT</span><span style="color: #339933;">;</span>
-<a name="line138"></a>            <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
-<a name="line139"></a>                <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">INTERNALSERVERERROR</span><span style="color: #339933;">;</span>
-<a name="line140"></a>            <span style="color: #009900;">&#125;</span>
+<a name="line134"></a>            <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/unlink"><span style="color: #990000;">unlink</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$filePath</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line135"></a>                <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOCONTENT</span><span style="color: #339933;">;</span>
+<a name="line136"></a>            <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+<a name="line137"></a>                <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">INTERNALSERVERERROR</span><span style="color: #339933;">;</span>
+<a name="line138"></a>            <span style="color: #009900;">&#125;</span>
+<a name="line139"></a>&nbsp;
+<a name="line140"></a>            <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
 <a name="line141"></a>&nbsp;
-<a name="line142"></a>            <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
-<a name="line143"></a>&nbsp;
-<a name="line144"></a>        <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span> <span style="color: #666666; font-style: italic;">// nothing found, send 404 response</span>
-<a name="line145"></a>            <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTFOUND</span><span style="color: #339933;">;</span>
-<a name="line146"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line142"></a>        <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span> <span style="color: #666666; font-style: italic;">// nothing found, send 404 response</span>
+<a name="line143"></a>            <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTFOUND</span><span style="color: #339933;">;</span>
+<a name="line144"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line145"></a>&nbsp;
+<a name="line146"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
 <a name="line147"></a>&nbsp;
-<a name="line148"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000088;">$response</span><span style="color: #339933;">;</span>
+<a name="line148"></a>    <span style="color: #009900;">&#125;</span>
 <a name="line149"></a>&nbsp;
-<a name="line150"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line150"></a><span style="color: #009900;">&#125;</span>
 <a name="line151"></a>&nbsp;
-<a name="line152"></a><span style="color: #009900;">&#125;</span>
-<a name="line153"></a>&nbsp;
-<a name="line154"></a><span style="color: #000000; font-weight: bold;">?&gt;</span>
-<a name="line155"></a>&nbsp;</pre>
+<a name="line152"></a><span style="color: #000000; font-weight: bold;">?&gt;</span>
+<a name="line153"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

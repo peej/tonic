@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:20 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:23:53 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Lib\Response</div>
-<a href="../../source/lib/tonic.php.html#line620" class="location">lib/tonic.php at line 620</a>
+<a href="../../source/lib/tonic.php.html#line592" class="location">lib/tonic.php at line 592</a>
 
 <h1>Class Response</h1>
 
@@ -149,6 +149,10 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <td class="type"> str[]</td>
 <td class="description"><p class="name"><a href="#headers">$headers</a></p><p class="description">The HTTP headers to send</p></td>
 </tr>
+<tr>
+<td class="type"> <a href="../../tonic/lib/request.html">Request</a></td>
+<td class="description"><p class="name"><a href="#request">$request</a></p><p class="description">The request object generating this response</p></td>
+</tr>
 </table>
 
 <table id="summary_method">
@@ -175,16 +179,12 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#doContentEncoding()">doContentEncoding</a>()</p><p class="description">Add content encoding headers and encode the response body</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
 <td class="description"><p class="name"><a href="#output()">output</a>()</p><p class="description">Output the response</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Constant Detail</h2>
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="BADREQUEST">BADREQUEST</h3>
 <code class="signature">public final static  int <strong>BADREQUEST</strong> = 400</code>
@@ -193,7 +193,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="CREATED">CREATED</h3>
 <code class="signature">public final static  int <strong>CREATED</strong> = 201</code>
@@ -202,7 +202,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="FORBIDDEN">FORBIDDEN</h3>
 <code class="signature">public final static  int <strong>FORBIDDEN</strong> = 403</code>
@@ -211,7 +211,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="FOUND">FOUND</h3>
 <code class="signature">public final static  int <strong>FOUND</strong> = 302</code>
@@ -220,7 +220,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="GONE">GONE</h3>
 <code class="signature">public final static  int <strong>GONE</strong> = 410</code>
@@ -229,7 +229,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="INTERNALSERVERERROR">INTERNALSERVERERROR</h3>
 <code class="signature">public final static  int <strong>INTERNALSERVERERROR</strong> = 500</code>
@@ -238,7 +238,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="LENGTHREQUIRED">LENGTHREQUIRED</h3>
 <code class="signature">public final static  int <strong>LENGTHREQUIRED</strong> = 411</code>
@@ -247,7 +247,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="METHODNOTALLOWED">METHODNOTALLOWED</h3>
 <code class="signature">public final static  int <strong>METHODNOTALLOWED</strong> = 405</code>
@@ -256,7 +256,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="MOVEDPERMANENTLY">MOVEDPERMANENTLY</h3>
 <code class="signature">public final static  int <strong>MOVEDPERMANENTLY</strong> = 301</code>
@@ -265,7 +265,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="NOCONTENT">NOCONTENT</h3>
 <code class="signature">public final static  int <strong>NOCONTENT</strong> = 204</code>
@@ -274,7 +274,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="NOTACCEPTABLE">NOTACCEPTABLE</h3>
 <code class="signature">public final static  int <strong>NOTACCEPTABLE</strong> = 406</code>
@@ -283,7 +283,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="NOTFOUND">NOTFOUND</h3>
 <code class="signature">public final static  int <strong>NOTFOUND</strong> = 404</code>
@@ -292,7 +292,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="NOTMODIFIED">NOTMODIFIED</h3>
 <code class="signature">public final static  int <strong>NOTMODIFIED</strong> = 304</code>
@@ -301,7 +301,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="OK">OK</h3>
 <code class="signature">public final static  int <strong>OK</strong> = 200</code>
@@ -310,7 +310,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="PRECONDITIONFAILED">PRECONDITIONFAILED</h3>
 <code class="signature">public final static  int <strong>PRECONDITIONFAILED</strong> = 412</code>
@@ -319,7 +319,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="SEEOTHER">SEEOTHER</h3>
 <code class="signature">public final static  int <strong>SEEOTHER</strong> = 303</code>
@@ -328,7 +328,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="TEMPORARYREDIRECT">TEMPORARYREDIRECT</h3>
 <code class="signature">public final static  int <strong>TEMPORARYREDIRECT</strong> = 307</code>
@@ -337,7 +337,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="UNAUTHORIZED">UNAUTHORIZED</h3>
 <code class="signature">public final static  int <strong>UNAUTHORIZED</strong> = 401</code>
@@ -346,7 +346,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line625" class="location">lib/tonic.php at line 625</a>
+<a href="../../source/lib/tonic.php.html#line597" class="location">lib/tonic.php at line 597</a>
 
 <h3 id="UNSUPPORTEDMEDIATYPE">UNSUPPORTEDMEDIATYPE</h3>
 <code class="signature">public final static  int <strong>UNSUPPORTEDMEDIATYPE</strong> = 415</code>
@@ -356,7 +356,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <h2 id="detail_field">Field Detail</h2>
-<a href="../../source/lib/tonic.php.html#line649" class="location">lib/tonic.php at line 649</a>
+<a href="../../source/lib/tonic.php.html#line621" class="location">lib/tonic.php at line 621</a>
 
 <h3 id="body">body</h3>
 <code class="signature">public  str <strong>$body</strong></code>
@@ -365,7 +365,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line637" class="location">lib/tonic.php at line 637</a>
+<a href="../../source/lib/tonic.php.html#line609" class="location">lib/tonic.php at line 609</a>
 
 <h3 id="code">code</h3>
 <code class="signature">public  int <strong>$code</strong> = Response::OK</code>
@@ -374,7 +374,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line643" class="location">lib/tonic.php at line 643</a>
+<a href="../../source/lib/tonic.php.html#line615" class="location">lib/tonic.php at line 615</a>
 
 <h3 id="headers">headers</h3>
 <code class="signature">public  str[] <strong>$headers</strong> = array()</code>
@@ -383,8 +383,17 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
+<a href="../../source/lib/tonic.php.html#line603" class="location">lib/tonic.php at line 603</a>
+
+<h3 id="request">request</h3>
+<code class="signature">public  <a href="../../tonic/lib/request.html">Request</a> <strong>$request</strong></code>
+<div class="details">
+<p>The request object generating this response</p></div>
+
+<hr>
+
 <h2 id="detail_method">Method Detail</h2>
-<a href="../../source/lib/tonic.php.html#line656" class="location">lib/tonic.php at line 656</a>
+<a href="../../source/lib/tonic.php.html#line628" class="location">lib/tonic.php at line 628</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(<a href="../../tonic/lib/request.html">Request</a> request, str uri)</code>
@@ -398,7 +407,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line723" class="location">lib/tonic.php at line 723</a>
+<a href="../../source/lib/tonic.php.html#line666" class="location">lib/tonic.php at line 666</a>
 
 <h3 id="addCacheHeader()">addCacheHeader</h3>
 <code class="signature">public  void <strong>addCacheHeader</strong>(int time)</code>
@@ -411,7 +420,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line735" class="location">lib/tonic.php at line 735</a>
+<a href="../../source/lib/tonic.php.html#line678" class="location">lib/tonic.php at line 678</a>
 
 <h3 id="addEtag()">addEtag</h3>
 <code class="signature">public  void <strong>addEtag</strong>(str etag)</code>
@@ -424,7 +433,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line686" class="location">lib/tonic.php at line 686</a>
+<a href="../../source/lib/tonic.php.html#line658" class="location">lib/tonic.php at line 658</a>
 
 <h3 id="addHeader()">addHeader</h3>
 <code class="signature">public  void <strong>addHeader</strong>(str header, str value)</code>
@@ -433,7 +442,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line739" class="location">lib/tonic.php at line 739</a>
+<a href="../../source/lib/tonic.php.html#line682" class="location">lib/tonic.php at line 682</a>
 
 <h3 id="addVary()">addVary</h3>
 <code class="signature">public  void <strong>addVary</strong>(mixed header)</code>
@@ -442,16 +451,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/lib/tonic.php.html#line693" class="location">lib/tonic.php at line 693</a>
-
-<h3 id="doContentEncoding()">doContentEncoding</h3>
-<code class="signature">public  void <strong>doContentEncoding</strong>()</code>
-<div class="details">
-<p>Add content encoding headers and encode the response body</p></div>
-
-<hr>
-
-<a href="../../source/lib/tonic.php.html#line751" class="location">lib/tonic.php at line 751</a>
+<a href="../../source/lib/tonic.php.html#line694" class="location">lib/tonic.php at line 694</a>
 
 <h3 id="output()">output</h3>
 <code class="signature">public  void <strong>output</strong>()</code>

@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:20 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:23:53 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -46,12 +46,24 @@
 <a name="line8"></a>&nbsp;
 <a name="line9"></a><span style="color: #666666; font-style: italic;">// handle request</span>
 <a name="line10"></a><span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line11"></a><span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line12"></a><span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line13"></a><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">output</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line11"></a>try <span style="color: #009900;">&#123;</span>
+<a name="line12"></a>    <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line13"></a>    <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line14"></a>&nbsp;
-<a name="line15"></a><span style="color: #000000; font-weight: bold;">?&gt;</span>
-<a name="line16"></a>&nbsp;</pre>
+<a name="line15"></a><span style="color: #009900;">&#125;</span> catch <span style="color: #009900;">&#40;</span>ResponseException <span style="color: #000088;">$e</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line16"></a>    <span style="color: #b1b100;">switch</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$e</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getCode</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line17"></a>    <span style="color: #b1b100;">case</span> Response<span style="color: #339933;">::</span><span style="color: #004000;">UNAUTHORIZED</span><span style="color: #339933;">:</span>
+<a name="line18"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$e</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">response</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line19"></a>        <span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">addHeader</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'WWW-Authenticate'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'Basic realm=&quot;Tonic&quot;'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line20"></a>        <span style="color: #b1b100;">break</span><span style="color: #339933;">;</span>
+<a name="line21"></a>    <span style="color: #b1b100;">default</span><span style="color: #339933;">:</span>
+<a name="line22"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$e</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">response</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line23"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line24"></a><span style="color: #009900;">&#125;</span>
+<a name="line25"></a><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">output</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line26"></a>&nbsp;
+<a name="line27"></a><span style="color: #000000; font-weight: bold;">?&gt;</span>
+<a name="line28"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

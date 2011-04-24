@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:20 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:23:53 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Tests\RequestTester</div>
-<a href="../../source/tests/request.php.html#line9" class="location">tests/request.php at line 9</a>
+<a href="../../source/tests/request.php.html#line8" class="location">tests/request.php at line 8</a>
 
 <h1>Class RequestTester</h1>
 
@@ -61,11 +61,19 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
+<td class="description"><p class="name"><a href="#test404NotFound()">test404NotFound</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
 <td class="description"><p class="name"><a href="#testAssignMimetypes()">testAssignMimetypes</a>()</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#testAutoloadingOfResouces()">testAutoloadingOfResouces</a>()</p></td>
+<td class="description"><p class="name"><a href="#testAutoloadingOfResources()">testAutoloadingOfResources</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testAutoloadingOfResourcesWithoutAutoloadFunction()">testAutoloadingOfResourcesWithoutAutoloadFunction</a>()</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
@@ -125,6 +133,10 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 <tr>
 <td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testOptionalRegexURIParams()">testOptionalRegexURIParams</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
 <td class="description"><p class="name"><a href="#testPostRequestMethodWithData()">testPostRequestMethodWithData</a>()</p></td>
 </tr>
 <tr>
@@ -141,6 +153,10 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 <tr>
 <td class="type"> void</td>
+<td class="description"><p class="name"><a href="#testRequestRootURI()">testRequestRootURI</a>()</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
 <td class="description"><p class="name"><a href="#testRequestURI()">testRequestURI</a>()</p></td>
 </tr>
 <tr>
@@ -154,14 +170,6 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr>
 <td class="type"> void</td>
 <td class="description"><p class="name"><a href="#testResourceLoaderWithAResources()">testResourceLoaderWithAResources</a>()</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#testResourceLoaderWithBadNoResourceResource()">testResourceLoaderWithBadNoResourceResource</a>()</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#testResourceLoaderWithNewNoResourceResource()">testResourceLoaderWithNewNoResourceResource</a>()</p></td>
 </tr>
 <tr>
 <td class="type"> void</td>
@@ -182,7 +190,16 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </table>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../../source/tests/request.php.html#line37" class="location">tests/request.php at line 37</a>
+<a href="../../source/tests/request.php.html#line463" class="location">tests/request.php at line 463</a>
+
+<h3 id="test404NotFound()">test404NotFound</h3>
+<code class="signature">public  void <strong>test404NotFound</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line36" class="location">tests/request.php at line 36</a>
 
 <h3 id="testAssignMimetypes()">testAssignMimetypes</h3>
 <code class="signature">public  void <strong>testAssignMimetypes</strong>()</code>
@@ -191,16 +208,25 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line620" class="location">tests/request.php at line 620</a>
+<a href="../../source/tests/request.php.html#line625" class="location">tests/request.php at line 625</a>
 
-<h3 id="testAutoloadingOfResouces()">testAutoloadingOfResouces</h3>
-<code class="signature">public  void <strong>testAutoloadingOfResouces</strong>()</code>
+<h3 id="testAutoloadingOfResources()">testAutoloadingOfResources</h3>
+<code class="signature">public  void <strong>testAutoloadingOfResources</strong>()</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line87" class="location">tests/request.php at line 87</a>
+<a href="../../source/tests/request.php.html#line609" class="location">tests/request.php at line 609</a>
+
+<h3 id="testAutoloadingOfResourcesWithoutAutoloadFunction()">testAutoloadingOfResourcesWithoutAutoloadFunction</h3>
+<code class="signature">public  void <strong>testAutoloadingOfResourcesWithoutAutoloadFunction</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line86" class="location">tests/request.php at line 86</a>
 
 <h3 id="testConnegOnBareURI()">testConnegOnBareURI</h3>
 <code class="signature">public  void <strong>testConnegOnBareURI</strong>()</code>
@@ -209,7 +235,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line134" class="location">tests/request.php at line 134</a>
+<a href="../../source/tests/request.php.html#line133" class="location">tests/request.php at line 133</a>
 
 <h3 id="testConnegOnBareURIWithAccept()">testConnegOnBareURIWithAccept</h3>
 <code class="signature">public  void <strong>testConnegOnBareURIWithAccept</strong>()</code>
@@ -218,7 +244,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line241" class="location">tests/request.php at line 241</a>
+<a href="../../source/tests/request.php.html#line240" class="location">tests/request.php at line 240</a>
 
 <h3 id="testConnegOnBareURIWithAcceptAndAcceptLang()">testConnegOnBareURIWithAcceptAndAcceptLang</h3>
 <code class="signature">public  void <strong>testConnegOnBareURIWithAcceptAndAcceptLang</strong>()</code>
@@ -227,7 +253,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line186" class="location">tests/request.php at line 186</a>
+<a href="../../source/tests/request.php.html#line185" class="location">tests/request.php at line 185</a>
 
 <h3 id="testConnegOnBareURIWithAcceptLang()">testConnegOnBareURIWithAcceptLang</h3>
 <code class="signature">public  void <strong>testConnegOnBareURIWithAcceptLang</strong>()</code>
@@ -236,7 +262,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line109" class="location">tests/request.php at line 109</a>
+<a href="../../source/tests/request.php.html#line108" class="location">tests/request.php at line 108</a>
 
 <h3 id="testConnegOnExtensionURI()">testConnegOnExtensionURI</h3>
 <code class="signature">public  void <strong>testConnegOnExtensionURI</strong>()</code>
@@ -245,7 +271,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line159" class="location">tests/request.php at line 159</a>
+<a href="../../source/tests/request.php.html#line158" class="location">tests/request.php at line 158</a>
 
 <h3 id="testConnegOnExtensionURIWithAccept()">testConnegOnExtensionURIWithAccept</h3>
 <code class="signature">public  void <strong>testConnegOnExtensionURIWithAccept</strong>()</code>
@@ -254,7 +280,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line274" class="location">tests/request.php at line 274</a>
+<a href="../../source/tests/request.php.html#line273" class="location">tests/request.php at line 273</a>
 
 <h3 id="testConnegOnExtensionURIWithAcceptAndAcceptLang()">testConnegOnExtensionURIWithAcceptAndAcceptLang</h3>
 <code class="signature">public  void <strong>testConnegOnExtensionURIWithAcceptAndAcceptLang</strong>()</code>
@@ -263,7 +289,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line211" class="location">tests/request.php at line 211</a>
+<a href="../../source/tests/request.php.html#line210" class="location">tests/request.php at line 210</a>
 
 <h3 id="testConnegOnExtensionURIWithAcceptLang()">testConnegOnExtensionURIWithAcceptLang</h3>
 <code class="signature">public  void <strong>testConnegOnExtensionURIWithAcceptLang</strong>()</code>
@@ -272,7 +298,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line49" class="location">tests/request.php at line 49</a>
+<a href="../../source/tests/request.php.html#line48" class="location">tests/request.php at line 48</a>
 
 <h3 id="testGetRequestMethod()">testGetRequestMethod</h3>
 <code class="signature">public  void <strong>testGetRequestMethod</strong>()</code>
@@ -281,7 +307,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line362" class="location">tests/request.php at line 362</a>
+<a href="../../source/tests/request.php.html#line365" class="location">tests/request.php at line 365</a>
 
 <h3 id="testIfMatch()">testIfMatch</h3>
 <code class="signature">public  void <strong>testIfMatch</strong>()</code>
@@ -290,7 +316,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line405" class="location">tests/request.php at line 405</a>
+<a href="../../source/tests/request.php.html#line408" class="location">tests/request.php at line 408</a>
 
 <h3 id="testIfNoneMatch()">testIfNoneMatch</h3>
 <code class="signature">public  void <strong>testIfNoneMatch</strong>()</code>
@@ -299,7 +325,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line663" class="location">tests/request.php at line 663</a>
+<a href="../../source/tests/request.php.html#line673" class="location">tests/request.php at line 673</a>
 
 <h3 id="testMethodNotAllowed()">testMethodNotAllowed</h3>
 <code class="signature">public  void <strong>testMethodNotAllowed</strong>()</code>
@@ -308,7 +334,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line598" class="location">tests/request.php at line 598</a>
+<a href="../../source/tests/request.php.html#line587" class="location">tests/request.php at line 587</a>
 
 <h3 id="testMixedStyleUriParameters()">testMixedStyleUriParameters</h3>
 <code class="signature">public  void <strong>testMixedStyleUriParameters</strong>()</code>
@@ -317,7 +343,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line505" class="location">tests/request.php at line 505</a>
+<a href="../../source/tests/request.php.html#line494" class="location">tests/request.php at line 494</a>
 
 <h3 id="testNamespaceMounting()">testNamespaceMounting</h3>
 <code class="signature">public  void <strong>testNamespaceMounting</strong>()</code>
@@ -326,7 +352,16 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line59" class="location">tests/request.php at line 59</a>
+<a href="../../source/tests/request.php.html#line692" class="location">tests/request.php at line 692</a>
+
+<h3 id="testOptionalRegexURIParams()">testOptionalRegexURIParams</h3>
+<code class="signature">public  void <strong>testOptionalRegexURIParams</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line58" class="location">tests/request.php at line 58</a>
 
 <h3 id="testPostRequestMethodWithData()">testPostRequestMethodWithData</h3>
 <code class="signature">public  void <strong>testPostRequestMethodWithData</strong>()</code>
@@ -335,7 +370,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line73" class="location">tests/request.php at line 73</a>
+<a href="../../source/tests/request.php.html#line72" class="location">tests/request.php at line 72</a>
 
 <h3 id="testPutRequestMethodWithData()">testPutRequestMethodWithData</h3>
 <code class="signature">public  void <strong>testPutRequestMethodWithData</strong>()</code>
@@ -344,7 +379,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line560" class="location">tests/request.php at line 560</a>
+<a href="../../source/tests/request.php.html#line549" class="location">tests/request.php at line 549</a>
 
 <h3 id="testRailsStyleUriParameters()">testRailsStyleUriParameters</h3>
 <code class="signature">public  void <strong>testRailsStyleUriParameters</strong>()</code>
@@ -353,7 +388,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line25" class="location">tests/request.php at line 25</a>
+<a href="../../source/tests/request.php.html#line24" class="location">tests/request.php at line 24</a>
 
 <h3 id="testRequestBaseUri()">testRequestBaseUri</h3>
 <code class="signature">public  void <strong>testRequestBaseUri</strong>()</code>
@@ -362,7 +397,16 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line11" class="location">tests/request.php at line 11</a>
+<a href="../../source/tests/request.php.html#line659" class="location">tests/request.php at line 659</a>
+
+<h3 id="testRequestRootURI()">testRequestRootURI</h3>
+<code class="signature">public  void <strong>testRequestRootURI</strong>()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../../source/tests/request.php.html#line10" class="location">tests/request.php at line 10</a>
 
 <h3 id="testRequestURI()">testRequestURI</h3>
 <code class="signature">public  void <strong>testRequestURI</strong>()</code>
@@ -371,7 +415,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line490" class="location">tests/request.php at line 490</a>
+<a href="../../source/tests/request.php.html#line479" class="location">tests/request.php at line 479</a>
 
 <h3 id="testResourceDataLoading()">testResourceDataLoading</h3>
 <code class="signature">public  void <strong>testResourceDataLoading</strong>()</code>
@@ -380,7 +424,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line335" class="location">tests/request.php at line 335</a>
+<a href="../../source/tests/request.php.html#line338" class="location">tests/request.php at line 338</a>
 
 <h3 id="testResourceLoaderWithAChildResources()">testResourceLoaderWithAChildResources</h3>
 <code class="signature">public  void <strong>testResourceLoaderWithAChildResources</strong>()</code>
@@ -389,7 +433,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line322" class="location">tests/request.php at line 322</a>
+<a href="../../source/tests/request.php.html#line325" class="location">tests/request.php at line 325</a>
 
 <h3 id="testResourceLoaderWithAResources()">testResourceLoaderWithAResources</h3>
 <code class="signature">public  void <strong>testResourceLoaderWithAResources</strong>()</code>
@@ -398,25 +442,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line474" class="location">tests/request.php at line 474</a>
-
-<h3 id="testResourceLoaderWithBadNoResourceResource()">testResourceLoaderWithBadNoResourceResource</h3>
-<code class="signature">public  void <strong>testResourceLoaderWithBadNoResourceResource</strong>()</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../../source/tests/request.php.html#line460" class="location">tests/request.php at line 460</a>
-
-<h3 id="testResourceLoaderWithNewNoResourceResource()">testResourceLoaderWithNewNoResourceResource</h3>
-<code class="signature">public  void <strong>testResourceLoaderWithNewNoResourceResource</strong>()</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../../source/tests/request.php.html#line309" class="location">tests/request.php at line 309</a>
+<a href="../../source/tests/request.php.html#line308" class="location">tests/request.php at line 308</a>
 
 <h3 id="testResourceLoaderWithNoResources()">testResourceLoaderWithNoResources</h3>
 <code class="signature">public  void <strong>testResourceLoaderWithNoResources</strong>()</code>
@@ -425,7 +451,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line348" class="location">tests/request.php at line 348</a>
+<a href="../../source/tests/request.php.html#line351" class="location">tests/request.php at line 351</a>
 
 <h3 id="testResourceLoaderWithRegexURIMatch()">testResourceLoaderWithRegexURIMatch</h3>
 <code class="signature">public  void <strong>testResourceLoaderWithRegexURIMatch</strong>()</code>
@@ -434,7 +460,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line653" class="location">tests/request.php at line 653</a>
+<a href="../../source/tests/request.php.html#line649" class="location">tests/request.php at line 649</a>
 
 <h3 id="testTrailingSlashRemoval()">testTrailingSlashRemoval</h3>
 <code class="signature">public  void <strong>testTrailingSlashRemoval</strong>()</code>
@@ -443,7 +469,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../../source/tests/request.php.html#line522" class="location">tests/request.php at line 522</a>
+<a href="../../source/tests/request.php.html#line511" class="location">tests/request.php at line 511</a>
 
 <h3 id="testURITemplateStyleUriParameters()">testURITemplateStyleUriParameters</h3>
 <code class="signature">public  void <strong>testURITemplateStyleUriParameters</strong>()</code>

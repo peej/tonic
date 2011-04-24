@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:20 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:23:53 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Lib\Resource</div>
-<a href="../../source/lib/tonic.php.html#line511" class="location">lib/tonic.php at line 511</a>
+<a href="../../source/lib/tonic.php.html#line510" class="location">lib/tonic.php at line 510</a>
 
 <h1>Class Resource</h1>
 
@@ -68,7 +68,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </table>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../../source/lib/tonic.php.html#line519" class="location">lib/tonic.php at line 519</a>
+<a href="../../source/lib/tonic.php.html#line518" class="location">lib/tonic.php at line 518</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(str parameters)</code>
@@ -86,7 +86,11 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <h3 id="exec()">exec</h3>
 <code class="signature">public  <a href="../../tonic/lib/response.html">Response</a> <strong>exec</strong>(<a href="../../tonic/lib/request.html">Request</a> request)</code>
 <div class="details">
-<p>Execute a request on this resource.</p></div>
+<p>Execute a request on this resource.</p><dl>
+<dt>Throws:</dt>
+<dd><a href="../../tonic/lib/responseexception.html">ResponseException</a> - If the HTTP method is not allowed on the resource, a 405 exception is thrown</dd>
+</dl>
+</div>
 
 <hr>
 

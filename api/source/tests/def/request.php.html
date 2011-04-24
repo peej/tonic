@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:27 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:24:01 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
 <link rel="start" href="../../../overview-summary.html">
@@ -59,61 +59,62 @@
 <a name="line21"></a>&nbsp;
 <a name="line22"></a><span style="color: #009933; font-style: italic;">/**
 <a name="line23"></a> * @namespace Tonic\Tests
-<a name="line24"></a> */</span>
-<a name="line25"></a><span style="color: #000000; font-weight: bold;">class</span> NewNoResource <span style="color: #000000; font-weight: bold;">extends</span> NoResource <span style="color: #009900;">&#123;</span>
-<a name="line26"></a>&nbsp;
-<a name="line27"></a><span style="color: #009900;">&#125;</span>
+<a name="line24"></a> * @uri /requesttest/railsstyle/:param/:param2
+<a name="line25"></a> * @uri /requesttest/uritemplatestyle/{param}/{param2}
+<a name="line26"></a> */</span>
+<a name="line27"></a><span style="color: #000000; font-weight: bold;">class</span> TwoUriParams <span style="color: #000000; font-weight: bold;">extends</span> Resource <span style="color: #009900;">&#123;</span>
 <a name="line28"></a>&nbsp;
-<a name="line29"></a><span style="color: #009933; font-style: italic;">/**
-<a name="line30"></a> * @namespace Tonic\Tests
-<a name="line31"></a> * @uri /requesttest/railsstyle/:param/:param2
-<a name="line32"></a> * @uri /requesttest/uritemplatestyle/{param}/{param2}
-<a name="line33"></a> */</span>
-<a name="line34"></a><span style="color: #000000; font-weight: bold;">class</span> TwoUriParams <span style="color: #000000; font-weight: bold;">extends</span> Resource <span style="color: #009900;">&#123;</span>
-<a name="line35"></a>&nbsp;
-<a name="line36"></a>    <span style="color: #000000; font-weight: bold;">var</span> <span style="color: #000088;">$params</span><span style="color: #339933;">;</span>
-<a name="line37"></a>&nbsp;
-<a name="line38"></a>    <span style="color: #000000; font-weight: bold;">function</span> get<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param2</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line39"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">receivedParams</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line40"></a>            <span style="color: #0000ff;">'param'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span>
-<a name="line41"></a>            <span style="color: #0000ff;">'param2'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param2</span>
-<a name="line42"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line43"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line44"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line45"></a>&nbsp;
-<a name="line46"></a><span style="color: #009900;">&#125;</span>
-<a name="line47"></a>&nbsp;
-<a name="line48"></a><span style="color: #009933; font-style: italic;">/**
-<a name="line49"></a> * @namespace Tonic\Tests
-<a name="line50"></a> * @uri /requesttest/railsmixedstyle/{param}/(.+)/{param2}/(.+)
-<a name="line51"></a> * @uri /requesttest/uritemplatemixedstyle/{param}/(.+)/{param2}/(.+)
-<a name="line52"></a> * @uri /requesttest/mixedstyle/:param/(.+)/{param2}/(.+)
-<a name="line53"></a> */</span>
-<a name="line54"></a><span style="color: #000000; font-weight: bold;">class</span> FourUriParams <span style="color: #000000; font-weight: bold;">extends</span> Resource <span style="color: #009900;">&#123;</span>
-<a name="line55"></a>&nbsp;
-<a name="line56"></a>    <span style="color: #000000; font-weight: bold;">var</span> <span style="color: #000088;">$params</span><span style="color: #339933;">;</span>
-<a name="line57"></a>&nbsp;
-<a name="line58"></a>    <span style="color: #000000; font-weight: bold;">function</span> get<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">,</span> <span style="color: #000088;">$something</span><span style="color: #339933;">,</span> <span style="color: #000088;">$otherthing</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param2</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line59"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">receivedParams</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line60"></a>            <span style="color: #0000ff;">'param'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span>
-<a name="line61"></a>            <span style="color: #0000ff;">'param2'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param2</span><span style="color: #339933;">,</span>
-<a name="line62"></a>            <span style="color: #0000ff;">'something'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$something</span><span style="color: #339933;">,</span>
-<a name="line63"></a>            <span style="color: #0000ff;">'otherthing'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$otherthing</span>
-<a name="line64"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line65"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line66"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line67"></a>&nbsp;
-<a name="line68"></a><span style="color: #009900;">&#125;</span>
-<a name="line69"></a>&nbsp;
-<a name="line70"></a><span style="color: #009933; font-style: italic;">/**
-<a name="line71"></a> * @namespace Tonic\Tests
-<a name="line72"></a> * @uri /requesttest/trailingslashurl/
-<a name="line73"></a> */</span>
-<a name="line74"></a><span style="color: #000000; font-weight: bold;">class</span> TrailingSlashUrl <span style="color: #000000; font-weight: bold;">extends</span> Resource <span style="color: #009900;">&#123;</span>
-<a name="line75"></a>&nbsp;
-<a name="line76"></a><span style="color: #009900;">&#125;</span>
+<a name="line29"></a>    <span style="color: #000000; font-weight: bold;">var</span> <span style="color: #000088;">$receivedParams</span><span style="color: #339933;">;</span>
+<a name="line30"></a>&nbsp;
+<a name="line31"></a>    <span style="color: #000000; font-weight: bold;">function</span> get<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param2</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line32"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">receivedParams</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line33"></a>            <span style="color: #0000ff;">'param'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span>
+<a name="line34"></a>            <span style="color: #0000ff;">'param2'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param2</span>
+<a name="line35"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line36"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line37"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line38"></a>&nbsp;
+<a name="line39"></a><span style="color: #009900;">&#125;</span>
+<a name="line40"></a>&nbsp;
+<a name="line41"></a><span style="color: #009933; font-style: italic;">/**
+<a name="line42"></a> * @namespace Tonic\Tests
+<a name="line43"></a> * @uri /requesttest/railsmixedstyle/{param}/(.+)/{param2}/(.+)
+<a name="line44"></a> * @uri /requesttest/uritemplatemixedstyle/{param}/(.+)/{param2}/(.+)
+<a name="line45"></a> * @uri /requesttest/mixedstyle/:param/(.+)/{param2}/(.+)
+<a name="line46"></a> */</span>
+<a name="line47"></a><span style="color: #000000; font-weight: bold;">class</span> FourUriParams <span style="color: #000000; font-weight: bold;">extends</span> Resource <span style="color: #009900;">&#123;</span>
+<a name="line48"></a>&nbsp;
+<a name="line49"></a>    <span style="color: #000000; font-weight: bold;">var</span> <span style="color: #000088;">$receivedParams</span><span style="color: #339933;">;</span>
+<a name="line50"></a>&nbsp;
+<a name="line51"></a>    <span style="color: #000000; font-weight: bold;">function</span> get<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #339933;">,</span> <span style="color: #000088;">$something</span><span style="color: #339933;">,</span> <span style="color: #000088;">$otherthing</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span> <span style="color: #000088;">$param2</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line52"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">receivedParams</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line53"></a>            <span style="color: #0000ff;">'param'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param</span><span style="color: #339933;">,</span>
+<a name="line54"></a>            <span style="color: #0000ff;">'param2'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$param2</span><span style="color: #339933;">,</span>
+<a name="line55"></a>            <span style="color: #0000ff;">'something'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$something</span><span style="color: #339933;">,</span>
+<a name="line56"></a>            <span style="color: #0000ff;">'otherthing'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$otherthing</span>
+<a name="line57"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line58"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line59"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line60"></a>&nbsp;
+<a name="line61"></a><span style="color: #009900;">&#125;</span>
+<a name="line62"></a>&nbsp;
+<a name="line63"></a><span style="color: #009933; font-style: italic;">/**
+<a name="line64"></a> * @namespace Tonic\Tests
+<a name="line65"></a> * @uri /requesttest/trailingslashurl/
+<a name="line66"></a> */</span>
+<a name="line67"></a><span style="color: #000000; font-weight: bold;">class</span> TrailingSlashUrl <span style="color: #000000; font-weight: bold;">extends</span> Resource <span style="color: #009900;">&#123;</span>
+<a name="line68"></a>&nbsp;
+<a name="line69"></a><span style="color: #009900;">&#125;</span>
+<a name="line70"></a>&nbsp;
+<a name="line71"></a><span style="color: #009933; font-style: italic;">/**
+<a name="line72"></a> * @namespace Tonic\Tests
+<a name="line73"></a> * @uri /requesttest/optional(?:/param1/([^/]*))?
+<a name="line74"></a> * @uri /requesttest/optional(?:/([a-z]+))?
+<a name="line75"></a> */</span>
+<a name="line76"></a><span style="color: #000000; font-weight: bold;">class</span> OptionalParams <span style="color: #000000; font-weight: bold;">extends</span> Resource <span style="color: #009900;">&#123;</span>
 <a name="line77"></a>&nbsp;
-<a name="line78"></a>&nbsp;</pre>
+<a name="line78"></a><span style="color: #009900;">&#125;</span>
+<a name="line79"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

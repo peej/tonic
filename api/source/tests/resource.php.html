@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sat, 05 Mar 2011 10:58:26 +0000">
+<meta name="when" content="Sun, 24 Apr 2011 10:23:59 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -38,75 +38,59 @@
 
 <a name="line1"></a><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>
 <a name="line2"></a>&nbsp;
-<a name="line3"></a><span style="color: #b1b100;">require_once</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'../lib/tonic.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line4"></a><span style="color: #b1b100;">require_once</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'def/resource.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line5"></a>&nbsp;
-<a name="line6"></a><span style="color: #009933; font-style: italic;">/**
-<a name="line7"></a> * @namespace Tonic\Tests
-<a name="line8"></a> */</span>
-<a name="line9"></a><span style="color: #000000; font-weight: bold;">class</span> ResourceTester <span style="color: #000000; font-weight: bold;">extends</span> UnitTestCase <span style="color: #009900;">&#123;</span>
-<a name="line10"></a>&nbsp;
-<a name="line11"></a>    <span style="color: #000000; font-weight: bold;">function</span> testStandardResourceExec<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line12"></a>&nbsp;
-<a name="line13"></a>        <span style="color: #000088;">$config</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line14"></a>            <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'/resourcetest'</span>
-<a name="line15"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line16"></a>&nbsp;
-<a name="line17"></a>        <span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line18"></a>        <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line19"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line20"></a>&nbsp;
-<a name="line21"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">assertEqual</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'404'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line22"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">assertEqual</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'Nothing was found for the resource &quot;/resourcetest&quot;.'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line23"></a>&nbsp;
-<a name="line24"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line25"></a>&nbsp;
-<a name="line26"></a>    <span style="color: #000000; font-weight: bold;">function</span> testFunctioningResourceExec<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line27"></a>&nbsp;
-<a name="line28"></a>        <span style="color: #000088;">$config</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line29"></a>            <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'/resourcetest/one'</span>
-<a name="line30"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line31"></a>&nbsp;
-<a name="line32"></a>        <span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line33"></a>        <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line34"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line35"></a>&nbsp;
-<a name="line36"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">assertEqual</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'200'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line37"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">assertEqual</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'test'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line3"></a><span style="color: #b1b100;">require_once</span><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'def/resource.php'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line4"></a>&nbsp;
+<a name="line5"></a><span style="color: #009933; font-style: italic;">/**
+<a name="line6"></a> * @namespace Tonic\Tests
+<a name="line7"></a> */</span>
+<a name="line8"></a><span style="color: #000000; font-weight: bold;">class</span> ResourceTester <span style="color: #000000; font-weight: bold;">extends</span> UnitTestCase <span style="color: #009900;">&#123;</span>
+<a name="line9"></a>&nbsp;
+<a name="line10"></a>    <span style="color: #000000; font-weight: bold;">function</span> testFunctioningResourceExec<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line11"></a>&nbsp;
+<a name="line12"></a>        <span style="color: #000088;">$config</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line13"></a>            <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'/resourcetest/one'</span>
+<a name="line14"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line15"></a>&nbsp;
+<a name="line16"></a>        <span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line17"></a>        <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line18"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line19"></a>&nbsp;
+<a name="line20"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">assertEqual</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'200'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line21"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">assertEqual</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'test'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line22"></a>&nbsp;
+<a name="line23"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line24"></a>&nbsp;
+<a name="line25"></a>    <span style="color: #000000; font-weight: bold;">function</span> testNoParametersArgumentToResourceConstructor<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line26"></a>&nbsp;
+<a name="line27"></a>        <span style="color: #000088;">$config</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line28"></a>            <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'/resourcetest/badconstructor'</span>
+<a name="line29"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line30"></a>&nbsp;
+<a name="line31"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">expectError</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> PatternExpectation<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/Missing argument 1 for Resource::__construct/'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line32"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">expectError</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> PatternExpectation<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/Undefined variable: parameters/'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line33"></a>&nbsp;
+<a name="line34"></a>        <span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line35"></a>        <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line36"></a>&nbsp;
+<a name="line37"></a>    <span style="color: #009900;">&#125;</span>
 <a name="line38"></a>&nbsp;
-<a name="line39"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line39"></a>    <span style="color: #000000; font-weight: bold;">function</span> testMethodDoesNotReturnResponseObject<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
 <a name="line40"></a>&nbsp;
-<a name="line41"></a>    <span style="color: #000000; font-weight: bold;">function</span> testNoParametersArgumentToResourceConstructor<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line42"></a>&nbsp;
-<a name="line43"></a>        <span style="color: #000088;">$config</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line44"></a>            <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'/resourcetest/badconstructor'</span>
-<a name="line45"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line41"></a>        <span style="color: #000088;">$config</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line42"></a>            <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'/resourcetest/badmethodresponse'</span>
+<a name="line43"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line44"></a>&nbsp;
+<a name="line45"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">expectException</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> PatternExpectation<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/Method GET of (.+\\\\)?TestBadMethodResponse did not return a Response object/'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line46"></a>&nbsp;
-<a name="line47"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">expectError</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> PatternExpectation<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/Missing argument 1 for Resource::__construct/'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line48"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">expectError</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> PatternExpectation<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/Undefined variable: parameters/'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line49"></a>&nbsp;
-<a name="line50"></a>        <span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line51"></a>        <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line47"></a>        <span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line48"></a>        <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line49"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line50"></a>&nbsp;
+<a name="line51"></a>    <span style="color: #009900;">&#125;</span>
 <a name="line52"></a>&nbsp;
-<a name="line53"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line53"></a><span style="color: #009900;">&#125;</span>
 <a name="line54"></a>&nbsp;
-<a name="line55"></a>    <span style="color: #000000; font-weight: bold;">function</span> testMethodDoesNotReturnResponseObject<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line56"></a>&nbsp;
-<a name="line57"></a>        <span style="color: #000088;">$config</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line58"></a>            <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'/resourcetest/badmethodresponse'</span>
-<a name="line59"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line60"></a>&nbsp;
-<a name="line61"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">expectException</span><span style="color: #009900;">&#40;</span><span style="color: #000000; font-weight: bold;">new</span> PatternExpectation<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/Method GET of TestBadMethodResponse did not return a Response object/'</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line62"></a>&nbsp;
-<a name="line63"></a>        <span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line64"></a>        <span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">loadResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line65"></a>        <span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line66"></a>&nbsp;
-<a name="line67"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line68"></a>&nbsp;
-<a name="line69"></a><span style="color: #009900;">&#125;</span>
-<a name="line70"></a>&nbsp;
-<a name="line71"></a>&nbsp;</pre>
+<a name="line55"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>
