@@ -8,14 +8,19 @@ require_once '../examples/examples.php';
 
 // handle request
 $request = new Request();
-$resource = $request->loadResource();
 try {
+    $resource = $request->loadResource();
     $response = $resource->exec($request);
-} catch (AuthException $e) {
-    $response = new Response($request);
-    $response->code = Response::UNAUTHORIZED;
-    $response->body = 'You must enter the username and password';
-    $response->addHeader('WWW-Authenticate', 'Basic realm="Tonic"');
+
+} catch (ResponseException $e) {
+    switch ($e->getCode()) {
+    case Response::UNAUTHORIZED:
+        $response = $e->response($request);
+        $response->addHeader('WWW-Authenticate', 'Basic realm="Tonic"');
+        break;
+    default:
+        $response = $e->response($request);
+    }
 }
 $response->output();
 

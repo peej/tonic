@@ -21,13 +21,6 @@ class ChildResource extends NewResource {
 
 /**
  * @namespace Tonic\Tests
- */
-class NewNoResource extends NoResource {
-
-}
-
-/**
- * @namespace Tonic\Tests
  * @uri /requesttest/railsstyle/:param/:param2
  * @uri /requesttest/uritemplatestyle/{param}/{param2}
  */

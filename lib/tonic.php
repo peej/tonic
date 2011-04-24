@@ -123,12 +123,6 @@ class Request {
     public $ifNoneMatch = array();
     
     /**
-     * Name of resource class to use for when nothing is found
-     * @var str
-     */
-    public $noResource = 'NoResource';
-    
-    /**
      * The resource classes loaded and how they are wired to URIs
      * @var str[]
      */
@@ -172,7 +166,6 @@ class Request {
      * will be added to the default map of mimetypes</dd>
      * <dt>baseUri</dt> <dd>The base relative URI to use when dispatcher isn't
      * at the root of the domain. Do not put a trailing slash</dd>
-     * <dt>404</dt> <dd>Class name to use when no resource is found</dd>
      * <dt>mounts</dt> <dd>an array of namespace to baseUri prefix mappings</dd>
      * </dl>
      *
@@ -302,14 +295,6 @@ class Request {
             foreach ($ifNoneMatch as $etag) {
                 $this->ifNoneMatch[] = trim($etag, '" ');
             }
-        }
-        
-        // 404 resource
-        if (isset($config['404'])) {
-            $this->noResource = $config['404'];
-        }
-        if (class_exists('Tonic\\'.$this->noResource)) {
-            $this->noResource = 'Tonic\\'.$this->noResource;
         }
         
         // mounts
@@ -455,6 +440,7 @@ class Request {
     /**
      * Instantiate the resource class that matches the request URI the best
      * @return Resource
+     * @throws ResponseException If the resource does not exist, a 404 exception is thrown
      */
     function loadResource() {
         
@@ -509,7 +495,9 @@ class Request {
             }
             return new $resource['class']($parameters);
         }
-        return new $this->noResource(array());
+        
+        // no resource found, throw response exception
+        throw new ResponseException('A resource matching URI "'.$this->uri.'" was not found', Response::NOTFOUND);
         
     }
     
@@ -572,6 +560,7 @@ class Resource {
      * Execute a request on this resource.
      * @param Request request
      * @return Response
+     * @throws ResponseException If the HTTP method is not allowed on the resource, a 405 exception is thrown
      */
     function exec($request) {
         
@@ -604,12 +593,9 @@ class Resource {
         } else {
             
             // send 405 method not allowed
-            $response = new Response($request);
-            $response->code = Response::METHODNOTALLOWED;
-            $response->body = sprintf(
-                'The HTTP method "%s" used for the request is not allowed for the resource "%s".',
-                $request->method,
-                $request->uri
+            throw new ResponseException(
+                'The HTTP method "'.$request->method.'"is not allowed for the resource "'.$request->uri.'".',
+                Response::METHODNOTALLOWED
             );
             
         }
@@ -617,32 +603,6 @@ class Resource {
         # good for debugging, remove this at some point
         $response->addHeader('X-Resource', get_class($this));
         
-        return $response;
-        
-    }
-    
-}
-
-/**
- * 404 resource class
- * @namespace Tonic\Lib
- */
-class NoResource extends Resource {
-    
-    /**
-     * Always return a 404 response.
-     * @param Request request
-     * @return Response
-     */
-    function exec($request) {
-        
-        // send 404 not found
-        $response = new Response($request);
-        $response->code = Response::NOTFOUND;
-        $response->body = sprintf(
-            'Nothing was found for the resource "%s".',
-            $request->uri
-        );
         return $response;
         
     }
@@ -785,6 +745,26 @@ class Response {
         
         echo $this->body;
         
+    }
+    
+}
+
+/**
+ * Exception class for HTTP response errors
+ * @namespace Tonic\Lib
+ */
+class ResponseException extends Exception {
+    
+    /**
+     * Generate a default response for this exception
+     * @param Request request
+     * @return Response
+     */
+    function response($request) {
+        $response = new Response($request);
+        $response->code = $this->code;
+        $response->body = $this->message;
+        return $response;
     }
     
 }

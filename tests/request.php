@@ -312,9 +312,13 @@ class RequestTester extends UnitTestCase {
         );
         
         $request = new Request($config);
-        $resource = $request->loadResource();
         
-        $this->assertPattern('/NoResource/', get_class($resource));
+        try {
+            $resource = $request->loadResource();
+            $this->fail('Expected ResponseException to be thrown');
+        } catch (ResponseException $e) {
+            $this->assertEqual($e->getCode(), 404);
+        }
         
     }
     
@@ -456,32 +460,18 @@ class RequestTester extends UnitTestCase {
         
     }
     
-    function testResourceLoaderWithNewNoResourceResource() {
+    function test404NotFound() {
         
         $config = array(
-            'uri' => '/three',
-            '404' => 'NewNoResource'
+            'uri' => '/requesttest/notfound'
         );
-        
         $request = new Request($config);
-        $resource = $request->loadResource();
-        
-        $this->assertPattern('/NewNoResource/', get_class($resource));
-        
-    }
-    
-    function testResourceLoaderWithBadNoResourceResource() {
-        
-        $config = array(
-            'uri' => '/three',
-            '404' => 'NewResource'
-        );
         
         try {
-            $request = new Request($config);
             $resource = $request->loadResource();
-        } catch(Exception $e) {
-            $this->assertEqual($e->getMessage(), '404 resource "NewResource" must be a subclass of "NoResource"');
+            $this->fail('Expected ResponseException to be thrown');
+        } catch (ResponseException $e) {
+            $this->assertEqual($e->getCode(), 404);
         }
         
     }
@@ -625,8 +615,9 @@ class RequestTester extends UnitTestCase {
             )
         );
         
-        $this->expectException(new PatternExpectation('/Unable to load resource/'));
         $request = new Request($config);
+        
+        $this->expectException(new PatternExpectation('/Unable to load resource/'));
         $resource = $request->loadResource();
         
     }
@@ -685,11 +676,16 @@ class RequestTester extends UnitTestCase {
             'uri' => '/requesttest/one',
             'method' => 'PUT'
         );
+        
         $request = new Request($config);
         $resource = $request->loadResource();
-        $response = $resource->exec($request);
         
-        $this->assertEqual($response->code, 405);
+        try {
+            $response = $resource->exec($request);
+            $this->fail('Expected ResponseException to be thrown');
+        } catch (ResponseException $e) {
+            $this->assertEqual($e->getCode(), 405);
+        }
         
     }
     

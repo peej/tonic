@@ -51,7 +51,7 @@ How to get started
 ==================
 
 The best place to get started is to get the hello world example running on your
-system, to do this you will need a web server running PHP4+.
+system, to do this you will need a web server running PHP5.1+.
 
 Place all of the Tonic files into your PHP include path so that other scripts can
 find it. By default on Windows this will probably be in "c:\php\includes\tonic" or
@@ -186,6 +186,29 @@ namespace will in effect have the URL-space prefixed to their @uri annotation.
 
 Again, don't put a trailing slash on the end, and if you aren't using PHP5.3 and
 namespaces, you can use the @namespace annotation.
+
+
+Response exceptions
+-------------------
+
+The Request object and Resource objects can throw ResponseExceptions when a problem
+occurs that the object does not want to handle and so relinquishes control back
+to the dispatcher.
+
+The ResponseException has its code value set to the HTTP response code of the problem
+and its message set to a human readable reason for throwing the exception. The
+ResponseException::response() method can be used to produce a default Response object
+expressing the exception if required.
+
+The Request object throws a 404 ResponseException when the resource to be loaded
+does not exist.
+
+The Resource object throws a 405 ResponseException when the HTTP method from the
+request is not able to be handled by the resource.
+
+If you don't want to handle a problem within your Resource class, you can throw your
+own ResponseException and handle it in the dispatcher. Look at the auth example for
+an example of how.
 
 
 Autoloading classes

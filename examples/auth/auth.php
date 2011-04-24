@@ -1,7 +1,5 @@
 <?php
 
-class AuthException extends Exception {}
-
 /**
  * Authentication example
  *
@@ -22,13 +20,13 @@ class AuthResource extends Resource {
     function isSecured() {
         
         if (
-            $_SERVER['PHP_AUTH_USER'] == AuthResource::USERNAME &&
-            $_SERVER['PHP_AUTH_PW'] == AuthResource::PASSWORD
+            isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] == AuthResource::USERNAME &&
+            isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_PW'] == AuthResource::PASSWORD
         ) {
             return;
         }
         
-        throw new AuthException();
+        throw new ResponseException('Incorrect username and password', Response::UNAUTHORIZED);
         
     }
     
