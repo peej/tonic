@@ -447,8 +447,8 @@ class Request {
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
             
-            preg_match_all('#(:[^/]+|{[^}]+}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
-            $uriRegex = preg_replace('#(:[^(/]+|{[^}]+})#', '(.+)', $uri);
+            preg_match_all('#(:[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
+            $uriRegex = preg_replace('#(:[^(/]+|{[^0-9][^}]*})#', '(.+)', $uri);
             
             if (preg_match('#^'.$this->baseUri.$uriRegex.'$#', $this->uri, $matches)) {
                 array_shift($matches);
@@ -558,7 +558,7 @@ class Resource {
     
     /**
      * Execute a request on this resource.
-     * @param Request request
+     * @param Request request The request to execute the resource in the context of
      * @return Response
      * @throws ResponseException If the HTTP method is not allowed on the resource, a 405 exception is thrown
      */

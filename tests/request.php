@@ -723,5 +723,31 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testResourceLoaderWithSquigglyBraceRegexURIMatch() {
+        
+        $config = array(
+            'uri' => '/requesttest/squiggly/9999-aaaaaaaa-bbbbbb'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertPattern('/SquigglyRegexResource/', get_class($resource));
+        
+        $config = array(
+            'uri' => '/requesttest/squiggly/9999-aaa-bbb'
+        );
+        
+        $request = new Request($config);
+        
+        try {
+            $resource = $request->loadResource();
+            $this->fail('Expected ResponseException to be thrown');
+        } catch (ResponseException $e) {
+            $this->assertTrue(TRUE);
+        }
+        
+    }
+    
 }
 
