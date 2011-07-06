@@ -73,31 +73,39 @@ class Request {
      * @var str[]
      */
     public $mimetypes = array(
-            'html' => 'text/html',
-            'txt' => 'text/plain',
-            'php' => 'application/php',
-            'css' => 'text/css',
-            'js' => 'application/javascript',
-            'json' => 'application/json',
-            'xml' => 'text/xml',
-            'rss' => 'application/rss+xml',
-            'atom' => 'application/atom+xml',
-            'gz' => 'application/x-gzip',
-            'tar' => 'application/x-tar',
-            'zip' => 'application/zip',
-            'gif' => 'image/gif',
-            'png' => 'image/png',
-            'jpg' => 'image/jpeg',
-            'ico' => 'image/x-icon',
-            'swf' => 'application/x-shockwave-flash',
-            'flv' => 'video/x-flv',
-            'avi' => 'video/mpeg',
-            'mpeg' => 'video/mpeg',
-            'mpg' => 'video/mpeg',
-            'mov' => 'video/quicktime',
-            'mp3' => 'audio/mpeg'
-        );
-        
+        'html' => 'text/html',
+        'txt' => 'text/plain',
+        'php' => 'application/php',
+        'css' => 'text/css',
+        'js' => 'application/javascript',
+        'json' => 'application/json',
+        'xml' => 'text/xml',
+        'rss' => 'application/rss+xml',
+        'atom' => 'application/atom+xml',
+        'gz' => 'application/x-gzip',
+        'tar' => 'application/x-tar',
+        'zip' => 'application/zip',
+        'gif' => 'image/gif',
+        'png' => 'image/png',
+        'jpg' => 'image/jpeg',
+        'ico' => 'image/x-icon',
+        'swf' => 'application/x-shockwave-flash',
+        'flv' => 'video/x-flv',
+        'avi' => 'video/mpeg',
+        'mpeg' => 'video/mpeg',
+        'mpg' => 'video/mpeg',
+        'mov' => 'video/quicktime',
+        'mp3' => 'audio/mpeg'
+    );
+    
+    /**
+     * Supported HTTP methods
+     * @var str[]
+     */
+    public $HTTPMethods = array(
+        'GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'
+    );
+    
     /**
      * HTTP request method of incoming request
      * @var str
@@ -167,6 +175,7 @@ class Request {
      * <dt>baseUri</dt> <dd>The base relative URI to use when dispatcher isn't
      * at the root of the domain. Do not put a trailing slash</dd>
      * <dt>mounts</dt> <dd>an array of namespace to baseUri prefix mappings</dd>
+     * <dt>HTTPMethods</dt> <dd>an array of HTTP methods to support</dd>
      * </dl>
      *
      * @param mixed[] config Configuration options
@@ -276,6 +285,8 @@ class Request {
         $this->negotiatedUris = array_values(array_unique($this->negotiatedUris));
         $this->formatNegotiatedUris = array_values(array_unique($this->formatNegotiatedUris));
         $this->languageNegotiatedUris = array_values(array_unique($this->languageNegotiatedUris));
+        
+        $this->HTTPMethods = $this->getConfig($config, 'HTTPMethods', NULL, $this->HTTPMethods);
         
         // get HTTP method
         $this->method = strtoupper($this->getConfig($config, 'method', 'REQUEST_METHOD', $this->method));
@@ -564,7 +575,10 @@ class Resource {
      */
     function exec($request) {
         
-        if (method_exists($this, $request->method)) {
+        if (
+            in_array(strtoupper($request->method), $request->HTTPMethods) &&
+            method_exists($this, $request->method)
+        ) {
             
             $method = new ReflectionMethod($this, $request->method);
             $parameters = array();
@@ -594,7 +608,7 @@ class Resource {
             
             // send 405 method not allowed
             throw new ResponseException(
-                'The HTTP method "'.$request->method.'"is not allowed for the resource "'.$request->uri.'".',
+                'The HTTP method "'.$request->method.'" is not allowed for the resource "'.$request->uri.'".',
                 Response::METHODNOTALLOWED
             );
             

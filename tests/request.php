@@ -749,5 +749,39 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testAllowedHTTPMethods() {
+        
+        $config = array(
+            'uri' => '/requesttest/httpmethods',
+            'method' => 'OPTIONS'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        try {
+            $response = $resource->exec($request);
+            $this->assertTrue(TRUE);
+        } catch (ResponseException $e) {
+            $this->fail('Did not expect ResponseException to be thrown');
+        }
+        
+        $config = array(
+            'uri' => '/requesttest/httpmethods',
+            'method' => 'WOOT'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        try {
+            $response = $resource->exec($request);
+            $this->fail('Expected ResponseException to be thrown');
+        } catch (ResponseException $e) {
+            $this->assertTrue(TRUE);
+        }
+        
+    }
+    
 }
 

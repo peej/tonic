@@ -84,3 +84,19 @@ class OptionalParams extends Resource {
 class SquigglyRegexResource extends Resource {
 
 }
+
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/httpmethods
+ */
+class MethodTestResource extends Resource {
+    
+    function options($request) {
+        return new Response($request);
+    }
+    
+    function woot($request) {
+        return new Response($request);
+    }
+    
+}
