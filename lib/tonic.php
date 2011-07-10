@@ -146,7 +146,7 @@ class Request {
     /**
      * Set a default configuration option
      */
-    private function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
+    protected function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
         if (isset($config[$configVar])) {
             return $config[$configVar];
         } elseif (isset($_SERVER[$serverVar]) && $_SERVER[$serverVar] != '') {
@@ -360,7 +360,7 @@ class Request {
      * @param str className
      * @return str[]
      */
-    private function getResourceClassDetails($className) {
+    protected function getResourceClassDetails($className) {
         
         $resourceReflector = new ReflectionClass($className);
         $comment = $resourceReflector->getDocComment();
