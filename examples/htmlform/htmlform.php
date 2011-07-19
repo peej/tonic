@@ -32,7 +32,7 @@ class HTMLForm extends Resource {
 <!DOCTYPE html>
 <html>
     <body>
-        <form action="/htmlform" method="post">
+        <form action="htmlform" method="post">
             <label>Name: <input type="text" name="name"></label>
             <input type="submit">
         </form>

@@ -17,7 +17,7 @@ class FilesystemResource extends Resource {
      * Path to the files to use
      * @var str
      */
-    var $path = '../examples/filesystem/representations';
+    var $path;
     
     /**
      * URI stub
@@ -31,8 +31,17 @@ class FilesystemResource extends Resource {
      */
     var $defaultDocument = 'default.html';
     
-    protected function turnUriIntoFilePath($uri) {
-        return $this->path.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, substr($uri, strlen($this->uriStub)));
+    function __construct($parameters) {
+        parent::__construct($parameters);
+        $this->path = dirname(__FILE__).'/representations/';
+    }
+    
+    protected function turnUriIntoFilePath($uri, $request) {
+        return $this->path.DIRECTORY_SEPARATOR.substr($uri, strlen($request->baseUri.$this->uriStub));
+    }
+    
+    protected function turnFilePathIntoUri($path, $request) {
+        return $request->baseUri.$this->uriStub.substr($path, strlen($this->path) + 1);
     }
     
     /**
@@ -46,7 +55,7 @@ class FilesystemResource extends Resource {
         foreach ($request->negotiatedUris as $uri) {
             
             // convert URI into filesystem path
-            $filePath = $this->turnUriIntoFilePath($uri);
+            $filePath = $this->turnUriIntoFilePath($uri, $request);
             
             if (substr($filePath, -1, 1) == DIRECTORY_SEPARATOR) { // add a default filename to the path
                 $filePath .= $this->defaultDocument;
@@ -102,7 +111,7 @@ class FilesystemResource extends Resource {
         
         if ($request->data) {
             
-            $filePath = $this->turnUriIntoFilePath($request->uri);
+            $filePath = $this->turnUriIntoFilePath($request->uri, $request);
             
             file_put_contents($filePath, $request->data);
             
@@ -127,7 +136,7 @@ class FilesystemResource extends Resource {
         
         $response = new Response($request);
         
-        $filePath = $this->turnUriIntoFilePath($request->uri);
+        $filePath = $this->turnUriIntoFilePath($request->uri, $request);
         
         if (file_exists($filePath)) {
             

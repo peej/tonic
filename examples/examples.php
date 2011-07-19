@@ -19,7 +19,7 @@ class ExamplesListResource extends Resource {
         $response = new Response($request);
         
         $examples = '';
-        $dirs = glob('..'.DIRECTORY_SEPARATOR.'examples'.DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR);
+        $dirs = glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR);
         if ($dirs) {
             foreach ($dirs as $path) {
                 $location = basename($path);

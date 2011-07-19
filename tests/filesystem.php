@@ -25,7 +25,6 @@ class FilesystemTester extends UnitTestCase {
         $this->assertEqual($response->body, 'test');
         
         unlink($testFilename);
-        
     }
     
     function testReadDefaultDocument() {
@@ -138,9 +137,10 @@ class FilesystemTester extends UnitTestCase {
  */
 class TestFileSystem extends FilesystemResource {
     
-    function __construct() {
+    function __construct($parameters) {
         
-        $this->path = sys_get_temp_dir();
+        parent::__construct($parameters);
+        $this->path = sys_get_temp_dir().DIRECTORY_SEPARATOR;
         $this->uriStub = '/filesystem/one/';
         
     }

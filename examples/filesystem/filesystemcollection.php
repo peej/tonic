@@ -11,7 +11,12 @@ class FilesystemCollection extends FilesystemResource {
      * Path to the collections files
      * @var str
      */
-    var $collection = '../examples/filesystem/representations/collection';
+    var $collection;
+    
+    function __construct($parameters) {
+        parent::__construct($parameters);
+        $this->collection = dirname(__FILE__).'/representations/collection';
+    }
     
     /**
      * Handle a GET request
@@ -24,11 +29,11 @@ class FilesystemCollection extends FilesystemResource {
         $collection = str_replace('/', DIRECTORY_SEPARATOR, $this->collection);
         
         $resourceUris = '';
-        $files = glob( $collection.DIRECTORY_SEPARATOR.'*' );
+        $files = glob($collection.DIRECTORY_SEPARATOR.'*');
         if ($files) {
             foreach ($files as $filepath) {
-            	$filepath = str_replace( DIRECTORY_SEPARATOR, '/', $filepath);
-                $resourceUris .= '<li><a href="'.$this->uriStub.substr($filepath, strlen($this->path) + 1).'">'.basename($filepath).'</a></li>';
+            	$filepath = str_replace(DIRECTORY_SEPARATOR, '/', $filepath);
+                $resourceUris .= '<li><a href="'.$this->turnFilePathIntoUri($filepath, $request).'">'.basename($filepath).'</a></li>';
             }
         } else {
             $resourceUris .= '<li>Empty collection</li>';
@@ -55,7 +60,7 @@ class FilesystemCollection extends FilesystemResource {
         
         if ($request->data) {
             $uri = $this->getNextAvailableItemUri();
-            $filePath = $this->turnUriIntoFilePath($uri);
+            $filePath = $this->turnUriIntoFilePath($uri, $request);
             if (file_put_contents($filePath, $request->data)) {
                 $response->code = Response::CREATED;
                 $response->addHeader('Location', $uri);

@@ -16,7 +16,7 @@ class FilesystemCollectionTester extends UnitTestCase {
     }
     
     function setUp() {
-        mkdir($this->testPath.DIRECTORY_SEPARATOR.'collection');
+        @mkdir($this->testPath.DIRECTORY_SEPARATOR.'collection');
         file_put_contents($this->testPath.DIRECTORY_SEPARATOR.'collectionIndex', '<ul>{{resources}}</ul>');
         file_put_contents($this->testPath.DIRECTORY_SEPARATOR.'collection'.DIRECTORY_SEPARATOR.'1', 'one');
         file_put_contents($this->testPath.DIRECTORY_SEPARATOR.'collection'.DIRECTORY_SEPARATOR.'2', 'two');
