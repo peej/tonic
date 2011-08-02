@@ -695,7 +695,6 @@ class Response {
             $this->addVary('Accept');
             $this->addVary('Accept-Language');
         }
-        
     }
     
     /**
@@ -762,7 +761,9 @@ class Response {
             }
         }
         
-        echo $this->body;
+        if (strtoupper($this->request->method) !== 'HEAD') {
+            echo $this->body;
+        }
         
     }
     
