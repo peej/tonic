@@ -458,13 +458,13 @@ class Request {
         $uriMatches = array();
         foreach ($this->resources as $uri => $resource) {
             
-            preg_match_all('#(:[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
+            preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
             
             $uri = $this->baseUri.$uri;
             if ($uri != '/' && substr($uri, -1, 1) == '/') { // remove trailing slash problem
                 $uri = substr($uri, 0, -1);
             }
-            $uriRegex = preg_replace('#(:[^(/]+|{[^0-9][^}]*})#', '(.+)', $uri);
+            $uriRegex = preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '(.+)', $uri);
             
             if (preg_match('#^'.$uriRegex.'$#', $this->uri, $matches)) {
                 array_shift($matches);

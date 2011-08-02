@@ -749,6 +749,19 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testResourceLoaderWithNonCapturingGroupRegexURIMatch() {
+        
+        $config = array(
+            'uri' => '/requesttest/noncapture/something'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertPattern('/SquigglyRegexResource/', get_class($resource));
+        
+    }
+    
     function testAllowedHTTPMethods() {
         
         $config = array(

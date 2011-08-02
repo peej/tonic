@@ -80,6 +80,7 @@ class OptionalParams extends Resource {
 /**
  * @namespace Tonic\Tests
  * @uri /requesttest/squiggly/(\d+-[0-9a-f]{8}-[0-9a-f]{6})
+ * @uri /requesttest/noncapture/(?:something)?
  */
 class SquigglyRegexResource extends Resource {
 
