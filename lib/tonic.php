@@ -79,7 +79,7 @@ class Request {
         'css' => 'text/css',
         'js' => 'application/javascript',
         'json' => 'application/json',
-        'xml' => 'text/xml',
+        'xml' => 'application/xml',
         'rss' => 'application/rss+xml',
         'atom' => 'application/atom+xml',
         'gz' => 'application/x-gzip',
