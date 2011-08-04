@@ -107,6 +107,12 @@ class Request {
     );
     
     /**
+     * Allowed resource methods
+     * @var str[]
+     */
+    public $allowedMethods = array();
+    
+    /**
      * HTTP request method of incoming request
      * @var str
      */
@@ -509,6 +515,9 @@ class Request {
                     'loaded' => TRUE
                 );
             }
+            
+            $this->allowedMethods = array_intersect(array_map('strtoupper', get_class_methods($resource['class'])), $this->HTTPMethods);
+            
             return new $resource['class']($parameters);
         }
         
@@ -695,6 +704,8 @@ class Response {
             $this->addVary('Accept');
             $this->addVary('Accept-Language');
         }
+        $this->addHeader('Allow', implode(', ', $request->allowedMethods));
+        
     }
     
     /**
