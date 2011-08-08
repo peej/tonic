@@ -752,7 +752,7 @@ class Response {
     
     function addVary($header) {
         if (isset($this->headers['Vary'])) {
-            $this->headers['Vary'] .= ' '.$header;
+            $this->headers['Vary'] .= ', '.$header;
         } else {
             $this->addHeader('Vary', $header);
         }
