@@ -416,6 +416,21 @@ class Request {
         if ($this->data) {
             $str .= 'Data: '.$this->data."\n";
         }
+        $str .= 'Acceptable Formats:';
+        foreach ($this->accept as $accept) {
+            foreach ($accept as $a) {
+                $str .= ' .'.$a;
+                if (isset($this->mimetypes[$a])) $str .= ' ('.$this->mimetypes[$a].')';
+            }
+        }
+        $str .= "\n";
+        $str .= 'Acceptable Languages:';
+        foreach ($this->acceptLang as $accept) {
+            foreach ($accept as $a) {
+                $str .= ' '.$a;
+            }
+        }
+        $str .= "\n";
         $str .= 'Negotated URIs:'."\n";
         foreach ($this->negotiatedUris as $uri) {
             $str .= "\t".$uri."\n";
