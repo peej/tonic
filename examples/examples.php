@@ -6,6 +6,7 @@ require_once 'filesystem/filesystemcollection.php';
 require_once 'smarty/smarty.php';
 require_once 'htmlform/htmlform.php';
 require_once 'auth/auth.php';
+require_once 'multirep/multirep.php';
 
 /**
  * Examples listing

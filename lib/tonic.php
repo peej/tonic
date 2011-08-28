@@ -565,6 +565,20 @@ class Request {
         return in_array($etag, $this->ifNoneMatch);
     }
     
+    /**
+     * Return the most acceptable of the given formats based on the accept array
+     * @param str[] formats
+     * @return str
+     */
+    function mostAcceptable($formats) {
+        foreach (call_user_func_array('array_merge', $this->accept) as $format) {
+            if (in_array($format, $formats)) {
+                return $format;
+            }
+        }
+        return NULL;
+    }
+    
 }
 
 /**
