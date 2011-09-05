@@ -330,8 +330,8 @@ class Request {
         }
         
         // load definitions of already loaded resource classes
+        $resourceClassName = class_exists('Tonic\\Resource') ? 'Tonic\\Resource' : 'Resource';
         foreach (get_declared_classes() as $className) {
-            $resourceClassName = class_exists('Tonic\\Resource') ? 'Tonic\\Resource' : 'Resource';
             if (is_subclass_of($className, $resourceClassName)) {
                 
                 $resourceDetails = $this->getResourceClassDetails($className);
