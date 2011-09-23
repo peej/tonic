@@ -97,4 +97,3 @@ class MultiRepresentationResource extends Resource {
     
 }
 
-?>

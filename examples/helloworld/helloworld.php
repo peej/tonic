@@ -50,4 +50,3 @@ class HelloWorldResource extends Resource {
     
 }
 
-?>

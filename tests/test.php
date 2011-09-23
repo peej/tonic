@@ -41,4 +41,3 @@ if (isset($coverage)) {
     $writer->process($coverage, 'report');
 }
 
-?>

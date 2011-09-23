@@ -49,4 +49,3 @@ class AuthResource extends Resource {
     
 }
 
-?>

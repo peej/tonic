@@ -77,4 +77,3 @@ class FilesystemCollection extends FilesystemResource {
     
 }
 
-?>

@@ -24,4 +24,3 @@ try {
 }
 $response->output();
 
-?>
