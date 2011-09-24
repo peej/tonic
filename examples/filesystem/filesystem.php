@@ -41,7 +41,7 @@ class FilesystemResource extends Resource {
     }
     
     protected function turnFilePathIntoUri($path, $request) {
-        return $request->baseUri.$this->uriStub.substr($path, strlen($this->path) + 1);
+        return $request->baseUri.$this->uriStub.substr($path, strlen($this->path));
     }
     
     /**

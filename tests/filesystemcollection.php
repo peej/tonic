@@ -113,7 +113,7 @@ class TestFileSystemCollectionItem extends FilesystemResource {
     function __construct() {
         
         $this->path = sys_get_temp_dir();
-        $this->uriStub = '/filesystemcollection/';
+        $this->uriStub = '/filesystemcollection';
         
     }
     
@@ -128,7 +128,7 @@ class TestFileSystemCollection extends FilesystemCollection {
     function __construct() {
         
         $this->path = sys_get_temp_dir();
-        $this->uriStub = '/filesystemcollection/';
+        $this->uriStub = '/filesystemcollection';
         $this->collection = sys_get_temp_dir().'/collection';
         
     }

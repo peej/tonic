@@ -51,7 +51,7 @@ class FilesystemCollection extends FilesystemResource {
         while (file_exists($collection.DIRECTORY_SEPARATOR.$filename)) {
             $filename++;
         }
-        return $this->uriStub.substr($this->collection, strlen($this->path) + 1).'/'.$filename;
+        return $this->uriStub.substr($this->collection, strlen($this->path)).'/'.$filename;
     }
     
     function post($request) {
