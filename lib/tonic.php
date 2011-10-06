@@ -643,7 +643,7 @@ class Resource {
             );
             
             $responseClassName = class_exists('Tonic\\Response') ? 'Tonic\\Response' : 'Response';
-            if (!$response || !is_a($response, $responseClassName)) {
+            if (!$response || !($response instanceof $responseClassName)) {
                 throw new Exception('Method '.$request->method.' of '.get_class($this).' did not return a Response object');
             }
             
