@@ -798,7 +798,11 @@ class Response {
      * @codeCoverageIgnore
      */
     function output() {
-        if ($this->compress && $this->code != Response::NOTMODIFIED) {
+
+        if (
+            $this->compress &&
+            $this->code != Response::NOTMODIFIED
+           ) {
             ob_start("ob_gzhandler");
         }
         if (php_sapi_name() != 'cli' && !headers_sent()) {
@@ -809,7 +813,10 @@ class Response {
             }
         }
         
-        if (strtoupper($this->request->method) !== 'HEAD') {
+        if (
+            strtoupper($this->request->method) !== 'HEAD' &&
+            $this->code != Response::NOTMODIFIED
+           ) {
             echo $this->body;
         }
         
