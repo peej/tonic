@@ -709,6 +709,12 @@ class Response {
     public $code = Response::OK;
     
     /**
+     * Whether or not to compress output
+     * @var bool
+     */
+    public $compress = FALSE;
+
+    /**
      * The HTTP headers to send
      * @var str[]
      */
@@ -793,7 +799,13 @@ class Response {
      * @codeCoverageIgnore
      */
     function output() {
-        
+
+        if (
+            $this->compress &&
+            $this->code != Response::NOTMODIFIED
+           ) {
+            ob_start("ob_gzhandler");
+        }
         if (php_sapi_name() != 'cli' && !headers_sent()) {
             
             header('HTTP/1.1 '.$this->code);
@@ -802,7 +814,10 @@ class Response {
             }
         }
         
-        if (strtoupper($this->request->method) !== 'HEAD') {
+        if (
+            strtoupper($this->request->method) !== 'HEAD' &&
+            $this->code != Response::NOTMODIFIED
+           ) {
             echo $this->body;
         }
         
