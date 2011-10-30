@@ -568,15 +568,16 @@ class Request {
     /**
      * Return the most acceptable of the given formats based on the accept array
      * @param str[] formats
+     * @param str default The default format if the requested format does not match $formats
      * @return str
      */
-    function mostAcceptable($formats) {
+    function mostAcceptable($formats, $default = NULL) {
         foreach (call_user_func_array('array_merge', $this->accept) as $format) {
             if (in_array($format, $formats)) {
                 return $format;
             }
         }
-        return NULL;
+        return $default;
     }
     
 }
