@@ -796,5 +796,31 @@ class RequestTester extends UnitTestCase {
         
     }
     
+    function testURIPriority() {
+        
+        // with same @uri
+        
+        $config = array(
+            'uri' => '/requesttest/priority'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'PriorityTestMoreImportantResource');
+        
+        // with different @uri
+        
+        $config = array(
+            'uri' => '/requesttest/differenturipriority'
+        );
+        
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        
+        $this->assertEqual(get_class($resource), 'PriorityTestDifferntURIMoreImportantResource');
+        
+    }
+    
 }
 

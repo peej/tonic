@@ -101,3 +101,35 @@ class MethodTestResource extends Resource {
     }
     
 }
+
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/priority 1
+  */
+class PriorityTestLessImportantResource extends Resource {
+
+}
+
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/priority 2
+  */
+class PriorityTestMoreImportantResource extends Resource {
+
+}
+
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/differenturi(priority) 1
+  */
+class PriorityTestDifferntURILessImportantResource extends Resource {
+
+}
+
+/**
+ * @namespace Tonic\Tests
+ * @uri /requesttest/differenturipriority 2
+  */
+class PriorityTestDifferntURIMoreImportantResource extends Resource {
+
+}

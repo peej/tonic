@@ -347,14 +347,24 @@ class Request {
                     if ($uri != '/' && substr($uri, -1, 1) == '/') { // remove trailing slash problem
                         $uri = substr($uri, 0, -1);
                     }
-                    $this->resources[$resourceDetails['mountPoint'].$uri] = array(
-                        'namespace' => $resourceDetails['namespaceName'],
-                        'class' => $resourceDetails['className'],
-                        'filename' => $resourceDetails['filename'],
-                        'line' => $resourceDetails['line'],
-                        'priority' => isset($annotations[2][$index]) && is_numeric($annotations[2][$index]) ? intval($annotations[2][$index]) : 0,
-                        'loaded' => TRUE
-                    );
+                    if (isset($annotations[2][$index]) && is_numeric($annotations[2][$index])) {
+                        $priority = intval($annotations[2][$index]);
+                    } else {
+                        $priority = 0;
+                    }
+                    if (
+                        !isset($this->resources[$resourceDetails['mountPoint'].$uri]) ||
+                        $this->resources[$resourceDetails['mountPoint'].$uri]['priority'] < $priority
+                    ) {
+                        $this->resources[$resourceDetails['mountPoint'].$uri] = array(
+                            'namespace' => $resourceDetails['namespaceName'],
+                            'class' => $resourceDetails['className'],
+                            'filename' => $resourceDetails['filename'],
+                            'line' => $resourceDetails['line'],
+                            'priority' => $priority,
+                            'loaded' => TRUE
+                        );
+                    }
                 }
             }
         }
@@ -512,7 +522,7 @@ class Request {
                 
             }
         }
-        ksort($uriMatches);
+        krsort($uriMatches);
         
         if ($uriMatches) {
             list($uri, $resource, $parameters) = array_shift($uriMatches);
