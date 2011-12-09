@@ -330,7 +330,7 @@ class Request {
         }
         
         // load definitions of already loaded resource classes
-        $resourceClassName = class_exists('Tonic\\Resource') ? 'Tonic\\Resource' : 'Resource';
+        $resourceClassName = class_exists('Tonic\\Resource', FALSE) ? 'Tonic\\Resource' : 'Resource';
         foreach (get_declared_classes() as $className) {
             if (is_subclass_of($className, $resourceClassName)) {
                 
@@ -469,12 +469,14 @@ class Request {
         }
         $str .= 'Loaded Resources:'."\n";
         foreach ($this->resources as $uri => $resource) {
-            $str .= "\t".$uri."\n";
-            if (isset($resource['namespace']) && $resource['namespace']) $str .= "\t\tNamespace: ".$resource['namespace']."\n";
-            $str .= "\t\tClass: ".$resource['class']."\n";
-            $str .= "\t\tFile: ".$resource['filename'];
-            if (isset($resource['line']) && $resource['line']) $str .= '#'.$resource['line'];
-            $str .= "\n";
+           if ($resource['loaded']) {
+				$str .= "\t".$uri."\n";
+				if (isset($resource['namespace']) && $resource['namespace']) $str .= "\t\tNamespace: ".$resource['namespace']."\n";
+				$str .= "\t\tClass: ".$resource['class']."\n";
+				$str .= "\t\tFile: ".$resource['filename'];
+				if (isset($resource['line']) && $resource['line']) $str .= '#'.$resource['line'];
+				$str .= "\n";
+		   }
         }
         return $str;
     }
@@ -653,7 +655,7 @@ class Resource {
                 $parameters
             );
             
-            $responseClassName = class_exists('Tonic\\Response') ? 'Tonic\\Response' : 'Response';
+            $responseClassName = class_exists('Tonic\\Response', FALSE) ? 'Tonic\\Response' : 'Response';
             if (!$response || !($response instanceof $responseClassName)) {
                 throw new Exception('Method '.$request->method.' of '.get_class($this).' did not return a Response object');
             }
@@ -706,6 +708,31 @@ class Response {
           UNSUPPORTEDMEDIATYPE = 415,
           INTERNALSERVERERROR = 500;
     
+	/**
+	 * HTTP response reason phrase
+	 * @var str[]
+	 */    
+	public $reasonPhrases = array (
+		200 => 'OK',
+		201 => 'Created',
+		204 => 'No Content', 
+		301 => 'Moved Permanently',
+		302 => 'Found', 
+		303 => 'See Other', 
+		304 => 'Not Modified', 
+		307 => 'Temporary Redirect', 
+		400 => 'Bad Request', 
+		401 => 'Unauthorized', 
+		403 => 'Forbidden', 
+		404 => 'Not Found', 
+		405 => 'Method Not Allowed',
+		406 => 'Not Acceptable',
+		410 => 'Gone',
+		411 => 'Length Required',
+		412 => 'Precondition Failed',
+		415 => 'Unsupported Media Type', 
+		500 => 'Internal Server Error');
+	
     /**
      * The request object generating this response
      * @var Request
@@ -806,7 +833,8 @@ class Response {
         
         if (php_sapi_name() != 'cli' && !headers_sent()) {
             
-            header('HTTP/1.1 '.$this->code);
+		$codeReasonPhrase = isset($this->reasonPhrases[$this->code]) ? $this->reasonPhrases[$this->code] : 'OK';
+			header('HTTP/1.1 '.$this->code.' '.$codeReasonPhrase);
             foreach ($this->headers as $header => $value) {
                 header($header.': '.$value);
             }
