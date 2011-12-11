@@ -155,10 +155,9 @@ class Request {
     protected function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
         if (isset($config[$configVar])) {
             return $config[$configVar];
-        } elseif (isset($_SERVER[$serverVar]) && $_SERVER[$serverVar] != '') {
-            return $_SERVER[$serverVar];
         } else {
-            return $default;
+            $serverVal = filter_input(INPUT_SERVER, $serverVar, FILTER_SANITIZE_STRING);
+            return !empty($serverVal)?$serverVal:$default;
         }
     }
     
