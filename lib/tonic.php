@@ -20,6 +20,8 @@ use \Exception as Exception;
  */
 class Request {
     
+	public $auth;
+	
     /**
      * The requested URI
      * @var str
@@ -153,12 +155,30 @@ class Request {
      * Set a default configuration option
      */
     protected function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
-        if (isset($config[$configVar])) {
+        if (isset($config[$configVar]))
+		{
             return $config[$configVar];
-        } else {
-            $serverVal = filter_input(INPUT_SERVER, $serverVar, FILTER_SANITIZE_STRING);
-            return !empty($serverVal)?$serverVal:$default;
         }
+		elseif (!(empty($_SERVER[$serverVar])))
+		{
+            return $_SERVER[$serverVar];
+		}
+		elseif(function_exists('apache_request_headers'))
+		{
+			$headers = apache_request_headers();
+			if(isset($headers[$serverVar]))
+			{
+				return $headers[$serverVar];
+			}
+			else
+			{
+				return $default;
+			}
+		}
+		else
+		{
+			return $default;
+		}
     }
     
     /**
@@ -195,12 +215,74 @@ class Request {
         $config['acceptEncoding'] = $this->getConfig($config, 'acceptEncoding', 'HTTP_ACCEPT_ENCODING');
         $config['ifMatch'] = $this->getConfig($config, 'ifMatch', 'HTTP_IF_MATCH');
         $config['ifNoneMatch'] = $this->getConfig($config, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH');
-        
+        $config['authorization'] = $this->getConfig($config, 'authorization', 'Authorization');
+
         if (isset($config['mimetypes']) && is_array($config['mimetypes'])) {
             foreach ($config['mimetypes'] as $ext => $mimetype) {
                 $this->mimetypes[$ext] = $mimetype;
             }
         }
+		
+		//Est-ce qu'il y a une ligne d'authentification HTTP ?
+		if(isset($config['authorization']))
+		{
+			$auth = array();
+			
+			if(substr($config['authorization'], 0, 5) == 'Basic')
+			{
+				$auth['type'] = 'Basic';
+				//TODO: Basic
+				//$this->auth = $auth;
+				$this->auth = NULL;
+			}
+			elseif(substr($config['authorization'], 0, 6) == 'Digest')
+			{
+				$auth['type'] = 'Digest';
+				
+				if(	preg_match('/username="([^"]+)"/', $config['authorization'], $username) &&
+					preg_match('/realm="([^"]+)"/', $config['authorization'], $realm) &&
+					preg_match('/nonce="([^"]+)"/', $config['authorization'], $nonce) &&
+					preg_match('/qop=(auth)/', $config['authorization'], $qop) &&
+					preg_match('/nc=([0-9]+)/', $config['authorization'], $nonceCount) &&						
+					preg_match('/response="([^"]+)"/', $config['authorization'], $response) &&
+					preg_match('/cnonce="([^"]+)"/', $config['authorization'], $clientNonce) &&
+					preg_match('/opaque="([^"]+)"/', $config['authorization'], $opaque) &&
+					preg_match('/uri="([^"]+)"/', $config['authorization'], $uri))
+				{
+					$auth['username'] = $username[1];
+					$auth['realm'] = $realm[1];
+					$auth['nonce'] = $nonce[1];
+					$auth['qop'] = $qop[1];
+					$auth['nonceCount'] = (int)$nonceCount[1];
+					$auth['clientNonce'] = $clientNonce[1];
+					$auth['response'] = $response[1];
+					$auth['opaque'] = $opaque[1];
+					
+					$aparts = explode('/', $uri[1]);
+					$alastPart = array_pop($aparts);
+					$auth['uri'] = join('/', $aparts);
+
+					$aparts = explode('.', $alastPart);
+					$auth['uri'] .= '/'.$aparts[0];
+
+					if ($auth['uri'] != '/' && substr($auth['uri'], -1, 1) == '/') // remove trailing slash problem
+					{ 
+						$auth['uri'] = substr($auth['uri'], 0, -1);
+					}
+
+					$auth['qop'] = $qop[1];
+					$this->auth = $auth;
+				}
+				else
+				{
+					$this->auth = NULL;
+				}
+			}
+			else
+			{
+				$this->auth = NULL;
+			}
+		}
         
         // set baseUri
         $this->baseUri = $config['baseUri'];
@@ -573,7 +655,8 @@ class Request {
         if (isset($this->ifMatch[0]) && $this->ifMatch[0] == '*') {
             return FALSE;
         }
-        return in_array($etag, $this->ifNoneMatch);
+		
+        return !in_array($etag, $this->ifNoneMatch);
     }
     
     /**
