@@ -17,29 +17,29 @@
  * @uri /multirep
  */
 class MultiRepresentationResource extends Resource {
-    
+
     var $data = array(
         'secret' => 'monkey',
         'hidden' => 'squirrel'
     );
-    
+
     /**
      * Handle a GET request for this resource
      * @param Request request
      * @return Response
      */
     function get($request) {
-        
+
         $response = new Response($request);
         $response->code = Response::OK;
-        
+
         // select the most acceptable format of the given types from the request
         $format = $request->mostAcceptable(array(
             'json', 'html', 'txt'
         ));
-        
+
         switch ($format) {
-        
+
         // obviously it might make more sense to put the HTML in another file
         // and use some kind of templating system
         case 'html':
@@ -66,12 +66,12 @@ class MultiRepresentationResource extends Resource {
             $response->body .= '</body>';
             $response->body .= '</html>';
             break;
-        
+
         case 'json':
             $response->addHeader('Content-type', 'application/json');
             $response->body = json_encode($this->data);
             break;
-        
+
         case 'txt':
             $response->addHeader('Content-type', 'text/plain');
             $response->body = "Plain Text Representation\n";
@@ -81,19 +81,19 @@ class MultiRepresentationResource extends Resource {
             $response->body .= ob_get_contents();
             ob_end_clean();
             break;
-            
+
         // we don't have a suitable format, so do a 406 response instead
         default:
             $response->code = Response::NOTACCEPTABLE;
             $response->addHeader('Content-type', 'text/plain');
             $response->body = "406 Not Acceptable\n";
             break;
-            
+
         }
-        
+
         return $response;
-        
+
     }
-    
+
 }
 

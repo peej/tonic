@@ -34,9 +34,9 @@ if (TextReporter::inCli()) {
 
 if (isset($coverage)) {
     $coverage->stop();
-    
+
     require_once 'PHP/CodeCoverage/Report/HTML.php';
-    
+
     $writer = new PHP_CodeCoverage_Report_HTML;
     $writer->process($coverage, 'report');
 }

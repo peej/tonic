@@ -6,28 +6,28 @@
  * @uri /filesystem/collection
  */
 class FilesystemCollection extends FilesystemResource {
-    
+
     /**
      * Path to the collections files
      * @var str
      */
     var $collection;
-    
+
     function __construct($parameters) {
         parent::__construct($parameters);
         $this->collection = dirname(__FILE__).'/representations/collection';
     }
-    
+
     /**
      * Handle a GET request
      * @param Request request
      * @return Response
      */
     function get($request) {
-        
+
         $response = new Response($request);
         $collection = str_replace('/', DIRECTORY_SEPARATOR, $this->collection);
-        
+
         $resourceUris = '';
         $files = glob($collection.DIRECTORY_SEPARATOR.'*');
         if ($files) {
@@ -38,13 +38,13 @@ class FilesystemCollection extends FilesystemResource {
         } else {
             $resourceUris .= '<li>Empty collection</li>';
         }
-        
+
         $response->body = '<ul>'.$resourceUris.'</ul>';
-        
+
         return $response;
-        
+
     }
-    
+
     protected function getNextAvailableItemUri() {
     	$collection = str_replace('/', DIRECTORY_SEPARATOR, $this->collection);
         $filename = 1;
@@ -53,11 +53,11 @@ class FilesystemCollection extends FilesystemResource {
         }
         return $this->uriStub.substr($this->collection, strlen($this->path)).'/'.$filename;
     }
-    
+
     function post($request) {
-        
+
         $response = new Response($request);
-        
+
         if ($request->data) {
             $uri = $this->getNextAvailableItemUri();
             $filePath = $this->turnUriIntoFilePath($uri, $request);
@@ -70,10 +70,10 @@ class FilesystemCollection extends FilesystemResource {
         } else {
             $response->code = Response::LENGTHREQUIRED;
         }
-        
+
         return $response;
-        
+
     }
-    
+
 }
 

@@ -9,16 +9,16 @@
  * @uri /htmlform
  */
 class HTMLForm extends Resource {
-    
+
     /**
      * Handle a GET request for this resource
      * @param Request request
      * @return Response
      */
     function get($request, $name) {
-        
+
         $response = new Response($request);
-        
+
         if ($name) {
             $welcome = "<p>Hello $name.</p>".
                 "<p>Raw POST data:</p>".
@@ -26,7 +26,7 @@ class HTMLForm extends Resource {
         } else {
             $welcome = "<p>Enter your name.</p>";
         }
-        
+
         $response->addHeader('Content-type', 'text/html');
         $response->body = <<<EOF
 <!DOCTYPE html>
@@ -40,27 +40,27 @@ class HTMLForm extends Resource {
     </body>
 </html>
 EOF;
-        
+
         return $response;
-        
+
     }
-    
+
     /**
      * Handle a POST request for this resource
      * @param Request request
      * @return Response
      */
     function post($request) {
-        
+
         if (isset($_POST['name'])) {
             $name = htmlspecialchars($_POST['name']);
         } else {
             $name = '';
         }
-        
+
         return $this->get($request, $name);
-        
+
     }
-    
+
 }
 
