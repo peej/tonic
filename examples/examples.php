@@ -14,11 +14,11 @@ require_once 'multirep/multirep.php';
  * @uri /
  */
 class ExamplesListResource extends Resource {
-    
+
     function get($request) {
-        
+
         $response = new Response($request);
-        
+
         $examples = '';
         $dirs = glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR);
         if ($dirs) {
@@ -35,7 +35,7 @@ class ExamplesListResource extends Resource {
                     $name = $location;
                     $description = '';
                 }
-                $examples .= 
+                $examples .=
                     '<li>'.
                     '<h3><a href="'.$location.'">'.$name.'</a></h3>'.
                     '<p>'.$description.'</p>'.
@@ -44,17 +44,17 @@ class ExamplesListResource extends Resource {
         } else {
             $examples .= '<li>No examples</li>';
         }
-        
+
         $response->body = <<<END
 <h1>Welcome to Tonic</h1>
 <p>Below is a list of example uses of the Tonic library. View each example to see it in action.</p>
 <h2>Examples</h2>
 END;
         $response->body .= '<ul>'.$examples.'</ul>';
-        
+
         return $response;
-        
+
     }
-    
+
 }
 

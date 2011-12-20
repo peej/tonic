@@ -32,18 +32,18 @@ for the response.
      * @uri /example
      */
     class ExampleResource extends Resource {
-        
+
         function get($request) {
-            
+
             $response = new Response($request);
-            
+
             $response->code = Response::OK;
             $response->body = 'Example response';
-            
+
             return $response;
-            
+
         }
-      
+
     }
 
 
@@ -128,7 +128,7 @@ URL template and Rails route style @uri annotations are also supported:
             ...
         }
     }
-    
+
     /**
      * @uri /users/:username
      */

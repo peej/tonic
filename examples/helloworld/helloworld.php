@@ -11,23 +11,23 @@
  * @uri /helloworld
  */
 class HelloWorldResource extends Resource {
-    
+
     /**
      * Handle a GET request for this resource
      * @param Request request
      * @return Response
      */
     function get($request) {
-        
+
         $response = new Response($request);
-        
+
         $etag = md5($request->uri);
         if ($request->ifNoneMatch($etag)) {
-            
+
             $response->code = Response::NOTMODIFIED;
-            
+
         } else {
-            
+
             $response->code = Response::OK;
             $response->addHeader('Content-type', 'text/plain');
             $response->addEtag($etag);
@@ -41,12 +41,12 @@ class HelloWorldResource extends Resource {
                 "This response:\n".
                 "\n".
                 $response->__toString();
-            
+
         }
-        
+
         return $response;
-        
+
     }
-    
+
 }
 

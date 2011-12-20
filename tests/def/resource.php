@@ -7,15 +7,15 @@
  * @uri /resourcetest/one
  */
 class TestResource extends Resource {
-    
+
     function get($request) {
-        
+
         $response = new Response($request);
         $response->body = 'test';
         return $response;
-        
+
     }
-    
+
 }
 
 /**
@@ -23,13 +23,13 @@ class TestResource extends Resource {
  * @uri /resourcetest/badconstructor
  */
 class TestBadResourceConstructor extends Resource {
-    
+
     function __construct() {
-        
+
         parent::__construct();
-        
+
     }
-    
+
 }
 
 /**
@@ -37,11 +37,11 @@ class TestBadResourceConstructor extends Resource {
  * @uri /resourcetest/badmethodresponse
  */
 class TestBadMethodResponse extends Resource {
-    
+
     function get($request) {
-        
+
         return TRUE;
-        
+
     }
-    
+
 }

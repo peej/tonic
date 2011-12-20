@@ -27,7 +27,7 @@ class ChildResource extends NewResource {
 class TwoUriParams extends Resource {
 
     var $receivedParams;
-    
+
     function get($request, $param, $param2) {
         $this->receivedParams = array(
             'param' => $param,
@@ -35,7 +35,7 @@ class TwoUriParams extends Resource {
         );
         return new Response($request);
     }
-    
+
 }
 
 /**
@@ -45,9 +45,9 @@ class TwoUriParams extends Resource {
  * @uri /requesttest/mixedstyle/:param/(.+)/{param2}/(.+)
  */
 class FourUriParams extends Resource {
-    
+
     var $receivedParams;
-    
+
     function get($request, $something, $otherthing, $param, $param2) {
         $this->receivedParams = array(
             'param' => $param,
@@ -57,7 +57,7 @@ class FourUriParams extends Resource {
         );
         return new Response($request);
     }
-    
+
 }
 
 /**
@@ -74,7 +74,7 @@ class TrailingSlashUrl extends Resource {
  * @uri /requesttest/optional(?:/([a-z]+))?
  */
 class OptionalParams extends Resource {
-    
+
 }
 
 /**
@@ -91,15 +91,15 @@ class SquigglyRegexResource extends Resource {
  * @uri /requesttest/httpmethods
  */
 class MethodTestResource extends Resource {
-    
+
     function options($request) {
         return new Response($request);
     }
-    
+
     function woot($request) {
         return new Response($request);
     }
-    
+
 }
 
 /**

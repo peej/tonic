@@ -2,7 +2,7 @@ Feature: Response object
   In order to output a response representation
   As a PHP developer
   I want a PHP object that represents a HTTP response
-  
+
   Scenario: Output should be gzipped if the client supports it
     Given the request URI of "/resourcetest/one"
     And an accept encoding of "gzip"
