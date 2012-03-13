@@ -8,11 +8,17 @@ Feature: HTTP request object
     When I create a request object
     Then I should see a request URI of "/something/otherthing"
     
+  Scenario: Query string is ignored
+	Given the request URI of "/something/otherthing?foo=bar"
+	When I create a request object
+    Then I should see a request URI of "/something/otherthing"
+	And I should see the request data ""
+
   Scenario: Have access to the HTTP request method
     Given the request method of "GET"
     When I create a request object
     Then I should see a request method of "GET"
-    
+
   Scenario: Have access to the HTTP request method
     Given the request method of "post"
     And the request data of "some data"
