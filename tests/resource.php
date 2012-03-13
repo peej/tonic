@@ -6,6 +6,32 @@ require_once('def/resource.php');
  * @namespace Tonic\Tests
  */
 class ResourceTester extends UnitTestCase {
+
+	function testRegexFirstResourceHaha() {
+		$config = array(
+			'uri' => '/hahaha/youfunny'
+		);
+
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        $response = $resource->exec($request);
+        
+        $this->assertEqual($response->code, '200');
+        $this->assertEqual($response->body, 'hahaha you funny');
+	}
+    
+	function testRegexFirstResourceHoho() {
+		$config = array(
+			'uri' => '/hohoho/youfunny'
+		);
+
+        $request = new Request($config);
+        $resource = $request->loadResource();
+        $response = $resource->exec($request);
+        
+        $this->assertEqual($response->code, '200');
+        $this->assertEqual($response->body, 'hohoho you funny');
+	}
     
     function testFunctioningResourceExec() {
         
