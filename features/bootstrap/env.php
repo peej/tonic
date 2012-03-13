@@ -2,8 +2,6 @@
 
 require_once __DIR__.'/../../lib/tonic.php';
 
-$world->config = array();
-
 /* Test resource definitions */
 
 if (!class_exists('NewResource')) {
@@ -26,17 +24,6 @@ if (!class_exists('ChildResource')) {
      * @uri /requesttest/one/two
      */
     class ChildResource extends NewResource {
-    
-    }
-
-}
-
-if (!class_exists('NewNoResource')) {
-
-    /**
-     * @namespace Tonic\Tests
-     */
-    class NewNoResource extends NoResource {
     
     }
 
