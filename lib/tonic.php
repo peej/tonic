@@ -20,6 +20,8 @@ use \Exception as Exception;
  */
 class Request {
     
+	public $auth;
+	
     /**
      * The requested URI
      * @var str
@@ -153,13 +155,30 @@ class Request {
      * Set a default configuration option
      */
     protected function getConfig($config, $configVar, $serverVar = NULL, $default = NULL) {
-        if (isset($config[$configVar])) {
+        if (isset($config[$configVar]))
+		{
             return $config[$configVar];
-        } elseif (isset($_SERVER[$serverVar]) && $_SERVER[$serverVar] != '') {
-            return $_SERVER[$serverVar];
-        } else {
-            return $default;
         }
+		elseif (!(empty($_SERVER[$serverVar])))
+		{
+            return $_SERVER[$serverVar];
+		}
+		elseif(function_exists('apache_request_headers'))
+		{
+			$headers = apache_request_headers();
+			if(isset($headers[$serverVar]))
+			{
+				return $headers[$serverVar];
+			}
+			else
+			{
+				return $default;
+			}
+		}
+		else
+		{
+			return $default;
+		}
     }
     
     /**
@@ -196,12 +215,74 @@ class Request {
         $config['acceptEncoding'] = $this->getConfig($config, 'acceptEncoding', 'HTTP_ACCEPT_ENCODING');
         $config['ifMatch'] = $this->getConfig($config, 'ifMatch', 'HTTP_IF_MATCH');
         $config['ifNoneMatch'] = $this->getConfig($config, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH');
-        
+        $config['authorization'] = $this->getConfig($config, 'authorization', 'Authorization');
+
         if (isset($config['mimetypes']) && is_array($config['mimetypes'])) {
             foreach ($config['mimetypes'] as $ext => $mimetype) {
                 $this->mimetypes[$ext] = $mimetype;
             }
         }
+		
+		//Est-ce qu'il y a une ligne d'authentification HTTP ?
+		if(isset($config['authorization']))
+		{
+			$auth = array();
+			
+			if(substr($config['authorization'], 0, 5) == 'Basic')
+			{
+				$auth['type'] = 'Basic';
+				//TODO: Basic
+				//$this->auth = $auth;
+				$this->auth = NULL;
+			}
+			elseif(substr($config['authorization'], 0, 6) == 'Digest')
+			{
+				$auth['type'] = 'Digest';
+				
+				if(	preg_match('/username="([^"]+)"/', $config['authorization'], $username) &&
+					preg_match('/realm="([^"]+)"/', $config['authorization'], $realm) &&
+					preg_match('/nonce="([^"]+)"/', $config['authorization'], $nonce) &&
+					preg_match('/qop=(auth)/', $config['authorization'], $qop) &&
+					preg_match('/nc=([0-9]+)/', $config['authorization'], $nonceCount) &&						
+					preg_match('/response="([^"]+)"/', $config['authorization'], $response) &&
+					preg_match('/cnonce="([^"]+)"/', $config['authorization'], $clientNonce) &&
+					preg_match('/opaque="([^"]+)"/', $config['authorization'], $opaque) &&
+					preg_match('/uri="([^"]+)"/', $config['authorization'], $uri))
+				{
+					$auth['username'] = $username[1];
+					$auth['realm'] = $realm[1];
+					$auth['nonce'] = $nonce[1];
+					$auth['qop'] = $qop[1];
+					$auth['nonceCount'] = (int)$nonceCount[1];
+					$auth['clientNonce'] = $clientNonce[1];
+					$auth['response'] = $response[1];
+					$auth['opaque'] = $opaque[1];
+					
+					$aparts = explode('/', $uri[1]);
+					$alastPart = array_pop($aparts);
+					$auth['uri'] = join('/', $aparts);
+
+					$aparts = explode('.', $alastPart);
+					$auth['uri'] .= '/'.$aparts[0];
+
+					if ($auth['uri'] != '/' && substr($auth['uri'], -1, 1) == '/') // remove trailing slash problem
+					{ 
+						$auth['uri'] = substr($auth['uri'], 0, -1);
+					}
+
+					$auth['qop'] = $qop[1];
+					$this->auth = $auth;
+				}
+				else
+				{
+					$this->auth = NULL;
+				}
+			}
+			else
+			{
+				$this->auth = NULL;
+			}
+		}
         
         // set baseUri
         $this->baseUri = $config['baseUri'];
@@ -330,7 +411,7 @@ class Request {
         }
         
         // load definitions of already loaded resource classes
-        $resourceClassName = class_exists('Tonic\\Resource') ? 'Tonic\\Resource' : 'Resource';
+        $resourceClassName = class_exists('Tonic\\Resource', FALSE) ? 'Tonic\\Resource' : 'Resource';
         foreach (get_declared_classes() as $className) {
             if (is_subclass_of($className, $resourceClassName)) {
                 
@@ -469,12 +550,14 @@ class Request {
         }
         $str .= 'Loaded Resources:'."\n";
         foreach ($this->resources as $uri => $resource) {
-            $str .= "\t".$uri."\n";
-            if (isset($resource['namespace']) && $resource['namespace']) $str .= "\t\tNamespace: ".$resource['namespace']."\n";
-            $str .= "\t\tClass: ".$resource['class']."\n";
-            $str .= "\t\tFile: ".$resource['filename'];
-            if (isset($resource['line']) && $resource['line']) $str .= '#'.$resource['line'];
-            $str .= "\n";
+           if ($resource['loaded']) {
+				$str .= "\t".$uri."\n";
+				if (isset($resource['namespace']) && $resource['namespace']) $str .= "\t\tNamespace: ".$resource['namespace']."\n";
+				$str .= "\t\tClass: ".$resource['class']."\n";
+				$str .= "\t\tFile: ".$resource['filename'];
+				if (isset($resource['line']) && $resource['line']) $str .= '#'.$resource['line'];
+				$str .= "\n";
+		   }
         }
         return $str;
     }
@@ -572,7 +655,8 @@ class Request {
         if (isset($this->ifMatch[0]) && $this->ifMatch[0] == '*') {
             return FALSE;
         }
-        return in_array($etag, $this->ifNoneMatch);
+		
+        return !in_array($etag, $this->ifNoneMatch);
     }
     
     /**
@@ -653,7 +737,7 @@ class Resource {
                 $parameters
             );
             
-            $responseClassName = class_exists('Tonic\\Response') ? 'Tonic\\Response' : 'Response';
+            $responseClassName = class_exists('Tonic\\Response', FALSE) ? 'Tonic\\Response' : 'Response';
             if (!$response || !($response instanceof $responseClassName)) {
                 throw new Exception('Method '.$request->method.' of '.get_class($this).' did not return a Response object');
             }
@@ -706,6 +790,31 @@ class Response {
           UNSUPPORTEDMEDIATYPE = 415,
           INTERNALSERVERERROR = 500;
     
+	/**
+	 * HTTP response reason phrase
+	 * @var str[]
+	 */    
+	public $reasonPhrases = array (
+		200 => 'OK',
+		201 => 'Created',
+		204 => 'No Content', 
+		301 => 'Moved Permanently',
+		302 => 'Found', 
+		303 => 'See Other', 
+		304 => 'Not Modified', 
+		307 => 'Temporary Redirect', 
+		400 => 'Bad Request', 
+		401 => 'Unauthorized', 
+		403 => 'Forbidden', 
+		404 => 'Not Found', 
+		405 => 'Method Not Allowed',
+		406 => 'Not Acceptable',
+		410 => 'Gone',
+		411 => 'Length Required',
+		412 => 'Precondition Failed',
+		415 => 'Unsupported Media Type', 
+		500 => 'Internal Server Error');
+	
     /**
      * The request object generating this response
      * @var Request
@@ -806,7 +915,8 @@ class Response {
         
         if (php_sapi_name() != 'cli' && !headers_sent()) {
             
-            header('HTTP/1.1 '.$this->code);
+		$codeReasonPhrase = isset($this->reasonPhrases[$this->code]) ? $this->reasonPhrases[$this->code] : 'OK';
+			header('HTTP/1.1 '.$this->code.' '.$codeReasonPhrase);
             foreach ($this->headers as $header => $value) {
                 header($header.': '.$value);
             }
