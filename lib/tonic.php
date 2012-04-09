@@ -706,6 +706,31 @@ class Response {
           UNSUPPORTEDMEDIATYPE = 415,
           INTERNALSERVERERROR = 500;
     
+      /**
+       * HTTP response reason phrase
+       * @var str[]
+       */    
+      public $reasonPhrases = array(
+          '200' => 'OK',
+          '201' => 'Created',
+          '204' => 'No Content', 
+          '301' => 'Moved Permanently',
+          '302' => 'Found', 
+          '303' => 'See Other', 
+          '304' => 'Not Modified', 
+          '307' => 'Temporary Redirect', 
+          '400' => 'Bad Request', 
+          '401' => 'Unauthorized', 
+          '403' => 'Forbidden', 
+          '404' => 'Not Found', 
+          '405' => 'Method Not Allowed',
+          '406' => 'Not Acceptable',
+          '410' => 'Gone',
+          '411' => 'Length Required',
+          '412' => 'Precondition Failed',
+          '415' => 'Unsupported Media Type', 
+          '500' => 'Internal Server Error');
+          
     /**
      * The request object generating this response
      * @var Request
@@ -806,7 +831,8 @@ class Response {
         
         if (php_sapi_name() != 'cli' && !headers_sent()) {
             
-            header('HTTP/1.1 '.$this->code);
+            $codeReasonPhrase = isset($this->reasonPhrases[$this->code]) ? $this->reasonPhrases[$this->code] : 'OK';
+            header('HTTP/1.1 '.$this->code.' '.$codeReasonPhrase);
             foreach ($this->headers as $header => $value) {
                 header($header.': '.$value);
             }
