@@ -5,18 +5,18 @@ error_reporting(error_reporting() & ~2048 & ~8192); // Make sure E_STRICT and E_
 require_once('simpletest/unit_tester.php');
 require_once('simpletest/reporter.php');
 
-$core = new GroupTest('Core');
+$core = new TestSuite('Core');
 
 require_once('../lib/tonic.php');
 
-$core->addTestFile('request.php');
-$core->addTestFile('resource.php');
-$core->addTestFile('response.php');
-$core->addTestFile('filesystem.php');
-$core->addTestFile('filesystemcollection.php');
+$core->addFile('request.php');
+$core->addFile('resource.php');
+$core->addFile('response.php');
+$core->addFile('filesystem.php');
+$core->addFile('filesystemcollection.php');
 
-$test = new GroupTest('Tonic');
-$test->addTestCase($core);
+$test = new TestSuite('Tonic');
+$test->add($core);
 
 //*
 @include_once 'PHP/CodeCoverage.php';
