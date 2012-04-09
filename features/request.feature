@@ -8,18 +8,17 @@ Feature: HTTP request object
     When I create a request object
     Then I should see a request URI of "/something/otherthing"
     
+  Scenario: Query string is ignored
+	Given the request URI of "/something/otherthing?foo=bar"
+	When I create a request object
+    Then I should see a request URI of "/something/otherthing"
+	And I should see the request data ""
+
   Scenario: Have access to the HTTP request method
     Given the request method of "GET"
     When I create a request object
     Then I should see a request method of "GET"
-    
-  Scenario: Receive the request querystring
-    Given the request URI of "/something/otherthing"
-    And the request method of "GET"
-    And the querystring is "?foo=bar"
-    When I create a request object
-    Then I should see a querystring of "foo=bar"
-    
+
   Scenario: Have access to the HTTP request method
     Given the request method of "post"
     And the request data of "some data"
@@ -155,8 +154,7 @@ Feature: HTTP request object
   Scenario: Load a non-existent resource
     Given the request URI of "/three"
     When I create a request object
-    And I load the resource
-    Then I should have a response of type "NoResource"
+    Then I should fail to load the resource
     
   Scenario: Load a resource
     Given the request URI of "/requesttest/one"
@@ -176,23 +174,16 @@ Feature: HTTP request object
     And I load the resource
     Then I should have a response of type "NewResource"
   
-  Scenario: Load a non-existent resource with a new 404 resource class
-    Given the request URI of "/three"
-    And a 404 resource classname of "NewNoResource"
-    When I create a request object
-    And I load the resource
-    Then I should have a response of type "NewNoResource"
-  
   Scenario: Resource data loading
     Given the request URI of "/requesttest/one/two"
     When I create a request object
-    Then I should see resource "namespace" metadata of "Tonic/Tests"
+    Then I should see resource "namespace" metadata of "Tonic\Tests"
     And I should see resource "class" metadata of "ChildResource"
     And I should see resource "priority" metadata of "0"
     
   Scenario: Mounting in a namespace to a URI
     Given the request URI of "/foo/bar/requesttest/one"
-    And a mounting of "Tonic/Tests" to "/foo/bar"
+    And a mounting of "Tonic\Tests" to "/foo/bar"
     When I create a request object
     And I load the resource
     Then I should have a response of type "NewResource"

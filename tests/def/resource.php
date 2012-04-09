@@ -4,6 +4,18 @@
 
 /**
  * @namespace Tonic\Tests
+ * @uri /([hoa]+)/youfunny
+ */
+class TestRegexFirstResource extends Resource {
+	function get($request, $haha) {
+		$response = new Response($request);
+		$response->body = "$haha you funny";
+		return $response;
+	}
+}
+
+/**
+ * @namespace Tonic\Tests
  * @uri /resourcetest/one
  */
 class TestResource extends Resource {
