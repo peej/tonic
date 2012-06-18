@@ -48,3 +48,26 @@ if (!class_exists('TestResource')) {
     }
 
 }
+
+if (!class_exists('TestFileSystem')) {
+
+    require_once 'examples/filesystem/filesystem.php';
+
+    /**
+     * @namespace Tonic\Tests
+     * @uri /filesystemtest/one
+     * @uri /filesystemtest/one/.*
+     */
+    class TestFileSystem extends FilesystemResource {
+        
+        function __construct($parameters) {
+            
+            parent::__construct($parameters);
+            $this->path = sys_get_temp_dir().DIRECTORY_SEPARATOR.'tonictest'.DIRECTORY_SEPARATOR;
+            $this->uriStub = '/filesystemtest/one/';
+            
+        }
+        
+    }
+
+}

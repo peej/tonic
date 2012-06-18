@@ -12,6 +12,9 @@ use Behat\Gherkin\Node\PyStringNode,
  */
 class FeatureContext extends BehatContext
 {
+
+    var $path;
+
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -22,6 +25,35 @@ class FeatureContext extends BehatContext
     {
         // Initialize your context here
 		$this->config = array();
+        $this->path = sys_get_temp_dir().DIRECTORY_SEPARATOR.'tonictest'.DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * @xBeforeSuite
+     */
+    public static function setupCoverage($event)
+    {
+        global $coverage;
+        require 'PHP/CodeCoverage/Autoload.php';
+        if (class_exists('PHP_CodeCoverage')) {
+            $coverage = new PHP_CodeCoverage;
+            $coverage->start('Tonic');
+        }
+    }
+
+    /**
+     * @xAfterSuite
+     */
+    public static function finishUpCoverage($event)
+    {
+        global $coverage;
+        if (isset($coverage)) {
+            $coverage->stop();
+            //$writer = new PHP_CodeCoverage_Report_Clover;
+            //$writer->process($coverage, 'clover.xml');
+            $writer = new PHP_CodeCoverage_Report_HTML;
+            $writer->process($coverage, 'report');
+        }
     }
 
     /**
@@ -213,7 +245,7 @@ class FeatureContext extends BehatContext
      */
     public function iShouldHaveAResponseOfType($type)
     {
-		if(get_class($this->resource != $type))
+		if(get_class($this->resource) != $type)
 			throw new Exception;
     }
 
@@ -337,6 +369,35 @@ class FeatureContext extends BehatContext
     {
 		if($this->response->body != $body)
 			throw new Exception;
+    }
+
+    /**
+     * @Given /^the filesystem test data is setup$/
+     */
+    public function theFilesystemTestDataIsSetup()
+    {
+        if (!is_dir($this->path))
+            mkdir($this->path, 0777, TRUE);
+        file_put_contents($this->path.'tonicFilesystemTest', 'test');
+        file_put_contents($this->path.'default.html', 'test');
+    }
+
+    /**
+     * @Given /^the written file "([^"]*)" should contain \'([^\']*)\'$/
+     */
+    public function theWrittenFileShouldContain($filename, $contents)
+    {
+        if (file_get_contents($this->path.$filename) != $contents)
+            throw new Exception;
+    }
+
+    /**
+     * @Given /^the written file "([^"]*)" should not exist$/
+     */
+    public function theWrittenFileShouldNotExist($filename)
+    {
+        if (file_exists($this->path.$filename))
+            throw new Exception;
     }
 
 }
