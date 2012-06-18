@@ -1,8 +1,8 @@
 <?php
 
-require_once 'lib/Tonic/Autoloader.php';
+require_once '../src/Tonic/Autoloader.php';
 
-require_once 'myresource.php';
+require_once '../myresource.php';
 
 $config = array(
     'resources' => array(

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../../lib/Tonic/Autoloader.php';
+require_once __DIR__.'/../../src/Tonic/Autoloader.php';
 
 set_include_path(get_include_path().':'.__DIR__.'/..');
 
