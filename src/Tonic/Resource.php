@@ -41,7 +41,7 @@ class Resource {
                             }
                             $methodPriorities[$key] += $condition;
                         } catch (Exception $e) {
-                            unset($methodsMetadata[$key]);
+                            unset($methodPriorities[$key]);
                             $error = $e;
                             $error->appendMessage(' for method "'.get_class($this).'::'.$key.'"');
                             break;
@@ -55,11 +55,11 @@ class Resource {
                     }
                 }
             } else {
-                unset($methodsMetadata[$key]);
+                unset($methodPriorities[$key]);
             }
         }
-
-        if ($methodsMetadata) {
+        
+        if ($methodPriorities) {
             $methodPriorities = array_flip($methodPriorities);
             ksort($methodPriorities);
             $methodName = array_pop($methodPriorities);
