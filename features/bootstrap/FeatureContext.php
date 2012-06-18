@@ -7,78 +7,38 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
+use Tonic\Request,
+    Tonic\Resource,
+    Tonic\Response;
+
 /**
  * Features context.
  */
 class FeatureContext extends BehatContext
 {
 
-    var $path;
+    private $request, $resource, $response, $exception;
 
-    /**
-     * Initializes context.
-     * Every scenario gets it's own context object.
-     *
-     * @param   array   $parameters     context parameters (set them up through behat.yml)
-     */
-    public function __construct(array $parameters)
-    {
-        // Initialize your context here
-		$this->config = array();
-        $this->path = sys_get_temp_dir().DIRECTORY_SEPARATOR.'tonictest'.DIRECTORY_SEPARATOR;
-    }
+    private $createMethod = array();
+    private $data;
 
-    /**
-     * @xBeforeSuite
-     */
-    public static function setupCoverage($event)
-    {
-        global $coverage;
-        require 'PHP/CodeCoverage/Autoload.php';
-        if (class_exists('PHP_CodeCoverage')) {
-            $coverage = new PHP_CodeCoverage;
-            $coverage->start('Tonic');
-        }
-    }
-
-    /**
-     * @xAfterSuite
-     */
-    public static function finishUpCoverage($event)
-    {
-        global $coverage;
-        if (isset($coverage)) {
-            $coverage->stop();
-            //$writer = new PHP_CodeCoverage_Report_Clover;
-            //$writer->process($coverage, 'clover.xml');
-            $writer = new PHP_CodeCoverage_Report_HTML;
-            $writer->process($coverage, 'report');
-        }
-    }
+    private $options = array();
 
     /**
      * @Given /^the request URI of "([^"]*)"$/
      */
     public function theRequestUriOf($uri)
     {
-		$this->config['uri'] = $uri;
-    }
-
-    /**
-     * @When /^I create a request object$/
-     */
-    public function iCreateARequestObject()
-    {
-		$this->request = new Request($this->config);
-    }
-
-    /**
-     * @Then /^I should see a request URI of "([^"]*)"$/
-     */
-    public function iShouldSeeARequestUriOf($uri)
-    {
-		if ($this->request->uri != $uri)
-			throw new Exception;
+        $parsedUri = parse_url($uri);
+        $_SERVER['REDIRECT_URL'] = $parsedUri['path'];
+        if (isset($parsedUri['query'])) {
+            $query = explode('&', $parsedUri['query']);
+            foreach ($query as $item) {
+                list($name, $value) = explode('=', $item);
+                $_GET[$name] = $value;
+            }
+        }
+        $_SERVER['SCRIPT_NAME'] = '';
     }
 
     /**
@@ -86,7 +46,27 @@ class FeatureContext extends BehatContext
      */
     public function theRequestMethodOf($method)
     {
-		$this->config['method'] = $method;
+        $_SERVER['REQUEST_METHOD'] = $method;
+    }
+
+    /**
+     * @When /^I create a request object$/
+     */
+    public function iCreateARequestObject()
+    {
+        if ($this->data) {
+            $this->options['data'] = $this->data;
+            $this->options['contentType'] = $_SERVER['CONTENT_TYPE'];
+        }
+        $this->request = new Request($this->options);
+    }
+
+    /**
+     * @Then /^I should see a request URI of "([^"]*)"$/
+     */
+    public function iShouldSeeARequestUriOf($uri)
+    {
+        if ($this->request->uri != $uri) throw new Exception;
     }
 
     /**
@@ -94,8 +74,189 @@ class FeatureContext extends BehatContext
      */
     public function iShouldSeeARequestMethodOf($method)
     {
-		if ($this->request->method != $method)
-			throw new Exception;
+        if ($this->request->method != $method) throw new Exception;
+    }
+
+    /**
+     * @Given /^an "([^"]*)" header of '([^']*)'$/
+     */
+    public function anHeaderOf($header, $value)
+    {
+        $headerMapping = array(
+            'accept' => 'HTTP_ACCEPT',
+            'accept language' => 'HTTP_ACCEPT_LANGUAGE',
+            'if-none-match' => 'HTTP_IF_NONE_MATCH',
+            'if-match' => 'HTTP_IF_MATCH',
+        );
+        $_SERVER[$headerMapping[$header]] = $value;
+    }
+
+    /**
+     * @Given /^I should see an "([^"]*)" string of "([^"]*)"$/
+     */
+    public function iShouldSeeAnAcceptStringOf($header, $string)
+    {
+        $propertyMapping = array(
+            'accept' => 'accept',
+            'accept language' => 'acceptLang',
+            'if-none-match' => 'ifNoneMatch',
+            'if-match' => 'ifMatch',
+        );
+        if (join(',', $this->request->$propertyMapping[$header]) != $string)
+            throw new Exception(join(',', $this->request->$propertyMapping[$header]));
+    }
+
+    /**
+     * @Given /^a resource definition "([^"]*)" with URI "([^"]*)" and priority of (\d+)$/
+     */
+    public function aResourceDefinitionWithUriAndPriorityOf($className, $uri, $priority)
+    {
+        $this->aResourceDefinition($className, $uri, $priority);
+    }
+
+    /**
+     * @Given /^a resource definition "([^"]*)" with URI "([^"]*)" and namespace of "([^"]*)"$/
+     */
+    public function aResourceDefinitionWithUriAndNamespaceOf($className, $uri, $namespace)
+    {
+        $this->aResourceDefinition($className, $uri, 1, $namespace);
+    }
+
+    /**
+     * @Given /^a resource definition "([^"]*)" with URI "([^"]*)" and namespace annotation of "([^"]*)"$/
+     */
+    public function aResourceDefinitionWithUriAndNamespaceAnnotationOf($className, $uri, $namespace)
+    {
+        $this->aResourceDefinition($className, $uri, 1, NULL, $namespace);
+    }
+
+    private function aResourceDefinition($className, $uri, $priority = 1, $namespace = NULL, $annotationNamespace = NULL)
+    {
+        $classDefinition = '';
+        if ($namespace) $classDefinition .= 'namespace '.$namespace.";\n";
+        $classDefinition .= '
+/**
+ * @uri '.$uri.'
+ * @priority '.$priority.'
+';
+        if ($annotationNamespace) $classDefinition .= ' * @namespace '.$annotationNamespace."\n";
+        $classDefinition .= ' */
+class '.$className.' extends \Tonic\Resource {
+';
+        foreach ($this->createMethod as $methodData) {
+            $classDefinition .= '
+    /**'."\n";
+            $classDefinition .= '     * @method '.(isset($methodData['method']) ? $methodData['method'] : 'GET')."\n";
+            if (isset($methodData['accepts'])) $classDefinition .= '     * @accepts '.$methodData['accepts']."\n";
+            if (isset($methodData['provides'])) $classDefinition .= '     * @provides '.$methodData['provides']."\n";
+            $classDefinition .= '
+     */
+    function '.$methodData['name'].'() {
+        return "'.$methodData['name'].'";
+    }
+';
+        }
+        $classDefinition .= '
+}
+';
+        eval($classDefinition);
+    }
+
+    /**
+     * @Given /^load the resource$/
+     */
+    public function loadTheResource()
+    {
+        try {
+            $this->resource = $this->request->loadResource();
+        } catch (Tonic\Exception $e) {
+            $this->exception = get_class($e);
+        }
+    }
+
+    /**
+     * @Then /^the loaded resource should have a class of "([^"]*)"$/
+     */
+    public function theLoadedResourceShouldHaveAClassOf($className)
+    {
+        $loadedClassName = get_class($this->resource);
+        if ($loadedClassName != $className) throw new Exception($loadedClassName);
+    }
+
+    /**
+     * @Given /^the loaded resource should have a param "([^"]*)" with the value "([^"]*)"$/
+     */
+    public function theLoadedResourceShouldHaveAParamWithTheValue($name, $value)
+    {
+        if (!isset($this->resource->params[$name])) throw new Exception('Param '.$name.' not found');
+        if ($this->resource->params[$name] != $value) throw new Exception('Param '.$name.' does not equal '.$value);
+    }
+
+    /**
+     * @Given /^execute the resource$/
+     */
+    public function executeTheResource()
+    {
+        try {
+            if ($this->resource) {
+                $this->response = $this->resource->exec();
+            } else {
+                throw new Exception('Resource not loaded');
+            }
+        } catch (Tonic\Exception $e) {
+            $this->exception = get_class($e);
+        }
+    }
+
+    /**
+     * @Then /^response should be "([^"]*)"$/
+     */
+    public function responseShouldBe($responseString)
+    {
+        if ($this->response->body != $responseString) throw new Exception($this->response->body);
+    }
+
+    /**
+     * @Given /^a "([^"]*)" resource method "([^"]*)"$/
+     */
+    public function aResourceMethod($method, $name)
+    {
+        $this->createMethod[] = array(
+            'method' => $method,
+            'name' => $name
+        );
+    }
+
+    /**
+     * @Given /^a "([^"]*)" resource method "([^"]*)" that provides "([^"]*)"$/
+     */
+    public function aResourceMethodThatProvides($method, $name, $provides)
+    {
+        $this->createMethod[] = array(
+            'method' => $method,
+            'name' => $name,
+            'provides' => $provides
+        );
+    }
+
+    /**
+     * @Given /^a "([^"]*)" resource method "([^"]*)" that accepts "([^"]*)"$/
+     */
+    public function aResourceMethodThatAccepts($method, $name, $accepts)
+    {
+        $this->createMethod[] = array(
+            'method' => $method,
+            'name' => $name,
+            'accepts' => $accepts
+        );
+    }
+
+    /**
+     * @Given /^the request content type of "([^"]*)"$/
+     */
+    public function theRequestContentTypeOf($contentType)
+    {
+        $_SERVER['CONTENT_TYPE'] = $contentType;
     }
 
     /**
@@ -103,301 +264,40 @@ class FeatureContext extends BehatContext
      */
     public function theRequestDataOf($data)
     {
-		$this->config['data'] = $data;
+        $this->data = $data;
     }
 
     /**
-     * @Given /^I should see the request data "([^"]*)"$/
+     * @Then /^a "([^"]*)" should be thrown$/
      */
-    public function iShouldSeeTheRequestData($data)
+    public function aShouldBeThrown($exception)
     {
-		if($this->request->data != $data)
-			throw new Exception;
+        if ($exception != $this->exception) throw new Exception($this->exception);
     }
 
     /**
-     * @Then /^I should see a negotiated URI of "([^"]*)"$/
+     * @Given /^I mount "([^"]*)" at the URI "([^"]*)"$/
      */
-    public function iShouldSeeANegotiatedUriOf($uri)
+    public function iMountAtTheUri($className, $uriSpace)
     {
-		if($this->request->negotiatedUris != explode(',', $uri))
-			throw new Exception;
+        $this->request->mount($className, $uriSpace);
     }
 
     /**
-     * @Then /^I should see a format negotiated URI of "([^"]*)"$/
+     * @Given /^a the class definition:$/
      */
-    public function iShouldSeeAFormatNegotiatedUriOf($uri)
+    public function aTheClassDefinition(PyStringNode $string)
     {
-		if($this->request->formatNegotiatedUris != explode(',', $uri))
-			throw new Exception;
+        eval($string);
     }
 
     /**
-     * @Then /^I should see a language negotiated URI of "([^"]*)"$/
+     * @Given /^I set the request option "([^"]*)" to:$/
      */
-    public function iShouldSeeALanguageNegotiatedUriOf($uri)
+    public function iSetTheRequestOptionTo($option, PyStringNode $json)
     {
-		if($this->request->languageNegotiatedUris != explode(',', $uri))
-			throw new Exception;
+        $this->options[$option] = json_decode($json, TRUE);
     }
 
-    /**
-     * @Given /^the accept header of "([^"]*)"$/
-     */
-    public function theAcceptHeaderOf($header)
-    {
-		$this->config['accept'] = $header;
-    }
-
-    /**
-     * @Given /^the language accept header of "([^"]*)"$/
-     */
-    public function theLanguageAcceptHeaderOf($header)
-    {
-		$this->config['acceptLang'] = $header;
-    }
-
-    /**
-     * @Given /^an if match header of '([^']*)'$/
-     */
-    public function anIfMatchHeaderOf($header)
-    {
-		$this->config['ifMatch'] = $header;
-    }
-
-    /**
-     * @Then /^I should see an if match header of "([^"]*)"$/
-     */
-    public function iShouldSeeAnIfMatchHeaderOf($header)
-    {
-		if($this->request->ifMatch != explode(',', $header))
-			throw new Exception;
-    }
-
-    /**
-     * @Then /^if match should match "([^"]*)"$/
-     */
-    public function ifMatchShouldMatch($match)
-    {
-		if(!$this->request->ifMatch($match))
-			throw new Exception;
-    }
-
-    /**
-     * @Given /^an if none match header of '([^']*)'$/
-     */
-    public function anIfNoneMatchHeaderOf($header)
-    {
-		$this->config['ifNoneMatch'] = $header;
-    }
-
-    /**
-     * @Then /^I should see an if none match header of "([^"]*)"$/
-     */
-    public function iShouldSeeAnIfNoneMatchHeaderOf($header)
-    {
-		if($this->request->ifNoneMatch != explode(',', $header))
-			throw new Exception;
-    }
-
-    /**
-     * @Then /^if none match should match "([^"]*)"$/
-     */
-    public function ifNoneMatchShouldMatch($match)
-    {
-		if(!$this->request->ifNoneMatch($match))
-			throw new Exception;
-    }
-
-    /**
-     * @Then /^if none match should not match "([^"]*)"$/
-     */
-    public function ifNoneMatchShouldNotMatch($match)
-    {
-		if($this->request->ifNoneMatch($match))
-			throw new Exception;
-    }
-
-    /**
-     * @Given /^I load the resource$/
-     */
-    public function iLoadTheResource()
-    {
-		$this->resource = $this->request->loadResource();
-    }
-
-    /**
-     * @Then /^I should fail to load the resource$/
-     */
-    public function iShouldFailToLoadTheResource()
-    {
-		try {
-			$this->request->loadResource();
-		} catch(ResponseException $e) {
-			if($e->getCode() != Response::NOTFOUND)
-				throw new Exception;
-		}
-    }
-
-    /**
-     * @Then /^I should have a response of type "([^"]*)"$/
-     */
-    public function iShouldHaveAResponseOfType($type)
-    {
-		if(get_class($this->resource) != $type)
-			throw new Exception;
-    }
-
-    /**
-     * @Then /^I should see resource "([^"]*)" metadata of "([^"]*)"$/
-     */
-    public function iShouldSeeResourceMetadataOf($argument1, $argument2)
-    {
-		if($this->request->resources[$this->request->uri][$argument1] != $argument2)
-			throw new Exception("metadata $argument1: want $argument2, got {$this->request->resources[$this->request->uri][$argument1]}");
-    }
-
-    /**
-     * @Given /^a mounting of "([^"]*)" to "([^"]*)"$/
-     */
-    public function aMountingOfTo($argument1, $argument2)
-    {
-		$this->config['mount'][$argument1] = $argument2;
-    }
-
-    /**
-     * @Given /^execute the request$/
-     */
-    public function executeTheRequest()
-    {
-    	$this->response = $this->resource->exec($this->request);
-    }
-
-    /**
-     * @Given /^an accept encoding of "([^"]*)"$/
-     */
-    public function anAcceptEncodingOf($encoding)
-    {
-		$this->config['acceptEncoding'] = $encoding;
-    }
-
-#    /**
-#     * @Given /^I process content encoding$/
-#     */
-#    public function iProcessContentEncoding()
-#    {
-#		$this->response->doContentEncoding();
-#    }
-
-    /**
-     * @Then /^the response header "([^"]*)" should contain '([^']*)'$/
-     */
-    public function theResponseHeaderShouldContain($header, $contents)
-    {
-		if($this->response->headers[$header] != $contents)
-			throw new Exception;
-    }
-
-#    /**
-#     * @Then /^the response body should be ([^ ]*) and be "([^"]*)"$/
-#     */
-#    public function theResponseBodyShouldBeTransformedAndBe($transform, $contents)
-#    {
-#    	switch ($transform) {
-#    	case 'gzipped':
-##    	    var_dump($this->response->body, $contents, gzencode($contents));
-#    	    if ($this->response->body != gzencode($contents)) throw new Exception;
-#    	    break;
-#    	case 'deflated':
-#    	    if ($this->response->body != gzdeflate($contents)) throw new Exception;
-#    	    break;
-#    	case 'compressed':
-#    	    if ($this->response->body != gzcompress($contents)) throw new Exception;
-#    	    break;
-#    	}
-#    }
-
-    /**
-     * @Given /^I add a cache header of "([^"]*)"$/
-     */
-    public function iAddACacheHeaderOf($header)
-	{
-		if($header == '') {
-			$this->response->addCacheHeader();
-		} else {
-			$this->response->addCacheHeader($header);
-		}
-	}
-
-    /**
-     * @Given /^I add an etag header of "([^"]*)"$/
-     */
-    public function iAddAnEtagHeaderOf($etag)
-    {
-		$this->response->addEtag($etag);
-    }
-
-    /**
-     * @Then /^I should fail to load the resource with response code "([^"]*)" and body '([^']*)'$/
-     */
-    public function iShouldFailToLoadTheResourceWithResponseCodeAndBody($code, $body)
-    {
-		try {
-			$this->request->loadResource();
-		} catch(Exception $e) {
-			if($e->getCode() != $code)
-				throw new Exception('bad code ' . $e->getCode() . " (want $code)");
-			if($e->getMessage() != $body)
-				throw new Exception('bad error message ' . $e->getMessage() . " (want $body)");
-		}
-    }
-
-    /**
-     * @Then /^the response code should be "([^"]*)"$/
-     */
-    public function theResponseCodeShouldBe($code)
-    {
-		if($this->response->code != $code)
-			throw new Exception;
-    }
-
-    /**
-     * @Given /^the response body should be '([^']*)'$/
-     */
-    public function theResponseBodyShouldBe($body)
-    {
-		if($this->response->body != $body)
-			throw new Exception;
-    }
-
-    /**
-     * @Given /^the filesystem test data is setup$/
-     */
-    public function theFilesystemTestDataIsSetup()
-    {
-        if (!is_dir($this->path))
-            mkdir($this->path, 0777, TRUE);
-        file_put_contents($this->path.'tonicFilesystemTest', 'test');
-        file_put_contents($this->path.'default.html', 'test');
-    }
-
-    /**
-     * @Given /^the written file "([^"]*)" should contain \'([^\']*)\'$/
-     */
-    public function theWrittenFileShouldContain($filename, $contents)
-    {
-        if (file_get_contents($this->path.$filename) != $contents)
-            throw new Exception;
-    }
-
-    /**
-     * @Given /^the written file "([^"]*)" should not exist$/
-     */
-    public function theWrittenFileShouldNotExist($filename)
-    {
-        if (file_exists($this->path.$filename))
-            throw new Exception;
-    }
 
 }
