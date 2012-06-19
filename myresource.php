@@ -3,7 +3,6 @@
 /**
  * @uri /hello/:name
  * @priority 10
- * @namespace myNamespace
  */
 class MyResource extends Tonic\Resource {
 

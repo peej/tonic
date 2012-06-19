@@ -249,8 +249,9 @@ class Request {
         // get data from reflector
         $classReflector = new \ReflectionClass($className);
 
-        $metadata['class'] = $classReflector->getName();
+        $metadata['class'] = '\\'.$classReflector->getName();
         $metadata['namespace'] = $classReflector->getNamespaceName();
+        $metadata['filename'] = $classReflector->getFileName();
         $metadata['priority'] = 1;
 
         // get data from docComment
