@@ -168,10 +168,11 @@ class Request {
                 !isset($this->resources[$className]) &&
                 is_subclass_of($className, 'Tonic\Resource')
             ) {
-                $this->resources[$className] = $this->getResourceMetadata($className);
+                $this->resources[$className] = $this->readResourceAnnotations($className);
                 if ($uriSpace) {
                     $this->resources[$className]['uri'][0] = '|^'.$uriSpace.substr($this->resources[$className]['uri'][0], 2);
                 }
+                $this->resources[$className]['methods'] = $this->readMethodAnnotations($className);
             }
         }
     }
@@ -228,11 +229,26 @@ class Request {
         }
     }
 
-    private function getResourceMetadata($className) {
+    /**
+     * Get the already loaded resource annotation metadata
+     * @param  Tonic/Resource $resource
+     * @return str[]
+     */
+    public function getResourceMetadata($resource) {
+        $className = get_class($resource);
+        return isset($this->resources[$className]) ? $this->resources[$className] : NULL;
+    }
+
+    /**
+     * Read the annotation metadata for the given class
+     * @return  str[] Annotation metadata
+     */
+    private function readResourceAnnotations($className) {
         $metadata = array();
 
         // get data from reflector
         $classReflector = new \ReflectionClass($className);
+
         $metadata['class'] = $classReflector->getName();
         $metadata['namespace'] = $classReflector->getNamespaceName();
         $metadata['priority'] = 1;
@@ -249,6 +265,11 @@ class Request {
         return $metadata;
     }
 
+    /**
+     * Turn a URL template into a regular expression
+     * @param  str $uri URL template
+     * @return str      Regular expression
+     */
     private function uriTemplateToRegex($uri) {
         preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
         $return = array($uri);
@@ -268,19 +289,18 @@ class Request {
         return $return;
     }
 
-    public function getMethodMetadata($resource) {
+    public function readMethodAnnotations($className) {
 
-        $className = get_class($resource);
-        if (isset($this->resources[$className]['method'])) {
-            return $this->resources[$className]['method'];
+        if (isset($this->resources[$className]) && isset($this->resources[$className]['methods'])) {
+            return $this->resources[$className]['methods'];
         }
 
         $metadata = array();
 
-        foreach (get_class_methods($resource) as $methodName) {
+        foreach (get_class_methods($className) as $methodName) {
             $methodMetadata = array();
 
-            $methodReflector = new \ReflectionMethod($resource, $methodName);
+            $methodReflector = new \ReflectionMethod($className, $methodName);
 
             $docComment = $this->parseDocComment($methodReflector->getDocComment());
             if (isset($docComment['@method'])) {
@@ -301,6 +321,11 @@ class Request {
         return $metadata;
     }
 
+    /**
+     * Parse annotations out of a doc comment
+     * @param  str $comment Doc comment to parse
+     * @return str[]
+     */
     private function parseDocComment($comment) {
         $data = array();
         preg_match_all('/^\s*\*\s*(@.+)$/m', $comment, $items);
@@ -318,6 +343,38 @@ class Request {
             }
         }
         return $data;
+    }
+
+    public function __toString() {
+        $accept = join(', ', $this->accept);
+        $acceptLang = join(', ', $this->acceptLang);
+        $negotiatedUris = join(', ', $this->negotiatedUris);
+        $ifMatch = join(', ', $this->ifMatch);
+        $ifNoneMatch = join(', ', $this->ifNoneMatch);
+        $acceptLang = join(', ', $this->acceptLang);
+        $resources = array();
+        foreach ($this->resources as $resource) {
+            $resources[] = $resource['namespace'].'\\'.$resource['class']."\t".$resource['uri'][0]."\t".$resource['priority'];
+        }
+        $resources = join("\n\t", $resources);
+        return <<<EOF
+Tonic\Request
+=============
+Hostname: $this->hostname
+URI: $this->uri
+HTTP method: $this->method
+Content type: $this->contentType
+Request data: $this->data
+Accept: $accept
+Accept language: $acceptLang
+Negotiated URIs: $negotiatedUris
+If match: $ifMatch
+If none match: $ifNoneMatch
+Loaded resources:
+\tName\tURI regex\tPriority
+\t$resources
+
+EOF;
     }
 
 }

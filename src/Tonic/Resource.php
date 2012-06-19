@@ -23,39 +23,42 @@ class Resource {
      */
     function exec($methodName = NULL) {
 
-        $methodsMetadata = $this->request->getMethodMetadata($this);
+        // get the annotation metadata for this resource
+        $resourceMetadata = $this->request->getResourceMetadata($this);
 
         $error = new NotAcceptableException;
         $methodPriorities = array();
 
-        foreach ($methodsMetadata as $key => $methodMetadata) {
-            if (!$methodName || $methodName == $key) {
-                $methodPriorities[$key] = 0;
-                foreach ($methodMetadata as $conditionName => $params) {
-                    if (method_exists($this, $conditionName)) {
-                        try {
-                            if (is_array($params)) {
-                                $condition = call_user_func_array(array($this, $conditionName), $params);
-                            } else {
-                                $condition = call_user_func(array($this, $conditionName), $params);
+        if (isset($resourceMetadata['methods'])) {
+            foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
+                if (!$methodName || $methodName == $key) {
+                    $methodPriorities[$key] = 0;
+                    foreach ($methodMetadata as $conditionName => $params) {
+                        if (method_exists($this, $conditionName)) {
+                            try {
+                                if (is_array($params)) {
+                                    $condition = call_user_func_array(array($this, $conditionName), $params);
+                                } else {
+                                    $condition = call_user_func(array($this, $conditionName), $params);
+                                }
+                                $methodPriorities[$key] += $condition;
+                            } catch (Exception $e) {
+                                unset($methodPriorities[$key]);
+                                $error = $e;
+                                $error->appendMessage(' for method "'.get_class($this).'::'.$key.'"');
+                                break;
                             }
-                            $methodPriorities[$key] += $condition;
-                        } catch (Exception $e) {
-                            unset($methodPriorities[$key]);
-                            $error = $e;
-                            $error->appendMessage(' for method "'.get_class($this).'::'.$key.'"');
-                            break;
+                        } else {
+                            throw new \Exception(sprintf(
+                                'Condition method "%s" not found in Resource class "%s"',
+                                $conditionName,
+                                get_class($this)
+                            ));
                         }
-                    } else {
-                        throw new \Exception(sprintf(
-                            'Condition method "%s" not found in Resource class "%s"',
-                            $conditionName,
-                            get_class($this)
-                        ));
                     }
+                } else {
+                    unset($methodPriorities[$key]);
                 }
-            } else {
-                unset($methodPriorities[$key]);
             }
         }
         
