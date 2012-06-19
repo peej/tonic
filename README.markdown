@@ -33,14 +33,12 @@ for the response.
      */
     class ExampleResource extends Resource {
         
-        function get($request) {
+        /**
+         * @method GET
+         */
+        function exampleMethod() {
             
-            $response = new Response($request);
-            
-            $response->code = Response::OK;
-            $response->body = 'Example response';
-            
-            return $response;
+            return new Response(Response::OK, 'Example response');
             
         }
       
@@ -148,7 +146,8 @@ of the annotation:
     class ExampleResource extends Resource { }
 
     /**
-     * @uri /example/apple 2
+     * @uri /example/apple
+     * @priority 2
      */
     class ExampleResource extends Resource { }
 
