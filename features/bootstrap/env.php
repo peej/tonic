@@ -32,3 +32,24 @@ class MyResource extends Tonic\Resource {
     }
 
 }
+
+class MockMetadataCache {
+    var $cacheValue = NULL;
+    function __construct() {}
+    
+    function isCached() {
+        return !!$this->cacheValue;
+    }
+
+    function load() {
+        return $this->cacheValue;
+    }
+
+    function save($resources) {
+        $this->cacheValue = $resources;
+    }
+
+    function contains($className, $methodName) {
+        return isset($this->cacheValue[$className]) && isset($this->cacheValue[$className]['methods'][$methodName]);
+    }
+}

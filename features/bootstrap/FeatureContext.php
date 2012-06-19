@@ -213,6 +213,7 @@ class '.$className.' extends \Tonic\Resource {
      */
     public function responseShouldBe($responseString)
     {
+        if (!$this->response) throw new Exception('Response not loaded due to '.$this->exception);
         if ($this->response->body != $responseString) throw new Exception($this->response->body);
     }
 
@@ -284,9 +285,9 @@ class '.$className.' extends \Tonic\Resource {
     }
 
     /**
-     * @Given /^a the class definition:$/
+     * @Given /^a class definition:$/
      */
-    public function aTheClassDefinition(PyStringNode $string)
+    public function aClassDefinition(PyStringNode $string)
     {
         eval($string);
     }
@@ -297,6 +298,22 @@ class '.$className.' extends \Tonic\Resource {
     public function iSetTheRequestOptionTo($option, PyStringNode $json)
     {
         $this->options[$option] = json_decode($json, TRUE);
+    }
+
+    /**
+     * @Given /^I supply an empty cache object$/
+     */
+    public function iSupplyAnEmptyCacheObject()
+    {
+        $this->options['cache'] = new MockMetadataCache();
+    }
+
+    /**
+     * @Given /^the cache object should contain "([^"]*)" "([^"]*)"$/
+     */
+    public function theCacheObjectShouldContain($className, $methodName)
+    {
+        if (!$this->options['cache']->contains($className, $methodName)) throw new Exception;
     }
 
 

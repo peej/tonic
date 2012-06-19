@@ -19,7 +19,7 @@ Feature: Caching of annotation information
       }
       """
     When I create a request object
-    And a the class definition:
+    And a class definition:
       """
       class Cache extends Tonic\Resource {
         function method1() {
@@ -31,3 +31,14 @@ Feature: Caching of annotation information
     And execute the resource
     Then the loaded resource should have a class of "Cache"
     And response should be "cache"
+
+  Scenario: Store resource metadata into a cache
+    Given a "GET" resource method "method2" that provides "text/html"
+    And a resource definition "Cache2" with URI "/cache2" and priority of 1
+    And the request URI of "/cache2.html"
+    And I supply an empty cache object
+    When I create a request object
+    And load the resource
+    And execute the resource
+    Then response should be "method2"
+    And the cache object should contain "Cache2" "method2"
