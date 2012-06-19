@@ -14,7 +14,6 @@ class Request {
     public $data;
     public $accept = array();
     public $acceptLang = array();
-    public $negotiatedUris = array();
     public $ifMatch = array();
     public $ifNoneMatch = array();
 
@@ -76,9 +75,25 @@ class Request {
         if ($cache && $cache->isCached()) { // if we've been given a metadata cache, use it
             $this->resources = $cache->load();
         } else {
+            $filenamesToLoad = $this->getOption($options, 'load', NULL);
+            if ($filenamesToLoad) { // load given resource class files
+                $this->loadResourceFiles($filenamesToLoad);
+            }
             $this->loadResourceMetadata();
             if ($cache) {
                 $cache->save($this->resources);
+            }
+        }
+    }
+
+    private function loadResourceFiles($filenames) {
+        if (!is_array($filenames)) {
+            $filenames = array($filenames);
+        }
+
+        foreach ($filenames as $glob) {
+            foreach (glob($glob) as $filename) {
+                require_once $filename;
             }
         }
     }
@@ -220,7 +235,7 @@ class Request {
             }
         }
         if ($matchedResource) {
-            if (isset($matchedResource[0]['filename'])) {
+            if (isset($matchedResource[0]['filename']) && is_readable($matchedResource[0]['filename'])) {
                 require_once($matchedResource[0]['filename']);
             }
             return new $matchedResource[0]['class']($this, $matchedResource[1]);
@@ -349,13 +364,19 @@ class Request {
     public function __toString() {
         $accept = join(', ', $this->accept);
         $acceptLang = join(', ', $this->acceptLang);
-        $negotiatedUris = join(', ', $this->negotiatedUris);
         $ifMatch = join(', ', $this->ifMatch);
         $ifNoneMatch = join(', ', $this->ifNoneMatch);
         $acceptLang = join(', ', $this->acceptLang);
         $resources = array();
         foreach ($this->resources as $resource) {
-            $resources[] = $resource['namespace'].'\\'.$resource['class']."\t".$resource['uri'][0]."\t".$resource['priority'];
+            $r = $resource['class'].' '.$resource['uri'][0].' '.$resource['priority'];
+            foreach ($resource['methods'] as $methodName => $method) {
+                $r .= "\n\t\t".$methodName;
+                foreach ($method as $itemName => $item) {
+                    $r .= ' '.$itemName.'="'.join(', ', $item).'"';
+                }
+            }
+            $resources[] = $r;
         }
         $resources = join("\n\t", $resources);
         return <<<EOF
@@ -368,11 +389,9 @@ Content type: $this->contentType
 Request data: $this->data
 Accept: $accept
 Accept language: $acceptLang
-Negotiated URIs: $negotiatedUris
 If match: $ifMatch
 If none match: $ifNoneMatch
 Loaded resources:
-\tName\tURI regex\tPriority
 \t$resources
 
 EOF;

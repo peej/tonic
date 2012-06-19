@@ -34,11 +34,14 @@ class MyResource extends Tonic\Resource {
         if (!isset($_GET[$name]) || $_GET[$name] != $value) throw new Tonic\ConditionException;
     }
 
-}
+    /**
+     * @method GET
+     * @provides application/json
+     * @param  str $name
+     * @return Response
+     */
+    function jsonMethod($name = NULL) {
+        return array(200, '{Hello: "'.$name.'"}');
+    }
 
-/**
- * @uri /woo
- * @priority 10
- * @namespace myNamespace
- */
-class anotherResource extends Tonic\Resource {}
+}

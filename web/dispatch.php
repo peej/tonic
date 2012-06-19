@@ -3,10 +3,8 @@
 // load Tonic
 require_once '../src/Tonic/Autoloader.php';
 
-// example resource
-#require_once '../myresource.php';
-
 $config = array(
+    'load' => '../*.php', // load all PHP files in project directory
     'resources' => array(
 /*
         'MyResource' => array(
@@ -16,7 +14,7 @@ $config = array(
         )
 */
     ),
-    'cache' => new Tonic\MetadataCache('/tmp/tonic.cache')
+    #'cache' => new Tonic\MetadataCache('/tmp/tonic.cache')
 );
 
 $request = new Tonic\Request($config);
