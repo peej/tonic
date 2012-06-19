@@ -36,3 +36,10 @@ class MyResource extends Tonic\Resource {
     }
 
 }
+
+/**
+ * @uri /woo
+ * @priority 10
+ * @namespace myNamespace
+ */
+class anotherResource extends Tonic\Resource {}

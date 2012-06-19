@@ -1,7 +1,9 @@
 <?php
 
+// load Tonic
 require_once '../src/Tonic/Autoloader.php';
 
+// example resource
 require_once '../myresource.php';
 
 $config = array(
@@ -19,7 +21,9 @@ $config = array(
 
 $request = new Tonic\Request($config);
 
-#$request->mount('myNamespace', '');
+#$request->mount('myNamespace', '/woot');
+
+#echo $request;
 
 $resource = $request->loadResource();
 $response = $resource->exec();
