@@ -10,7 +10,7 @@ Feature: Caching of annotation information
       {
         "Cache": {
           "uri": "|^/cache$|",
-          "method": {
+          "methods": {
             "method1": {
               "method": "GET"
             }
