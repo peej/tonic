@@ -20,15 +20,13 @@ wire a URI to the resource and HTTP methods to class methods.
      * This class defines an example resource that is wired into the URI /example
      * @uri /example
      */
-    class ExampleResource extends Resource {
+    class ExampleResource extends Tonic\Resource {
         
         /**
          * @method GET
          */
         function exampleMethod() {
-            
             return new Response(Response::OK, 'Example response');
-            
         }
       
     }
@@ -49,10 +47,10 @@ resource, execute it, and output the response.
 
     require_once '../src/Tonic/Autoloader.php';
 
-    $request = new Tonic\Request(array(
-        'load' => '../resources/*.php', // look for resource classes in here
-        'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
-    ));
+    $request = new Tonic\Request();
+
+    require_once '../resources/example.php';
+
     $resource = $request->loadResource();
     $response = $resource->exec();
     $response->output();
@@ -65,19 +63,6 @@ Features
 ========
 
 
-Request URI
------------
-
-The URI that is processed for the request when you create the Tonic Request object
-is gather by default from the REQUEST_URI Apache variable. If you need to gather
-the URI from another $_SERVER variable or somewhere else then you can pass it into
-the Request objects constructor as a configuration option:
-
-    $request = new Request(array(
-        'uri' => $_SERVER['PATH_INFO']
-    ));
-
-
 URI annotations
 ---------------
 
@@ -86,7 +71,7 @@ Resources are attached to their URL by their @uri annotation:
     /**
      * @uri /example
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic\Resource { }
 
 As well as a straight forward URI string, you can also use a regular expression
 so that a resource is tied to a range of URIs:
@@ -94,8 +79,12 @@ so that a resource is tied to a range of URIs:
     /**
      * @uri /example/([a-z]+)
      */
-    class ExampleResource extends Resource {
-        function get($request, $parameter) {
+    class ExampleResource extends Tonic\Resource {
+
+        /**
+         * @method GET
+         */
+        function exampleMethod($parameter) {
             ...
         }
     }
@@ -105,8 +94,12 @@ URL template and Rails route style @uri annotations are also supported:
     /**
      * @uri /users/{username}
      */
-    class ExampleResource extends Resource {
-        function get($request, $username) {
+    class ExampleResource extends Tonic\Resource {
+
+        /**
+         * @method GET
+         */
+        function exampleMethod($username) {
             ...
         }
     }
@@ -114,8 +107,12 @@ URL template and Rails route style @uri annotations are also supported:
     /**
      * @uri /users/:username
      */
-    class ExampleResource extends Resource {
-        function get($request, $username) {
+    class ExampleResource extends Tonic\Resource {
+
+        /**
+         * @method GET
+         */
+        function exampleMethod($username) {
             ...
         }
     }
@@ -127,15 +124,15 @@ of the annotation:
     /**
      * @uri /example/([a-z]+)
      */
-    class ExampleResource extends Resource { }
+    class ExampleResource extends Tonic\Resource { }
 
     /**
      * @uri /example/apple
      * @priority 2
      */
-    class ExampleResource extends Resource { }
+    class AnotherExampleResource extends Tonic\Resource { }
 
-By postfixing the @uri annotation with a number, of all the matching resources,
+By using the @priority annotation with a number, of all the matching resources,
 the one with the highest postfixed number will be used.
 
 
@@ -149,27 +146,40 @@ namespace will in effect have the URL-space prefixed to their @uri annotation.
     $request->mount('namespaceName', '/some/mounted/uri');
 
 
+Resource annotation cache
+-------------------------
+
+Parsing of resource annotations has a performance penalty. To remove this penalty and
+to remove the requirement to load all resource classes up front (and to allow opcode
+caching), a cache can be used to store the resource annotation data.
+
+Passing a cache object into the Request object at construction will cause that cache to
+be used to read and store the resource annotation metadata rather than read it from the
+source code tokens. Tonic comes with a single cache class that stores the cache on disk.
+
+Then rather than including your resource class files explicitly, the Request object
+will load them for you if you pass in the "load" option if it can't load the metadata
+from the cache.
+
+    $request = new Tonic\Request(array(
+        'load' => '../resources/*.php', // look for resource classes in here
+        'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
+    ));
+
+
+
 Response exceptions
 -------------------
 
-The Request object and Resource objects can throw ResponseExceptions when a problem
+The Request object and Resource objects can throw Tonic\Exceptions when a problem
 occurs that the object does not want to handle and so relinquishes control back
 to the dispatcher.
 
-The ResponseException has its code value set to the HTTP response code of the problem
-and its message set to a human readable reason for throwing the exception. The
-ResponseException::response() method can be used to produce a default Response object
-expressing the exception if required.
-
-The Request object throws a 404 ResponseException when the resource to be loaded
-does not exist.
-
-The Resource object throws a 405 ResponseException when the HTTP method from the
-request is not able to be handled by the resource.
-
 If you don't want to handle a problem within your Resource class, you can throw your
-own ResponseException and handle it in the dispatcher. Look at the auth example for
+own Tonic\Exception and handle it in the dispatcher. Look at the auth example for
 an example of how.
+
+
 
 
 For more information, read the code. Start with the dispatcher "web/dispatch.php"
