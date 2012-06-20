@@ -89,8 +89,11 @@ class Resource {
      * @param str $method
      */
     protected function method($method) {
-        if (strtolower($this->request->method) != strtolower($method))
-            throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
+        $methods = explode(' ', $method);
+        foreach ($methods as $method) {
+            if (strtolower($this->request->method) == strtolower($method)) return;
+        }
+        throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
     }
 
     /**

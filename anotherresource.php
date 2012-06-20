@@ -4,16 +4,14 @@ namespace ANameSpace;
 
 /**
  * @uri /woo
- * @priority 10
  */
 class anotherResource extends \Tonic\Resource {
 
     /**
-     * @method GET
-     * @method POST
-     * @return [type] [description]
+     * @method GET POST
+     * @return str
      */
     function something() {
-        return '<form method="post"><input type="submit"></form>';
+        return $this->request->method.'<form method="post"><input type="submit"></form>';
     }
 }
