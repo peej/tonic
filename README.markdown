@@ -13,19 +13,8 @@ of RESTful design.
 How it works
 ============
 
-Everything is a resource, and a resource is defined as a PHP class. An annotation
-wires a URI (or a collection of URIs) to the resource, and methods that match
-the HTTP methods by name allow interaction with it.
-
-    /**
-     * This class defines an example resource that is wired into the URI /example
-     * @uri /example
-     */
-    class ExampleResource extends Resource { }
-
-The incoming HTTP request is turned into a list of negotiated URIs based on the
-accept request headers which can then be used to pick the best representation
-for the response.
+Everything is a resource, and a resource is defined as a PHP class. Annotations
+wire a URI to the resource and HTTP methods to class methods.
 
     /**
      * This class defines an example resource that is wired into the URI /example
@@ -44,23 +33,32 @@ for the response.
       
     }
 
+The class method can do any logic it then requires and return a Response object,
+an array of status code and response body, or just a response body string.
+
 
 How to get started
 ==================
 
 The best place to get started is to get the hello world example running on your
-system, to do this you will need a web server running PHP5.1+.
+system, to do this you will need a web server running PHP5.3+.
 
-Place all of the Tonic files into your PHP include path so that other scripts can
-find it. By default on Windows this will probably be in "c:\php\includes\tonic" or
-on Linux/Unix it will be "/usr/share/php/tonic"
+To bootstrap Tonic, include the src/Tonic/Autoloader.php file and create an instance
+Tonic\Request. After you have defined your resource classes, load the matching
+resource, execute it, and output the response.
 
-Copy "docroot/dispatch.php" into your servers document root and edit it so that the
-require_once statement paths point to the Tonic library and the examples.
+    require_once '../src/Tonic/Autoloader.php';
 
-Finally you need to route all incoming requests to dispatch.php. How you do this
-depends on your web server. If you are using Apache, the simplest way is to copy
-the .htaccess file from "docroot/.htaccess" into your Apache document root.
+    $request = new Tonic\Request(array(
+        'load' => '../resources/*.php', // look for resource classes in here
+        'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
+    ));
+    $resource = $request->loadResource();
+    $response = $resource->exec();
+    $response->output();
+
+Finally you need to route all incoming requests to this script. Have a look in the
+web directory for an example to get you going.
 
 
 Features
@@ -78,20 +76,6 @@ the Request objects constructor as a configuration option:
     $request = new Request(array(
         'uri' => $_SERVER['PATH_INFO']
     ));
-
-
-Base URI
---------
-
-If you want to put your Tonic dispatcher at a URL that isn't the root of a domain
-then you'll need to let the Request object know so that the @uri annotations ignore
-it:
-
-    $request = new Request(array(
-        'baseUri' => '/some/base/uri'
-    ));
-
-Don't put a trailing slash on the end.
 
 
 URI annotations
@@ -155,21 +139,6 @@ By postfixing the @uri annotation with a number, of all the matching resources,
 the one with the highest postfixed number will be used.
 
 
-Mimetypes
----------
-
-To handle content negotiation via filename style extensions to URLs as well the
-HTTP Accept header, a mapping between extensions and mimetypes can be provided.
-By default this list contains a number of common mappings, if you need to add one
-or more of your own, pass them into the constructor as an array:
-
-    $request = new Request(array(
-        'mimetypes' => array(
-            'ogv' => 'video/ogg'
-        )
-    ));
-
-
 Mount points
 ------------
 
@@ -177,14 +146,7 @@ To make resources more portable, it is possible to "mount" them into your URL-sp
 by providing a namespace name to URL-space mapping. Every resource within that
 namespace will in effect have the URL-space prefixed to their @uri annotation.
 
-    $request = new Request(array(
-        'mount' => array(
-            'namespaceName' => '/some/mounted/uri'
-        )
-    ));
-
-Again, don't put a trailing slash on the end, and if you aren't using PHP5.3 and
-namespaces, you can use the @namespace annotation.
+    $request->mount('namespaceName', '/some/mounted/uri');
 
 
 Response exceptions
@@ -210,23 +172,5 @@ own ResponseException and handle it in the dispatcher. Look at the auth example 
 an example of how.
 
 
-Autoloading classes
--------------------
-
-If you've got lots of resource classes and don't fancy including them all in your
-dispatcher, you can use the autoload function to load a resource class for a given
-URL-space.
-
-    $request = new Request(array(
-        'autoload' => array(
-            '/example/[a-z]+' => 'ClassName'
-        )
-    ));
-
-In this example, the class ClassName will be autoloaded via [the standard PHP
-__autoload method](http://php.net/manual/en/language.oop5.autoload.php).
-
-
-
-For more information, read the code. Start with the dispatcher "docroot/dispatch.php"
-and then the examples in the "examples" directory.
+For more information, read the code. Start with the dispatcher "web/dispatch.php"
+and then the examples in the "resources" directory.
