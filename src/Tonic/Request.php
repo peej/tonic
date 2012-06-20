@@ -75,9 +75,8 @@ class Request {
         if ($cache && $cache->isCached()) { // if we've been given a metadata cache, use it
             $this->resources = $cache->load();
         } else {
-            $filenamesToLoad = $this->getOption($options, 'load', NULL);
-            if ($filenamesToLoad) { // load given resource class files
-                $this->loadResourceFiles($filenamesToLoad);
+            if (isset($options['load'])) { // load given resource class files
+                $this->loadResourceFiles($options['load']);
             }
             $this->loadResourceMetadata();
             if ($cache) {
