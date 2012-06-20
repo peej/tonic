@@ -112,15 +112,8 @@ class Request {
             $uri = $options['uri'];
         } elseif (isset($_SERVER['REDIRECT_URL']) && isset($_SERVER['SCRIPT_NAME'])) { // use redirection URL from Apache environment
             $uri = substr($_SERVER['REDIRECT_URL'], strlen(dirname($_SERVER['SCRIPT_NAME'])));
-        } elseif (isset($_SERVER['REQUEST_URI']) && isset($_SERVER['SCRIPT_NAME'])) { // use redirection URL from Apache environment
-            $uri = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']), -(strlen($_SERVER['QUERY_STRING']) + 1));
-        } elseif (isset($_SERVER['QUERY_STRING'])) { // use querystring if not using redirection
-            if ($pos = strpos($_SERVER['QUERY_STRING'], '?')) {
-                $uri = substr($_SERVER['QUERY_STRING'], 0, $pos);
-                parse_str(substr($_SERVER['QUERY_STRING'], $pos + 1), $_GET);
-            } else {
-                $uri = $_SERVER['QUERY_STRING'];
-            }
+        } elseif (isset($_SERVER['PHP_SELF']) && isset($_SERVER['SCRIPT_NAME'])) { // use PHP_SELF from Apache environment
+            $uri = substr($_SERVER['PHP_SELF'], strlen($_SERVER['SCRIPT_NAME']));
         } else { // fail
             throw new \Exception('URI not provided');
         }
