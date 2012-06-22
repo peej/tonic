@@ -316,5 +316,25 @@ class '.$className.' extends \Tonic\Resource {
         if (!$this->options['cache']->contains($className, $methodName)) throw new Exception;
     }
 
+    /**
+     * @Given /^a cache object containing a class "([^"]*)" with a URL of "([^"]*)" and a method "([^"]*)" responding to HTTP "([^"]*)"$/
+     */
+    public function aCacheObjectContainingAClassWithAUrlOfAndAMethodRespondingToHttp($className, $uri, $methodName, $method)
+    {
+        $this->iSupplyAnEmptyCacheObject();
+        $this->options['cache']->save(array(
+            $className => array(
+                'class' => $className,
+                'uri' => '|^'.$uri.'$|',
+                'methods' => array(
+                    $methodName => array(
+                        'method' => array(
+                            $method
+                        )
+                    )
+                )
+            )
+        ));
+    }
 
 }
