@@ -6,6 +6,7 @@ class Resource {
 
     protected $request;
     public $params;
+    private $providesMimetype;
 
     function __construct(Request $request, array $urlParams) {
 
@@ -72,17 +73,19 @@ class Resource {
             $methodName = array_pop($methodPriorities);
 
             $response = call_user_func_array(array($this, $methodName), $this->params);
-            if (is_object($response)) {
-                return $response;
-            } elseif (is_array($response)) {
-                return new Response($response[0], $response[1]);
+            if (is_array($response)) {
+                $response = new Response($response[0], $response[1]);
             } elseif (is_int($response)) {
-                return new Response($response);
-            } elseif ($response) {
-                return new Response(200, $response);
-            } else {
-                return new Response;
+                $response = new Response($response);
+            } elseif (is_string($response)) {
+                $response = new Response(200, $response);
+            } elseif (!is_a($response, 'Tonic\Response')) {
+                $response = new Response;
             }
+            if ($this->providesMimetype) {
+                $response->header('content-type', $this->providesMimetype);
+            }
+            return $response;
         }
 
         throw $error;
@@ -119,6 +122,7 @@ class Resource {
         $pos = array_search($mimetype, $this->request->accept);
         if ($pos === FALSE)
             throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
+        $this->providesMimetype = $mimetype;
         return count($this->request->accept) - $pos;
     }
 

@@ -4,7 +4,8 @@ namespace Tonic;
 
 class Response {
 
-    public $code, $body;
+    private $code, $body;
+    private $headers = array();
 
     const OK = 200,
         CREATED = 201,
@@ -32,7 +33,7 @@ class Response {
      * Map of HTTP response codes
      * @var str[]
      */
-    public $codes = array(
+    private $codes = array(
         Response::OK => 'OK',
         Response::CREATED => 'Created',
         Response::NOCONTENT => 'No Content', 
@@ -61,8 +62,15 @@ class Response {
         $this->body = $body;
     }
 
+    function header($name, $value) {
+        $this->headers[$name] = $value;
+    }
+
     function output() {
         header('HTTP/1.1 '.$this->code.' '.$this->codes[$this->code]);
+        foreach ($this->headers as $name => $value) {
+            header($name.': '.$value);
+        }
         echo $this->body;
     }
 
