@@ -14,6 +14,10 @@ class Resource {
 
     }
 
+    function __get($name) {
+        return isset($this->params[$name]) ? $this->params[$name] : NULL;
+    }
+
     /**
      * Execute the resource, that is, find the correct resource method to call
      * based upon the request and then call it.

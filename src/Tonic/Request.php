@@ -193,7 +193,9 @@ class Request {
     public function mount($namespaceName, $uriSpace) {
         foreach ($this->resources as $className => $metadata) {
             if ($metadata['namespace'] == $namespaceName) {
-                $this->resources[$className]['uri'][0] = '|^'.$uriSpace.substr($this->resources[$className]['uri'][0], 2);
+                foreach ($metadata['uri'] as $index => $uri) {
+                    $this->resources[$className]['uri'][$index][0] = '|^'.$uriSpace.substr($uri[0], 2);
+                }
             }
         }
     }
@@ -202,27 +204,31 @@ class Request {
         $matchedResource = NULL;
         foreach ($this->resources as $className => $resourceMetadata) {
             if (isset($resourceMetadata['uri'])) {
-                if (is_array($resourceMetadata['uri']) && isset($resourceMetadata['uri'][0])) {
-                    $uriRegex = $resourceMetadata['uri'][0];
-                } else {
-                    $uriRegex = $resourceMetadata['uri'];
+                if (!is_array($resourceMetadata['uri'])) {
+                    $resourceMetadata['uri'] = array($resourceMetadata['uri']);
                 }
-                if (!isset($resourceMetadata['priority'])) {
-                    $resourceMetadata['priority'] = 1;
-                }
-                if (!isset($resourceMetadata['class'])) {
-                    $resourceMetadata['class'] = $className;
-                }
-                if (
-                    ($matchedResource == NULL || $matchedResource[0]['priority'] < $resourceMetadata['priority'])
-                &&
-                    preg_match($uriRegex, $this->uri, $params)
-                ) {
-                    if (is_array($resourceMetadata['uri']) && count($resourceMetadata['uri']) > 1) {
-                        $params = array_combine($resourceMetadata['uri'], $params);
-                        array_shift($params);
+                foreach ($resourceMetadata['uri'] as $uri) {
+                    if (!is_array($uri)) {
+                        $uri = array($uri);
                     }
-                    $matchedResource = array($resourceMetadata, $params);
+                    $uriRegex = $uri[0];
+                    if (!isset($resourceMetadata['priority'])) {
+                        $resourceMetadata['priority'] = 1;
+                    }
+                    if (!isset($resourceMetadata['class'])) {
+                        $resourceMetadata['class'] = $className;
+                    }
+                    if (
+                        ($matchedResource == NULL || $matchedResource[0]['priority'] < $resourceMetadata['priority'])
+                    &&
+                        preg_match($uriRegex, $this->uri, $params)
+                    ) {
+                        if (count($uri) > 1) { // has params within URI
+                            $params = array_combine($uri, $params);
+                        }
+                        array_shift($params);
+                        $matchedResource = array($resourceMetadata, $params);
+                    }
                 }
             }
         }
@@ -265,7 +271,9 @@ class Request {
         $docComment = $this->parseDocComment($classReflector->getDocComment());
 
         if (isset($docComment['@uri'])) {
-            $metadata['uri'] = $this->uriTemplateToRegex($docComment['@uri'][0]);
+            foreach ($docComment['@uri'] as $uri) {
+                $metadata['uri'][] = $this->uriTemplateToRegex($uri);
+            }
         }
         if (isset($docComment['@namespace'])) $metadata['namespace'] = $docComment['@namespace'][0];
         if (isset($docComment['@priority'])) $metadata['priority'] = $docComment['@priority'][0];

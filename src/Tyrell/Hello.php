@@ -3,6 +3,7 @@
 /**
  * The obligitory Hello World example
  * 
+ * @uri /hello
  * @uri /hello/:name
  * @priority 10
  */
@@ -13,7 +14,7 @@ class Hello extends Tonic\Resource {
      * @param  str $name
      * @return Response
      */
-    function sayHello($name = NULL) {
+    function sayHello($name = 'World') {
         return 'Hello '.$name;
     }
 
@@ -41,16 +42,28 @@ class Hello extends Tonic\Resource {
      * Only allow specific :name parameter to access the method
      */
     function only($allowedName) {
-        if (strtolower($allowedName) != strtolower($this->params['name'])) throw new Tonic\ConditionException;
+        if (strtolower($allowedName) != strtolower($this->name)) throw new Tonic\ConditionException;
     }
 
     /**
      * @method GET
      * @provides application/json
+     * @return Tonic\Response
+     */
+    function sayHelloComputer() {
+        return new Tonic\Response(200, json_encode(array(
+            'hello' => $this->name
+        )));
+    }
+
+    /**
+     * @method POST
+     * @accepts application/json
+     * @provides application/json
      * @param  str $name
      * @return Response
      */
-    function sayHelloComputer($name = NULL) {
+    function feedTheComputer() {
         return new Tonic\Response(200, json_encode(array(
             'hello' => $name
         )));
