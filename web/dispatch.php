@@ -4,7 +4,7 @@
 require_once '../src/Tonic/Autoloader.php';
 
 $config = array(
-    'load' => '../*.php', // load all PHP files in project directory
+    'load' => array('../src/Tyrell/*.php'), // load example resources
     #'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
 );
 
