@@ -4,7 +4,7 @@ namespace Tonic;
 
 class Response {
 
-    private $code, $body;
+    public $code, $body;
     private $headers = array();
 
     const OK = 200,
