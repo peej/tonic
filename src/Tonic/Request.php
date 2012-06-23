@@ -83,6 +83,12 @@ class Request {
                 $cache->save($this->resources);
             }
         }
+
+        if (isset($options['mount']) && is_array($options['mount'])) {
+            foreach ($options['mount'] as $namespaceName => $uriSpace) {
+                $this->mount($namespaceName, $uriSpace);
+            }
+        }
     }
 
     private function loadResourceFiles($filenames) {

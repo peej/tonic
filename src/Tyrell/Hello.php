@@ -1,5 +1,11 @@
 <?php
 
+namespace Tyrell;
+
+use Tonic\Resource,
+    Tonic\Response,
+    Tonic\ConditionException;
+
 /**
  * The obligitory Hello World example
  *
@@ -9,7 +15,7 @@
  * @uri /hello
  * @uri /hello/:name
  */
-class Hello extends Tonic\Resource {
+class Hello extends Resource {
 
     /**
      * Use this method to handle GET HTTP requests.
@@ -58,7 +64,7 @@ class Hello extends Tonic\Resource {
      * Only allow specific :name parameter to access the method
      */
     function only($allowedName) {
-        if (strtolower($allowedName) != strtolower($this->name)) throw new Tonic\ConditionException;
+        if (strtolower($allowedName) != strtolower($this->name)) throw new ConditionException;
     }
 
     /**
@@ -71,7 +77,7 @@ class Hello extends Tonic\Resource {
      * @return Tonic\Response
      */
     function sayHelloComputer() {
-        return new Tonic\Response(200, json_encode(array(
+        return new Response(200, json_encode(array(
             'hello' => $this->name
         )));
     }
@@ -88,7 +94,7 @@ class Hello extends Tonic\Resource {
      * @return Response
      */
     function feedTheComputer() {
-        return new Tonic\Response(200, $this->request->data);
+        return new Response(200, $this->request->data);
     }
 
 }
