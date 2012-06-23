@@ -67,3 +67,10 @@ Feature: HTTP resource object
     And load the resource
     And execute the resource
     Then a "Tonic\MethodNotAllowedException" should be thrown
+
+  Scenario: When extending a resource, parent method annotations should be available to child
+    Given a "GET" resource method "method1" that provides "text/html"
+    And a resource definition "parent1" with URI "/parent1" and priority of 1
+    And a resource definition "child1" with URI "/child1" and priority of 1
+    When I create a request object
+    Then the loaded resource "child1" should respond with the method "method1"

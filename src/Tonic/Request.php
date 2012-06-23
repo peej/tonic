@@ -254,7 +254,11 @@ class Request {
      * @return str[]
      */
     public function getResourceMetadata($resource) {
-        $className = get_class($resource);
+        if (is_object($resource)) {
+            $className = get_class($resource);
+        } else {
+            $className = $resource;
+        }
         return isset($this->resources[$className]) ? $this->resources[$className] : NULL;
     }
 

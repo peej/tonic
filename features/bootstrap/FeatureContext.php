@@ -337,4 +337,14 @@ class '.$className.' extends \Tonic\Resource {
         ));
     }
 
+    /**
+     * @Then /^the loaded resource "([^"]*)" should respond with the method "([^"]*)"$/
+     */
+    public function theLoadedResourceShouldRespondToWithTheMethod($className, $methodName)
+    {
+        $metadata = $this->request->getResourceMetadata($className);
+        if (!isset($metadata['methods'][$methodName])) throw new Exception;
+    }
+
+
 }
