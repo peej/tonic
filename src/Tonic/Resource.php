@@ -126,4 +126,36 @@ class Resource {
         return count($this->request->accept) - $pos;
     }
 
+    public function __toString() {
+        $params = array();
+        foreach ($this->params as $name => $value) {
+            $params[] = $name.' = "'.$value.'"';
+        }
+        $params = join(', ', $params);
+        $methodMetadata = $this->request->getResourceMetadata($this);
+        $class = $methodMetadata['class'];
+        $uri = array();
+        foreach($methodMetadata['uri'] as $u) {
+            $uri[] = $u[0];
+        }
+        $uri = join(', ', $uri);
+        $methods = '';
+        foreach ($methodMetadata['methods'] as $methodName => $method) {
+            $methods .= "\n\t".$methodName;
+            foreach ($method as $itemName => $item) {
+                $methods .= ' '.$itemName.'="'.join(', ', $item).'"';
+            }
+        }
+        return <<<EOF
+==============
+Tonic\Resource
+==============
+Class: $class
+URI regex: $uri
+Params: $params
+Methods: $methods
+
+EOF;
+    }
+
 }

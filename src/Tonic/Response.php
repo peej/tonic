@@ -66,12 +66,30 @@ class Response {
         $this->headers[$name] = $value;
     }
 
+    private function responseMessage() {
+        return isset($this->codes[$this->code]) ? $this->codes[$this->code] : '';
+    }
+
     function output() {
-        header('HTTP/1.1 '.$this->code.' '.$this->codes[$this->code]);
+        header('HTTP/1.1 '.$this->code.' '.$this->responseMessage());
         foreach ($this->headers as $name => $value) {
             header($name.': '.$value);
         }
         echo $this->body;
+    }
+
+    public function __toString() {
+        $code = $this->code.' '.$this->responseMessage();
+        $headers = join(', ', $this->headers);
+        return <<<EOF
+==============
+Tonic\Response
+==============
+Code: $code
+Headers: $headers
+Body: $this->body
+
+EOF;
     }
 
 }

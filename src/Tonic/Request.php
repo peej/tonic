@@ -375,7 +375,12 @@ class Request {
         $acceptLang = join(', ', $this->acceptLang);
         $resources = array();
         foreach ($this->resources as $resource) {
-            $r = $resource['class'].' '.$resource['uri'][0].' '.$resource['priority'];
+            $uri = array();
+            foreach($resource['uri'] as $u) {
+                $uri[] = $u[0];
+            }
+            $uri = join(', ', $uri);
+            $r = $resource['class'].' '.$uri.' '.$resource['priority'];
             foreach ($resource['methods'] as $methodName => $method) {
                 $r .= "\n\t\t".$methodName;
                 foreach ($method as $itemName => $item) {
@@ -386,6 +391,7 @@ class Request {
         }
         $resources = join("\n\t", $resources);
         return <<<EOF
+=============
 Tonic\Request
 =============
 Hostname: $this->hostname

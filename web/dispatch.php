@@ -14,6 +14,11 @@ $request = new Tonic\Request($config);
 #echo $request;
 
 $resource = $request->loadResource();
+
+#echo $resource;
+
 $response = $resource->exec();
+
+#echo $response;
 
 $response->output();
