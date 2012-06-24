@@ -49,7 +49,7 @@ resource, execute it, and output the response.
 
     $request = new Tonic\Request();
 
-    require_once '../resources/example.php';
+    require_once 'example.php';
 
     $resource = $request->loadResource();
     $response = $resource->exec();
@@ -117,11 +117,11 @@ URL template and Rails route style @uri annotations are also supported:
         }
     }
 
-It is also possible for multiple resource to match the same URI, so you can
-prioritise which resource should be used by specifying a priority level as part
-of the annotation:
+It is also possible for multiple resource to match the same URI or to have more than
+one URI for the same resource:
 
     /**
+     * @uri /example
      * @uri /example/([a-z]+)
      */
     class ExampleResource extends Tonic\Resource { }
@@ -143,7 +143,9 @@ To make resources more portable, it is possible to "mount" them into your URL-sp
 by providing a namespace name to URL-space mapping. Every resource within that
 namespace will in effect have the URL-space prefixed to their @uri annotation.
 
-    $request->mount('namespaceName', '/some/mounted/uri');
+    $request = new Tonic\Request(array(
+        'mount' => array('namespaceName' => '/some/mounted/uri')
+    ));
 
 
 Resource annotation cache
@@ -166,6 +168,32 @@ from the cache.
         'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
     ));
 
+
+Method conditions
+-----------------
+
+Conditions can be added to methods via custom annotations that map to another class
+method. The resource method will only match if all the conditions return without throwing
+a Tonic exception.
+
+    /**
+     * @method GET
+     * @hascookie foo
+     */
+    function exampleMethod() {
+        ...
+    }
+
+    function hasCookie($cookieName) {
+        if (!isset($_COOKIE[$cookieName])) throw new Tonic\ConditionException;
+    }
+
+There are a number of built in conditions provided by the base resource class.
+
+    @priority number    Higher priority method takes precident over other matches
+    @accepts mimetype   Given mimetype must match request content type
+    @provides mimetype  Given mimetype must be in request accept array
+    @cache seconds      Send cache header for the given number of seconds
 
 
 Response exceptions
