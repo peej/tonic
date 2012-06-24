@@ -168,7 +168,7 @@ class '.$className.' extends \Tonic\Resource {
     public function loadTheResource()
     {
         try {
-            $this->resource = $this->request->loadResource();
+            $this->resource = $this->request->getResource();
         } catch (Tonic\Exception $e) {
             $this->exception = get_class($e);
         }
