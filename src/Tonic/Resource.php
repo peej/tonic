@@ -53,7 +53,7 @@ class Resource {
                                     $conditionData[$key][$conditionName] = $params;
                                 }
                             } catch (Exception $e) {
-                                #unset($methodPriorities[$key]);
+                                unset($methodPriorities[$key]);
                                 $error = $e;
                                 $error->appendMessage(' for method "'.get_class($this).'::'.$key.'"');
                                 break;
