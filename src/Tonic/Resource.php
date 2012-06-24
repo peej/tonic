@@ -26,7 +26,7 @@ class Resource {
      * @param str methodName Optional name of method to execute, bypasing annotations, useful for debugging
      * @return Tonic\Response
      */
-    function exec($methodName = NULL) {
+    public final function exec($methodName = NULL) {
 
         // get the annotation metadata for this resource
         $resourceMetadata = $this->request->getResourceMetadata($this);
@@ -99,7 +99,7 @@ class Resource {
      *
      * @param callable $action
      */
-    protected function addResponseAction($action) {
+    protected final function addResponseAction($action) {
         if (is_callable($action)) {
             $this->responseActions[] = $action;
         }
@@ -109,12 +109,20 @@ class Resource {
      * HTTP method condition must match request method
      * @param str $method
      */
-    protected function method($method) {
+    protected final function method($method) {
         $methods = explode(' ', $method);
         foreach ($methods as $method) {
             if (strtolower($this->request->method) == strtolower($method)) return;
         }
         throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
+    }
+
+    /**
+     * Higher priority method takes precident over other matches
+     * @param int $priority
+     */
+    protected final function priority($priority) {
+        return $priority;
     }
 
     /**
