@@ -6,7 +6,7 @@ class Resource {
 
     protected $request;
     public $params;
-    private $providesMimetype;
+    protected $conditions = array();
 
     function __construct(Request $request, array $urlParams) {
 
@@ -32,13 +32,13 @@ class Resource {
         $resourceMetadata = $this->request->getResourceMetadata($this);
 
         $error = new NotAcceptableException;
-        $methodPriorities = array();
+        $methodPriorities = $conditionWeight = $conditionData = array();
 
         if (isset($resourceMetadata['methods'])) {
             foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
                 if (!$methodName || $methodName == $key) {
                     $methodPriorities[$key] = 0;
-                    foreach ($methodMetadata as $conditionName => $params) {
+                    foreach ($methodMetadata as $conditionName => $params) { // process each method condition
                         if (method_exists($this, $conditionName)) {
                             try {
                                 if (is_array($params)) {
@@ -46,9 +46,14 @@ class Resource {
                                 } else {
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
+                                if (!$condition) $condition = 0;
                                 $methodPriorities[$key] += $condition;
+                                if (!isset($conditionWeight[$key][$conditionName]) || $condition > $conditionWeight[$key][$conditionName]) {
+                                    $conditionWeight[$key][$conditionName] = $condition;
+                                    $conditionData[$key][$conditionName] = $params;
+                                }
                             } catch (Exception $e) {
-                                unset($methodPriorities[$key]);
+                                #unset($methodPriorities[$key]);
                                 $error = $e;
                                 $error->appendMessage(' for method "'.get_class($this).'::'.$key.'"');
                                 break;
@@ -71,6 +76,7 @@ class Resource {
             $methodPriorities = array_flip($methodPriorities);
             ksort($methodPriorities);
             $methodName = array_pop($methodPriorities);
+            $this->conditions = $conditionData[$methodName];
 
             $response = call_user_func_array(array($this, $methodName), $this->params);
             if (is_array($response)) {
@@ -82,8 +88,8 @@ class Resource {
             } elseif (!is_a($response, 'Tonic\Response')) {
                 $response = new Response;
             }
-            if ($this->providesMimetype) {
-                $response->header('content-type', $this->providesMimetype);
+            if (isset($this->conditions['provides']) && isset($this->conditions['provides'][0])) {
+                $response->header('content-type', $this->conditions['provides'][0]);
             }
             return $response;
         }
@@ -122,7 +128,6 @@ class Resource {
         $pos = array_search($mimetype, $this->request->accept);
         if ($pos === FALSE)
             throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
-        $this->providesMimetype = $mimetype;
         return count($this->request->accept) - $pos;
     }
 
