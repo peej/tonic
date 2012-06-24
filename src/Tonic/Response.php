@@ -60,6 +60,7 @@ class Response {
     function __construct($code = 204, $body = '') {
         $this->code = $code;
         $this->body = $body;
+        $this->header('content-length', strlen($body));
     }
 
     function header($name, $value) {
@@ -80,13 +81,18 @@ class Response {
 
     public function __toString() {
         $code = $this->code.' '.$this->responseMessage();
-        $headers = join(', ', $this->headers);
+        $headers = array();
+        foreach ($this->headers as $name => $value) {
+            $headers[]  = $name.': '.$value;
+        }
+        $headers = join("\n\t", $headers);
         return <<<EOF
 ==============
 Tonic\Response
 ==============
 Code: $code
-Headers: $headers
+Headers:
+\t$headers
 Body: $this->body
 
 EOF;
