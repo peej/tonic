@@ -36,12 +36,12 @@ class Hello extends Resource {
     /**
      * The @priority annotation makes this method take priority over the above method.
      *
-     * The @condition annotation requires the given method to execute without throwing an
-     * exception allowing the addition of an arbitary condition to this method.
+     * The custom @only annotation requires the matching class method to execute without
+     * throwing an exception allowing the addition of an arbitary condition to this method.
      *
      * @method GET
      * @priority 2
-     * @condition only deckard
+     * @only deckard
      * @return str
      */
     function replicants() {
@@ -51,7 +51,7 @@ class Hello extends Resource {
     /**
      * @method GET
      * @priority 2
-     * @condition only roy
+     * @only roy
      * @return str
      */
     function iveSeenThings() {

@@ -336,14 +336,10 @@ class Request {
 
             $docComment = $this->parseDocComment($methodReflector->getDocComment());
             if (isset($docComment['@method'])) {
-                $methodMetadata['method'] = $docComment['@method'];
-                if (isset($docComment['@accepts'])) $methodMetadata['accepts'] = $docComment['@accepts'];
-                if (isset($docComment['@provides'])) $methodMetadata['provides'] = $docComment['@provides'];
-                if (isset($docComment['@condition'])) {
-                    foreach ($docComment['@condition'] as $condition) {
-                        $params = preg_split('/\s+/', $condition);
-                        $name = array_shift($params);
-                        $methodMetadata[$name] = $params;
+                foreach ($docComment as $annotationName => $value) {
+                    $methodName = substr($annotationName, 1);
+                    if (method_exists($className, $methodName)) {
+                        $methodMetadata[$methodName] = $value;
                     }
                 }
                 $metadata[$methodReflector->getName()] = $methodMetadata;

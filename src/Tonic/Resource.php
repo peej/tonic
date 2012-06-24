@@ -6,7 +6,7 @@ class Resource {
 
     protected $request;
     public $params;
-    protected $conditions = array();
+    protected $responseActions = array();
 
     function __construct(Request $request, array $urlParams) {
 
@@ -32,7 +32,7 @@ class Resource {
         $resourceMetadata = $this->request->getResourceMetadata($this);
 
         $error = new NotAcceptableException;
-        $methodPriorities = $conditionWeight = $conditionData = array();
+        $methodPriorities = array();
 
         if (isset($resourceMetadata['methods'])) {
             foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
@@ -48,10 +48,6 @@ class Resource {
                                 }
                                 if (!$condition) $condition = 0;
                                 $methodPriorities[$key] += $condition;
-                                if (!isset($conditionWeight[$key][$conditionName]) || $condition > $conditionWeight[$key][$conditionName]) {
-                                    $conditionWeight[$key][$conditionName] = $condition;
-                                    $conditionData[$key][$conditionName] = $params;
-                                }
                             } catch (Exception $e) {
                                 unset($methodPriorities[$key]);
                                 $error = $e;
@@ -76,7 +72,6 @@ class Resource {
             $methodPriorities = array_flip($methodPriorities);
             ksort($methodPriorities);
             $methodName = array_pop($methodPriorities);
-            $this->conditions = $conditionData[$methodName];
 
             $response = call_user_func_array(array($this, $methodName), $this->params);
             if (is_array($response)) {
@@ -88,13 +83,26 @@ class Resource {
             } elseif (!is_a($response, 'Tonic\Response')) {
                 $response = new Response;
             }
-            if (isset($this->conditions['provides']) && isset($this->conditions['provides'][0])) {
-                $response->header('content-type', $this->conditions['provides'][0]);
+
+            foreach ($this->responseActions as $action) {
+                $action($response);
             }
+
             return $response;
         }
 
         throw $error;
+    }
+
+    /**
+     * Add a function to execute on the response before it is returned
+     *
+     * @param callable $action
+     */
+    protected function addResponseAction($action) {
+        if (is_callable($action)) {
+            $this->responseActions[] = $action;
+        }
     }
 
     /**
@@ -128,7 +136,24 @@ class Resource {
         $pos = array_search($mimetype, $this->request->accept);
         if ($pos === FALSE)
             throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
+        $this->addResponseAction(function ($response) use ($mimetype) {
+            $response->header('content-type', $mimetype);
+        });
         return count($this->request->accept) - $pos;
+    }
+
+    /**
+     * Set cache control header on response
+     * @param int length Number of seconds to cache the response for
+     */
+    protected function cache($length) {
+        $this->addResponseAction(function ($response) use ($length) {
+            if ($length == 0) {
+                $response->header('cache-control', 'no-cache');
+            } else {
+                $response->header('cache-control', 'max-age='.$length.', must-revalidate');
+            }
+        });
     }
 
     public function __toString() {
