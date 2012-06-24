@@ -206,7 +206,13 @@ class Request {
         }
     }
 
-    public function loadResource() {
+    /**
+     * Given the request data and the loaded resource metadata, pick the best matching
+     * resource to handle the request based on URI and priority.
+     *
+     * @return Resource
+     */
+    public function getResource() {
         $matchedResource = NULL;
         foreach ($this->resources as $className => $resourceMetadata) {
             if (isset($resourceMetadata['uri'])) {
