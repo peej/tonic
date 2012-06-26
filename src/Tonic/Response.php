@@ -5,7 +5,9 @@ namespace Tonic;
 class Response {
 
     public $code, $body;
-    private $headers = array();
+    private $headers = array(
+        'content-type' => 'text/html'
+    );
 
     const OK = 200,
         CREATED = 201,
@@ -63,8 +65,18 @@ class Response {
         $this->header('content-length', strlen($body));
     }
 
+    function __get($name) {
+        $name = strtolower(preg_replace('/([A-Z])/', '-$1', $name));
+        return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
+    }
+
+    function __set($name, $value) {
+        $name = strtolower(preg_replace('/([A-Z])/', '-$1', $name));
+        $this->header($name, $value);
+    }
+
     function header($name, $value) {
-        $this->headers[$name] = $value;
+        $this->headers[strtolower($name)] = $value;
     }
 
     private function responseMessage() {
