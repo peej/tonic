@@ -20,7 +20,8 @@ class Hello extends Resource {
     /**
      * Use this method to handle GET HTTP requests.
      *
-     * The optional :name parameter in the URL available as the first parameter to the method.
+     * The optional :name parameter in the URL available as the first parameter to the method
+     * or as a property of the resource as $this->name.
      *
      * Method can return a string response, an HTTP status code, an array of status code and
      * response body, or a full Tonic\Response object.
