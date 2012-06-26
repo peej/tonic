@@ -237,13 +237,31 @@ resource, adjust your dispatcher.php as such:
     };
 
     $request = new Tonic\Request();
-
-    require_once 'example.php';
-
     $resource = $request->loadResource();
 
     // make the container available to the resource before executing it
     $resource->container = $container;
+
+    $response = $resource->exec();
+    $response->output();
+
+
+Input processing
+----------------
+
+Although Tonic makes available the raw input data from the HTTP request, it does
+not attempt to interpret this data. If, for example, you want to process all incoming
+JSON data into an array, you can do the following:
+
+    require_once '../src/Tonic/Autoloader.php';
+
+    $request = new Tonic\Request();
+
+    if ($request->contentType == 'application/json') {
+        $request->data = json_decode($request->data);
+    }
+
+    $resource = $request->loadResource();
 
     $response = $resource->exec();
     $response->output();
