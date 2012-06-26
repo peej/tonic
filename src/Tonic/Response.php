@@ -62,7 +62,7 @@ class Response {
     function __construct($code = 204, $body = '') {
         $this->code = $code;
         $this->body = $body;
-        $this->header('content-length', strlen($body));
+        $this->contentLength = strlen($body);
     }
 
     function __get($name) {
@@ -71,12 +71,7 @@ class Response {
     }
 
     function __set($name, $value) {
-        $name = strtolower(preg_replace('/([A-Z])/', '-$1', $name));
-        $this->header($name, $value);
-    }
-
-    function header($name, $value) {
-        $this->headers[strtolower($name)] = $value;
+        $this->headers[strtolower(preg_replace('/([A-Z])/', '-$1', $name))] = $value;
     }
 
     private function responseMessage() {

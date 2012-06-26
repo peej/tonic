@@ -145,7 +145,7 @@ class Resource {
         if ($pos === FALSE)
             throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
         $this->addResponseAction(function ($response) use ($mimetype) {
-            $response->header('content-type', $mimetype);
+            $response->contentType = $mimetype;
         });
         return count($this->request->accept) - $pos;
     }
@@ -157,9 +157,9 @@ class Resource {
     protected function cache($length) {
         $this->addResponseAction(function ($response) use ($length) {
             if ($length == 0) {
-                $response->header('cache-control', 'no-cache');
+                $response->cacheControl = 'no-cache';
             } else {
-                $response->header('cache-control', 'max-age='.$length.', must-revalidate');
+                $response->cacheControl = 'max-age='.$length.', must-revalidate';
             }
         });
     }
