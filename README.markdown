@@ -209,6 +209,64 @@ an example of how.
 
 
 
+Cookbook
+========
+
+
+Dependency injection container
+------------------------------
+
+You probably want a way to handle your project dependencies. Being a lightweight
+HTTP framework, Tonic won't handle this for you, but does make it easy to bolt in
+your own dependency injection container (ie. Pimple http://pimple.sensiolabs.org/).
+
+For example, to construct a Pimple container and make it available to the loaded
+resource, adjust your dispatcher.php as such:
+
+    require_once '../src/Tonic/Autoloader.php';
+    require_once '/path/to/Pimple.php';
+
+    // set up the container
+    $container = new Pimple();
+    $container['dsn'] = 'mysql://user:pass@localhost/my_db';
+    $container['database'] = function ($c) {
+        return new DB($c['dsn']);
+    };
+    $container['dataMapper'] = function ($c) {
+        return new DataMapper($c['database']);
+    };
+
+    $request = new Tonic\Request();
+    $resource = $request->loadResource();
+
+    // make the container available to the resource before executing it
+    $resource->container = $container;
+
+    $response = $resource->exec();
+    $response->output();
+
+
+Input processing
+----------------
+
+Although Tonic makes available the raw input data from the HTTP request, it does
+not attempt to interpret this data. If, for example, you want to process all incoming
+JSON data into an array, you can do the following:
+
+    require_once '../src/Tonic/Autoloader.php';
+
+    $request = new Tonic\Request();
+
+    if ($request->contentType == 'application/json') {
+        $request->data = json_decode($request->data);
+    }
+
+    $resource = $request->loadResource();
+
+    $response = $resource->exec();
+    $response->output();
+
+
 
 For more information, read the code. Start with the dispatcher "web/dispatch.php"
 and then the examples in the "resources" directory.
