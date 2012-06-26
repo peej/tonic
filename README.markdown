@@ -257,6 +257,7 @@ JSON data into an array, you can do the following:
 
     $request = new Tonic\Request();
 
+    // decode JSON data received from HTTP request
     if ($request->contentType == 'application/json') {
         $request->data = json_decode($request->data);
     }
@@ -265,6 +266,19 @@ JSON data into an array, you can do the following:
 
     $response = $resource->exec();
     $response->output();
+
+We can also automatically encode the response in the same way:
+
+    $response = $resource->exec();
+
+    // encode output
+    if ($response->contentType == 'application/json') {
+        $response->body = json_encode($response->body);
+    }
+
+    $response->output();
+
+
 
 
 
