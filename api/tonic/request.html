@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sun, 09 Jan 2011 09:09:41 +0000">
+<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -20,7 +20,7 @@
 <h1>Tonic</h1>
 <ul>
 <li><a href="../overview-summary.html">Overview</a></li>
-<li><a href="../tonic/package-summary.html">Package</a></li>
+<li><a href="../tonic/package-summary.html">Namespace</a></li>
 <li class="active">Class</li>
 <li><a href="../tonic/package-tree.html">Tree</a></li>
 <li><a href="../overview-files.html">Files</a></li>
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Request</div>
-<a href="../source/lib/tonic.php.html#line7" class="location">lib/tonic.php at line 7</a>
+<a href="../source/src/tonic/request.php.html#line8" class="location">src/Tonic/Request.php at line 8</a>
 
 <h1>Class Request</h1>
 
@@ -51,80 +51,59 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <p class="signature">public  class <strong>Request</strong></p>
 
-<div class="comment" id="overview_description"><p>Model the data of the incoming HTTP request</p></div>
+<div class="comment" id="overview_description"><p>Models a HTTP request</p></div>
 
-<dl>
-<dt>Namespace:</dt>
-<dd>Tonic\Lib</dd>
-</dl>
 <hr>
 
 <table id="summary_field">
 <tr><th colspan="2">Field Summary</th></tr>
 <tr>
-<td class="type"> str[][]</td>
-<td class="description"><p class="name"><a href="#accept">$accept</a></p><p class="description">Array of accept headers in order of preference</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#accept">$accept</a></p></td>
 </tr>
 <tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#acceptEncoding">$acceptEncoding</a></p><p class="description">Array of accept-encoding headers in order of preference</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#acceptLang">$acceptLang</a></p></td>
 </tr>
 <tr>
-<td class="type"> str[][]</td>
-<td class="description"><p class="name"><a href="#acceptLang">$acceptLang</a></p><p class="description">Array of accept-language headers in order of preference</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#contentType">$contentType</a></p></td>
 </tr>
 <tr>
-<td class="type"> str</td>
-<td class="description"><p class="name"><a href="#baseUri">$baseUri</a></p><p class="description">The URI where the front controller is positioned in the server URI-space</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#data">$data</a></p></td>
 </tr>
 <tr>
-<td class="type"> str</td>
-<td class="description"><p class="name"><a href="#data">$data</a></p><p class="description">Body data of incoming request</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#hostname">$hostname</a></p></td>
 </tr>
 <tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#formatNegotiatedUris">$formatNegotiatedUris</a></p><p class="description">Array of possible URIs based upon accept request headers in order of preference</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#ifMatch">$ifMatch</a></p></td>
 </tr>
 <tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#ifMatch">$ifMatch</a></p><p class="description">Array of if-match etags</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#ifNoneMatch">$ifNoneMatch</a></p></td>
 </tr>
 <tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#ifNoneMatch">$ifNoneMatch</a></p><p class="description">Array of if-none-match etags</p></td>
-</tr>
-<tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#languageNegotiatedUris">$languageNegotiatedUris</a></p><p class="description">Array of possible URIs based upon accept-language request headers in order of preference</p></td>
-</tr>
-<tr>
-<td class="type"> str</td>
-<td class="description"><p class="name"><a href="#method">$method</a></p><p class="description">HTTP request method of incoming request</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#method">$method</a></p></td>
 </tr>
 <tr>
 <td class="type"> str[]</td>
 <td class="description"><p class="name"><a href="#mimetypes">$mimetypes</a></p><p class="description">Map of file/URI extensions to mimetypes</p></td>
 </tr>
 <tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#mounts">$mounts</a></p><p class="description">A list of URL to namespace/package mappings for routing requests to a
-group of resources that are wired into a different URL-space</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#uri">$uri</a></p></td>
 </tr>
+</table>
+
+<table id="summary_constructor">
+<tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#negotiatedUris">$negotiatedUris</a></p><p class="description">Array of possible URIs based upon accept and accept-language request headers in order of preference</p></td>
-</tr>
-<tr>
-<td class="type"> str</td>
-<td class="description"><p class="name"><a href="#noResource">$noResource</a></p><p class="description">Name of resource class to use for when nothing is found</p></td>
-</tr>
-<tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#resources">$resources</a></p><p class="description">The resource classes loaded and how they are wired to URIs</p></td>
-</tr>
-<tr>
-<td class="type"> str</td>
-<td class="description"><p class="name"><a href="#uri">$uri</a></p><p class="description">The requested URI</p></td>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed options)</p></td>
 </tr>
 </table>
 
@@ -132,115 +111,101 @@ group of resources that are wired into a different URL-space</p></td>
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed config)</p><p class="description">Create a request object using the given configuration options.
-</p></td>
+<td class="description"><p class="name"><a href="#loadResourceMetadata()">loadResourceMetadata</a>(mixed uriSpace)</p></td>
 </tr>
 <tr>
-<td class="type"> bool</td>
-<td class="description"><p class="name"><a href="#ifMatch()">ifMatch</a>(str etag)</p><p class="description">Check if an etag matches the requests if-match header</p></td>
-</tr>
-<tr>
-<td class="type"> bool</td>
-<td class="description"><p class="name"><a href="#ifNoneMatch()">ifNoneMatch</a>(str etag)</p><p class="description">Check if an etag matches the requests if-none-match header</p></td>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#mount()">mount</a>(str namespaceName, str uriSpace)</p><p class="description">Add a namespace to a specific URI-space</p></td>
 </tr>
 <tr>
 <td class="type"> <a href="../tonic/resource.html">Resource</a></td>
-<td class="description"><p class="name"><a href="#loadResource()">loadResource</a>()</p><p class="description">Instantiate the resource class that matches the request URI the best</p></td>
+<td class="description"><p class="name"><a href="#getResource()">getResource</a>()</p><p class="description">Given the request data and the loaded resource metadata, pick the best matching
+resource to handle the request based on URI and priority.</p></td>
+</tr>
+<tr>
+<td class="type"> str[]</td>
+<td class="description"><p class="name"><a href="#getResourceMetadata()">getResourceMetadata</a>(Tonic/Resource resource)</p><p class="description">Get the already loaded resource annotation metadata</p></td>
+</tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#readMethodAnnotations()">readMethodAnnotations</a>(mixed className)</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Field Detail</h2>
-<a href="../source/lib/tonic.php.html#line43" class="location">lib/tonic.php at line 43</a>
+<a href="../source/src/tonic/request.php.html#line15" class="location">src/Tonic/Request.php at line 15</a>
 
 <h3 id="accept">accept</h3>
-<code class="signature">public  str[][] <strong>$accept</strong> = array()</code>
+<code class="signature">public  mixed <strong>$accept</strong> = array()</code>
 <div class="details">
-<p>Array of accept headers in order of preference</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line55" class="location">lib/tonic.php at line 55</a>
-
-<h3 id="acceptEncoding">acceptEncoding</h3>
-<code class="signature">public  str[] <strong>$acceptEncoding</strong> = array()</code>
-<div class="details">
-<p>Array of accept-encoding headers in order of preference</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line49" class="location">lib/tonic.php at line 49</a>
+<a href="../source/src/tonic/request.php.html#line16" class="location">src/Tonic/Request.php at line 16</a>
 
 <h3 id="acceptLang">acceptLang</h3>
-<code class="signature">public  str[][] <strong>$acceptLang</strong> = array()</code>
+<code class="signature">public  mixed <strong>$acceptLang</strong> = array()</code>
 <div class="details">
-<p>Array of accept-language headers in order of preference</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line19" class="location">lib/tonic.php at line 19</a>
+<a href="../source/src/tonic/request.php.html#line13" class="location">src/Tonic/Request.php at line 13</a>
 
-<h3 id="baseUri">baseUri</h3>
-<code class="signature">public  str <strong>$baseUri</strong> = ''</code>
+<h3 id="contentType">contentType</h3>
+<code class="signature">public  mixed <strong>$contentType</strong> = 'application/x-www-form-urlencoded'</code>
 <div class="details">
-<p>The URI where the front controller is positioned in the server URI-space</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line73" class="location">lib/tonic.php at line 73</a>
+<a href="../source/src/tonic/request.php.html#line14" class="location">src/Tonic/Request.php at line 14</a>
 
 <h3 id="data">data</h3>
-<code class="signature">public  str <strong>$data</strong></code>
+<code class="signature">public  mixed <strong>$data</strong></code>
 <div class="details">
-<p>Body data of incoming request</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line31" class="location">lib/tonic.php at line 31</a>
+<a href="../source/src/tonic/request.php.html#line10" class="location">src/Tonic/Request.php at line 10</a>
 
-<h3 id="formatNegotiatedUris">formatNegotiatedUris</h3>
-<code class="signature">public  str[] <strong>$formatNegotiatedUris</strong> = array()</code>
+<h3 id="hostname">hostname</h3>
+<code class="signature">public  mixed <strong>$hostname</strong></code>
 <div class="details">
-<p>Array of possible URIs based upon accept request headers in order of preference</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line79" class="location">lib/tonic.php at line 79</a>
+<a href="../source/src/tonic/request.php.html#line17" class="location">src/Tonic/Request.php at line 17</a>
 
 <h3 id="ifMatch">ifMatch</h3>
-<code class="signature">public  str[] <strong>$ifMatch</strong> = array()</code>
+<code class="signature">public  mixed <strong>$ifMatch</strong> = array()</code>
 <div class="details">
-<p>Array of if-match etags</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line85" class="location">lib/tonic.php at line 85</a>
+<a href="../source/src/tonic/request.php.html#line18" class="location">src/Tonic/Request.php at line 18</a>
 
 <h3 id="ifNoneMatch">ifNoneMatch</h3>
-<code class="signature">public  str[] <strong>$ifNoneMatch</strong> = array()</code>
+<code class="signature">public  mixed <strong>$ifNoneMatch</strong> = array()</code>
 <div class="details">
-<p>Array of if-none-match etags</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line37" class="location">lib/tonic.php at line 37</a>
-
-<h3 id="languageNegotiatedUris">languageNegotiatedUris</h3>
-<code class="signature">public  str[] <strong>$languageNegotiatedUris</strong> = array()</code>
-<div class="details">
-<p>Array of possible URIs based upon accept-language request headers in order of preference</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line67" class="location">lib/tonic.php at line 67</a>
+<a href="../source/src/tonic/request.php.html#line12" class="location">src/Tonic/Request.php at line 12</a>
 
 <h3 id="method">method</h3>
-<code class="signature">public  str <strong>$method</strong> = 'GET'</code>
+<code class="signature">public  mixed <strong>$method</strong></code>
 <div class="details">
-<p>HTTP request method of incoming request</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line61" class="location">lib/tonic.php at line 61</a>
+<a href="../source/src/tonic/request.php.html#line26" class="location">src/Tonic/Request.php at line 26</a>
 
 <h3 id="mimetypes">mimetypes</h3>
 <code class="signature">public  str[] <strong>$mimetypes</strong> = array(...)</code>
@@ -249,109 +214,69 @@ group of resources that are wired into a different URL-space</p></td>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line104" class="location">lib/tonic.php at line 104</a>
-
-<h3 id="mounts">mounts</h3>
-<code class="signature">public  str[] <strong>$mounts</strong> = array()</code>
-<div class="details">
-<p>A list of URL to namespace/package mappings for routing requests to a
-group of resources that are wired into a different URL-space</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line25" class="location">lib/tonic.php at line 25</a>
-
-<h3 id="negotiatedUris">negotiatedUris</h3>
-<code class="signature">public  str[] <strong>$negotiatedUris</strong> = array()</code>
-<div class="details">
-<p>Array of possible URIs based upon accept and accept-language request headers in order of preference</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line91" class="location">lib/tonic.php at line 91</a>
-
-<h3 id="noResource">noResource</h3>
-<code class="signature">public  str <strong>$noResource</strong> = 'NoResource'</code>
-<div class="details">
-<p>Name of resource class to use for when nothing is found</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line97" class="location">lib/tonic.php at line 97</a>
-
-<h3 id="resources">resources</h3>
-<code class="signature">public  str[] <strong>$resources</strong> = array()</code>
-<div class="details">
-<p>The resource classes loaded and how they are wired to URIs</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line13" class="location">lib/tonic.php at line 13</a>
+<a href="../source/src/tonic/request.php.html#line11" class="location">src/Tonic/Request.php at line 11</a>
 
 <h3 id="uri">uri</h3>
-<code class="signature">public  str <strong>$uri</strong> = TRUE</code>
+<code class="signature">public  mixed <strong>$uri</strong></code>
 <div class="details">
-<p>The requested URI</p></div>
+</div>
+
+<hr>
+
+<h2 id="detail_method">Constructor Detail</h2>
+<a href="../source/src/tonic/request.php.html#line28" class="location">src/Tonic/Request.php at line 28</a>
+
+<h3 id="__construct()">__construct</h3>
+<code class="signature">public  void <strong>__construct</strong>(mixed options)</code>
+<div class="details">
+</div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/lib/tonic.php.html#line139" class="location">lib/tonic.php at line 139</a>
+<a href="../source/src/tonic/request.php.html#line154" class="location">src/Tonic/Request.php at line 154</a>
 
-<h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(mixed config)</code>
+<h3 id="loadResourceMetadata()">loadResourceMetadata</h3>
+<code class="signature">public  void <strong>loadResourceMetadata</strong>(mixed uriSpace)</code>
 <div class="details">
-<p>Create a request object using the given configuration options.</p><p>The configuration options array can contain the following:</p><p><dl>
-<dt>uri</dt> <dd>The URI of the request</dd>
-<dt>method</dt> <dd>The HTTP method of the request</dd>
-<dt>data</dt> <dd>The body data of the request</dd>
-<dt>accept</dt> <dd>An accept header</dd>
-<dt>acceptLang</dt> <dd>An accept-language header</dd>
-<dt>acceptEncoding</dt> <dd>An accept-encoding header</dd>
-<dt>ifMatch</dt> <dd>An if-match header</dd>
-<dt>ifNoneMatch</dt> <dd>An if-none-match header</dd>
-<dt>mimetypes</dt> <dd>A map of file/URI extenstions to mimetypes, these
-will be added to the default map of mimetypes</dd>
-</dl></p><dl>
-<dt>Parameters:</dt>
-<dd>config - Configuration options</dd>
-</dl>
 </div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line404" class="location">lib/tonic.php at line 404</a>
+<a href="../source/src/tonic/request.php.html#line175" class="location">src/Tonic/Request.php at line 175</a>
 
-<h3 id="ifMatch()">ifMatch</h3>
-<code class="signature">public  bool <strong>ifMatch</strong>(str etag)</code>
+<h3 id="mount()">mount</h3>
+<code class="signature">public  void <strong>mount</strong>(str namespaceName, str uriSpace)</code>
 <div class="details">
-<p>Check if an etag matches the requests if-match header</p><dl>
-<dt>Parameters:</dt>
-<dd>etag - Etag to match</dd>
-</dl>
-</div>
+<p>Add a namespace to a specific URI-space</p></div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line416" class="location">lib/tonic.php at line 416</a>
+<a href="../source/src/tonic/request.php.html#line191" class="location">src/Tonic/Request.php at line 191</a>
 
-<h3 id="ifNoneMatch()">ifNoneMatch</h3>
-<code class="signature">public  bool <strong>ifNoneMatch</strong>(str etag)</code>
+<h3 id="getResource()">getResource</h3>
+<code class="signature">public  <a href="../tonic/resource.html">Resource</a> <strong>getResource</strong>()</code>
 <div class="details">
-<p>Check if an etag matches the requests if-none-match header</p><dl>
-<dt>Parameters:</dt>
-<dd>etag - Etag to match</dd>
-</dl>
-</div>
+<p>Given the request data and the loaded resource metadata, pick the best matching
+resource to handle the request based on URI and priority.</p></div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line377" class="location">lib/tonic.php at line 377</a>
+<a href="../source/src/tonic/request.php.html#line238" class="location">src/Tonic/Request.php at line 238</a>
 
-<h3 id="loadResource()">loadResource</h3>
-<code class="signature">public  <a href="../tonic/resource.html">Resource</a> <strong>loadResource</strong>()</code>
+<h3 id="getResourceMetadata()">getResourceMetadata</h3>
+<code class="signature">public  str[] <strong>getResourceMetadata</strong>(Tonic/Resource resource)</code>
 <div class="details">
-<p>Instantiate the resource class that matches the request URI the best</p></div>
+<p>Get the already loaded resource annotation metadata</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/request.php.html#line300" class="location">src/Tonic/Request.php at line 300</a>
+
+<h3 id="readMethodAnnotations()">readMethodAnnotations</h3>
+<code class="signature">public  void <strong>readMethodAnnotations</strong>(mixed className)</code>
+<div class="details">
+</div>
 
 <hr>
 
@@ -359,7 +284,7 @@ will be added to the default map of mimetypes</dd>
 <h1>Tonic</h1>
 <ul>
 <li><a href="../overview-summary.html">Overview</a></li>
-<li><a href="../tonic/package-summary.html">Package</a></li>
+<li><a href="../tonic/package-summary.html">Namespace</a></li>
 <li class="active">Class</li>
 <li><a href="../tonic/package-tree.html">Tree</a></li>
 <li><a href="../overview-files.html">Files</a></li>

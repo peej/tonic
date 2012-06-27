@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sun, 09 Jan 2011 09:09:41 +0000">
+<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -20,7 +20,7 @@
 <h1>Tonic</h1>
 <ul>
 <li><a href="../overview-summary.html">Overview</a></li>
-<li><a href="../tonic/package-summary.html">Package</a></li>
+<li><a href="../tonic/package-summary.html">Namespace</a></li>
 <li class="active">Class</li>
 <li><a href="../tonic/package-tree.html">Tree</a></li>
 <li><a href="../overview-files.html">Files</a></li>
@@ -41,74 +41,164 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Resource</div>
-<a href="../source/lib/tonic.php.html#line429" class="location">lib/tonic.php at line 429</a>
+<a href="../source/src/tonic/resource.php.html#line5" class="location">src/Tonic/Resource.php at line 5</a>
 
 <h1>Class Resource</h1>
 
 <pre class="tree"><strong>Resource</strong><br /></pre>
 
+<dl>
+<dt>All Known Subclasses:</dt>
+<dd><a href="../tyrell/hello.html">Tyrell\Hello</a> </dd>
+</dl>
+
 <hr>
 
 <p class="signature">public  class <strong>Resource</strong></p>
 
-<div class="comment" id="overview_description"><p>Base resource class</p></div>
-
-<dl>
-<dt>Namespace:</dt>
-<dd>Tonic\Lib</dd>
-</dl>
 <hr>
 
 <table id="summary_field">
 <tr><th colspan="2">Field Summary</th></tr>
 <tr>
 <td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#parameters">$parameters</a></p></td>
+<td class="description"><p class="name"><a href="#params">$params</a></p></td>
+</tr>
+</table>
+
+<table id="summary_constructor">
+<tr><th colspan="2">Constructor Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(<a href="../tonic/request.html">Request</a> request, mixed urlParams)</p></td>
 </tr>
 </table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(str parameters)</p><p class="description">Resource constructor</p></td>
+<td class="type">final  <a href="../tonic/response.html">Response</a></td>
+<td class="description"><p class="name"><a href="#exec()">exec</a>(str methodName)</p><p class="description">Execute the resource, that is, find the correct resource method to call
+based upon the request and then call it.</p></td>
 </tr>
 <tr>
-<td class="type"> <a href="../tonic/response.html">Response</a></td>
-<td class="description"><p class="name"><a href="#exec()">exec</a>(<a href="../tonic/request.html">Request</a> request)</p><p class="description">Execute a request on this resource.</p></td>
+<td class="type">protected final  void</td>
+<td class="description"><p class="name"><a href="#addResponseAction()">addResponseAction</a>(callable action)</p><p class="description">Add a function to execute on the response before it is returned</p></td>
+</tr>
+<tr>
+<td class="type">protected final  void</td>
+<td class="description"><p class="name"><a href="#method()">method</a>(str method)</p><p class="description">HTTP method condition must match request method</p></td>
+</tr>
+<tr>
+<td class="type">protected final  void</td>
+<td class="description"><p class="name"><a href="#priority()">priority</a>(int priority)</p><p class="description">Higher priority method takes precident over other matches</p></td>
+</tr>
+<tr>
+<td class="type">protected  void</td>
+<td class="description"><p class="name"><a href="#accepts()">accepts</a>(str mimetype)</p><p class="description">Accepts condition mimetype must match request content type</p></td>
+</tr>
+<tr>
+<td class="type">protected  int</td>
+<td class="description"><p class="name"><a href="#provides()">provides</a>(str mimetype)</p><p class="description">Provides condition mimetype must be in request accept array, returns a number
+based on the priority of the match.</p></td>
+</tr>
+<tr>
+<td class="type">protected  void</td>
+<td class="description"><p class="name"><a href="#cache()">cache</a>(int length)</p><p class="description">Set cache control header on response</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Field Detail</h2>
-<a href="../source/lib/tonic.php.html#line431" class="location">lib/tonic.php at line 431</a>
+<a href="../source/src/tonic/resource.php.html#line8" class="location">src/Tonic/Resource.php at line 8</a>
 
-<h3 id="parameters">parameters</h3>
-<code class="signature">public  mixed <strong>$parameters</strong> = array()</code>
+<h3 id="params">params</h3>
+<code class="signature">public  mixed <strong>$params</strong></code>
+<div class="details">
+</div>
+
+<hr>
+
+<h2 id="detail_method">Constructor Detail</h2>
+<a href="../source/src/tonic/resource.php.html#line11" class="location">src/Tonic/Resource.php at line 11</a>
+
+<h3 id="__construct()">__construct</h3>
+<code class="signature">public  void <strong>__construct</strong>(<a href="../tonic/request.html">Request</a> request, mixed urlParams)</code>
 <div class="details">
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/lib/tonic.php.html#line437" class="location">lib/tonic.php at line 437</a>
+<a href="../source/src/tonic/resource.php.html#line29" class="location">src/Tonic/Resource.php at line 29</a>
 
-<h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(str parameters)</code>
+<h3 id="exec()">exec</h3>
+<code class="signature">public final  <a href="../tonic/response.html">Response</a> <strong>exec</strong>(str methodName)</code>
 <div class="details">
-<p>Resource constructor</p><dl>
+<p>Execute the resource, that is, find the correct resource method to call
+based upon the request and then call it.</p><dl>
 <dt>Parameters:</dt>
-<dd>parameters - Parameters passed in from the URL as matched from the URI regex</dd>
+<dd>methodName - Optional name of method to execute, bypasing annotations, useful for debugging</dd>
 </dl>
 </div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line446" class="location">lib/tonic.php at line 446</a>
+<a href="../source/src/tonic/resource.php.html#line102" class="location">src/Tonic/Resource.php at line 102</a>
 
-<h3 id="exec()">exec</h3>
-<code class="signature">public  <a href="../tonic/response.html">Response</a> <strong>exec</strong>(<a href="../tonic/request.html">Request</a> request)</code>
+<h3 id="addResponseAction()">addResponseAction</h3>
+<code class="signature">protected final  void <strong>addResponseAction</strong>(callable action)</code>
 <div class="details">
-<p>Execute a request on this resource.</p></div>
+<p>Add a function to execute on the response before it is returned</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/resource.php.html#line112" class="location">src/Tonic/Resource.php at line 112</a>
+
+<h3 id="method()">method</h3>
+<code class="signature">protected final  void <strong>method</strong>(str method)</code>
+<div class="details">
+<p>HTTP method condition must match request method</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/resource.php.html#line124" class="location">src/Tonic/Resource.php at line 124</a>
+
+<h3 id="priority()">priority</h3>
+<code class="signature">protected final  void <strong>priority</strong>(int priority)</code>
+<div class="details">
+<p>Higher priority method takes precident over other matches</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/resource.php.html#line132" class="location">src/Tonic/Resource.php at line 132</a>
+
+<h3 id="accepts()">accepts</h3>
+<code class="signature">protected  void <strong>accepts</strong>(str mimetype)</code>
+<div class="details">
+<p>Accepts condition mimetype must match request content type</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/resource.php.html#line143" class="location">src/Tonic/Resource.php at line 143</a>
+
+<h3 id="provides()">provides</h3>
+<code class="signature">protected  int <strong>provides</strong>(str mimetype)</code>
+<div class="details">
+<p>Provides condition mimetype must be in request accept array, returns a number
+based on the priority of the match.</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/resource.php.html#line157" class="location">src/Tonic/Resource.php at line 157</a>
+
+<h3 id="cache()">cache</h3>
+<code class="signature">protected  void <strong>cache</strong>(int length)</code>
+<div class="details">
+<p>Set cache control header on response</p><dl>
+<dt>Parameters:</dt>
+<dd>length - Number of seconds to cache the response for</dd>
+</dl>
+</div>
 
 <hr>
 
@@ -116,7 +206,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <h1>Tonic</h1>
 <ul>
 <li><a href="../overview-summary.html">Overview</a></li>
-<li><a href="../tonic/package-summary.html">Package</a></li>
+<li><a href="../tonic/package-summary.html">Namespace</a></li>
 <li class="active">Class</li>
 <li><a href="../tonic/package-tree.html">Tree</a></li>
 <li><a href="../overview-files.html">Files</a></li>

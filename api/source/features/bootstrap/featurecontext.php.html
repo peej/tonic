@@ -1,0 +1,410 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
+<meta name="when" content="Wed, 27 Jun 2012 21:49:17 +0000">
+
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+<link rel="start" href="../../../overview-summary.html">
+
+<title>features/bootstrap/FeatureContext.php (Tonic)</title>
+
+</head>
+<body id="file" onload="parent.document.title=document.title;">
+
+<div class="header">
+<h1>Tonic</h1>
+<ul>
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../../overview-files.html">Files</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../todo-list.html">Todo</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../../index.html" target="_top">Frames</a>
+<a href="../../../source/features/bootstrap/featurecontext.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<h1>features/bootstrap/FeatureContext.php</h1>
+<hr>
+
+<a name="line1"></a><pre class="php" style="font-family:monospace;"><span style="color: #000000; font-weight: bold;">&lt;?php</span>
+<a name="line2"></a>&nbsp;
+<a name="line3"></a>use Behat\Behat\Context\ClosuredContextInterface<span style="color: #339933;">,</span>
+<a name="line4"></a>    Behat\Behat\Context\TranslatedContextInterface<span style="color: #339933;">,</span>
+<a name="line5"></a>    Behat\Behat\Context\BehatContext<span style="color: #339933;">,</span>
+<a name="line6"></a>    Behat\Behat\Exception\PendingException<span style="color: #339933;">;</span>
+<a name="line7"></a>use Behat\Gherkin\Node\PyStringNode<span style="color: #339933;">,</span>
+<a name="line8"></a>    Behat\Gherkin\Node\TableNode<span style="color: #339933;">;</span>
+<a name="line9"></a>&nbsp;
+<a name="line10"></a>use Tonic\Request<span style="color: #339933;">,</span>
+<a name="line11"></a>    Tonic\Resource<span style="color: #339933;">,</span>
+<a name="line12"></a>    Tonic\Response<span style="color: #339933;">;</span>
+<a name="line13"></a>&nbsp;
+<a name="line14"></a><span style="color: #009933; font-style: italic;">/**
+<a name="line15"></a> * Features context.
+<a name="line16"></a> */</span>
+<a name="line17"></a><span style="color: #000000; font-weight: bold;">class</span> FeatureContext <span style="color: #000000; font-weight: bold;">extends</span> BehatContext
+<a name="line18"></a><span style="color: #009900;">&#123;</span>
+<a name="line19"></a>&nbsp;
+<a name="line20"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$request</span><span style="color: #339933;">,</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">,</span> <span style="color: #000088;">$response</span><span style="color: #339933;">,</span> <span style="color: #000088;">$exception</span><span style="color: #339933;">;</span>
+<a name="line21"></a>&nbsp;
+<a name="line22"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$createMethod</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line23"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$data</span><span style="color: #339933;">;</span>
+<a name="line24"></a>&nbsp;
+<a name="line25"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$options</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line26"></a>&nbsp;
+<a name="line27"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line28"></a>     * @Given /^the request URI of &quot;([^&quot;]*)&quot;$/
+<a name="line29"></a>     */</span>
+<a name="line30"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theRequestUriOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$uri</span><span style="color: #009900;">&#41;</span>
+<a name="line31"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line32"></a>        <span style="color: #000088;">$parsedUri</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/parse_url"><span style="color: #990000;">parse_url</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$uri</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line33"></a>        <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'REDIRECT_URL'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$parsedUri</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'path'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+<a name="line34"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$parsedUri</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'query'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line35"></a>            <span style="color: #000088;">$query</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/explode"><span style="color: #990000;">explode</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'&amp;'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$parsedUri</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'query'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line36"></a>            <span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$query</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$item</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line37"></a>                <a href="http://www.php.net/list"><span style="color: #990000;">list</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/explode"><span style="color: #990000;">explode</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'='</span><span style="color: #339933;">,</span> <span style="color: #000088;">$item</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line38"></a>                <span style="color: #000088;">$_GET</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$value</span><span style="color: #339933;">;</span>
+<a name="line39"></a>            <span style="color: #009900;">&#125;</span>
+<a name="line40"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line41"></a>        <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'SCRIPT_NAME'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">''</span><span style="color: #339933;">;</span>
+<a name="line42"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line43"></a>&nbsp;
+<a name="line44"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line45"></a>     * @Given /^the request method of &quot;([^&quot;]*)&quot;$/
+<a name="line46"></a>     */</span>
+<a name="line47"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theRequestMethodOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$method</span><span style="color: #009900;">&#41;</span>
+<a name="line48"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line49"></a>        <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'REQUEST_METHOD'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$method</span><span style="color: #339933;">;</span>
+<a name="line50"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line51"></a>&nbsp;
+<a name="line52"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line53"></a>     * @When /^I create a request object$/
+<a name="line54"></a>     */</span>
+<a name="line55"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> iCreateARequestObject<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+<a name="line56"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line57"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line58"></a>            <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'data'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #339933;">;</span>
+<a name="line59"></a>            <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'contentType'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'CONTENT_TYPE'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">;</span>
+<a name="line60"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line61"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">options</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line62"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line63"></a>&nbsp;
+<a name="line64"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line65"></a>     * @Then /^I should see a request URI of &quot;([^&quot;]*)&quot;$/
+<a name="line66"></a>     */</span>
+<a name="line67"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> iShouldSeeARequestUriOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$uri</span><span style="color: #009900;">&#41;</span>
+<a name="line68"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line69"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">uri</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$uri</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #339933;">;</span>
+<a name="line70"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line71"></a>&nbsp;
+<a name="line72"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line73"></a>     * @Then /^I should see a request method of &quot;([^&quot;]*)&quot;$/
+<a name="line74"></a>     */</span>
+<a name="line75"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> iShouldSeeARequestMethodOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$method</span><span style="color: #009900;">&#41;</span>
+<a name="line76"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line77"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">method</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$method</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #339933;">;</span>
+<a name="line78"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line79"></a>&nbsp;
+<a name="line80"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line81"></a>     * @Given /^an &quot;([^&quot;]*)&quot; header of '([^']*)'$/
+<a name="line82"></a>     */</span>
+<a name="line83"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> anHeaderOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$header</span><span style="color: #339933;">,</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span>
+<a name="line84"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line85"></a>        <span style="color: #000088;">$headerMapping</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line86"></a>            <span style="color: #0000ff;">'accept'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'HTTP_ACCEPT'</span><span style="color: #339933;">,</span>
+<a name="line87"></a>            <span style="color: #0000ff;">'accept language'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'HTTP_ACCEPT_LANGUAGE'</span><span style="color: #339933;">,</span>
+<a name="line88"></a>            <span style="color: #0000ff;">'if-none-match'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'HTTP_IF_NONE_MATCH'</span><span style="color: #339933;">,</span>
+<a name="line89"></a>            <span style="color: #0000ff;">'if-match'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'HTTP_IF_MATCH'</span><span style="color: #339933;">,</span>
+<a name="line90"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line91"></a>        <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$headerMapping</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$header</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$value</span><span style="color: #339933;">;</span>
+<a name="line92"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line93"></a>&nbsp;
+<a name="line94"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line95"></a>     * @Given /^I should see an &quot;([^&quot;]*)&quot; string of &quot;([^&quot;]*)&quot;$/
+<a name="line96"></a>     */</span>
+<a name="line97"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> iShouldSeeAnAcceptStringOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$header</span><span style="color: #339933;">,</span> <span style="color: #000088;">$string</span><span style="color: #009900;">&#41;</span>
+<a name="line98"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line99"></a>        <span style="color: #000088;">$propertyMapping</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line100"></a>            <span style="color: #0000ff;">'accept'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'accept'</span><span style="color: #339933;">,</span>
+<a name="line101"></a>            <span style="color: #0000ff;">'accept language'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'acceptLang'</span><span style="color: #339933;">,</span>
+<a name="line102"></a>            <span style="color: #0000ff;">'if-none-match'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'ifNoneMatch'</span><span style="color: #339933;">,</span>
+<a name="line103"></a>            <span style="color: #0000ff;">'if-match'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'ifMatch'</span><span style="color: #339933;">,</span>
+<a name="line104"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line105"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/join"><span style="color: #990000;">join</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">','</span><span style="color: #339933;">,</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #000088;">$propertyMapping</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$header</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$string</span><span style="color: #009900;">&#41;</span>
+<a name="line106"></a>            throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><a href="http://www.php.net/join"><span style="color: #990000;">join</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">','</span><span style="color: #339933;">,</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #000088;">$propertyMapping</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$header</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line107"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line108"></a>&nbsp;
+<a name="line109"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line110"></a>     * @Given /^a resource definition &quot;([^&quot;]*)&quot; with URI &quot;([^&quot;]*)&quot; and priority of (\d+)$/
+<a name="line111"></a>     */</span>
+<a name="line112"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aResourceDefinitionWithUriAndPriorityOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> <span style="color: #000088;">$priority</span><span style="color: #009900;">&#41;</span>
+<a name="line113"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line114"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">aResourceDefinition</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> <span style="color: #000088;">$priority</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line115"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line116"></a>&nbsp;
+<a name="line117"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line118"></a>     * @Given /^a resource definition &quot;([^&quot;]*)&quot; with URI &quot;([^&quot;]*)&quot; and namespace of &quot;([^&quot;]*)&quot;$/
+<a name="line119"></a>     */</span>
+<a name="line120"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aResourceDefinitionWithUriAndNamespaceOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> <span style="color: #000088;">$namespace</span><span style="color: #009900;">&#41;</span>
+<a name="line121"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line122"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">aResourceDefinition</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> 1<span style="color: #339933;">,</span> <span style="color: #000088;">$namespace</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line123"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line124"></a>&nbsp;
+<a name="line125"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line126"></a>     * @Given /^a resource definition &quot;([^&quot;]*)&quot; with URI &quot;([^&quot;]*)&quot; and namespace annotation of &quot;([^&quot;]*)&quot;$/
+<a name="line127"></a>     */</span>
+<a name="line128"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aResourceDefinitionWithUriAndNamespaceAnnotationOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> <span style="color: #000088;">$namespace</span><span style="color: #009900;">&#41;</span>
+<a name="line129"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line130"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">aResourceDefinition</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> 1<span style="color: #339933;">,</span> <span style="color: #009900; font-weight: bold;">NULL</span><span style="color: #339933;">,</span> <span style="color: #000088;">$namespace</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line131"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line132"></a>&nbsp;
+<a name="line133"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000000; font-weight: bold;">function</span> aResourceDefinition<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> <span style="color: #000088;">$priority</span> <span style="color: #339933;">=</span> 1<span style="color: #339933;">,</span> <span style="color: #000088;">$namespace</span> <span style="color: #339933;">=</span> <span style="color: #009900; font-weight: bold;">NULL</span><span style="color: #339933;">,</span> <span style="color: #000088;">$annotationNamespace</span> <span style="color: #339933;">=</span> <span style="color: #009900; font-weight: bold;">NULL</span><span style="color: #009900;">&#41;</span>
+<a name="line134"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line135"></a>        <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">''</span><span style="color: #339933;">;</span>
+<a name="line136"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$namespace</span><span style="color: #009900;">&#41;</span> <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'namespace '</span><span style="color: #339933;">.</span><span style="color: #000088;">$namespace</span><span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">;</span>
+<a name="line137"></a>        <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'
+<a name="line138"></a>/**
+<a name="line139"></a> * @uri '</span><span style="color: #339933;">.</span><span style="color: #000088;">$uri</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'
+<a name="line140"></a> * @priority '</span><span style="color: #339933;">.</span><span style="color: #000088;">$priority</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'
+<a name="line141"></a>'</span><span style="color: #339933;">;</span>
+<a name="line142"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$annotationNamespace</span><span style="color: #009900;">&#41;</span> <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">' * @namespace '</span><span style="color: #339933;">.</span><span style="color: #000088;">$annotationNamespace</span><span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">;</span>
+<a name="line143"></a>        <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">' */
+<a name="line144"></a>class '</span><span style="color: #339933;">.</span><span style="color: #000088;">$className</span><span style="color: #339933;">.</span><span style="color: #0000ff;">' extends \Tonic\Resource {
+<a name="line145"></a>'</span><span style="color: #339933;">;</span>
+<a name="line146"></a>        <span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">createMethod</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$methodData</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line147"></a>            <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'
+<a name="line148"></a>    /**'</span><span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">;</span>
+<a name="line149"></a>            <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'     * @method '</span><span style="color: #339933;">.</span><span style="color: #009900;">&#40;</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'method'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> ? <span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'method'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">:</span> <span style="color: #0000ff;">'GET'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">;</span>
+<a name="line150"></a>            <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'accepts'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'     * @accepts '</span><span style="color: #339933;">.</span><span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'accepts'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">;</span>
+<a name="line151"></a>            <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'provides'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'     * @provides '</span><span style="color: #339933;">.</span><span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'provides'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">.</span><span style="color: #0000ff;">&quot;<span style="color: #000099; font-weight: bold;">\n</span>&quot;</span><span style="color: #339933;">;</span>
+<a name="line152"></a>            <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'
+<a name="line153"></a>     */
+<a name="line154"></a>    function '</span><span style="color: #339933;">.</span><span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'name'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'() {
+<a name="line155"></a>        return &quot;'</span><span style="color: #339933;">.</span><span style="color: #000088;">$methodData</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'name'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'&quot;;
+<a name="line156"></a>    }
+<a name="line157"></a>'</span><span style="color: #339933;">;</span>
+<a name="line158"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line159"></a>        <span style="color: #000088;">$classDefinition</span> <span style="color: #339933;">.=</span> <span style="color: #0000ff;">'
+<a name="line160"></a>}
+<a name="line161"></a>'</span><span style="color: #339933;">;</span>
+<a name="line162"></a>        <a href="http://www.php.net/eval"><span style="color: #990000;">eval</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$classDefinition</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line163"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line164"></a>&nbsp;
+<a name="line165"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line166"></a>     * @Given /^load the resource$/
+<a name="line167"></a>     */</span>
+<a name="line168"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> loadTheResource<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+<a name="line169"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line170"></a>        try <span style="color: #009900;">&#123;</span>
+<a name="line171"></a>            <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line172"></a>        <span style="color: #009900;">&#125;</span> catch <span style="color: #009900;">&#40;</span>Tonic\Exception <span style="color: #000088;">$e</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line173"></a>            <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exception</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/get_class"><span style="color: #990000;">get_class</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$e</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line174"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line175"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line176"></a>&nbsp;
+<a name="line177"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line178"></a>     * @Then /^the loaded resource should have a class of &quot;([^&quot;]*)&quot;$/
+<a name="line179"></a>     */</span>
+<a name="line180"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theLoadedResourceShouldHaveAClassOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #009900;">&#41;</span>
+<a name="line181"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line182"></a>        <span style="color: #000088;">$loadedClassName</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/get_class"><span style="color: #990000;">get_class</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">resource</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line183"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$loadedClassName</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$className</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><span style="color: #000088;">$loadedClassName</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line184"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line185"></a>&nbsp;
+<a name="line186"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line187"></a>     * @Given /^the loaded resource should have a param &quot;([^&quot;]*)&quot; with the value &quot;([^&quot;]*)&quot;$/
+<a name="line188"></a>     */</span>
+<a name="line189"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theLoadedResourceShouldHaveAParamWithTheValue<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span>
+<a name="line190"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line191"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">params</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Param '</span><span style="color: #339933;">.</span><span style="color: #000088;">$name</span><span style="color: #339933;">.</span><span style="color: #0000ff;">' not found'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line192"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">params</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Param '</span><span style="color: #339933;">.</span><span style="color: #000088;">$name</span><span style="color: #339933;">.</span><span style="color: #0000ff;">' does not equal '</span><span style="color: #339933;">.</span><span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line193"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line194"></a>&nbsp;
+<a name="line195"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line196"></a>     * @Given /^execute the resource$/
+<a name="line197"></a>     */</span>
+<a name="line198"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> executeTheResource<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+<a name="line199"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line200"></a>        try <span style="color: #009900;">&#123;</span>
+<a name="line201"></a>            <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">resource</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line202"></a>                <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line203"></a>            <span style="color: #009900;">&#125;</span> <span style="color: #b1b100;">else</span> <span style="color: #009900;">&#123;</span>
+<a name="line204"></a>                throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Resource not loaded'</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line205"></a>            <span style="color: #009900;">&#125;</span>
+<a name="line206"></a>        <span style="color: #009900;">&#125;</span> catch <span style="color: #009900;">&#40;</span>Tonic\Exception <span style="color: #000088;">$e</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line207"></a>            <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exception</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/get_class"><span style="color: #990000;">get_class</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$e</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line208"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line209"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line210"></a>&nbsp;
+<a name="line211"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line212"></a>     * @Then /^response should be &quot;([^&quot;]*)&quot;$/
+<a name="line213"></a>     */</span>
+<a name="line214"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> responseShouldBe<span style="color: #009900;">&#40;</span><span style="color: #000088;">$responseString</span><span style="color: #009900;">&#41;</span>
+<a name="line215"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line216"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">response</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'Response not loaded due to '</span><span style="color: #339933;">.</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exception</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line217"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$responseString</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line218"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line219"></a>&nbsp;
+<a name="line220"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line221"></a>     * @Given /^a &quot;([^&quot;]*)&quot; resource method &quot;([^&quot;]*)&quot;$/
+<a name="line222"></a>     */</span>
+<a name="line223"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aResourceMethod<span style="color: #009900;">&#40;</span><span style="color: #000088;">$method</span><span style="color: #339933;">,</span> <span style="color: #000088;">$name</span><span style="color: #009900;">&#41;</span>
+<a name="line224"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line225"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">createMethod</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line226"></a>            <span style="color: #0000ff;">'method'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$method</span><span style="color: #339933;">,</span>
+<a name="line227"></a>            <span style="color: #0000ff;">'name'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$name</span>
+<a name="line228"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line229"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line230"></a>&nbsp;
+<a name="line231"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line232"></a>     * @Given /^a &quot;([^&quot;]*)&quot; resource method &quot;([^&quot;]*)&quot; that provides &quot;([^&quot;]*)&quot;$/
+<a name="line233"></a>     */</span>
+<a name="line234"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aResourceMethodThatProvides<span style="color: #009900;">&#40;</span><span style="color: #000088;">$method</span><span style="color: #339933;">,</span> <span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$provides</span><span style="color: #009900;">&#41;</span>
+<a name="line235"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line236"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">createMethod</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line237"></a>            <span style="color: #0000ff;">'method'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$method</span><span style="color: #339933;">,</span>
+<a name="line238"></a>            <span style="color: #0000ff;">'name'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$name</span><span style="color: #339933;">,</span>
+<a name="line239"></a>            <span style="color: #0000ff;">'provides'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$provides</span>
+<a name="line240"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line241"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line242"></a>&nbsp;
+<a name="line243"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line244"></a>     * @Given /^a &quot;([^&quot;]*)&quot; resource method &quot;([^&quot;]*)&quot; that accepts &quot;([^&quot;]*)&quot;$/
+<a name="line245"></a>     */</span>
+<a name="line246"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aResourceMethodThatAccepts<span style="color: #009900;">&#40;</span><span style="color: #000088;">$method</span><span style="color: #339933;">,</span> <span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$accepts</span><span style="color: #009900;">&#41;</span>
+<a name="line247"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line248"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">createMethod</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line249"></a>            <span style="color: #0000ff;">'method'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$method</span><span style="color: #339933;">,</span>
+<a name="line250"></a>            <span style="color: #0000ff;">'name'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$name</span><span style="color: #339933;">,</span>
+<a name="line251"></a>            <span style="color: #0000ff;">'accepts'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$accepts</span>
+<a name="line252"></a>        <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line253"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line254"></a>&nbsp;
+<a name="line255"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line256"></a>     * @Given /^the request content type of &quot;([^&quot;]*)&quot;$/
+<a name="line257"></a>     */</span>
+<a name="line258"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theRequestContentTypeOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$contentType</span><span style="color: #009900;">&#41;</span>
+<a name="line259"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line260"></a>        <span style="color: #000088;">$_SERVER</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'CONTENT_TYPE'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$contentType</span><span style="color: #339933;">;</span>
+<a name="line261"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line262"></a>&nbsp;
+<a name="line263"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line264"></a>     * @Given /^the request data of &quot;([^&quot;]*)&quot;$/
+<a name="line265"></a>     */</span>
+<a name="line266"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theRequestDataOf<span style="color: #009900;">&#40;</span><span style="color: #000088;">$data</span><span style="color: #009900;">&#41;</span>
+<a name="line267"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line268"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$data</span><span style="color: #339933;">;</span>
+<a name="line269"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line270"></a>&nbsp;
+<a name="line271"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line272"></a>     * @Then /^a &quot;([^&quot;]*)&quot; should be thrown$/
+<a name="line273"></a>     */</span>
+<a name="line274"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aShouldBeThrown<span style="color: #009900;">&#40;</span><span style="color: #000088;">$exception</span><span style="color: #009900;">&#41;</span>
+<a name="line275"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line276"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$exception</span> <span style="color: #339933;">!=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exception</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exception</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line277"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line278"></a>&nbsp;
+<a name="line279"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line280"></a>     * @Given /^I mount &quot;([^&quot;]*)&quot; at the URI &quot;([^&quot;]*)&quot;$/
+<a name="line281"></a>     */</span>
+<a name="line282"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> iMountAtTheUri<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uriSpace</span><span style="color: #009900;">&#41;</span>
+<a name="line283"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line284"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">mount</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uriSpace</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line285"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line286"></a>&nbsp;
+<a name="line287"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line288"></a>     * @Given /^a class definition:$/
+<a name="line289"></a>     */</span>
+<a name="line290"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aClassDefinition<span style="color: #009900;">&#40;</span>PyStringNode <span style="color: #000088;">$string</span><span style="color: #009900;">&#41;</span>
+<a name="line291"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line292"></a>        <a href="http://www.php.net/eval"><span style="color: #990000;">eval</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$string</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line293"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line294"></a>&nbsp;
+<a name="line295"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line296"></a>     * @Given /^I set the request option &quot;([^&quot;]*)&quot; to:$/
+<a name="line297"></a>     */</span>
+<a name="line298"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> iSetTheRequestOptionTo<span style="color: #009900;">&#40;</span><span style="color: #000088;">$option</span><span style="color: #339933;">,</span> PyStringNode <span style="color: #000088;">$json</span><span style="color: #009900;">&#41;</span>
+<a name="line299"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line300"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">options</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$option</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/json_decode"><span style="color: #990000;">json_decode</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$json</span><span style="color: #339933;">,</span> <span style="color: #009900; font-weight: bold;">TRUE</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line301"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line302"></a>&nbsp;
+<a name="line303"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line304"></a>     * @Given /^I supply an empty cache object$/
+<a name="line305"></a>     */</span>
+<a name="line306"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> iSupplyAnEmptyCacheObject<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span>
+<a name="line307"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line308"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cache'</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> MockMetadataCache<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line309"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line310"></a>&nbsp;
+<a name="line311"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line312"></a>     * @Given /^the cache object should contain &quot;([^&quot;]*)&quot; &quot;([^&quot;]*)&quot;$/
+<a name="line313"></a>     */</span>
+<a name="line314"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theCacheObjectShouldContain<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$methodName</span><span style="color: #009900;">&#41;</span>
+<a name="line315"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line316"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cache'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">contains</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$methodName</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #339933;">;</span>
+<a name="line317"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line318"></a>&nbsp;
+<a name="line319"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line320"></a>     * @Given /^a cache object containing a class &quot;([^&quot;]*)&quot; with a URL of &quot;([^&quot;]*)&quot; and a method &quot;([^&quot;]*)&quot; responding to HTTP &quot;([^&quot;]*)&quot;$/
+<a name="line321"></a>     */</span>
+<a name="line322"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> aCacheObjectContainingAClassWithAUrlOfAndAMethodRespondingToHttp<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$uri</span><span style="color: #339933;">,</span> <span style="color: #000088;">$methodName</span><span style="color: #339933;">,</span> <span style="color: #000088;">$method</span><span style="color: #009900;">&#41;</span>
+<a name="line323"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line324"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">iSupplyAnEmptyCacheObject</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line325"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">options</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'cache'</span><span style="color: #009900;">&#93;</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">save</span><span style="color: #009900;">&#40;</span><a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line326"></a>            <span style="color: #000088;">$className</span> <span style="color: #339933;">=&gt;</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line327"></a>                <span style="color: #0000ff;">'class'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$className</span><span style="color: #339933;">,</span>
+<a name="line328"></a>                <span style="color: #0000ff;">'uri'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'|^'</span><span style="color: #339933;">.</span><span style="color: #000088;">$uri</span><span style="color: #339933;">.</span><span style="color: #0000ff;">'$|'</span><span style="color: #339933;">,</span>
+<a name="line329"></a>                <span style="color: #0000ff;">'methods'</span> <span style="color: #339933;">=&gt;</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line330"></a>                    <span style="color: #000088;">$methodName</span> <span style="color: #339933;">=&gt;</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line331"></a>                        <span style="color: #0000ff;">'method'</span> <span style="color: #339933;">=&gt;</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line332"></a>                            <span style="color: #000088;">$method</span>
+<a name="line333"></a>                        <span style="color: #009900;">&#41;</span>
+<a name="line334"></a>                    <span style="color: #009900;">&#41;</span>
+<a name="line335"></a>                <span style="color: #009900;">&#41;</span>
+<a name="line336"></a>            <span style="color: #009900;">&#41;</span>
+<a name="line337"></a>        <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line338"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line339"></a>&nbsp;
+<a name="line340"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line341"></a>     * @Then /^the loaded resource &quot;([^&quot;]*)&quot; should respond with the method &quot;([^&quot;]*)&quot;$/
+<a name="line342"></a>     */</span>
+<a name="line343"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> theLoadedResourceShouldRespondToWithTheMethod<span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #339933;">,</span> <span style="color: #000088;">$methodName</span><span style="color: #009900;">&#41;</span>
+<a name="line344"></a>    <span style="color: #009900;">&#123;</span>
+<a name="line345"></a>        <span style="color: #000088;">$metadata</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getResourceMetadata</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$className</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line346"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><span style="color: #339933;">!</span><a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$metadata</span><span style="color: #009900;">&#91;</span><span style="color: #0000ff;">'methods'</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$methodName</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> Exception<span style="color: #339933;">;</span>
+<a name="line347"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line348"></a>&nbsp;
+<a name="line349"></a>&nbsp;
+<a name="line350"></a><span style="color: #009900;">&#125;</span></pre>
+<div class="header">
+<h1>Tonic</h1>
+<ul>
+<li><a href="../../../overview-summary.html">Overview</a></li>
+<li>Package</li><li>Class</li><li>Tree</li><li><a href="../../../overview-files.html">Files</a></li>
+<li><a href="../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../todo-list.html">Todo</a></li>
+<li><a href="../../../index-all.html">Index</a></li>
+</ul>
+</div>
+
+<div class="small_links">
+<a href="../../../index.html" target="_top">Frames</a>
+<a href="../../../source/features/bootstrap/featurecontext.php.html" target="_top">No frames</a>
+</div>
+<hr>
+
+<p id="footer">This document was generated by <a href="http://peej.github.com/phpdoctor/">PHPDoctor: The PHP Documentation Creator</a></p>
+
+</body>
+
+</html>

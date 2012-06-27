@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sun, 09 Jan 2011 09:09:41 +0000">
+<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -20,7 +20,7 @@
 <h1>Tonic</h1>
 <ul>
 <li><a href="../overview-summary.html">Overview</a></li>
-<li><a href="../tonic/package-summary.html">Package</a></li>
+<li><a href="../tonic/package-summary.html">Namespace</a></li>
 <li class="active">Class</li>
 <li><a href="../tonic/package-tree.html">Tree</a></li>
 <li><a href="../overview-files.html">Files</a></li>
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Response</div>
-<a href="../source/lib/tonic.php.html#line510" class="location">lib/tonic.php at line 510</a>
+<a href="../source/src/tonic/response.php.html#line5" class="location">src/Tonic/Response.php at line 5</a>
 
 <h1>Class Response</h1>
 
@@ -51,111 +51,113 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <p class="signature">public  class <strong>Response</strong></p>
 
-<div class="comment" id="overview_description"><p>Model the data of the outgoing HTTP response</p></div>
-
-<dl>
-<dt>Namespace:</dt>
-<dd>Tonic\Lib</dd>
-</dl>
 <hr>
 
 <table id="summary_field">
 <tr><th colspan="2">Constant Summary</th></tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#BADREQUEST">BADREQUEST</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#BADREQUEST">BADREQUEST</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#CREATED">CREATED</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#CREATED">CREATED</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#FORBIDDEN">FORBIDDEN</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#ENHANCEYOURCALM">ENHANCEYOURCALM</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#FOUND">FOUND</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#FORBIDDEN">FORBIDDEN</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#GONE">GONE</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#FOUND">FOUND</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#INTERNALSERVERERROR">INTERNALSERVERERROR</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#GONE">GONE</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#LENGTHREQUIRED">LENGTHREQUIRED</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#IMATEAPOT">IMATEAPOT</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#METHODNOTALLOWED">METHODNOTALLOWED</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#INTERNALSERVERERROR">INTERNALSERVERERROR</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#MOVEDPERMANENTLY">MOVEDPERMANENTLY</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#LENGTHREQUIRED">LENGTHREQUIRED</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#NOCONTENT">NOCONTENT</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#METHODNOTALLOWED">METHODNOTALLOWED</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#NOTACCEPTABLE">NOTACCEPTABLE</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#MOVEDPERMANENTLY">MOVEDPERMANENTLY</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#NOTFOUND">NOTFOUND</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#NOCONTENT">NOCONTENT</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#NOTMODIFIED">NOTMODIFIED</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#NOTACCEPTABLE">NOTACCEPTABLE</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#OK">OK</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#NOTFOUND">NOTFOUND</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#PRECONDITIONFAILED">PRECONDITIONFAILED</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#NOTMODIFIED">NOTMODIFIED</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#SEEOTHER">SEEOTHER</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#OK">OK</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#TEMPORARYREDIRECT">TEMPORARYREDIRECT</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#PRECONDITIONFAILED">PRECONDITIONFAILED</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#UNAUTHORIZED">UNAUTHORIZED</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#SEEOTHER">SEEOTHER</a></p></td>
 </tr>
 <tr>
 <td class="type">final static  int</td>
-<td class="description"><p class="name"><a href="#UNSUPPORTEDMEDIATYPE">UNSUPPORTEDMEDIATYPE</a></p><p class="description">HTTP response code constant</p></td>
+<td class="description"><p class="name"><a href="#TEMPORARYREDIRECT">TEMPORARYREDIRECT</a></p></td>
+</tr>
+<tr>
+<td class="type">final static  int</td>
+<td class="description"><p class="name"><a href="#UNAUTHORIZED">UNAUTHORIZED</a></p></td>
+</tr>
+<tr>
+<td class="type">final static  int</td>
+<td class="description"><p class="name"><a href="#UNSUPPORTEDMEDIATYPE">UNSUPPORTEDMEDIATYPE</a></p></td>
 </tr>
 </table>
 
 <table id="summary_field">
 <tr><th colspan="2">Field Summary</th></tr>
 <tr>
-<td class="type"> str</td>
-<td class="description"><p class="name"><a href="#body">$body</a></p><p class="description">The HTTP response body to send</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#body">$body</a></p></td>
 </tr>
 <tr>
-<td class="type"> int</td>
-<td class="description"><p class="name"><a href="#code">$code</a></p><p class="description">The HTTP response code to send</p></td>
+<td class="type"> mixed</td>
+<td class="description"><p class="name"><a href="#code">$code</a></p></td>
 </tr>
+</table>
+
+<table id="summary_constructor">
+<tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#headers">$headers</a></p><p class="description">The HTTP headers to send</p></td>
-</tr>
-<tr>
-<td class="type"> <a href="../tonic/request.html">Request</a></td>
-<td class="description"><p class="name"><a href="#request">$request</a></p><p class="description">The request object generating this response</p></td>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(int code, str body)</p></td>
 </tr>
 </table>
 
@@ -163,312 +165,231 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(<a href="../tonic/request.html">Request</a> request, str uri)</p><p class="description">Create a response object.</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addCacheHeader()">addCacheHeader</a>(int time)</p><p class="description">Send a cache control header with the response</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addEtag()">addEtag</a>(str etag)</p><p class="description">Send an etag with the response</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addHeader()">addHeader</a>(str header, str value)</p><p class="description">Add a header to the response</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#addVary()">addVary</a>(mixed header)</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#doContentEncoding()">doContentEncoding</a>()</p><p class="description">Add content encoding headers and encode the response body</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
 <td class="description"><p class="name"><a href="#output()">output</a>()</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Constant Detail</h2>
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="BADREQUEST">BADREQUEST</h3>
 <code class="signature">public final static  int <strong>BADREQUEST</strong> = 400</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="CREATED">CREATED</h3>
 <code class="signature">public final static  int <strong>CREATED</strong> = 201</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
+
+<h3 id="ENHANCEYOURCALM">ENHANCEYOURCALM</h3>
+<code class="signature">public final static  int <strong>ENHANCEYOURCALM</strong> = 420</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="FORBIDDEN">FORBIDDEN</h3>
 <code class="signature">public final static  int <strong>FORBIDDEN</strong> = 403</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="FOUND">FOUND</h3>
 <code class="signature">public final static  int <strong>FOUND</strong> = 302</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="GONE">GONE</h3>
 <code class="signature">public final static  int <strong>GONE</strong> = 410</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
+
+<h3 id="IMATEAPOT">IMATEAPOT</h3>
+<code class="signature">public final static  int <strong>IMATEAPOT</strong> = 418</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="INTERNALSERVERERROR">INTERNALSERVERERROR</h3>
 <code class="signature">public final static  int <strong>INTERNALSERVERERROR</strong> = 500</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="LENGTHREQUIRED">LENGTHREQUIRED</h3>
 <code class="signature">public final static  int <strong>LENGTHREQUIRED</strong> = 411</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="METHODNOTALLOWED">METHODNOTALLOWED</h3>
 <code class="signature">public final static  int <strong>METHODNOTALLOWED</strong> = 405</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="MOVEDPERMANENTLY">MOVEDPERMANENTLY</h3>
 <code class="signature">public final static  int <strong>MOVEDPERMANENTLY</strong> = 301</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="NOCONTENT">NOCONTENT</h3>
 <code class="signature">public final static  int <strong>NOCONTENT</strong> = 204</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="NOTACCEPTABLE">NOTACCEPTABLE</h3>
 <code class="signature">public final static  int <strong>NOTACCEPTABLE</strong> = 406</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="NOTFOUND">NOTFOUND</h3>
 <code class="signature">public final static  int <strong>NOTFOUND</strong> = 404</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="NOTMODIFIED">NOTMODIFIED</h3>
 <code class="signature">public final static  int <strong>NOTMODIFIED</strong> = 304</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="OK">OK</h3>
 <code class="signature">public final static  int <strong>OK</strong> = 200</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="PRECONDITIONFAILED">PRECONDITIONFAILED</h3>
 <code class="signature">public final static  int <strong>PRECONDITIONFAILED</strong> = 412</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="SEEOTHER">SEEOTHER</h3>
 <code class="signature">public final static  int <strong>SEEOTHER</strong> = 303</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="TEMPORARYREDIRECT">TEMPORARYREDIRECT</h3>
 <code class="signature">public final static  int <strong>TEMPORARYREDIRECT</strong> = 307</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="UNAUTHORIZED">UNAUTHORIZED</h3>
 <code class="signature">public final static  int <strong>UNAUTHORIZED</strong> = 401</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line515" class="location">lib/tonic.php at line 515</a>
+<a href="../source/src/tonic/response.php.html#line10" class="location">src/Tonic/Response.php at line 10</a>
 
 <h3 id="UNSUPPORTEDMEDIATYPE">UNSUPPORTEDMEDIATYPE</h3>
 <code class="signature">public final static  int <strong>UNSUPPORTEDMEDIATYPE</strong> = 415</code>
 <div class="details">
-<p>HTTP response code constant</p></div>
+</div>
 
 <hr>
 
 <h2 id="detail_field">Field Detail</h2>
-<a href="../source/lib/tonic.php.html#line539" class="location">lib/tonic.php at line 539</a>
+<a href="../source/src/tonic/response.php.html#line7" class="location">src/Tonic/Response.php at line 7</a>
 
 <h3 id="body">body</h3>
-<code class="signature">public  str <strong>$body</strong></code>
+<code class="signature">public  mixed <strong>$body</strong></code>
 <div class="details">
-<p>The HTTP response body to send</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line527" class="location">lib/tonic.php at line 527</a>
+<a href="../source/src/tonic/response.php.html#line7" class="location">src/Tonic/Response.php at line 7</a>
 
 <h3 id="code">code</h3>
-<code class="signature">public  int <strong>$code</strong> = Response::OK</code>
+<code class="signature">public  mixed <strong>$code</strong> = NULL</code>
 <div class="details">
-<p>The HTTP response code to send</p></div>
+</div>
 
 <hr>
 
-<a href="../source/lib/tonic.php.html#line533" class="location">lib/tonic.php at line 533</a>
+<h2 id="detail_method">Constructor Detail</h2>
+<a href="../source/src/tonic/response.php.html#line18" class="location">src/Tonic/Response.php at line 18</a>
 
-<h3 id="headers">headers</h3>
-<code class="signature">public  str[] <strong>$headers</strong> = array()</code>
+<h3 id="__construct()">__construct</h3>
+<code class="signature">public  void <strong>__construct</strong>(int code, str body)</code>
 <div class="details">
-<p>The HTTP headers to send</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line521" class="location">lib/tonic.php at line 521</a>
-
-<h3 id="request">request</h3>
-<code class="signature">public  <a href="../tonic/request.html">Request</a> <strong>$request</strong></code>
-<div class="details">
-<p>The request object generating this response</p></div>
+</div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/lib/tonic.php.html#line546" class="location">lib/tonic.php at line 546</a>
-
-<h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(<a href="../tonic/request.html">Request</a> request, str uri)</code>
-<div class="details">
-<p>Create a response object.</p><dl>
-<dt>Parameters:</dt>
-<dd>request - The request object generating this response</dd>
-<dd>uri - The URL of the actual resource being used to build the response</dd>
-</dl>
-</div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line612" class="location">lib/tonic.php at line 612</a>
-
-<h3 id="addCacheHeader()">addCacheHeader</h3>
-<code class="signature">public  void <strong>addCacheHeader</strong>(int time)</code>
-<div class="details">
-<p>Send a cache control header with the response</p><dl>
-<dt>Parameters:</dt>
-<dd>time - Cache length in seconds</dd>
-</dl>
-</div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line624" class="location">lib/tonic.php at line 624</a>
-
-<h3 id="addEtag()">addEtag</h3>
-<code class="signature">public  void <strong>addEtag</strong>(str etag)</code>
-<div class="details">
-<p>Send an etag with the response</p><dl>
-<dt>Parameters:</dt>
-<dd>etag - Etag value</dd>
-</dl>
-</div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line575" class="location">lib/tonic.php at line 575</a>
-
-<h3 id="addHeader()">addHeader</h3>
-<code class="signature">public  void <strong>addHeader</strong>(str header, str value)</code>
-<div class="details">
-<p>Add a header to the response</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line628" class="location">lib/tonic.php at line 628</a>
-
-<h3 id="addVary()">addVary</h3>
-<code class="signature">public  void <strong>addVary</strong>(mixed header)</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line582" class="location">lib/tonic.php at line 582</a>
-
-<h3 id="doContentEncoding()">doContentEncoding</h3>
-<code class="signature">public  void <strong>doContentEncoding</strong>()</code>
-<div class="details">
-<p>Add content encoding headers and encode the response body</p></div>
-
-<hr>
-
-<a href="../source/lib/tonic.php.html#line636" class="location">lib/tonic.php at line 636</a>
+<a href="../source/src/tonic/response.php.html#line37" class="location">src/Tonic/Response.php at line 37</a>
 
 <h3 id="output()">output</h3>
 <code class="signature">public  void <strong>output</strong>()</code>
@@ -481,7 +402,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <h1>Tonic</h1>
 <ul>
 <li><a href="../overview-summary.html">Overview</a></li>
-<li><a href="../tonic/package-summary.html">Package</a></li>
+<li><a href="../tonic/package-summary.html">Namespace</a></li>
 <li class="active">Class</li>
 <li><a href="../tonic/package-tree.html">Tree</a></li>
 <li><a href="../overview-files.html">Files</a></li>

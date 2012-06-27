@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Sun, 24 Apr 2011 10:23:53 +0000">
+<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -48,23 +48,7 @@ Detail: <a href="#detail_global">Global</a>
 <tr><th colspan="2" class="title">Global Summary</th></tr>
 <tr>
 <td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#arg1">arg1</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#arg2">arg2</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#core">core</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#coverage">coverage</a></p></td>
-</tr>
-<tr>
-<td class="type"> <a href="../tonic/lib/responseexception.html">ResponseException</a></td>
-<td class="description"><p class="name"><a href="#e">e</a></p></td>
+<td class="description"><p class="name"><a href="#config">config</a></p></td>
 </tr>
 <tr>
 <td class="type"> mixed</td>
@@ -78,128 +62,41 @@ Detail: <a href="#detail_global">Global</a>
 <td class="type"> mixed</td>
 <td class="description"><p class="name"><a href="#response">response</a></p></td>
 </tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#steps">steps</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#test">test</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#world">world</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#writer">writer</a></p></td>
-</tr>
 </table>
 
 <h2 id="detail_global">Global Detail</h2>
-<a href="../source/features/steps/request.php.html#line3" class="location">features/steps/request.php at line 3</a>
+<a href="../source/web/dispatch.php.html#line6" class="location">web/dispatch.php at line 6</a>
 
-<h3 id="arg1">arg1</h3>
-<code class="signature">public  mixed <strong>arg1</strong></code>
+<h3 id="config">config</h3>
+<code class="signature">public  mixed <strong>config</strong> = array(
+    'load' =&gt; array('../*.php'</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/features/steps/request.php.html#line27" class="location">features/steps/request.php at line 27</a>
-
-<h3 id="arg2">arg2</h3>
-<code class="signature">public  mixed <strong>arg2</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/tests/test.php.html#line8" class="location">tests/test.php at line 8</a>
-
-<h3 id="core">core</h3>
-<code class="signature">public  mixed <strong>core</strong> = new GroupTest('Core'</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/tests/test.php.html#line24" class="location">tests/test.php at line 24</a>
-
-<h3 id="coverage">coverage</h3>
-<code class="signature">public  mixed <strong>coverage</strong> = new PHP_CodeCoverage</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/docroot/dispatch.php.html#line15" class="location">docroot/dispatch.php at line 15</a>
-
-<h3 id="e">e</h3>
-<code class="signature">public  <a href="../tonic/lib/responseexception.html">ResponseException</a> <strong>e</strong> = $e-&gt;response($request</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/docroot/dispatch.php.html#line10" class="location">docroot/dispatch.php at line 10</a>
+<a href="../source/web/dispatch.php.html#line12" class="location">web/dispatch.php at line 12</a>
 
 <h3 id="request">request</h3>
-<code class="signature">public  mixed <strong>request</strong> = new Request</code>
+<code class="signature">public  mixed <strong>request</strong> = new Tonic\Request($config</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/docroot/dispatch.php.html#line12" class="location">docroot/dispatch.php at line 12</a>
+<a href="../source/web/dispatch.php.html#line16" class="location">web/dispatch.php at line 16</a>
 
 <h3 id="resource">resource</h3>
-<code class="signature">public  mixed <strong>resource</strong> = $request-&gt;loadResource</code>
+<code class="signature">public  mixed <strong>resource</strong> = $request-&gt;getResource</code>
 <div class="details">
 </div>
 
 <hr>
 
-<a href="../source/docroot/dispatch.php.html#line13" class="location">docroot/dispatch.php at line 13</a>
+<a href="../source/web/dispatch.php.html#line20" class="location">web/dispatch.php at line 20</a>
 
 <h3 id="response">response</h3>
-<code class="signature">public  mixed <strong>response</strong> = $resource-&gt;exec($request</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/features/steps/request.php.html#line3" class="location">features/steps/request.php at line 3</a>
-
-<h3 id="steps">steps</h3>
-<code class="signature">public  mixed <strong>steps</strong> = $arg1</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/tests/test.php.html#line18" class="location">tests/test.php at line 18</a>
-
-<h3 id="test">test</h3>
-<code class="signature">public  mixed <strong>test</strong> = new GroupTest('Tonic'</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/features/steps/request.php.html#line33" class="location">features/steps/request.php at line 33</a>
-
-<h3 id="world">world</h3>
-<code class="signature">public  mixed <strong>world</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/tests/test.php.html#line39" class="location">tests/test.php at line 39</a>
-
-<h3 id="writer">writer</h3>
-<code class="signature">public  mixed <strong>writer</strong> = new PHP_CodeCoverage_Report_HTML</code>
+<code class="signature">public  mixed <strong>response</strong> = $resource-&gt;exec</code>
 <div class="details">
 </div>
 
