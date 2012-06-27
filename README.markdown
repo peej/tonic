@@ -232,8 +232,8 @@ resource, adjust your dispatcher.php as such:
     $container['database'] = function ($c) {
         return new DB($c['dsn']);
     };
-    $container['dataMapper'] = function ($c) {
-        return new DataMapper($c['database']);
+    $container['dataStore'] = function ($c) {
+        return new DataStore($c['database']);
     };
 
     $request = new Tonic\Request();
@@ -279,8 +279,77 @@ We can also automatically encode the response in the same way:
     $response->output();
 
 
+RESTful modelling
+-----------------
+
+REST systems are made up of individual resources and collection resources which contain
+individual resources. Here is an example of an implemention of an "object" collection
+resource and an "object" resource to store within it:
+
+    /**
+     * @uri /objects
+     */
+    class ObjectCollection extends Tonic\Resource {
+
+        /**
+         * @method GET
+         * @provides application/json
+         */
+        function list() {
+            $ds = $this->container['dataStore'];
+            return json_encode($ds->fetchAll());
+        }
+
+        /**
+         * @method POST
+         * @accepts application/json
+         */
+        function add() {
+            $ds = $this->container['dataStore'];
+            $data = json_decode($this->request->data);
+            $ds->add($data);
+            return new Tonic\Response(Tonic\Response::CREATED);
+        }
+    }
+
+    /**
+     * @uri /objects/:id
+     */
+    class Object extends Tonic\Resource {
+
+        /**
+         * @method GET
+         * @provides application/json
+         */
+        function display() {
+            $ds = $this->container['dataStore'];
+            return json_encode($ds->fetch($this->id));
+        }
+
+        /**
+         * @method PUT
+         * @accepts application/json
+         * @provides application/json
+         */
+        function update() {
+            $ds = $this->container['dataStore'];
+            $data = json_decode($this->request->data);
+            $ds->update($this->id, $data);
+            return $this->display();
+        }
+
+        /**
+         * @method DELETE
+         */
+        function remove() {
+            $ds = $this->container['dataStore'];
+            $ds->delete($this->id);
+            return new Tonic\Response(Tonic\Response::NOCONTENT);
+        }
+    }
+
 
 
 
 For more information, read the code. Start with the dispatcher "web/dispatch.php"
-and then the examples in the "resources" directory.
+and the Hello world in the "src/Tyrell" directory.
