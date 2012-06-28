@@ -346,5 +346,26 @@ class '.$className.' extends \Tonic\Resource {
         if (!isset($metadata['methods'][$methodName])) throw new Exception;
     }
 
+    /**
+     * @Then /^fetching the URI for the resource "([^"]*)" with the parameter "([^"]*)" should get "([^"]*)"$/
+     */
+    public function fetchingTheUriForTheResourceShouldGet($className, $params, $url)
+    {
+        $params = explode(':', $params);
+        if ($this->request->uri($className, $params) != $url) throw new Exception;
+    }
+
+    /**
+     * @Given /^a "([^"]*)" resource method "([^"]*)" with lang "([^"]*)"$/
+     */
+    public function aResourceMethodWithLang($method, $name, $language)
+    {
+        $this->createMethod[] = array(
+            'method' => $method,
+            'name' => $name,
+            'lang' => $language
+        );
+    }
+
 
 }

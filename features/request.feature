@@ -57,3 +57,8 @@ Feature: HTTP request object
     Given the request URI of "/request3?foo=bar"
     When I create a request object
     Then I should see a request URI of "/request3"
+
+  Scenario: To link resources together, I need to know programatically the URL(s) a resource will be available on
+    Given a resource definition "request4" with URI "/request4/:test" and priority of 1
+    When I create a request object
+    Then fetching the URI for the resource "request4" with the parameter "woot" should get "/request4/woot"

@@ -206,9 +206,19 @@ class Request {
         }
     }
 
-    function path($className, $params = array()) {
+    /**
+     * Get the URL for the given resource class
+     *
+     * @param str $className
+     * @param str[] $params
+     * @return str
+     */
+    public function uri($className, $params = array()) {
+        if (is_object($className)) {
+            $className = get_class($className);
+        }
         if (isset($this->resources[$className])) {
-            if (!is_array($params)) {
+            if ($params && !is_array($params)) {
                 $params = array($params);
             }
             foreach ($this->resources[$className]['uri'] as $uri) {
@@ -221,7 +231,8 @@ class Request {
                             $path .= $params[$key];
                         }
                     }
-                    return substr($path, 2, -2);
+                    $ext = array_search($this->accept[0], $this->mimetypes);
+                    return substr($path, 2, -2).'.'.$ext;
                 }
             }
         }
