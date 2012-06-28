@@ -206,6 +206,27 @@ class Request {
         }
     }
 
+    function path($className, $params = array()) {
+        if (isset($this->resources[$className])) {
+            if (!is_array($params)) {
+                $params = array($params);
+            }
+            foreach ($this->resources[$className]['uri'] as $uri) {
+                if (count($params) == count($uri) - 1) {
+                    $parts = explode('([^/]+)', $uri[0]);
+                    $path = '';
+                    foreach ($parts as $key => $part) {
+                        $path .= $part;
+                        if (isset($params[$key])) {
+                            $path .= $params[$key];
+                        }
+                    }
+                    return substr($path, 2, -2);
+                }
+            }
+        }
+    }
+
     /**
      * Given the request data and the loaded resource metadata, pick the best matching
      * resource to handle the request based on URI and priority.
