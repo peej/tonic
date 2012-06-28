@@ -231,8 +231,7 @@ class Request {
                             $path .= $params[$key];
                         }
                     }
-                    $ext = array_search($this->accept[0], $this->mimetypes);
-                    return substr($path, 2, -2).'.'.$ext;
+                    return substr($path, 2, -2);
                 }
             }
         }
