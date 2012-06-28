@@ -27,11 +27,21 @@ class Hello extends Resource {
      * response body, or a full Tonic\Response object.
      *
      * @method GET
-     * @param  str $name
+     * @param str $name
      * @return str
      */
     function sayHello($name = 'World') {
         return 'Hello '.$name;
+    }
+
+    /**
+     * @method GET
+     * @lang fr
+     * @param str $name
+     * @return str
+     */
+    function sayHelloInFrench($name = 'Monde') {
+        return 'Bonjour '.$name;
     }
 
     /**
@@ -79,7 +89,8 @@ class Hello extends Resource {
      */
     function sayHelloComputer() {
         return new Response(200, json_encode(array(
-            'hello' => $this->name
+            'hello' => $this->name,
+            'url' => $this->request->uri($this, $this->name)
         )));
     }
 

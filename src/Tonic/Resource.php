@@ -151,6 +151,19 @@ class Resource {
     }
 
     /**
+     * Lang condition language code must be in request accept lang array, returns a number
+     * based on the priority of the match.
+     * @param str $language
+     * @return int
+     */
+    protected function lang($language) {
+        $pos = array_search($language, $this->request->acceptLang);
+        if ($pos === FALSE)
+            throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->acceptLang).'"');
+        return count($this->request->acceptLang) - $pos;
+    }
+
+    /**
      * Set cache control header on response
      * @param int length Number of seconds to cache the response for
      */
@@ -166,8 +179,10 @@ class Resource {
 
     public function __toString() {
         $params = array();
-        foreach ($this->params as $name => $value) {
-            $params[] = $name.' = "'.$value.'"';
+        if (is_array($this->params)) {
+            foreach ($this->params as $name => $value) {
+                $params[] = $name.' = "'.$value.'"';
+            }
         }
         $params = join(', ', $params);
         $methodMetadata = $this->request->getResourceMetadata($this);

@@ -28,6 +28,18 @@ Feature: HTTP resource object
     And execute the resource
     Then response should be "method2"
 
+  Scenario: Execute the correct method for the given HTTP request
+    Given a "GET" resource method "method1" with lang "en"
+    And a "GET" resource method "method2" with lang "nl"
+    And a resource definition "resourceLang" with URI "/resourceLang" and priority of 1
+    And the request URI of "/resourceLang.json"
+    And an "accept language" header of 'nl-nl, nl'
+    And the request method of "GET"
+    When I create a request object
+    And load the resource
+    And execute the resource
+    Then response should be "method2"
+
   Scenario: No resource found
     Given the request URI of "/resourceDoesNotExist"
     And the request method of "GET"
