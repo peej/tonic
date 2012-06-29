@@ -47,11 +47,12 @@ resource, execute it, and output the response.
 
     require_once '../src/Tonic/Autoloader.php';
 
+    $app = new Tonic\Application();
     $request = new Tonic\Request();
 
     require_once 'example.php';
 
-    $resource = $request->loadResource();
+    $resource = $app->getResource($request);
     $response = $resource->exec();
     $response->output();
 
@@ -143,7 +144,7 @@ To make resources more portable, it is possible to "mount" them into your URL-sp
 by providing a namespace name to URL-space mapping. Every resource within that
 namespace will in effect have the URL-space prefixed to their @uri annotation.
 
-    $request = new Tonic\Request(array(
+    $app = new Tonic\Application(array(
         'mount' => array('namespaceName' => '/some/mounted/uri')
     ));
 
@@ -155,15 +156,15 @@ Parsing of resource annotations has a performance penalty. To remove this penalt
 to remove the requirement to load all resource classes up front (and to allow opcode
 caching), a cache can be used to store the resource annotation data.
 
-Passing a cache object into the Request object at construction will cause that cache to
+Passing a cache object into the Application object at construction will cause that cache to
 be used to read and store the resource annotation metadata rather than read it from the
 source code tokens. Tonic comes with a single cache class that stores the cache on disk.
 
-Then rather than including your resource class files explicitly, the Request object
+Then rather than including your resource class files explicitly, the Application object
 will load them for you if you pass in the "load" option if it can't load the metadata
 from the cache.
 
-    $request = new Tonic\Request(array(
+    $app = new Tonic\Application(array(
         'load' => '../resources/*.php', // look for resource classes in here
         'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
     ));
@@ -236,8 +237,9 @@ resource, adjust your dispatcher.php as such:
         return new DataStore($c['database']);
     };
 
+    $app = new Tonic\Application();
     $request = new Tonic\Request();
-    $resource = $request->loadResource();
+    $resource = $app->getResource($request);
 
     // make the container available to the resource before executing it
     $resource->container = $container;
@@ -255,6 +257,7 @@ JSON data into an array, you can do the following:
 
     require_once '../src/Tonic/Autoloader.php';
 
+    $app = new Tonic\Application();
     $request = new Tonic\Request();
 
     // decode JSON data received from HTTP request
@@ -262,7 +265,7 @@ JSON data into an array, you can do the following:
         $request->data = json_decode($request->data);
     }
 
-    $resource = $request->loadResource();
+    $resource = $app->getResource($request);
 
     $response = $resource->exec();
     $response->output();
