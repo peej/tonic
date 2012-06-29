@@ -5,6 +5,7 @@ Feature: Caching of annotation information
 
   Scenario: Load a resource and execute a method via preloaded resource metadata
     Given the request URI of "/cache"
+    And the request method of "GET"
     And I set the request option "resources" to:
       """
       {
@@ -18,7 +19,8 @@ Feature: Caching of annotation information
         }
       }
       """
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And a class definition:
       """
       class Cache extends Tonic\Resource {
@@ -37,7 +39,8 @@ Feature: Caching of annotation information
     And a resource definition "Cache2" with URI "/cache2" and priority of 1
     And the request URI of "/cache2.html"
     And I supply an empty cache object
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then response should be "method2"
@@ -48,7 +51,8 @@ Feature: Caching of annotation information
     And a resource definition "Cache3" with URI "/cache3" and priority of 1
     And the request URI of "/cache3.html"
     And a cache object containing a class "Cache3" with a URL of "/cache3" and a method "method3" responding to HTTP "GET"
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then response should be "method3"

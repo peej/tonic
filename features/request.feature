@@ -18,47 +18,7 @@ Feature: HTTP request object
     And I should see an "if-none-match" string of "xyzzy,quux"
     And I should see an "if-match" string of "quux"
 
-  Scenario: Given two resources with the same matching URI, the one with the highest priority should be loaded
-    Given the request URI of "/request2"
-    And a resource definition "pri1" with URI "/request2" and priority of 1
-    And a resource definition "pri2" with URI "/request2" and priority of 2
-    When I create a request object
-    And load the resource
-    Then the loaded resource should have a class of "pri2"
-
-  Scenario: Regular expression @uri annotations should match
-    Given a resource definition "regex" with URI "/regex/([0-9])/([a-z])" and priority of 1
-    And the request URI of "/regex/1/a"
-    When I create a request object
-    And load the resource
-    Then the loaded resource should have a class of "regex"
-    And the loaded resource should have a param "0" with the value "1"
-    And the loaded resource should have a param "1" with the value "a"
-
-  Scenario: URL template expression @uri annotations should match
-    Given a resource definition "urlTemplate" with URI "/urlTemplate/{number}/{letter}" and priority of 1
-    And the request URI of "/urlTemplate/1/a"
-    When I create a request object
-    And load the resource
-    Then the loaded resource should have a class of "urlTemplate"
-    And the loaded resource should have a param "number" with the value "1"
-    And the loaded resource should have a param "letter" with the value "a"
-
-  Scenario: Rails route style expression @uri annotations should match
-    Given a resource definition "rails" with URI "/rails/:number/:letter" and priority of 1
-    And the request URI of "/rails/1/a"
-    When I create a request object
-    And load the resource
-    Then the loaded resource should have a class of "rails"
-    And the loaded resource should have a param "number" with the value "1"
-    And the loaded resource should have a param "letter" with the value "a"
-
   Scenario: Querystrings should be ignored from request URIs
     Given the request URI of "/request3?foo=bar"
     When I create a request object
     Then I should see a request URI of "/request3"
-
-  Scenario: To link resources together, I need to know programatically the URL(s) a resource will be available on
-    Given a resource definition "request4" with URI "/request4/:test" and priority of 1
-    When I create a request object
-    Then fetching the URI for the resource "request4" with the parameter "woot" should get "/request4/woot"

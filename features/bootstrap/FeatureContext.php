@@ -7,7 +7,8 @@ use Behat\Behat\Context\ClosuredContextInterface,
 use Behat\Gherkin\Node\PyStringNode,
     Behat\Gherkin\Node\TableNode;
 
-use Tonic\Request,
+use Tonic\Application,
+    Tonic\Request,
     Tonic\Resource,
     Tonic\Response;
 
@@ -17,7 +18,7 @@ use Tonic\Request,
 class FeatureContext extends BehatContext
 {
 
-    private $request, $resource, $response, $exception;
+    private $app, $request, $resource, $response, $exception;
 
     private $createMethod = array();
     private $data;
@@ -47,6 +48,14 @@ class FeatureContext extends BehatContext
     public function theRequestMethodOf($method)
     {
         $_SERVER['REQUEST_METHOD'] = $method;
+    }
+
+    /**
+     * @When /^I create an application object$/
+     */
+    public function iCreateAnApplicationObject()
+    {
+        $this->app = new Application($this->options);
     }
 
     /**
@@ -168,7 +177,7 @@ class '.$className.' extends \Tonic\Resource {
     public function loadTheResource()
     {
         try {
-            $this->resource = $this->request->getResource();
+            $this->resource = $this->app->getResource($this->request);
         } catch (Tonic\Exception $e) {
             $this->exception = get_class($e);
         }
@@ -281,7 +290,7 @@ class '.$className.' extends \Tonic\Resource {
      */
     public function iMountAtTheUri($className, $uriSpace)
     {
-        $this->request->mount($className, $uriSpace);
+        $this->app->mount($className, $uriSpace);
     }
 
     /**
@@ -342,7 +351,7 @@ class '.$className.' extends \Tonic\Resource {
      */
     public function theLoadedResourceShouldRespondToWithTheMethod($className, $methodName)
     {
-        $metadata = $this->request->getResourceMetadata($className);
+        $metadata = $this->app->getResourceMetadata($className);
         if (!isset($metadata['methods'][$methodName])) throw new Exception;
     }
 
@@ -352,7 +361,7 @@ class '.$className.' extends \Tonic\Resource {
     public function fetchingTheUriForTheResourceShouldGet($className, $params, $url)
     {
         $params = explode(':', $params);
-        if ($this->request->uri($className, $params) != $url) throw new Exception;
+        if ($this->app->uri($className, $params) != $url) throw new Exception;
     }
 
     /**

@@ -4,12 +4,13 @@ namespace Tonic;
 
 class Resource {
 
-    protected $request;
+    protected $app, $request;
     public $params;
     protected $responseActions = array();
 
-    function __construct(Request $request, array $urlParams) {
+    function __construct(Application $app, Request $request, array $urlParams) {
 
+        $this->app = $app;
         $this->request = $request;
         $this->params = $urlParams;
 
@@ -29,7 +30,7 @@ class Resource {
     public final function exec($methodName = NULL) {
 
         // get the annotation metadata for this resource
-        $resourceMetadata = $this->request->getResourceMetadata($this);
+        $resourceMetadata = $this->app->getResourceMetadata($this);
 
         $error = new NotAcceptableException;
         $methodPriorities = array();

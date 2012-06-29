@@ -9,11 +9,15 @@ $config = array(
     #'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
 );
 
-$request = new Tonic\Request($config);
+$app = new Tonic\Application($config);
+
+#echo $app;
+
+$request = new Tonic\Request();
 
 #echo $request;
 
-$resource = $request->getResource();
+$resource = $app->getResource($request);
 
 #echo $resource;
 

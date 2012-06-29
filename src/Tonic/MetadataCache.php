@@ -40,4 +40,8 @@ class MetadataCache {
         return file_put_contents($this->filename, serialize($resources));
     }
 
+    function __toString() {
+        return $this->filename;
+    }
+
 }

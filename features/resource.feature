@@ -10,7 +10,8 @@ Feature: HTTP resource object
     And the request URI of "/resource1.json"
     And an "accept" header of 'text/html'
     And the request method of "GET"
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then response should be "method2"
@@ -23,7 +24,8 @@ Feature: HTTP resource object
     And the request method of "POST"
     And the request content type of "application/json"
     And the request data of "xyzzy"
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then response should be "method2"
@@ -35,7 +37,8 @@ Feature: HTTP resource object
     And the request URI of "/resourceLang.json"
     And an "accept language" header of 'nl-nl, nl'
     And the request method of "GET"
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then response should be "method2"
@@ -43,7 +46,8 @@ Feature: HTTP resource object
   Scenario: No resource found
     Given the request URI of "/resourceDoesNotExist"
     And the request method of "GET"
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     Then a "Tonic\NotFoundException" should be thrown
 
@@ -53,7 +57,8 @@ Feature: HTTP resource object
     And the request URI of "/resource3"
     And the request method of "GET"
     And an "accept" header of 'text/html'
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then a "Tonic\NotAcceptableException" should be thrown
@@ -65,7 +70,8 @@ Feature: HTTP resource object
     And the request method of "POST"
     And the request content type of "application/json"
     And the request data of "xyzzy"
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then a "Tonic\UnsupportedMediaTypeException" should be thrown
@@ -75,7 +81,8 @@ Feature: HTTP resource object
     And a resource definition "resource5" with URI "/resource5" and priority of 1
     And the request URI of "/resource5"
     And the request method of "PUT"
-    When I create a request object
+    When I create an application object
+    And I create a request object
     And load the resource
     And execute the resource
     Then a "Tonic\MethodNotAllowedException" should be thrown
@@ -84,5 +91,6 @@ Feature: HTTP resource object
     Given a "GET" resource method "method1" that provides "text/html"
     And a resource definition "parent1" with URI "/parent1" and priority of 1
     And a resource definition "child1" with URI "/child1" and priority of 1
-    When I create a request object
+    When I create an application object
+    And I create a request object
     Then the loaded resource "child1" should respond with the method "method1"
