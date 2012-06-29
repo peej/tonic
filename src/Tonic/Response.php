@@ -2,6 +2,9 @@
 
 namespace Tonic;
 
+/**
+ * Model a HTTP response
+ */
 class Response {
 
     public $code, $body;
@@ -9,6 +12,9 @@ class Response {
         'content-type' => 'text/html'
     );
 
+    /**
+     * HTTP response code constant
+     */
     const OK = 200,
         CREATED = 201,
         NOCONTENT = 204,
@@ -65,19 +71,36 @@ class Response {
         $this->contentLength = strlen($body);
     }
 
+    /**
+     * Get a HTTP response header
+     * @param str $name Header name, hyphens should be converted to camelcase
+     * @return str
+     */
     function __get($name) {
         $name = strtolower(preg_replace('/([A-Z])/', '-$1', $name));
         return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
     }
 
+    /**
+     * Set a HTTP response header
+     * @param str $name Header name, hyphens should be converted to camelcase
+     * @param str $value Header content
+     */
     function __set($name, $value) {
         $this->headers[strtolower(preg_replace('/([A-Z])/', '-$1', $name))] = $value;
     }
 
+    /**
+     * Get the HTTP response message of this response
+     * @return str
+     */
     private function responseMessage() {
         return isset($this->codes[$this->code]) ? $this->codes[$this->code] : '';
     }
 
+    /**
+     * Output the response
+     */
     function output() {
         header('HTTP/1.1 '.$this->code.' '.$this->responseMessage());
         foreach ($this->headers as $name => $value) {

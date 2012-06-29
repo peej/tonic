@@ -2,6 +2,9 @@
 
 namespace Tonic;
 
+/**
+ * Model a HTTP resource
+ */
 class Resource {
 
     protected $app, $request;
@@ -9,13 +12,16 @@ class Resource {
     protected $responseActions = array();
 
     function __construct(Application $app, Request $request, array $urlParams) {
-
         $this->app = $app;
         $this->request = $request;
         $this->params = $urlParams;
-
     }
 
+    /**
+     * Get a URL parameter as defined by this resource and it's URI
+     * @param str $name Name of the parameter
+     * @return str
+     */
     function __get($name) {
         return isset($this->params[$name]) ? $this->params[$name] : NULL;
     }

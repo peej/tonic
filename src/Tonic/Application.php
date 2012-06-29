@@ -7,6 +7,9 @@ namespace Tonic;
  */
 class Application {
 
+    /**
+     * Metadata of the loaded resources
+     */
     private $resources = array();
 
     function __construct($options = array()) {
@@ -17,18 +20,19 @@ class Application {
         }
 
         $cache = isset($options['cache']) ? $options['cache'] : NULL;
-        if ($cache && $cache->isCached()) { // if we've been given a metadata cache, use it
+        if ($cache && $cache->isCached()) { // if we've been given a annotation cache, use it
             $this->resources = $cache->load();
-        } else {
+        } else { // otherwise load from loaded resource files
             if (isset($options['load'])) { // load given resource class files
                 $this->loadResourceFiles($options['load']);
             }
             $this->loadResourceMetadata();
-            if ($cache) {
+            if ($cache) { // save metadata into annotation cache
                 $cache->save($this->resources);
             }
         }
 
+        // set any URI-space mount points we've been given
         if (isset($options['mount']) && is_array($options['mount'])) {
             foreach ($options['mount'] as $namespaceName => $uriSpace) {
                 $this->mount($namespaceName, $uriSpace);
@@ -36,6 +40,10 @@ class Application {
         }
     }
 
+    /**
+     * Include PHP files containing resources in the given filename globs
+     * @paramstr[] $filenames Array of filename globs
+     */
     private function loadResourceFiles($filenames) {
         if (!is_array($filenames)) {
             $filenames = array($filenames);
@@ -48,6 +56,10 @@ class Application {
         }
     }
 
+    /**
+     * Load the metadata for all loaded resource classes
+     * @param str $uriSpace Optional URI-space to mount the resources into
+     */
     public function loadResourceMetadata($uriSpace = NULL) {
         foreach (get_declared_classes() as $className) {
             if (

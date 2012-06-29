@@ -3,7 +3,7 @@
 namespace Tonic;
 
 /**
- * Models a HTTP request
+ * Model a HTTP request
  */
 class Request {
 
@@ -67,6 +67,14 @@ class Request {
         $this->ifNoneMatch = $this->getMatchArray($this->getOption($options, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH'));
     }
 
+    /**
+     * Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default
+     * @param str[] $options
+     * @param str $configVar Name of item to get
+     * @param str $serverVar Name of _SERVER superglobal item to use
+     * @param str $default Fallback value
+     * @return str
+     */
     public function getOption($options, $configVar, $serverVar = NULL, $default = NULL) {
         if (isset($options[$configVar])) {
             return $options[$configVar];
@@ -77,6 +85,11 @@ class Request {
         }
     }
 
+    /**
+     * Fetch the request URI from the server environment
+     * @param str $options
+     * @return str
+     */
     private function getURIFromEnvironment($options) {
         $uri = $this->getOption($options, 'uri');
         if (!$uri) { // use given URI in config options
@@ -110,6 +123,11 @@ class Request {
         return $uri;
     }
 
+    /**
+     * Get accepted content mimetypes from request header
+     * @param str $acceptString
+     * @return str[]
+     */
     private function getAcceptArray($acceptString) {
         $accept = $acceptArray = array();
         foreach (explode(',', strtolower($acceptString)) as $part) {
@@ -132,6 +150,11 @@ class Request {
         return $acceptArray;
     }
 
+    /**
+     * Get if-match data from request header
+     * @param str $matchString
+     * @return str[]
+     */
     private function getMatchArray($matchString) {
         $matches = array();
         foreach (explode(',', $matchString) as $etag) {
