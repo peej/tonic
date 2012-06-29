@@ -43,28 +43,6 @@
             
             <h3>Quick Example</h3>
             
-            <h4>Front controller</h4>
-            <p>Tonic uses the common <a href="http://onlamp.com/pub/a/php/2004/07/08/front_controller.html">front
-            controller pattern</a> to push all required traffic to a single script that then
-            dispatches the request to the correct piece of developer logic to handle the
-            request. The typical dispatcher PHP file looks like:</p>
-            <script type="syntaxhighlighter" class="brush: php"><![CDATA[
-<?php
-
-require_once '../src/Tonic/Autoloader.php';
-
-$request = new Tonic\Request();
-
-$resource = $request->loadResource();
-$response = $resource->exec();
-$response->output();
-
-            ]]></script><p class="caption">web/dispatch.php</p>
-            
-            <h4>Defining resources</h4>
-            <p>With the dispatcher set up and all requests being forwarded to it by the
-            Web server, we can then define a resource class to handle a request to a
-            specific URL:</p>
             <script type="syntaxhighlighter" class="brush: php"><![CDATA[
 <?php
  
@@ -76,6 +54,7 @@ class Hello extends Tonic\Resource {
 
     /**
      * @method GET
+     * @provides text/html
      */
     function sayHello($name = 'World') {
         return 'Hello '.$name;
