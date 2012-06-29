@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
+<meta name="when" content="Fri, 29 Jun 2012 21:52:22 +0000">
 
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rel="start" href="overview-summary.html">
@@ -55,8 +55,11 @@
 <dd>Accepts condition mimetype must match request content type</dd>
 <dt><a href="tonic/resource.html#addResponseAction()">addResponseAction()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
 <dd>Add a function to execute on the response before it is returned</dd>
+<dt><a href="tonic/package-globals.html#app">app()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dt><a href="tonic/exception.html#appendMessage()">appendMessage()</a> - Method in class <a href="tonic/exception.html">Tonic\Exception</a></dt>
 <dd>Append a message onto the existing exception message</dd>
+<dt><a href="tonic/application.html">Application()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dd>A Tonic application</dd>
 <dt><a href="tonic/autoloader.html#autoload()">autoload()</a> - Method in class <a href="tonic/autoloader.html">Tonic\Autoloader</a></dt>
 <dd>Handles autoloading of classes</dd>
 <dt><a href="tonic/autoloader.html">Autoloader()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
@@ -85,10 +88,12 @@
 </dl>
 <h1 id="letterG">G</h1>
 <dl>
-<dt><a href="tonic/request.html#getResource()">getResource()</a> - Method in class <a href="tonic/request.html">Tonic\Request</a></dt>
+<dt><a href="tonic/request.html#getOption()">getOption()</a> - Method in class <a href="tonic/request.html">Tonic\Request</a></dt>
+<dd>Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default</dd>
+<dt><a href="tonic/application.html#getResource()">getResource()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
 <dd>Given the request data and the loaded resource metadata, pick the best matching
  resource to handle the request based on URI and priority.</dd>
-<dt><a href="tonic/request.html#getResourceMetadata()">getResourceMetadata()</a> - Method in class <a href="tonic/request.html">Tonic\Request</a></dt>
+<dt><a href="tonic/application.html#getResourceMetadata()">getResourceMetadata()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
 <dd>Get the already loaded resource annotation metadata</dd>
 </dl>
 <h1 id="letterH">H</h1>
@@ -107,9 +112,13 @@
 </dl>
 <h1 id="letterL">L</h1>
 <dl>
+<dt><a href="tonic/resource.html#lang()">lang()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
+<dd>Lang condition language code must be in request accept lang array, returns a number
+ based on the priority of the match.</dd>
 <dt><a href="tonic/metadatacache.html#load()">load()</a> - Method in class <a href="tonic/metadatacache.html">Tonic\MetadataCache</a></dt>
 <dd>Load the resource metadata from disk</dd>
-<dt><a href="tonic/request.html#loadResourceMetadata()">loadResourceMetadata()</a> - Method in class <a href="tonic/request.html">Tonic\Request</a></dt>
+<dt><a href="tonic/application.html#loadResourceMetadata()">loadResourceMetadata()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
+<dd>Load the metadata for all loaded resource classes</dd>
 </dl>
 <h1 id="letterM">M</h1>
 <dl>
@@ -121,7 +130,7 @@
 <dd>HTTP method condition must match request method</dd>
 <dt><a href="tonic/methodnotallowedexception.html">MethodNotAllowedException()</a> - Exception in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Base exception class for Tonic exceptions</dd>
-<dt><a href="tonic/request.html#mount()">mount()</a> - Method in class <a href="tonic/request.html">Tonic\Request</a></dt>
+<dt><a href="tonic/application.html#mount()">mount()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
 <dd>Add a namespace to a specific URI-space</dd>
 </dl>
 <h1 id="letterN">N</h1>
@@ -137,6 +146,7 @@
 <dd>Condition method for above methods.
 </dd>
 <dt><a href="tonic/response.html#output()">output()</a> - Method in class <a href="tonic/response.html">Tonic\Response</a></dt>
+<dd>Output the response</dd>
 </dl>
 <h1 id="letterP">P</h1>
 <dl>
@@ -148,17 +158,19 @@
 </dl>
 <h1 id="letterR">R</h1>
 <dl>
-<dt><a href="tonic/request.html#readMethodAnnotations()">readMethodAnnotations()</a> - Method in class <a href="tonic/request.html">Tonic\Request</a></dt>
+<dt><a href="tonic/application.html#readMethodAnnotations()">readMethodAnnotations()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
 <dt><a href="tyrell/hello.html#replicants()">replicants()</a> - Method in class <a href="tyrell/hello.html">Tyrell\Hello</a></dt>
 <dd>The @priority annotation makes this method take priority over the above method.
 </dd>
 <dt><a href="tonic/package-globals.html#request">request()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dt><a href="tonic/request.html">Request()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
-<dd>Models a HTTP request</dd>
+<dd>Model a HTTP request</dd>
 <dt><a href="tonic/package-globals.html#resource">resource()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dt><a href="tonic/resource.html">Resource()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
-<dt><a href="tonic/response.html">Response()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dd>Model a HTTP resource</dd>
 <dt><a href="tonic/package-globals.html#response">response()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dt><a href="tonic/response.html">Response()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dd>Model a HTTP response</dd>
 </dl>
 <h1 id="letterS">S</h1>
 <dl>
@@ -171,11 +183,15 @@
 <dd>The @provides annotation makes method only match requests that have a suitable accept
  header or URL extension (ie: /hello.json) and causes the response to automatically
  contain the correct content-type response header.</dd>
+<dt><a href="tyrell/hello.html#sayHelloInFrench()">sayHelloInFrench()</a> - Method in class <a href="tyrell/hello.html">Tyrell\Hello</a></dt>
+<dd></dd>
 </dl>
 <h1 id="letterU">U</h1>
 <dl>
 <dt><a href="tonic/unsupportedmediatypeexception.html">UnsupportedMediaTypeException()</a> - Exception in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Base exception class for Tonic exceptions</dd>
+<dt><a href="tonic/application.html#uri()">uri()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
+<dd>Get the URL for the given resource class</dd>
 </dl>
 <div class="header">
 <h1>Tonic</h1>

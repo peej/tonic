@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Wed, 27 Jun 2012 21:53:54 +0000">
+<meta name="when" content="Fri, 29 Jun 2012 21:52:30 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
 <link rel="start" href="../../../overview-summary.html">
@@ -65,7 +65,7 @@
 <a name="line27"></a>     * response body, or a full Tonic\Response object.
 <a name="line28"></a>     *
 <a name="line29"></a>     * @method GET
-<a name="line30"></a>     * @param  str $name
+<a name="line30"></a>     * @param str $name
 <a name="line31"></a>     * @return str
 <a name="line32"></a>     */</span>
 <a name="line33"></a>    <span style="color: #000000; font-weight: bold;">function</span> sayHello<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'World'</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
@@ -73,70 +73,81 @@
 <a name="line35"></a>    <span style="color: #009900;">&#125;</span>
 <a name="line36"></a>&nbsp;
 <a name="line37"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line38"></a>     * The @priority annotation makes this method take priority over the above method.
-<a name="line39"></a>     *
-<a name="line40"></a>     * The custom @only annotation requires the matching class method to execute without
-<a name="line41"></a>     * throwing an exception allowing the addition of an arbitary condition to this method.
-<a name="line42"></a>     *
-<a name="line43"></a>     * @method GET
-<a name="line44"></a>     * @priority 2
-<a name="line45"></a>     * @only deckard
-<a name="line46"></a>     * @return str
-<a name="line47"></a>     */</span>
-<a name="line48"></a>    <span style="color: #000000; font-weight: bold;">function</span> replicants<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line49"></a>        <span style="color: #b1b100;">return</span> <span style="color: #0000ff;">'Replicants are like any other machine - they\'re either a benefit or a hazard.'</span><span style="color: #339933;">;</span>
-<a name="line50"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line51"></a>&nbsp;
-<a name="line52"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line38"></a>     * @method GET
+<a name="line39"></a>     * @lang fr
+<a name="line40"></a>     * @param str $name
+<a name="line41"></a>     * @return str
+<a name="line42"></a>     */</span>
+<a name="line43"></a>    <span style="color: #000000; font-weight: bold;">function</span> sayHelloInFrench<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'Monde'</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line44"></a>        <span style="color: #b1b100;">return</span> <span style="color: #0000ff;">'Bonjour '</span><span style="color: #339933;">.</span><span style="color: #000088;">$name</span><span style="color: #339933;">;</span>
+<a name="line45"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line46"></a>&nbsp;
+<a name="line47"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line48"></a>     * The @priority annotation makes this method take priority over the above method.
+<a name="line49"></a>     *
+<a name="line50"></a>     * The custom @only annotation requires the matching class method to execute without
+<a name="line51"></a>     * throwing an exception allowing the addition of an arbitary condition to this method.
+<a name="line52"></a>     *
 <a name="line53"></a>     * @method GET
 <a name="line54"></a>     * @priority 2
-<a name="line55"></a>     * @only roy
+<a name="line55"></a>     * @only deckard
 <a name="line56"></a>     * @return str
 <a name="line57"></a>     */</span>
-<a name="line58"></a>    <span style="color: #000000; font-weight: bold;">function</span> iveSeenThings<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line59"></a>        <span style="color: #b1b100;">return</span> <span style="color: #0000ff;">'I\'ve seen things you people wouldn\'t believe.'</span><span style="color: #339933;">;</span>
+<a name="line58"></a>    <span style="color: #000000; font-weight: bold;">function</span> replicants<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line59"></a>        <span style="color: #b1b100;">return</span> <span style="color: #0000ff;">'Replicants are like any other machine - they\'re either a benefit or a hazard.'</span><span style="color: #339933;">;</span>
 <a name="line60"></a>    <span style="color: #009900;">&#125;</span>
 <a name="line61"></a>&nbsp;
 <a name="line62"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line63"></a>     * Condition method for above methods.
-<a name="line64"></a>     *
-<a name="line65"></a>     * Only allow specific :name parameter to access the method
-<a name="line66"></a>     */</span>
-<a name="line67"></a>    <span style="color: #000000; font-weight: bold;">function</span> only<span style="color: #009900;">&#40;</span><span style="color: #000088;">$allowedName</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line68"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$allowedName</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> <a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> ConditionException<span style="color: #339933;">;</span>
-<a name="line69"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line70"></a>&nbsp;
-<a name="line71"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line72"></a>     * The @provides annotation makes method only match requests that have a suitable accept
-<a name="line73"></a>     * header or URL extension (ie: /hello.json) and causes the response to automatically
-<a name="line74"></a>     * contain the correct content-type response header.
-<a name="line75"></a>     *
-<a name="line76"></a>     * @method GET
-<a name="line77"></a>     * @provides application/json
-<a name="line78"></a>     * @return Tonic\Response
-<a name="line79"></a>     */</span>
-<a name="line80"></a>    <span style="color: #000000; font-weight: bold;">function</span> sayHelloComputer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line81"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span>200<span style="color: #339933;">,</span> <a href="http://www.php.net/json_encode"><span style="color: #990000;">json_encode</span></a><span style="color: #009900;">&#40;</span><a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line82"></a>            <span style="color: #0000ff;">'hello'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span>
-<a name="line83"></a>        <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line84"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line85"></a>&nbsp;
-<a name="line86"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line87"></a>     * All HTTP methods are supported. The @accepts annotation makes method only match if the
-<a name="line88"></a>     * request body content-type matches.
-<a name="line89"></a>     *
-<a name="line90"></a>     * curl -i -H &quot;Content-Type: application/json&quot; -X POST -d '{&quot;hello&quot;: &quot;computer&quot;}' http://localhost/www/tonic/web/hello.json
-<a name="line91"></a>     *
-<a name="line92"></a>     * @method POST
-<a name="line93"></a>     * @accepts application/json
-<a name="line94"></a>     * @provides application/json
-<a name="line95"></a>     * @return Response
-<a name="line96"></a>     */</span>
-<a name="line97"></a>    <span style="color: #000000; font-weight: bold;">function</span> feedTheComputer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line98"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span>200<span style="color: #339933;">,</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line99"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line100"></a>&nbsp;
-<a name="line101"></a><span style="color: #009900;">&#125;</span></pre>
+<a name="line63"></a>     * @method GET
+<a name="line64"></a>     * @priority 2
+<a name="line65"></a>     * @only roy
+<a name="line66"></a>     * @return str
+<a name="line67"></a>     */</span>
+<a name="line68"></a>    <span style="color: #000000; font-weight: bold;">function</span> iveSeenThings<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line69"></a>        <span style="color: #b1b100;">return</span> <span style="color: #0000ff;">'I\'ve seen things you people wouldn\'t believe.'</span><span style="color: #339933;">;</span>
+<a name="line70"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line71"></a>&nbsp;
+<a name="line72"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line73"></a>     * Condition method for above methods.
+<a name="line74"></a>     *
+<a name="line75"></a>     * Only allow specific :name parameter to access the method
+<a name="line76"></a>     */</span>
+<a name="line77"></a>    <span style="color: #000000; font-weight: bold;">function</span> only<span style="color: #009900;">&#40;</span><span style="color: #000088;">$allowedName</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line78"></a>        <span style="color: #b1b100;">if</span> <span style="color: #009900;">&#40;</span><a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$allowedName</span><span style="color: #009900;">&#41;</span> <span style="color: #339933;">!=</span> <a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> throw <span style="color: #000000; font-weight: bold;">new</span> ConditionException<span style="color: #339933;">;</span>
+<a name="line79"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line80"></a>&nbsp;
+<a name="line81"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line82"></a>     * The @provides annotation makes method only match requests that have a suitable accept
+<a name="line83"></a>     * header or URL extension (ie: /hello.json) and causes the response to automatically
+<a name="line84"></a>     * contain the correct content-type response header.
+<a name="line85"></a>     *
+<a name="line86"></a>     * @method GET
+<a name="line87"></a>     * @provides application/json
+<a name="line88"></a>     * @return Tonic\Response
+<a name="line89"></a>     */</span>
+<a name="line90"></a>    <span style="color: #000000; font-weight: bold;">function</span> sayHelloComputer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line91"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span>200<span style="color: #339933;">,</span> <a href="http://www.php.net/json_encode"><span style="color: #990000;">json_encode</span></a><span style="color: #009900;">&#40;</span><a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line92"></a>            <span style="color: #0000ff;">'hello'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span><span style="color: #339933;">,</span>
+<a name="line93"></a>            <span style="color: #0000ff;">'url'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">uri</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">,</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">name</span><span style="color: #009900;">&#41;</span>
+<a name="line94"></a>        <span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line95"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line96"></a>&nbsp;
+<a name="line97"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line98"></a>     * All HTTP methods are supported. The @accepts annotation makes method only match if the
+<a name="line99"></a>     * request body content-type matches.
+<a name="line100"></a>     *
+<a name="line101"></a>     * curl -i -H &quot;Content-Type: application/json&quot; -X POST -d '{&quot;hello&quot;: &quot;computer&quot;}' http://localhost/www/tonic/web/hello.json
+<a name="line102"></a>     *
+<a name="line103"></a>     * @method POST
+<a name="line104"></a>     * @accepts application/json
+<a name="line105"></a>     * @provides application/json
+<a name="line106"></a>     * @return Response
+<a name="line107"></a>     */</span>
+<a name="line108"></a>    <span style="color: #000000; font-weight: bold;">function</span> feedTheComputer<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line109"></a>        <span style="color: #b1b100;">return</span> <span style="color: #000000; font-weight: bold;">new</span> Response<span style="color: #009900;">&#40;</span>200<span style="color: #339933;">,</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">data</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line110"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line111"></a>&nbsp;
+<a name="line112"></a><span style="color: #009900;">&#125;</span></pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

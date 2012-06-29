@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Wed, 27 Jun 2012 21:53:52 +0000">
+<meta name="when" content="Fri, 29 Jun 2012 21:52:28 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
 <link rel="start" href="../../../overview-summary.html">
@@ -40,110 +40,133 @@
 <a name="line2"></a>&nbsp;
 <a name="line3"></a><span style="color: #000000; font-weight: bold;">namespace</span> Tonic<span style="color: #339933;">;</span>
 <a name="line4"></a>&nbsp;
-<a name="line5"></a><span style="color: #000000; font-weight: bold;">class</span> Response <span style="color: #009900;">&#123;</span>
-<a name="line6"></a>&nbsp;
-<a name="line7"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$code</span><span style="color: #339933;">,</span> <span style="color: #000088;">$body</span><span style="color: #339933;">;</span>
-<a name="line8"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$headers</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line9"></a>        <span style="color: #0000ff;">'content-type'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'text/html'</span>
-<a name="line10"></a>    <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line11"></a>&nbsp;
-<a name="line12"></a>    <span style="color: #000000; font-weight: bold;">const</span> OK <span style="color: #339933;">=</span> 200<span style="color: #339933;">,</span>
-<a name="line13"></a>        CREATED <span style="color: #339933;">=</span> 201<span style="color: #339933;">,</span>
-<a name="line14"></a>        NOCONTENT <span style="color: #339933;">=</span> 204<span style="color: #339933;">,</span>
-<a name="line15"></a>        MOVEDPERMANENTLY <span style="color: #339933;">=</span> 301<span style="color: #339933;">,</span>
-<a name="line16"></a>        FOUND <span style="color: #339933;">=</span> 302<span style="color: #339933;">,</span>
-<a name="line17"></a>        SEEOTHER <span style="color: #339933;">=</span> 303<span style="color: #339933;">,</span>
-<a name="line18"></a>        NOTMODIFIED <span style="color: #339933;">=</span> 304<span style="color: #339933;">,</span>
-<a name="line19"></a>        TEMPORARYREDIRECT <span style="color: #339933;">=</span> 307<span style="color: #339933;">,</span>
-<a name="line20"></a>        BADREQUEST <span style="color: #339933;">=</span> 400<span style="color: #339933;">,</span>
-<a name="line21"></a>        UNAUTHORIZED <span style="color: #339933;">=</span> 401<span style="color: #339933;">,</span> 
-<a name="line22"></a>        FORBIDDEN <span style="color: #339933;">=</span> 403<span style="color: #339933;">,</span> 
-<a name="line23"></a>        NOTFOUND <span style="color: #339933;">=</span> 404<span style="color: #339933;">,</span> 
-<a name="line24"></a>        METHODNOTALLOWED <span style="color: #339933;">=</span> 405<span style="color: #339933;">,</span>
-<a name="line25"></a>        NOTACCEPTABLE <span style="color: #339933;">=</span> 406<span style="color: #339933;">,</span>
-<a name="line26"></a>        GONE <span style="color: #339933;">=</span> 410<span style="color: #339933;">,</span>
-<a name="line27"></a>        LENGTHREQUIRED <span style="color: #339933;">=</span> 411<span style="color: #339933;">,</span>
-<a name="line28"></a>        PRECONDITIONFAILED <span style="color: #339933;">=</span> 412<span style="color: #339933;">,</span>
-<a name="line29"></a>        UNSUPPORTEDMEDIATYPE <span style="color: #339933;">=</span> 415<span style="color: #339933;">,</span>
-<a name="line30"></a>        IMATEAPOT <span style="color: #339933;">=</span> 418<span style="color: #339933;">,</span>
-<a name="line31"></a>        ENHANCEYOURCALM <span style="color: #339933;">=</span> 420<span style="color: #339933;">,</span>
-<a name="line32"></a>        INTERNALSERVERERROR <span style="color: #339933;">=</span> <span style="color: #cc66cc;">500</span><span style="color: #339933;">;</span>
-<a name="line33"></a>&nbsp;
-<a name="line34"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line35"></a>     * Map of HTTP response codes
-<a name="line36"></a>     * @var str[]
-<a name="line37"></a>     */</span>
-<a name="line38"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$codes</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
-<a name="line39"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">OK</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'OK'</span><span style="color: #339933;">,</span>
-<a name="line40"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">CREATED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Created'</span><span style="color: #339933;">,</span>
-<a name="line41"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOCONTENT</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'No Content'</span><span style="color: #339933;">,</span> 
-<a name="line42"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">MOVEDPERMANENTLY</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Moved Permanently'</span><span style="color: #339933;">,</span>
-<a name="line43"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">FOUND</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Found'</span><span style="color: #339933;">,</span> 
-<a name="line44"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">SEEOTHER</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'See Other'</span><span style="color: #339933;">,</span> 
-<a name="line45"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTMODIFIED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Not Modified'</span><span style="color: #339933;">,</span> 
-<a name="line46"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">TEMPORARYREDIRECT</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Temporary Redirect'</span><span style="color: #339933;">,</span> 
-<a name="line47"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">BADREQUEST</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Bad Request'</span><span style="color: #339933;">,</span> 
-<a name="line48"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">UNAUTHORIZED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Unauthorized'</span><span style="color: #339933;">,</span> 
-<a name="line49"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">FORBIDDEN</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Forbidden'</span><span style="color: #339933;">,</span> 
-<a name="line50"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTFOUND</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Not Found'</span><span style="color: #339933;">,</span> 
-<a name="line51"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">METHODNOTALLOWED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Method Not Allowed'</span><span style="color: #339933;">,</span>
-<a name="line52"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTACCEPTABLE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Not Acceptable'</span><span style="color: #339933;">,</span>
-<a name="line53"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">GONE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Gone'</span><span style="color: #339933;">,</span>
-<a name="line54"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">LENGTHREQUIRED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Length Required'</span><span style="color: #339933;">,</span>
-<a name="line55"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">PRECONDITIONFAILED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Precondition Failed'</span><span style="color: #339933;">,</span>
-<a name="line56"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">UNSUPPORTEDMEDIATYPE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Unsupported Media Type'</span><span style="color: #339933;">,</span>
-<a name="line57"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">IMATEAPOT</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'I\'m A Teapot'</span><span style="color: #339933;">,</span>
-<a name="line58"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">UNSUPPORTEDMEDIATYPE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Enhance Your Calm'</span><span style="color: #339933;">,</span>
-<a name="line59"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">INTERNALSERVERERROR</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Internal Server Error'</span>
-<a name="line60"></a>    <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line61"></a>&nbsp;
-<a name="line62"></a>    <span style="color: #000000; font-weight: bold;">function</span> __construct<span style="color: #009900;">&#40;</span><span style="color: #000088;">$code</span> <span style="color: #339933;">=</span> 204<span style="color: #339933;">,</span> <span style="color: #000088;">$body</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">''</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line63"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$code</span><span style="color: #339933;">;</span>
-<a name="line64"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$body</span><span style="color: #339933;">;</span>
-<a name="line65"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">contentLength</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/strlen"><span style="color: #990000;">strlen</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$body</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line66"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line5"></a><span style="color: #009933; font-style: italic;">/**
+<a name="line6"></a> * Model a HTTP response
+<a name="line7"></a> */</span>
+<a name="line8"></a><span style="color: #000000; font-weight: bold;">class</span> Response <span style="color: #009900;">&#123;</span>
+<a name="line9"></a>&nbsp;
+<a name="line10"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000088;">$code</span><span style="color: #339933;">,</span> <span style="color: #000088;">$body</span><span style="color: #339933;">;</span>
+<a name="line11"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$headers</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line12"></a>        <span style="color: #0000ff;">'content-type'</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'text/html'</span>
+<a name="line13"></a>    <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line14"></a>&nbsp;
+<a name="line15"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line16"></a>     * HTTP response code constant
+<a name="line17"></a>     */</span>
+<a name="line18"></a>    <span style="color: #000000; font-weight: bold;">const</span> OK <span style="color: #339933;">=</span> 200<span style="color: #339933;">,</span>
+<a name="line19"></a>        CREATED <span style="color: #339933;">=</span> 201<span style="color: #339933;">,</span>
+<a name="line20"></a>        NOCONTENT <span style="color: #339933;">=</span> 204<span style="color: #339933;">,</span>
+<a name="line21"></a>        MOVEDPERMANENTLY <span style="color: #339933;">=</span> 301<span style="color: #339933;">,</span>
+<a name="line22"></a>        FOUND <span style="color: #339933;">=</span> 302<span style="color: #339933;">,</span>
+<a name="line23"></a>        SEEOTHER <span style="color: #339933;">=</span> 303<span style="color: #339933;">,</span>
+<a name="line24"></a>        NOTMODIFIED <span style="color: #339933;">=</span> 304<span style="color: #339933;">,</span>
+<a name="line25"></a>        TEMPORARYREDIRECT <span style="color: #339933;">=</span> 307<span style="color: #339933;">,</span>
+<a name="line26"></a>        BADREQUEST <span style="color: #339933;">=</span> 400<span style="color: #339933;">,</span>
+<a name="line27"></a>        UNAUTHORIZED <span style="color: #339933;">=</span> 401<span style="color: #339933;">,</span> 
+<a name="line28"></a>        FORBIDDEN <span style="color: #339933;">=</span> 403<span style="color: #339933;">,</span> 
+<a name="line29"></a>        NOTFOUND <span style="color: #339933;">=</span> 404<span style="color: #339933;">,</span> 
+<a name="line30"></a>        METHODNOTALLOWED <span style="color: #339933;">=</span> 405<span style="color: #339933;">,</span>
+<a name="line31"></a>        NOTACCEPTABLE <span style="color: #339933;">=</span> 406<span style="color: #339933;">,</span>
+<a name="line32"></a>        GONE <span style="color: #339933;">=</span> 410<span style="color: #339933;">,</span>
+<a name="line33"></a>        LENGTHREQUIRED <span style="color: #339933;">=</span> 411<span style="color: #339933;">,</span>
+<a name="line34"></a>        PRECONDITIONFAILED <span style="color: #339933;">=</span> 412<span style="color: #339933;">,</span>
+<a name="line35"></a>        UNSUPPORTEDMEDIATYPE <span style="color: #339933;">=</span> 415<span style="color: #339933;">,</span>
+<a name="line36"></a>        IMATEAPOT <span style="color: #339933;">=</span> 418<span style="color: #339933;">,</span>
+<a name="line37"></a>        ENHANCEYOURCALM <span style="color: #339933;">=</span> 420<span style="color: #339933;">,</span>
+<a name="line38"></a>        INTERNALSERVERERROR <span style="color: #339933;">=</span> <span style="color: #cc66cc;">500</span><span style="color: #339933;">;</span>
+<a name="line39"></a>&nbsp;
+<a name="line40"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line41"></a>     * Map of HTTP response codes
+<a name="line42"></a>     * @var str[]
+<a name="line43"></a>     */</span>
+<a name="line44"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000088;">$codes</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span>
+<a name="line45"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">OK</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'OK'</span><span style="color: #339933;">,</span>
+<a name="line46"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">CREATED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Created'</span><span style="color: #339933;">,</span>
+<a name="line47"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOCONTENT</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'No Content'</span><span style="color: #339933;">,</span> 
+<a name="line48"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">MOVEDPERMANENTLY</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Moved Permanently'</span><span style="color: #339933;">,</span>
+<a name="line49"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">FOUND</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Found'</span><span style="color: #339933;">,</span> 
+<a name="line50"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">SEEOTHER</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'See Other'</span><span style="color: #339933;">,</span> 
+<a name="line51"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTMODIFIED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Not Modified'</span><span style="color: #339933;">,</span> 
+<a name="line52"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">TEMPORARYREDIRECT</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Temporary Redirect'</span><span style="color: #339933;">,</span> 
+<a name="line53"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">BADREQUEST</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Bad Request'</span><span style="color: #339933;">,</span> 
+<a name="line54"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">UNAUTHORIZED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Unauthorized'</span><span style="color: #339933;">,</span> 
+<a name="line55"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">FORBIDDEN</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Forbidden'</span><span style="color: #339933;">,</span> 
+<a name="line56"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTFOUND</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Not Found'</span><span style="color: #339933;">,</span> 
+<a name="line57"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">METHODNOTALLOWED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Method Not Allowed'</span><span style="color: #339933;">,</span>
+<a name="line58"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">NOTACCEPTABLE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Not Acceptable'</span><span style="color: #339933;">,</span>
+<a name="line59"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">GONE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Gone'</span><span style="color: #339933;">,</span>
+<a name="line60"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">LENGTHREQUIRED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Length Required'</span><span style="color: #339933;">,</span>
+<a name="line61"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">PRECONDITIONFAILED</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Precondition Failed'</span><span style="color: #339933;">,</span>
+<a name="line62"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">UNSUPPORTEDMEDIATYPE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Unsupported Media Type'</span><span style="color: #339933;">,</span>
+<a name="line63"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">IMATEAPOT</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'I\'m A Teapot'</span><span style="color: #339933;">,</span>
+<a name="line64"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">UNSUPPORTEDMEDIATYPE</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Enhance Your Calm'</span><span style="color: #339933;">,</span>
+<a name="line65"></a>        Response<span style="color: #339933;">::</span><span style="color: #004000;">INTERNALSERVERERROR</span> <span style="color: #339933;">=&gt;</span> <span style="color: #0000ff;">'Internal Server Error'</span>
+<a name="line66"></a>    <span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line67"></a>&nbsp;
-<a name="line68"></a>    <span style="color: #000000; font-weight: bold;">function</span> __get<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line69"></a>        <span style="color: #000088;">$name</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><a href="http://www.php.net/preg_replace"><span style="color: #990000;">preg_replace</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/([A-Z])/'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'-$1'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$name</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line70"></a>        <span style="color: #b1b100;">return</span> <a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> ? <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">:</span> <span style="color: #009900; font-weight: bold;">NULL</span><span style="color: #339933;">;</span>
-<a name="line71"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line72"></a>&nbsp;
-<a name="line73"></a>    <span style="color: #000000; font-weight: bold;">function</span> __set<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line74"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span><span style="color: #009900;">&#91;</span><a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><a href="http://www.php.net/preg_replace"><span style="color: #990000;">preg_replace</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/([A-Z])/'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'-$1'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$name</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$value</span><span style="color: #339933;">;</span>
-<a name="line75"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line76"></a>&nbsp;
-<a name="line77"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000000; font-weight: bold;">function</span> responseMessage<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line78"></a>        <span style="color: #b1b100;">return</span> <a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">codes</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> ? <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">codes</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">:</span> <span style="color: #0000ff;">''</span><span style="color: #339933;">;</span>
-<a name="line79"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line80"></a>&nbsp;
-<a name="line81"></a>    <span style="color: #000000; font-weight: bold;">function</span> output<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line82"></a>        <a href="http://www.php.net/header"><span style="color: #990000;">header</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'HTTP/1.1 '</span><span style="color: #339933;">.</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #339933;">.</span><span style="color: #0000ff;">' '</span><span style="color: #339933;">.</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">responseMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line83"></a>        <span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$name</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line84"></a>            <a href="http://www.php.net/header"><span style="color: #990000;">header</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">.</span><span style="color: #0000ff;">': '</span><span style="color: #339933;">.</span><span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line85"></a>        <span style="color: #009900;">&#125;</span>
-<a name="line86"></a>        <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span><span style="color: #339933;">;</span>
-<a name="line87"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line88"></a>&nbsp;
-<a name="line89"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> __toString<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line90"></a>        <span style="color: #000088;">$code</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #339933;">.</span><span style="color: #0000ff;">' '</span><span style="color: #339933;">.</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">responseMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line91"></a>        <span style="color: #000088;">$headers</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line92"></a>        <span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$name</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line93"></a>            <span style="color: #000088;">$headers</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span>  <span style="color: #339933;">=</span> <span style="color: #000088;">$name</span><span style="color: #339933;">.</span><span style="color: #0000ff;">': '</span><span style="color: #339933;">.</span><span style="color: #000088;">$value</span><span style="color: #339933;">;</span>
-<a name="line94"></a>        <span style="color: #009900;">&#125;</span>
-<a name="line95"></a>        <span style="color: #000088;">$headers</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/join"><span style="color: #990000;">join</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&quot;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$headers</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line96"></a>        <span style="color: #b1b100;">return</span> <span style="color: #0000cc; font-style: italic;">&lt;&lt;&lt;EOF
-<a name="line97"></a>==============
-<a name="line98"></a>Tonic\Response
-<a name="line99"></a>==============
-<a name="line100"></a>Code: $code
-<a name="line101"></a>Headers:
-<a name="line102"></a>\t$headers
-<a name="line103"></a>Body: $this-&gt;body
-<a name="line104"></a>&nbsp;
-<a name="line105"></a>EOF</span><span style="color: #339933;">;</span>
-<a name="line106"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line107"></a>&nbsp;
-<a name="line108"></a><span style="color: #009900;">&#125;</span></pre>
+<a name="line68"></a>    <span style="color: #000000; font-weight: bold;">function</span> __construct<span style="color: #009900;">&#40;</span><span style="color: #000088;">$code</span> <span style="color: #339933;">=</span> 204<span style="color: #339933;">,</span> <span style="color: #000088;">$body</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">''</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line69"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$code</span><span style="color: #339933;">;</span>
+<a name="line70"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$body</span><span style="color: #339933;">;</span>
+<a name="line71"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">contentLength</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/strlen"><span style="color: #990000;">strlen</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$body</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line72"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line73"></a>&nbsp;
+<a name="line74"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line75"></a>     * Get a HTTP response header
+<a name="line76"></a>     * @param str $name Header name, hyphens should be converted to camelcase
+<a name="line77"></a>     * @return str
+<a name="line78"></a>     */</span>
+<a name="line79"></a>    <span style="color: #000000; font-weight: bold;">function</span> __get<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line80"></a>        <span style="color: #000088;">$name</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><a href="http://www.php.net/preg_replace"><span style="color: #990000;">preg_replace</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/([A-Z])/'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'-$1'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$name</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line81"></a>        <span style="color: #b1b100;">return</span> <a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> ? <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$name</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">:</span> <span style="color: #009900; font-weight: bold;">NULL</span><span style="color: #339933;">;</span>
+<a name="line82"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line83"></a>&nbsp;
+<a name="line84"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line85"></a>     * Set a HTTP response header
+<a name="line86"></a>     * @param str $name Header name, hyphens should be converted to camelcase
+<a name="line87"></a>     * @param str $value Header content
+<a name="line88"></a>     */</span>
+<a name="line89"></a>    <span style="color: #000000; font-weight: bold;">function</span> __set<span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">,</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line90"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span><span style="color: #009900;">&#91;</span><a href="http://www.php.net/strtolower"><span style="color: #990000;">strtolower</span></a><span style="color: #009900;">&#40;</span><a href="http://www.php.net/preg_replace"><span style="color: #990000;">preg_replace</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'/([A-Z])/'</span><span style="color: #339933;">,</span> <span style="color: #0000ff;">'-$1'</span><span style="color: #339933;">,</span> <span style="color: #000088;">$name</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$value</span><span style="color: #339933;">;</span>
+<a name="line91"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line92"></a>&nbsp;
+<a name="line93"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line94"></a>     * Get the HTTP response message of this response
+<a name="line95"></a>     * @return str
+<a name="line96"></a>     */</span>
+<a name="line97"></a>    <span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000000; font-weight: bold;">function</span> responseMessage<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line98"></a>        <span style="color: #b1b100;">return</span> <a href="http://www.php.net/isset"><span style="color: #990000;">isset</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">codes</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #009900;">&#93;</span><span style="color: #009900;">&#41;</span> ? <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">codes</span><span style="color: #009900;">&#91;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #009900;">&#93;</span> <span style="color: #339933;">:</span> <span style="color: #0000ff;">''</span><span style="color: #339933;">;</span>
+<a name="line99"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line100"></a>&nbsp;
+<a name="line101"></a>    <span style="color: #009933; font-style: italic;">/**
+<a name="line102"></a>     * Output the response
+<a name="line103"></a>     */</span>
+<a name="line104"></a>    <span style="color: #000000; font-weight: bold;">function</span> output<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line105"></a>        <a href="http://www.php.net/header"><span style="color: #990000;">header</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">'HTTP/1.1 '</span><span style="color: #339933;">.</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #339933;">.</span><span style="color: #0000ff;">' '</span><span style="color: #339933;">.</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">responseMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line106"></a>        <span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$name</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line107"></a>            <a href="http://www.php.net/header"><span style="color: #990000;">header</span></a><span style="color: #009900;">&#40;</span><span style="color: #000088;">$name</span><span style="color: #339933;">.</span><span style="color: #0000ff;">': '</span><span style="color: #339933;">.</span><span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line108"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line109"></a>        <span style="color: #b1b100;">echo</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">body</span><span style="color: #339933;">;</span>
+<a name="line110"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line111"></a>&nbsp;
+<a name="line112"></a>    <span style="color: #000000; font-weight: bold;">public</span> <span style="color: #000000; font-weight: bold;">function</span> __toString<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line113"></a>        <span style="color: #000088;">$code</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">code</span><span style="color: #339933;">.</span><span style="color: #0000ff;">' '</span><span style="color: #339933;">.</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">responseMessage</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line114"></a>        <span style="color: #000088;">$headers</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/array"><span style="color: #990000;">array</span></a><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line115"></a>        <span style="color: #b1b100;">foreach</span> <span style="color: #009900;">&#40;</span><span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">headers</span> <span style="color: #b1b100;">as</span> <span style="color: #000088;">$name</span> <span style="color: #339933;">=&gt;</span> <span style="color: #000088;">$value</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
+<a name="line116"></a>            <span style="color: #000088;">$headers</span><span style="color: #009900;">&#91;</span><span style="color: #009900;">&#93;</span>  <span style="color: #339933;">=</span> <span style="color: #000088;">$name</span><span style="color: #339933;">.</span><span style="color: #0000ff;">': '</span><span style="color: #339933;">.</span><span style="color: #000088;">$value</span><span style="color: #339933;">;</span>
+<a name="line117"></a>        <span style="color: #009900;">&#125;</span>
+<a name="line118"></a>        <span style="color: #000088;">$headers</span> <span style="color: #339933;">=</span> <a href="http://www.php.net/join"><span style="color: #990000;">join</span></a><span style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;<span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\t</span>&quot;</span><span style="color: #339933;">,</span> <span style="color: #000088;">$headers</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line119"></a>        <span style="color: #b1b100;">return</span> <span style="color: #0000cc; font-style: italic;">&lt;&lt;&lt;EOF
+<a name="line120"></a>==============
+<a name="line121"></a>Tonic\Response
+<a name="line122"></a>==============
+<a name="line123"></a>Code: $code
+<a name="line124"></a>Headers:
+<a name="line125"></a>\t$headers
+<a name="line126"></a>Body: $this-&gt;body
+<a name="line127"></a>&nbsp;
+<a name="line128"></a>EOF</span><span style="color: #339933;">;</span>
+<a name="line129"></a>    <span style="color: #009900;">&#125;</span>
+<a name="line130"></a>&nbsp;
+<a name="line131"></a><span style="color: #009900;">&#125;</span></pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

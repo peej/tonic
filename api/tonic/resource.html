@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
+<meta name="when" content="Fri, 29 Jun 2012 21:52:21 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -41,7 +41,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <div class="qualifiedName">Tonic\Resource</div>
-<a href="../source/src/tonic/resource.php.html#line5" class="location">src/Tonic/Resource.php at line 5</a>
+<a href="../source/src/tonic/resource.php.html#line8" class="location">src/Tonic/Resource.php at line 8</a>
 
 <h1>Class Resource</h1>
 
@@ -55,6 +55,8 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <p class="signature">public  class <strong>Resource</strong></p>
+
+<div class="comment" id="overview_description"><p>Model a HTTP resource</p></div>
 
 <hr>
 
@@ -70,7 +72,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Constructor Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#__construct()">__construct</a>(<a href="../tonic/request.html">Request</a> request, mixed urlParams)</p></td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(<a href="../tonic/application.html">Application</a> app, <a href="../tonic/request.html">Request</a> request, mixed urlParams)</p></td>
 </tr>
 </table>
 
@@ -103,13 +105,18 @@ based upon the request and then call it.</p></td>
 based on the priority of the match.</p></td>
 </tr>
 <tr>
+<td class="type">protected  int</td>
+<td class="description"><p class="name"><a href="#lang()">lang</a>(str language)</p><p class="description">Lang condition language code must be in request accept lang array, returns a number
+based on the priority of the match.</p></td>
+</tr>
+<tr>
 <td class="type">protected  void</td>
 <td class="description"><p class="name"><a href="#cache()">cache</a>(int length)</p><p class="description">Set cache control header on response</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Field Detail</h2>
-<a href="../source/src/tonic/resource.php.html#line8" class="location">src/Tonic/Resource.php at line 8</a>
+<a href="../source/src/tonic/resource.php.html#line11" class="location">src/Tonic/Resource.php at line 11</a>
 
 <h3 id="params">params</h3>
 <code class="signature">public  mixed <strong>$params</strong></code>
@@ -119,17 +126,17 @@ based on the priority of the match.</p></td>
 <hr>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/src/tonic/resource.php.html#line11" class="location">src/Tonic/Resource.php at line 11</a>
+<a href="../source/src/tonic/resource.php.html#line14" class="location">src/Tonic/Resource.php at line 14</a>
 
 <h3 id="__construct()">__construct</h3>
-<code class="signature">public  void <strong>__construct</strong>(<a href="../tonic/request.html">Request</a> request, mixed urlParams)</code>
+<code class="signature">public  void <strong>__construct</strong>(<a href="../tonic/application.html">Application</a> app, <a href="../tonic/request.html">Request</a> request, mixed urlParams)</code>
 <div class="details">
 </div>
 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/src/tonic/resource.php.html#line29" class="location">src/Tonic/Resource.php at line 29</a>
+<a href="../source/src/tonic/resource.php.html#line36" class="location">src/Tonic/Resource.php at line 36</a>
 
 <h3 id="exec()">exec</h3>
 <code class="signature">public final  <a href="../tonic/response.html">Response</a> <strong>exec</strong>(str methodName)</code>
@@ -143,7 +150,7 @@ based upon the request and then call it.</p><dl>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line102" class="location">src/Tonic/Resource.php at line 102</a>
+<a href="../source/src/tonic/resource.php.html#line109" class="location">src/Tonic/Resource.php at line 109</a>
 
 <h3 id="addResponseAction()">addResponseAction</h3>
 <code class="signature">protected final  void <strong>addResponseAction</strong>(callable action)</code>
@@ -152,7 +159,7 @@ based upon the request and then call it.</p><dl>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line112" class="location">src/Tonic/Resource.php at line 112</a>
+<a href="../source/src/tonic/resource.php.html#line119" class="location">src/Tonic/Resource.php at line 119</a>
 
 <h3 id="method()">method</h3>
 <code class="signature">protected final  void <strong>method</strong>(str method)</code>
@@ -161,7 +168,7 @@ based upon the request and then call it.</p><dl>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line124" class="location">src/Tonic/Resource.php at line 124</a>
+<a href="../source/src/tonic/resource.php.html#line131" class="location">src/Tonic/Resource.php at line 131</a>
 
 <h3 id="priority()">priority</h3>
 <code class="signature">protected final  void <strong>priority</strong>(int priority)</code>
@@ -170,7 +177,7 @@ based upon the request and then call it.</p><dl>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line132" class="location">src/Tonic/Resource.php at line 132</a>
+<a href="../source/src/tonic/resource.php.html#line139" class="location">src/Tonic/Resource.php at line 139</a>
 
 <h3 id="accepts()">accepts</h3>
 <code class="signature">protected  void <strong>accepts</strong>(str mimetype)</code>
@@ -179,7 +186,7 @@ based upon the request and then call it.</p><dl>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line143" class="location">src/Tonic/Resource.php at line 143</a>
+<a href="../source/src/tonic/resource.php.html#line150" class="location">src/Tonic/Resource.php at line 150</a>
 
 <h3 id="provides()">provides</h3>
 <code class="signature">protected  int <strong>provides</strong>(str mimetype)</code>
@@ -189,7 +196,17 @@ based on the priority of the match.</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line157" class="location">src/Tonic/Resource.php at line 157</a>
+<a href="../source/src/tonic/resource.php.html#line166" class="location">src/Tonic/Resource.php at line 166</a>
+
+<h3 id="lang()">lang</h3>
+<code class="signature">protected  int <strong>lang</strong>(str language)</code>
+<div class="details">
+<p>Lang condition language code must be in request accept lang array, returns a number
+based on the priority of the match.</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/resource.php.html#line177" class="location">src/Tonic/Resource.php at line 177</a>
 
 <h3 id="cache()">cache</h3>
 <code class="signature">protected  void <strong>cache</strong>(int length)</code>

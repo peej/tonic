@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Wed, 27 Jun 2012 21:53:54 +0000">
+<meta name="when" content="Fri, 29 Jun 2012 21:52:30 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
 <link rel="start" href="../../overview-summary.html">
@@ -47,20 +47,24 @@
 <a name="line9"></a></span>    <span style="color: #666666; font-style: italic;">#'cache' =&gt; new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
 <a name="line10"></a></span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line11"></a>&nbsp;
-<a name="line12"></a><span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Tonic\Request<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line12"></a><span style="color: #000088;">$app</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Tonic\Application<span style="color: #009900;">&#40;</span><span style="color: #000088;">$config</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line13"></a>&nbsp;
-<a name="line14"></a><span style="color: #666666; font-style: italic;">#echo $request;
+<a name="line14"></a><span style="color: #666666; font-style: italic;">#echo $app;
 <a name="line15"></a></span>
-<a name="line16"></a><span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$request</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getResource</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line16"></a><span style="color: #000088;">$request</span> <span style="color: #339933;">=</span> <span style="color: #000000; font-weight: bold;">new</span> Tonic\Request<span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line17"></a>&nbsp;
-<a name="line18"></a><span style="color: #666666; font-style: italic;">#echo $resource;
+<a name="line18"></a><span style="color: #666666; font-style: italic;">#echo $request;
 <a name="line19"></a></span>
-<a name="line20"></a><span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line20"></a><span style="color: #000088;">$resource</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$app</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">getResource</span><span style="color: #009900;">&#40;</span><span style="color: #000088;">$request</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
 <a name="line21"></a>&nbsp;
-<a name="line22"></a><span style="color: #666666; font-style: italic;">#echo $response;
+<a name="line22"></a><span style="color: #666666; font-style: italic;">#echo $resource;
 <a name="line23"></a></span>
-<a name="line24"></a><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">output</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
-<a name="line25"></a>&nbsp;</pre>
+<a name="line24"></a><span style="color: #000088;">$response</span> <span style="color: #339933;">=</span> <span style="color: #000088;">$resource</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">exec</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line25"></a>&nbsp;
+<a name="line26"></a><span style="color: #666666; font-style: italic;">#echo $response;
+<a name="line27"></a></span>
+<a name="line28"></a><span style="color: #000088;">$response</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">output</span><span style="color: #009900;">&#40;</span><span style="color: #009900;">&#41;</span><span style="color: #339933;">;</span>
+<a name="line29"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

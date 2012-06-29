@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
+<meta name="when" content="Fri, 29 Jun 2012 21:52:21 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -51,7 +51,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <p class="signature">public  class <strong>Request</strong></p>
 
-<div class="comment" id="overview_description"><p>Models a HTTP request</p></div>
+<div class="comment" id="overview_description"><p>Model a HTTP request</p></div>
 
 <hr>
 
@@ -110,25 +110,8 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#loadResourceMetadata()">loadResourceMetadata</a>(mixed uriSpace)</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#mount()">mount</a>(str namespaceName, str uriSpace)</p><p class="description">Add a namespace to a specific URI-space</p></td>
-</tr>
-<tr>
-<td class="type"> <a href="../tonic/resource.html">Resource</a></td>
-<td class="description"><p class="name"><a href="#getResource()">getResource</a>()</p><p class="description">Given the request data and the loaded resource metadata, pick the best matching
-resource to handle the request based on URI and priority.</p></td>
-</tr>
-<tr>
-<td class="type"> str[]</td>
-<td class="description"><p class="name"><a href="#getResourceMetadata()">getResourceMetadata</a>(Tonic/Resource resource)</p><p class="description">Get the already loaded resource annotation metadata</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#readMethodAnnotations()">readMethodAnnotations</a>(mixed className)</p></td>
+<td class="type"> str</td>
+<td class="description"><p class="name"><a href="#getOption()">getOption</a>(str options, str configVar, str serverVar, str default)</p><p class="description">Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default</p></td>
 </tr>
 </table>
 
@@ -205,7 +188,7 @@ resource to handle the request based on URI and priority.</p></td>
 
 <hr>
 
-<a href="../source/src/tonic/request.php.html#line26" class="location">src/Tonic/Request.php at line 26</a>
+<a href="../source/src/tonic/request.php.html#line24" class="location">src/Tonic/Request.php at line 24</a>
 
 <h3 id="mimetypes">mimetypes</h3>
 <code class="signature">public  str[] <strong>$mimetypes</strong> = array(...)</code>
@@ -224,7 +207,7 @@ resource to handle the request based on URI and priority.</p></td>
 <hr>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/src/tonic/request.php.html#line28" class="location">src/Tonic/Request.php at line 28</a>
+<a href="../source/src/tonic/request.php.html#line26" class="location">src/Tonic/Request.php at line 26</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(mixed options)</code>
@@ -234,48 +217,18 @@ resource to handle the request based on URI and priority.</p></td>
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/src/tonic/request.php.html#line154" class="location">src/Tonic/Request.php at line 154</a>
+<a href="../source/src/tonic/request.php.html#line54" class="location">src/Tonic/Request.php at line 54</a>
 
-<h3 id="loadResourceMetadata()">loadResourceMetadata</h3>
-<code class="signature">public  void <strong>loadResourceMetadata</strong>(mixed uriSpace)</code>
+<h3 id="getOption()">getOption</h3>
+<code class="signature">public  str <strong>getOption</strong>(str options, str configVar, str serverVar, str default)</code>
 <div class="details">
-</div>
-
-<hr>
-
-<a href="../source/src/tonic/request.php.html#line175" class="location">src/Tonic/Request.php at line 175</a>
-
-<h3 id="mount()">mount</h3>
-<code class="signature">public  void <strong>mount</strong>(str namespaceName, str uriSpace)</code>
-<div class="details">
-<p>Add a namespace to a specific URI-space</p></div>
-
-<hr>
-
-<a href="../source/src/tonic/request.php.html#line191" class="location">src/Tonic/Request.php at line 191</a>
-
-<h3 id="getResource()">getResource</h3>
-<code class="signature">public  <a href="../tonic/resource.html">Resource</a> <strong>getResource</strong>()</code>
-<div class="details">
-<p>Given the request data and the loaded resource metadata, pick the best matching
-resource to handle the request based on URI and priority.</p></div>
-
-<hr>
-
-<a href="../source/src/tonic/request.php.html#line238" class="location">src/Tonic/Request.php at line 238</a>
-
-<h3 id="getResourceMetadata()">getResourceMetadata</h3>
-<code class="signature">public  str[] <strong>getResourceMetadata</strong>(Tonic/Resource resource)</code>
-<div class="details">
-<p>Get the already loaded resource annotation metadata</p></div>
-
-<hr>
-
-<a href="../source/src/tonic/request.php.html#line300" class="location">src/Tonic/Request.php at line 300</a>
-
-<h3 id="readMethodAnnotations()">readMethodAnnotations</h3>
-<code class="signature">public  void <strong>readMethodAnnotations</strong>(mixed className)</code>
-<div class="details">
+<p>Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default</p><dl>
+<dt>Parameters:</dt>
+<dd></dd>
+<dd>configVar - Name of item to get</dd>
+<dd>serverVar - Name of _SERVER superglobal item to use</dd>
+<dd>default - Fallback value</dd>
+</dl>
 </div>
 
 <hr>

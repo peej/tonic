@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Wed, 27 Jun 2012 21:53:46 +0000">
+<meta name="when" content="Fri, 29 Jun 2012 21:52:21 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -76,6 +76,10 @@ annotations allow this resource to match multiple URLs.</p></div>
 </tr>
 <tr>
 <td class="type"> str</td>
+<td class="description"><p class="name"><a href="#sayHelloInFrench()">sayHelloInFrench</a>(str name)</p><p class="description"></p></td>
+</tr>
+<tr>
+<td class="type"> str</td>
 <td class="description"><p class="name"><a href="#replicants()">replicants</a>()</p><p class="description">The @priority annotation makes this method take priority over the above method.
 </p></td>
 </tr>
@@ -102,7 +106,7 @@ contain the correct content-type response header.</p></td>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from Tonic\Resource</th></tr>
-<tr><td><a href="../tonic/resource.html#__construct()">__construct</a>, <a href="../tonic/resource.html#accepts()">accepts</a>, <a href="../tonic/resource.html#addResponseAction()">addResponseAction</a>, <a href="../tonic/resource.html#cache()">cache</a>, <a href="../tonic/resource.html#exec()">exec</a>, <a href="../tonic/resource.html#method()">method</a>, <a href="../tonic/resource.html#priority()">priority</a>, <a href="../tonic/resource.html#provides()">provides</a></td></tr></table>
+<tr><td><a href="../tonic/resource.html#__construct()">__construct</a>, <a href="../tonic/resource.html#accepts()">accepts</a>, <a href="../tonic/resource.html#addResponseAction()">addResponseAction</a>, <a href="../tonic/resource.html#cache()">cache</a>, <a href="../tonic/resource.html#exec()">exec</a>, <a href="../tonic/resource.html#lang()">lang</a>, <a href="../tonic/resource.html#method()">method</a>, <a href="../tonic/resource.html#priority()">priority</a>, <a href="../tonic/resource.html#provides()">provides</a></td></tr></table>
 
 <h2 id="detail_method">Method Detail</h2>
 <a href="../source/src/tyrell/hello.php.html#line33" class="location">src/Tyrell/Hello.php at line 33</a>
@@ -120,7 +124,22 @@ response body, or a full Tonic\Response object.</p><dl>
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line48" class="location">src/Tyrell/Hello.php at line 48</a>
+<a href="../source/src/tyrell/hello.php.html#line43" class="location">src/Tyrell/Hello.php at line 43</a>
+
+<h3 id="sayHelloInFrench()">sayHelloInFrench</h3>
+<code class="signature">public  str <strong>sayHelloInFrench</strong>(str name)</code>
+<div class="details">
+<p></p><dl>
+<dt>Method:</dt>
+<dd>GET</dd>
+<dt>Lang:</dt>
+<dd>fr</dd>
+</dl>
+</div>
+
+<hr>
+
+<a href="../source/src/tyrell/hello.php.html#line58" class="location">src/Tyrell/Hello.php at line 58</a>
 
 <h3 id="replicants()">replicants</h3>
 <code class="signature">public  str <strong>replicants</strong>()</code>
@@ -138,7 +157,7 @@ throwing an exception allowing the addition of an arbitary condition to this met
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line58" class="location">src/Tyrell/Hello.php at line 58</a>
+<a href="../source/src/tyrell/hello.php.html#line68" class="location">src/Tyrell/Hello.php at line 68</a>
 
 <h3 id="iveSeenThings()">iveSeenThings</h3>
 <code class="signature">public  str <strong>iveSeenThings</strong>()</code>
@@ -155,7 +174,7 @@ throwing an exception allowing the addition of an arbitary condition to this met
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line67" class="location">src/Tyrell/Hello.php at line 67</a>
+<a href="../source/src/tyrell/hello.php.html#line77" class="location">src/Tyrell/Hello.php at line 77</a>
 
 <h3 id="only()">only</h3>
 <code class="signature">public  void <strong>only</strong>(mixed allowedName)</code>
@@ -164,7 +183,7 @@ throwing an exception allowing the addition of an arbitary condition to this met
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line80" class="location">src/Tyrell/Hello.php at line 80</a>
+<a href="../source/src/tyrell/hello.php.html#line90" class="location">src/Tyrell/Hello.php at line 90</a>
 
 <h3 id="sayHelloComputer()">sayHelloComputer</h3>
 <code class="signature">public  <a href="../tonic/response.html">Response</a> <strong>sayHelloComputer</strong>()</code>
@@ -181,7 +200,7 @@ contain the correct content-type response header.</p><dl>
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line97" class="location">src/Tyrell/Hello.php at line 97</a>
+<a href="../source/src/tyrell/hello.php.html#line108" class="location">src/Tyrell/Hello.php at line 108</a>
 
 <h3 id="feedTheComputer()">feedTheComputer</h3>
 <code class="signature">public  <a href="../tonic/response.html">Response</a> <strong>feedTheComputer</strong>()</code>
