@@ -90,7 +90,7 @@ class Hello extends Resource {
     function sayHelloComputer() {
         return new Response(200, json_encode(array(
             'hello' => $this->name,
-            'url' => $this->request->uri($this, $this->name)
+            'url' => $this->app->uri($this, $this->name)
         )));
     }
 
