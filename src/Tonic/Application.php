@@ -276,16 +276,16 @@ class Application {
      */
     private function parseDocComment($comment) {
         $data = array();
-        preg_match_all('/^\s*\*\s*(@.+)$/m', $comment, $items);
+        preg_match_all('/^\s*\*[*\s]*(@.+)$/m', $comment, $items);
         if ($items && isset($items[1])) {
             foreach ($items[1] as $item) {
                 $parts = preg_split('/\s+/', $item);
                 if ($parts) {
                     $key = array_shift($parts);
                     if (isset($data[$key])) {
-                        $data[$key][] = join(' ', $parts);
+                        $data[$key][] = trim(join(' ', $parts));
                     } else {
-                        $data[$key] = array(join(' ', $parts));
+                        $data[$key] = array(trim(join(' ', $parts)));
                     }
                 }
             }
