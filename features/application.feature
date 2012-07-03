@@ -46,3 +46,20 @@ Feature: A Tonic application
     Given a resource definition "request4" with URI "/request4/:test" and priority of 1
     When I create an application object
     Then fetching the URI for the resource "request4" with the parameter "woot" should get "/request4/woot"
+
+  Scenario: There should be some flexibility to the whitespace around annotations
+    Given a class definition:
+      """
+      /**
+       * @uri /annotation
+       *   @uri /annotation2
+       *** @uri /annotation3
+       * @uri      /annotation4   
+       */
+      class AnnotationTest extends Tonic\Resource {}
+      """
+    When I create an application object
+    Then the resource "AnnotationTest" should have the URI "/annotation"
+    And the resource "AnnotationTest" should have the URI "/annotation2"
+    And the resource "AnnotationTest" should have the URI "/annotation3"
+    And the resource "AnnotationTest" should have the URI "/annotation4"

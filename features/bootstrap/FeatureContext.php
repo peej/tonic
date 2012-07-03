@@ -376,5 +376,20 @@ class '.$className.' extends \Tonic\Resource {
         );
     }
 
+    /**
+     * @Then /^the resource "([^"]*)" should have the URI "([^"]*)"$/
+     */
+    public function theResourceShouldHaveTheURI($resourceName, $url)
+    {
+        $found = FALSE;
+        $metadata = $this->app->getResourceMetadata($resourceName);
+        foreach ($metadata['uri'] as $uri) {
+            if ($uri[0] == '|^'.$url.'$|') {
+                $found = TRUE;
+                break;
+            }
+        }
+        if (!$found) throw new Exception;
+    }
 
 }

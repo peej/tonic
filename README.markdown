@@ -352,6 +352,27 @@ resource and an "object" resource to store within it:
     }
 
 
+Handling errors
+---------------
+
+When an error occurs, Tonic throws an exception that extends the Tonic\Exception class. You
+can amend the front controller to catch these exceptions and handle them.
+
+    $app = new Tonic\Application();
+    $request = new Tonic\Request();
+    try {
+        $resource = $app->getResource($request);
+    } catch(Tonic\NotFoundException $e) {
+        $resource = new NotFoundResource($app, $request);
+    }
+    try {
+        $response = $resource->exec();
+    } catch(Tonic\Exception $e) {
+        $resource = new FatalErrorResource($app, $request);
+        $response = $resource->exec();
+    }
+    $response->output();
+
 
 
 For more information, read the code. Start with the dispatcher "web/dispatch.php"
