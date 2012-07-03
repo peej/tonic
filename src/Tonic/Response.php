@@ -67,8 +67,7 @@ class Response {
 
     function __construct($code = 204, $body = '') {
         $this->code = $code;
-        $this->body = $body;
-        $this->contentLength = strlen($body);
+        $this->body = $body;        
     }
 
     /**
@@ -103,6 +102,7 @@ class Response {
      */
     function output() {
         header('HTTP/1.1 '.$this->code.' '.$this->responseMessage());
+		$this->contentLength = strlen($body);
         foreach ($this->headers as $name => $value) {
             header($name.': '.$value);
         }
