@@ -282,7 +282,6 @@ class Application {
                 $parts = preg_split('/\s+/', $item);
                 if ($parts) {
                     $key = array_shift($parts);
-					$parts = array_filter($parts, function($i){return !empty($i);});
                     if (isset($data[$key])) {
                         $data[$key][] = trim(join(' ', $parts));
                     } else {
