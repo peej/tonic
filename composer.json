@@ -1,0 +1,13 @@
+{
+    "name": "peej/tonic",
+    "description": "The RESTful Web App PHP Micro-Framework",
+    "homepage": "http://peej.github.com/tonic",
+    "require": {
+        "php": ">=5.3"
+    }
+    "autoload": {
+        "psr-0": {
+            "Tonic": "src/"
+        }
+    }
+}
