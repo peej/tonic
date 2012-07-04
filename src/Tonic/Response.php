@@ -68,7 +68,6 @@ class Response {
     function __construct($code = 204, $body = '') {
         $this->code = $code;
         $this->body = $body;
-        $this->contentLength = strlen($body);
     }
 
     /**
