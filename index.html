@@ -42,7 +42,6 @@
             to scale, extend and work with other systems easily.</p> 
             
             <h3>Quick Example</h3>
-            
             <script type="syntaxhighlighter" class="brush: php"><![CDATA[
 <?php
  
@@ -76,21 +75,29 @@ class Hello extends Tonic\Resource {
                 <dt>Mount points</dt>
                 <dd>Mount namespaces of resources into any URL-space to make them portable.</dd>
             </dl>
-            
+
             <div class="info-box">
-                <h3>What Next?</h3>
-                <p>The best place to start is to have a read through the
-                <a href="http://github.com/peej/tonic#readme">README</a>, then 
-                dig into the code.</p>
-                <p>Please checkout the code and have a play, <a href="http://github.com/peej/tonic/issues">comments</a>
-                and <a href="http://help.github.com/forking/">pull requests</a> most welcome.</p>
+                <h3>Download</h3>
+                <p>The easiest way to install Tonic is to use <a href="http://getcomposer.org/">Composer</a>:</p>
+                <script type="syntaxhighlighter" class="brush: jscript"><![CDATA[
+vim composer.json
+{
+    "require": {
+        "peej/tonic": "dev-master"
+    }
+}
+curl http://getcomposer.org/installer | php
+php composer.phar install
+                ]]></script>
+                <p>Alternatively, head to <a href="http://github.com/peej/tonic">our Github page</a> and do the download.</p>
             </div>
             
-            <div id="date">Created Jan 1, 2010, last modified Jun 27, 2012</div>
+            <div id="date">Created Jan 1, 2010, last modified Jul 4, 2012</div>
         </div>
         
         <script type="text/javascript" src="syntaxhighlighter/shCore.js"></script>
         <script type="text/javascript" src="syntaxhighlighter/shBrushPhp.js"></script>
+        <script type="text/javascript" src="syntaxhighlighter/shBrushJScript.js"></script>
         <link type="text/css" rel="stylesheet" href="syntaxhighlighter/shCore.css">
         <link type="text/css" rel="stylesheet" href="syntaxhighlighter/shThemeDefault.css">
         <script type="text/javascript">
