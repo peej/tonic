@@ -19,7 +19,7 @@
     "suggest": {
         "pimple/pimple": "A simple dependancy injection container to handle your services",
         "smarty/smarty": "PHP templating engine for building response representations"
-    }
+    },
     "autoload": {
         "psr-0": {
             "Tonic": "src/"
