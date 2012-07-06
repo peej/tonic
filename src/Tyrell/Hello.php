@@ -11,12 +11,12 @@ use Tonic\Resource,
  *
  * The @uri annotation routes requests that match that URL to this resource. Multiple
  * annotations allow this resource to match multiple URLs.
- * 
+ *
  * @uri /hello
  * @uri /hello/:name
  */
-class Hello extends Resource {
-
+class Hello extends Resource
+{
     /**
      * Use this method to handle GET HTTP requests.
      *
@@ -27,20 +27,22 @@ class Hello extends Resource {
      * response body, or a full Tonic\Response object.
      *
      * @method GET
-     * @param str $name
+     * @param  str $name
      * @return str
      */
-    function sayHello($name = 'World') {
+    public function sayHello($name = 'World')
+    {
         return 'Hello '.$name;
     }
 
     /**
      * @method GET
      * @lang fr
-     * @param str $name
+     * @param  str $name
      * @return str
      */
-    function sayHelloInFrench($name = 'Monde') {
+    public function sayHelloInFrench($name = 'Monde')
+    {
         return 'Bonjour '.$name;
     }
 
@@ -55,7 +57,8 @@ class Hello extends Resource {
      * @only deckard
      * @return str
      */
-    function replicants() {
+    public function replicants()
+    {
         return 'Replicants are like any other machine - they\'re either a benefit or a hazard.';
     }
 
@@ -65,7 +68,8 @@ class Hello extends Resource {
      * @only roy
      * @return str
      */
-    function iveSeenThings() {
+    public function iveSeenThings()
+    {
         return 'I\'ve seen things you people wouldn\'t believe.';
     }
 
@@ -74,7 +78,8 @@ class Hello extends Resource {
      *
      * Only allow specific :name parameter to access the method
      */
-    function only($allowedName) {
+    public function only($allowedName)
+    {
         if (strtolower($allowedName) != strtolower($this->name)) throw new ConditionException;
     }
 
@@ -87,7 +92,8 @@ class Hello extends Resource {
      * @provides application/json
      * @return Tonic\Response
      */
-    function sayHelloComputer() {
+    public function sayHelloComputer()
+    {
         return new Response(200, json_encode(array(
             'hello' => $this->name,
             'url' => $this->app->uri($this, $this->name)
@@ -105,7 +111,8 @@ class Hello extends Resource {
      * @provides application/json
      * @return Response
      */
-    function feedTheComputer() {
+    public function feedTheComputer()
+    {
         return new Response(200, $this->request->data);
     }
 

@@ -5,13 +5,14 @@ namespace Tonic;
 /**
  * Model a HTTP resource
  */
-class Resource {
-
+class Resource
+{
     protected $app, $request;
     public $params;
     protected $responseActions = array();
 
-    function __construct(Application $app, Request $request, array $urlParams) {
+    public function __construct(Application $app, Request $request, array $urlParams)
+    {
         $this->app = $app;
         $this->request = $request;
         $this->params = $urlParams;
@@ -19,10 +20,11 @@ class Resource {
 
     /**
      * Get a URL parameter as defined by this resource and it's URI
-     * @param str $name Name of the parameter
+     * @param  str $name Name of the parameter
      * @return str
      */
-    function __get($name) {
+    public function __get($name)
+    {
         return isset($this->params[$name]) ? $this->params[$name] : NULL;
     }
 
@@ -33,8 +35,8 @@ class Resource {
      * @param str methodName Optional name of method to execute, bypasing annotations, useful for debugging
      * @return Tonic\Response
      */
-    public final function exec($methodName = NULL) {
-
+    final public function exec($methodName = NULL)
+    {
         // get the annotation metadata for this resource
         $resourceMetadata = $this->app->getResourceMetadata($this);
 
@@ -74,7 +76,7 @@ class Resource {
                 }
             }
         }
-        
+
         if ($methodPriorities) {
             $methodPriorities = array_flip($methodPriorities);
             ksort($methodPriorities);
@@ -106,7 +108,8 @@ class Resource {
      *
      * @param callable $action
      */
-    protected final function addResponseAction($action) {
+    final protected function addResponseAction($action)
+    {
         if (is_callable($action)) {
             $this->responseActions[] = $action;
         }
@@ -116,7 +119,8 @@ class Resource {
      * HTTP method condition must match request method
      * @param str $method
      */
-    protected final function method($method) {
+    final protected function method($method)
+    {
         $methods = explode(' ', $method);
         foreach ($methods as $method) {
             if (strtolower($this->request->method) == strtolower($method)) return;
@@ -128,7 +132,8 @@ class Resource {
      * Higher priority method takes precident over other matches
      * @param int $priority
      */
-    protected final function priority($priority) {
+    final protected function priority($priority)
+    {
         return $priority;
     }
 
@@ -136,7 +141,8 @@ class Resource {
      * Accepts condition mimetype must match request content type
      * @param str $mimetype
      */
-    protected function accepts($mimetype) {
+    protected function accepts($mimetype)
+    {
         if (strtolower($this->request->contentType) != strtolower($mimetype))
             throw new UnsupportedMediaTypeException('No matching method for content type "'.$this->request->contentType.'"');
     }
@@ -144,29 +150,33 @@ class Resource {
     /**
      * Provides condition mimetype must be in request accept array, returns a number
      * based on the priority of the match.
-     * @param str $mimetype
+     * @param  str $mimetype
      * @return int
      */
-    protected function provides($mimetype) {
+    protected function provides($mimetype)
+    {
         $pos = array_search($mimetype, $this->request->accept);
         if ($pos === FALSE)
             throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
         $this->addResponseAction(function ($response) use ($mimetype) {
             $response->contentType = $mimetype;
         });
+
         return count($this->request->accept) - $pos;
     }
 
     /**
      * Lang condition language code must be in request accept lang array, returns a number
      * based on the priority of the match.
-     * @param str $language
+     * @param  str $language
      * @return int
      */
-    protected function lang($language) {
+    protected function lang($language)
+    {
         $pos = array_search($language, $this->request->acceptLang);
         if ($pos === FALSE)
             throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->acceptLang).'"');
+
         return count($this->request->acceptLang) - $pos;
     }
 
@@ -174,7 +184,8 @@ class Resource {
      * Set cache control header on response
      * @param int length Number of seconds to cache the response for
      */
-    protected function cache($length) {
+    protected function cache($length)
+    {
         $this->addResponseAction(function ($response) use ($length) {
             if ($length == 0) {
                 $response->cacheControl = 'no-cache';
@@ -184,7 +195,8 @@ class Resource {
         });
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $params = array();
         if (is_array($this->params)) {
             foreach ($this->params as $name => $value) {
@@ -195,7 +207,7 @@ class Resource {
         $methodMetadata = $this->request->getResourceMetadata($this);
         $class = $methodMetadata['class'];
         $uri = array();
-        foreach($methodMetadata['uri'] as $u) {
+        foreach ($methodMetadata['uri'] as $u) {
             $uri[] = $u[0];
         }
         $uri = join(', ', $uri);
@@ -206,6 +218,7 @@ class Resource {
                 $methods .= ' '.$itemName.'="'.join(', ', $item).'"';
             }
         }
+
         return <<<EOF
 ==============
 Tonic\Resource

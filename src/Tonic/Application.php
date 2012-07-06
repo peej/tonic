@@ -5,15 +5,15 @@ namespace Tonic;
 /**
  * A Tonic application
  */
-class Application {
-
+class Application
+{
     /**
      * Metadata of the loaded resources
      */
     private $resources = array();
 
-    function __construct($options = array()) {
-
+    public function __construct($options = array())
+    {
         // load resource metadata passed in via options array
         if (isset($options['resources']) && is_array($options['resources'])) {
             $this->resources = $options['resources'];
@@ -44,7 +44,8 @@ class Application {
      * Include PHP files containing resources in the given filename globs
      * @paramstr[] $filenames Array of filename globs
      */
-    private function loadResourceFiles($filenames) {
+    private function loadResourceFiles($filenames)
+    {
         if (!is_array($filenames)) {
             $filenames = array($filenames);
         }
@@ -60,7 +61,8 @@ class Application {
      * Load the metadata for all loaded resource classes
      * @param str $uriSpace Optional URI-space to mount the resources into
      */
-    public function loadResourceMetadata($uriSpace = NULL) {
+    public function loadResourceMetadata($uriSpace = NULL)
+    {
         foreach (get_declared_classes() as $className) {
             if (
                 !isset($this->resources[$className]) &&
@@ -81,7 +83,8 @@ class Application {
      * @param str $namespaceName
      * @param str $uriSpace
      */
-    public function mount($namespaceName, $uriSpace) {
+    public function mount($namespaceName, $uriSpace)
+    {
         foreach ($this->resources as $className => $metadata) {
             if ($metadata['namespace'] == $namespaceName) {
                 foreach ($metadata['uri'] as $index => $uri) {
@@ -94,11 +97,12 @@ class Application {
     /**
      * Get the URL for the given resource class
      *
-     * @param str $className
-     * @param str[] $params
+     * @param  str   $className
+     * @param  str[] $params
      * @return str
      */
-    public function uri($className, $params = array()) {
+    public function uri($className, $params = array())
+    {
         if (is_object($className)) {
             $className = get_class($className);
         }
@@ -116,6 +120,7 @@ class Application {
                             $path .= $params[$key];
                         }
                     }
+
                     return substr($path, 2, -2);
                 }
             }
@@ -126,10 +131,11 @@ class Application {
      * Given the request data and the loaded resource metadata, pick the best matching
      * resource to handle the request based on URI and priority.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Resource
      */
-    public function getResource($request = NULL) {
+    public function getResource($request = NULL)
+    {
         $matchedResource = NULL;
         if (!$request) {
             $request= new Request();
@@ -168,6 +174,7 @@ class Application {
             if (isset($matchedResource[0]['filename']) && is_readable($matchedResource[0]['filename'])) {
                 require_once($matchedResource[0]['filename']);
             }
+
             return new $matchedResource[0]['class']($this, $request, $matchedResource[1]);
         } else {
             throw new NotFoundException(sprintf('Resource matching URI "%s" not found', $request->uri));
@@ -179,20 +186,23 @@ class Application {
      * @param  Tonic/Resource $resource
      * @return str[]
      */
-    public function getResourceMetadata($resource) {
+    public function getResourceMetadata($resource)
+    {
         if (is_object($resource)) {
             $className = get_class($resource);
         } else {
             $className = $resource;
         }
+
         return isset($this->resources[$className]) ? $this->resources[$className] : NULL;
     }
 
     /**
      * Read the annotation metadata for the given class
-     * @return  str[] Annotation metadata
+     * @return str[] Annotation metadata
      */
-    private function readResourceAnnotations($className) {
+    private function readResourceAnnotations($className)
+    {
         $metadata = array();
 
         // get data from reflector
@@ -220,9 +230,10 @@ class Application {
     /**
      * Turn a URL template into a regular expression
      * @param  str $uri URL template
-     * @return str      Regular expression
+     * @return str Regular expression
      */
-    private function uriTemplateToRegex($uri) {
+    private function uriTemplateToRegex($uri)
+    {
         preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
         $return = array($uri);
         if (isset($params[1])) {
@@ -238,11 +249,12 @@ class Application {
         }
 
         $return[0] = '|^'.preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '([^/]+)', $return[0]).'$|';
+
         return $return;
     }
 
-    public function readMethodAnnotations($className) {
-
+    public function readMethodAnnotations($className)
+    {
         if (isset($this->resources[$className]) && isset($this->resources[$className]['methods'])) {
             return $this->resources[$className]['methods'];
         }
@@ -271,10 +283,11 @@ class Application {
 
     /**
      * Parse annotations out of a doc comment
-     * @param  str $comment Doc comment to parse
+     * @param  str   $comment Doc comment to parse
      * @return str[]
      */
-    private function parseDocComment($comment) {
+    private function parseDocComment($comment)
+    {
         $data = array();
         preg_match_all('/^\s*\*[*\s]*(@.+)$/m', $comment, $items);
         if ($items && isset($items[1])) {
@@ -290,14 +303,16 @@ class Application {
                 }
             }
         }
+
         return $data;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         if (isset($this->options['load']) && is_array($this->options['load'])) {
             $loadPath = join(', ', $this->options['load']);
         } else $loadPath = '';
-        
+
         $mount = array();
         if (isset($this->options['mount']) && is_array($this->options['mount'])) {
             foreach ($this->options['mount'] as $namespaceName => $uriSpace) {
@@ -311,7 +326,7 @@ class Application {
         $resources = array();
         foreach ($this->resources as $resource) {
             $uri = array();
-            foreach($resource['uri'] as $u) {
+            foreach ($resource['uri'] as $u) {
                 $uri[] = $u[0];
             }
             $uri = join(', ', $uri);
@@ -325,6 +340,7 @@ class Application {
             $resources[] = $r;
         }
         $resources = join("\n\t", $resources);
+
         return <<<EOF
 =================
 Tonic\Application

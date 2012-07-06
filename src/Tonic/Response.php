@@ -5,8 +5,8 @@ namespace Tonic;
 /**
  * Model a HTTP response
  */
-class Response {
-
+class Response
+{
     public $code, $body;
     private $headers = array(
         'content-type' => 'text/html'
@@ -24,9 +24,9 @@ class Response {
         NOTMODIFIED = 304,
         TEMPORARYREDIRECT = 307,
         BADREQUEST = 400,
-        UNAUTHORIZED = 401, 
-        FORBIDDEN = 403, 
-        NOTFOUND = 404, 
+        UNAUTHORIZED = 401,
+        FORBIDDEN = 403,
+        NOTFOUND = 404,
         METHODNOTALLOWED = 405,
         NOTACCEPTABLE = 406,
         GONE = 410,
@@ -44,16 +44,16 @@ class Response {
     private $codes = array(
         Response::OK => 'OK',
         Response::CREATED => 'Created',
-        Response::NOCONTENT => 'No Content', 
+        Response::NOCONTENT => 'No Content',
         Response::MOVEDPERMANENTLY => 'Moved Permanently',
-        Response::FOUND => 'Found', 
-        Response::SEEOTHER => 'See Other', 
-        Response::NOTMODIFIED => 'Not Modified', 
-        Response::TEMPORARYREDIRECT => 'Temporary Redirect', 
-        Response::BADREQUEST => 'Bad Request', 
-        Response::UNAUTHORIZED => 'Unauthorized', 
-        Response::FORBIDDEN => 'Forbidden', 
-        Response::NOTFOUND => 'Not Found', 
+        Response::FOUND => 'Found',
+        Response::SEEOTHER => 'See Other',
+        Response::NOTMODIFIED => 'Not Modified',
+        Response::TEMPORARYREDIRECT => 'Temporary Redirect',
+        Response::BADREQUEST => 'Bad Request',
+        Response::UNAUTHORIZED => 'Unauthorized',
+        Response::FORBIDDEN => 'Forbidden',
+        Response::NOTFOUND => 'Not Found',
         Response::METHODNOTALLOWED => 'Method Not Allowed',
         Response::NOTACCEPTABLE => 'Not Acceptable',
         Response::GONE => 'Gone',
@@ -65,27 +65,31 @@ class Response {
         Response::INTERNALSERVERERROR => 'Internal Server Error'
     );
 
-    function __construct($code = 204, $body = '') {
+    public function __construct($code = 204, $body = '')
+    {
         $this->code = $code;
         $this->body = $body;
     }
 
     /**
      * Get a HTTP response header
-     * @param str $name Header name, hyphens should be converted to camelcase
+     * @param  str $name Header name, hyphens should be converted to camelcase
      * @return str
      */
-    function __get($name) {
+    public function __get($name)
+    {
         $name = strtolower(preg_replace('/([A-Z])/', '-$1', $name));
+
         return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
     }
 
     /**
      * Set a HTTP response header
-     * @param str $name Header name, hyphens should be converted to camelcase
+     * @param str $name  Header name, hyphens should be converted to camelcase
      * @param str $value Header content
      */
-    function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->headers[strtolower(preg_replace('/([A-Z])/', '-$1', $name))] = $value;
     }
 
@@ -93,14 +97,16 @@ class Response {
      * Get the HTTP response message of this response
      * @return str
      */
-    private function responseMessage() {
+    private function responseMessage()
+    {
         return isset($this->codes[$this->code]) ? $this->codes[$this->code] : '';
     }
 
     /**
      * Output the response
      */
-    function output() {
+    public function output()
+    {
         header('HTTP/1.1 '.$this->code.' '.$this->responseMessage());
         foreach ($this->headers as $name => $value) {
             header($name.': '.$value);
@@ -108,13 +114,15 @@ class Response {
         echo $this->body;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $code = $this->code.' '.$this->responseMessage();
         $headers = array();
         foreach ($this->headers as $name => $value) {
             $headers[]  = $name.': '.$value;
         }
         $headers = join("\n\t", $headers);
+
         return <<<EOF
 ==============
 Tonic\Response

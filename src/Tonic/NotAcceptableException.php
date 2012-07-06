@@ -2,6 +2,7 @@
 
 namespace Tonic;
 
-class NotAcceptableException extends Exception {
+class NotAcceptableException extends Exception
+{
     protected $code = 406;
 }

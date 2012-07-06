@@ -5,13 +5,14 @@ namespace Tonic;
 /**
  * Autoload
  */
-class Autoloader {
-
+class Autoloader
+{
     /**
      * Handles autoloading of classes
      * @param string $className Name of the class to load
      */
-    static public function autoload($className) {
+    public static function autoload($className)
+    {
         if ('Tonic\\' === substr($className, 0, strlen('Tonic\\'))) {
             $fileName = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
             $namespace = '';

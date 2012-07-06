@@ -5,8 +5,8 @@ namespace Tonic;
 /**
  * Model a HTTP request
  */
-class Request {
-
+class Request
+{
     public $hostname;
     public $uri;
     public $method;
@@ -47,7 +47,8 @@ class Request {
         'mp3' => 'audio/mpeg'
     );
 
-    function __construct($options = array()) {
+    public function __construct($options = array())
+    {
         $this->hostname = $this->getOption($options, 'hostname', 'HTTP_HOST');
         $this->uri = $this->getURIFromEnvironment($options);
         $this->method = $this->getOption($options, 'method', 'REQUEST_METHOD', 'GET');
@@ -69,13 +70,14 @@ class Request {
 
     /**
      * Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default
-     * @param str[] $options
-     * @param str $configVar Name of item to get
-     * @param str $serverVar Name of _SERVER superglobal item to use
-     * @param str $default Fallback value
+     * @param  str[] $options
+     * @param  str   $configVar Name of item to get
+     * @param  str   $serverVar Name of _SERVER superglobal item to use
+     * @param  str   $default   Fallback value
      * @return str
      */
-    public function getOption($options, $configVar, $serverVar = NULL, $default = NULL) {
+    public function getOption($options, $configVar, $serverVar = NULL, $default = NULL)
+    {
         if (isset($options[$configVar])) {
             return $options[$configVar];
         } elseif (isset($_SERVER[$serverVar]) && $_SERVER[$serverVar] != '') {
@@ -87,10 +89,11 @@ class Request {
 
     /**
      * Fetch the request URI from the server environment
-     * @param str $options
+     * @param  str $options
      * @return str
      */
-    private function getURIFromEnvironment($options) {
+    private function getURIFromEnvironment($options)
+    {
         $uri = $this->getOption($options, 'uri');
         if (!$uri) { // use given URI in config options
             if (isset($_SERVER['REDIRECT_URL']) && isset($_SERVER['SCRIPT_NAME'])) { // use redirection URL from Apache environment
@@ -125,10 +128,11 @@ class Request {
 
     /**
      * Get accepted content mimetypes from request header
-     * @param str $acceptString
+     * @param  str   $acceptString
      * @return str[]
      */
-    private function getAcceptArray($acceptString) {
+    private function getAcceptArray($acceptString)
+    {
         $accept = $acceptArray = array();
         foreach (explode(',', strtolower($acceptString)) as $part) {
             $parts = explode(';q=', $part);
@@ -142,33 +146,38 @@ class Request {
             }
         }
         krsort($accept);
-        foreach($accept as $parts) {
+        foreach ($accept as $parts) {
             foreach ($parts as $part) {
                 $acceptArray[] = $part;
             }
         }
+
         return $acceptArray;
     }
 
     /**
      * Get if-match data from request header
-     * @param str $matchString
+     * @param  str   $matchString
      * @return str[]
      */
-    private function getMatchArray($matchString) {
+    private function getMatchArray($matchString)
+    {
         $matches = array();
         foreach (explode(',', $matchString) as $etag) {
             $matches[] = trim($etag, '" ');
         }
+
         return $matches;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $accept = join(', ', $this->accept);
         $acceptLang = join(', ', $this->acceptLang);
         $ifMatch = join(', ', $this->ifMatch);
         $ifNoneMatch = join(', ', $this->ifNoneMatch);
         $acceptLang = join(', ', $this->acceptLang);
+
         return <<<EOF
 =============
 Tonic\Request

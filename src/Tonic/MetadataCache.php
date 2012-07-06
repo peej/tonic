@@ -7,11 +7,12 @@ namespace Tonic;
  *
  * This class serializes the resource metadata and writes it to disk for reading in a later request.
  */
-class MetadataCache {
-
+class MetadataCache
+{
     private $filename;
-    
-    function __construct($filename) {
+
+    public function __construct($filename)
+    {
         $this->filename = $filename;
     }
 
@@ -19,7 +20,8 @@ class MetadataCache {
      * Is there already cache file
      * @return boolean
      */
-    public function isCached() {
+    public function isCached()
+    {
         return is_readable($this->filename);
     }
 
@@ -27,20 +29,23 @@ class MetadataCache {
      * Load the resource metadata from disk
      * @return str[]
      */
-    public function load() {
+    public function load()
+    {
         return unserialize(file_get_contents($this->filename));
     }
 
     /**
      * Save resource metadata to disk
-     * @param  str[] $resources Resource metadata
+     * @param  str[]   $resources Resource metadata
      * @return boolean
      */
-    public function save($resources) {
+    public function save($resources)
+    {
         return file_put_contents($this->filename, serialize($resources));
     }
 
-    function __toString() {
+    public function __toString()
+    {
         return $this->filename;
     }
 
