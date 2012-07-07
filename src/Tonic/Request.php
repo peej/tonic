@@ -97,7 +97,8 @@ class Request
         $uri = $this->getOption($options, 'uri');
         if (!$uri) { // use given URI in config options
             if (isset($_SERVER['REDIRECT_URL']) && isset($_SERVER['SCRIPT_NAME'])) { // use redirection URL from Apache environment
-                $uri = substr($_SERVER['REDIRECT_URL'], strlen(dirname($_SERVER['SCRIPT_NAME'])));
+                $dirname = dirname($_SERVER['SCRIPT_NAME']);
+                $uri = substr($_SERVER['REDIRECT_URL'], strlen($dirname == '/' ? '' : $dirname));
             } elseif (isset($_SERVER['PHP_SELF']) && isset($_SERVER['SCRIPT_NAME'])) { // use PHP_SELF from Apache environment
                 $uri = substr($_SERVER['PHP_SELF'], strlen($_SERVER['SCRIPT_NAME']));
             } else { // fail
@@ -106,7 +107,7 @@ class Request
         }
 
         // get mimetype
-        $parts = explode('/', $uri);
+        $parts = explode('/', rtrim($uri, '/'));
         $lastPart = array_pop($parts);
         $uri = join('/', $parts);
 
