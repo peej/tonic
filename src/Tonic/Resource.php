@@ -204,7 +204,7 @@ class Resource
             }
         }
         $params = join(', ', $params);
-        $methodMetadata = $this->request->getResourceMetadata($this);
+        $methodMetadata = $this->app->getResourceMetadata($this);
         $class = $methodMetadata['class'];
         $uri = array();
         foreach ($methodMetadata['uri'] as $u) {
