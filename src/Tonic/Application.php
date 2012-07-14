@@ -14,6 +14,8 @@ class Application
 
     public function __construct($options = array())
     {
+        $this->baseUri = dirname($_SERVER['SCRIPT_NAME']);
+
         // load resource metadata passed in via options array
         if (isset($options['resources']) && is_array($options['resources'])) {
             $this->resources = $options['resources'];
@@ -121,7 +123,7 @@ class Application
                         }
                     }
 
-                    return substr($path, 2, -2);
+                    return $this->baseUri.substr($path, 2, -2);
                 }
             }
         }
@@ -309,6 +311,8 @@ class Application
 
     public function __toString()
     {
+        $baseUri = $this->baseUri;
+
         if (isset($this->options['load']) && is_array($this->options['load'])) {
             $loadPath = join(', ', $this->options['load']);
         } else $loadPath = '';
@@ -345,6 +349,7 @@ class Application
 =================
 Tonic\Application
 =================
+Base URI: $baseUri
 Load path: $loadPath
 Mount points: $mount
 Annotation cache: $cache
