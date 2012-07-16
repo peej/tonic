@@ -17,7 +17,7 @@
         "behat/behat": "2.*"
     },
     "suggest": {
-        "pimple/pimple": "A simple dependancy injection container to handle your services",
+        "pimple/pimple": "A simple dependancy injection container to handle your services"
     },
     "autoload": {
         "psr-0": {
