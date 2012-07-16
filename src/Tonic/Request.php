@@ -53,8 +53,13 @@ class Request
         $this->uri = $this->getURIFromEnvironment($options);
         $this->method = $this->getOption($options, 'method', 'REQUEST_METHOD', 'GET');
 
-        if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_LENGTH'] > 0) {
+        if (isset($_SERVER['CONTENT_TYPE'])) {
             $this->contentType = $_SERVER['CONTENT_TYPE'];
+        } elseif (isset($_SERVER['HTTP_CONTENT_TYPE'])) {
+            $this->contentType = $_SERVER['HTTP_CONTENT_TYPE'];
+        }
+
+        if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
             $this->data = file_get_contents('php://input');
         } elseif (isset($options['contentType']) && isset($options['data'])) {
             $this->contentType = $options['contentType'];
