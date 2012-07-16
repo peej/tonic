@@ -143,7 +143,7 @@ class Resource
      */
     protected function accepts($mimetype)
     {
-        if (strtolower($this->request->contentType) != strtolower($mimetype))
+        if (0 !== strpos(strtolower($this->request->contentType), strtolower($mimetype)))
             throw new UnsupportedMediaTypeException('No matching method for content type "'.$this->request->contentType.'"');
     }
 

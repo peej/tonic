@@ -54,9 +54,9 @@ class Request
         $this->method = $this->getOption($options, 'method', 'REQUEST_METHOD', 'GET');
 
         if (isset($_SERVER['CONTENT_TYPE'])) {
-            list($this->contentType) = explode(';',$_SERVER['CONTENT_TYPE'],2);
+            $this->contentType = $_SERVER['CONTENT_TYPE'];
         } elseif (isset($_SERVER['HTTP_CONTENT_TYPE'])) {
-            list($this->contentType) = explode(';',$_SERVER['HTTP_CONTENT_TYPE'],2);
+            $this->contentType = $_SERVER['HTTP_CONTENT_TYPE'];
         }
 
         if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
