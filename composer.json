@@ -1,5 +1,5 @@
 {
-    "name": "peej/tonic",
+    "name": "zergin/tonic",
     "description": "The RESTful Web App PHP Micro-Framework",
     "keywords": ["rest", "microframework"],
     "homepage": "http://peej.github.com/tonic",
@@ -17,8 +17,7 @@
         "behat/behat": "2.*"
     },
     "suggest": {
-        "pimple/pimple": "A simple dependancy injection container to handle your services",
-        "smarty/smarty": "PHP templating engine for building response representations"
+        "pimple/pimple": "A simple dependancy injection container to handle your services"
     },
     "autoload": {
         "psr-0": {
@@ -27,7 +26,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "master"
         }
     }
 }

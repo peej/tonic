@@ -97,7 +97,7 @@ class Response
      * Get the HTTP response message of this response
      * @return str
      */
-    private function responseMessage()
+    protected function responseMessage()
     {
         return isset($this->codes[$this->code]) ? $this->codes[$this->code] : '';
     }
