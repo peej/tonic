@@ -87,32 +87,56 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @Given /^an "([^"]*)" header of '([^']*)'$/
+     * @Given /^an? "([^"]*)" header of '([^']*)'$/
      */
-    public function anHeaderOf($header, $value)
+    public function aHeaderOf($header, $value)
     {
         $headerMapping = array(
             'accept' => 'HTTP_ACCEPT',
             'accept language' => 'HTTP_ACCEPT_LANGUAGE',
             'if-none-match' => 'HTTP_IF_NONE_MATCH',
             'if-match' => 'HTTP_IF_MATCH',
+            'content-type' => 'CONTENT_TYPE'
         );
         $_SERVER[$headerMapping[$header]] = $value;
     }
 
     /**
-     * @Given /^I should see an "([^"]*)" string of "([^"]*)"$/
+     * @Given /^I should see an? "([^"]*)" string of "([^"]*)"$/
      */
-    public function iShouldSeeAnAcceptStringOf($header, $string)
+    public function iShouldSeeAStringOf($header, $string)
     {
         $propertyMapping = array(
             'accept' => 'accept',
             'accept language' => 'acceptLang',
             'if-none-match' => 'ifNoneMatch',
             'if-match' => 'ifMatch',
+            'content-type' => 'contentType'
         );
-        if (join(',', $this->request->$propertyMapping[$header]) != $string)
-            throw new Exception(join(',', $this->request->$propertyMapping[$header]));
+        if (is_array($this->request->$propertyMapping[$header])) {
+            $value = join(',', $this->request->$propertyMapping[$header]);
+        } else {
+            $value = $this->request->$propertyMapping[$header];
+        }
+        if ($value != $string)
+            throw new Exception($value);
+    }
+
+    /**
+     * @Given /^body data of \'([^\']*)\'$/
+     */
+    public function bodyDataOf($data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @Given /^I should see body data of "([^"]*)"$/
+     */
+    public function iShouldSeeBodyDataOf($data)
+    {
+        if ($this->request->data != $data)
+            throw new Exception();
     }
 
     /**

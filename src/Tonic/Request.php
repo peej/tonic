@@ -53,13 +53,8 @@ class Request
         $this->uri = $this->getURIFromEnvironment($options);
         $this->method = $this->getOption($options, 'method', 'REQUEST_METHOD', 'GET');
 
-        if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_LENGTH'] > 0) {
-            $this->contentType = $_SERVER['CONTENT_TYPE'];
-            $this->data = file_get_contents('php://input');
-        } elseif (isset($options['contentType']) && isset($options['data'])) {
-            $this->contentType = $options['contentType'];
-            $this->data = $options['data'];
-        }
+        $this->contentType = $this->getContentType($options);
+        $this->data = $this->getData($options);
 
         $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArray($this->getOption($options, 'accept', 'HTTP_ACCEPT'))));
         $this->acceptLang = array_unique(array_merge($this->acceptLang, $this->getAcceptArray($this->getOption($options, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE'))));
@@ -80,10 +75,33 @@ class Request
     {
         if (isset($options[$configVar])) {
             return $options[$configVar];
+        } elseif (is_array($serverVar)) {
+            foreach ($serverVar as $var) {
+                if (isset($_SERVER[$var]) && $_SERVER[$var] != '') {
+                    return $_SERVER[$var];
+                }
+            }
         } elseif (isset($_SERVER[$serverVar]) && $_SERVER[$serverVar] != '') {
             return $_SERVER[$serverVar];
         } else {
             return $default;
+        }
+    }
+
+    private function getContentType($options)
+    {
+        $contentType = $this->getOption($options, 'contentType', array('CONTENT_TYPE', 'HTTP_CONTENT_TYPE'));
+        $parts = explode(';', $contentType);
+
+        return $parts[0];
+    }
+
+    private function getData($options)
+    {
+        if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
+            return file_get_contents('php://input');
+        } elseif (isset($options['data'])) {
+            return $options['data'];
         }
     }
 
