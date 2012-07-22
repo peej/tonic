@@ -7,11 +7,6 @@ namespace Tonic;
  */
 class Response
 {
-    public $code, $body;
-    private $headers = array(
-        'content-type' => 'text/html'
-    );
-
     /**
      * HTTP response code constant
      */
@@ -66,7 +61,7 @@ class Response
      * Map of HTTP response codes
      * RFC 2616, 2324
      */
-    private $codes = array(
+    protected $codes = array(
         Response::HTTPCONTINUE                    => 'Continue',
         Response::SWITCHINGPROTOCOLS              => 'Switching Protocols',
 
@@ -114,10 +109,17 @@ class Response
         Response::HTTPVERSIONNOTSUPPORTED         => 'HTTP Version Not Supported',
     );
 
-    public function __construct($code = 204, $body = '')
+    public
+        $code = self::NOCONTENT,
+        $body;
+
+    protected
+        $headers = array('content-type' => 'text/html');
+
+    public function __construct($code = null, $body = null)
     {
-        $this->code = $code;
-        $this->body = $body;
+        $code and $this->code = $code;
+        $body and $this->body = $body;
     }
 
     /**
@@ -151,12 +153,16 @@ class Response
         return isset($this->codes[$this->code]) ? $this->codes[$this->code] : '';
     }
 
+    protected function responseCode() {
+        return $this->code;
+    }
+
     /**
      * Output the response
      */
     public function output()
     {
-        header('HTTP/1.1 '.$this->code.' '.$this->responseMessage());
+        header('HTTP/1.1 '.$this->responseCode().' '.$this->responseMessage());
         foreach ($this->headers as $name => $value) {
             header($name.': '.$value);
         }
