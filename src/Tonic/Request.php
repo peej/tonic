@@ -98,7 +98,7 @@ class Request
 
     private function getData($options)
     {
-        if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
+        if ($this->getOption($options, 'contentLength', array('CONTENT_LENGTH', 'HTTP_CONTENT_LENGTH')) > 0) {
             return file_get_contents('php://input');
         } elseif (isset($options['data'])) {
             return $options['data'];
