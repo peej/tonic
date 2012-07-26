@@ -7,13 +7,12 @@ namespace Tonic;
  */
 class Request
 {
-    public $hostname;
     public $uri;
     public $method;
     public $contentType = 'application/x-www-form-urlencoded';
     public $data;
     public $accept = array();
-    public $acceptLang = array();
+    public $acceptLanguage = array();
     public $ifMatch = array();
     public $ifNoneMatch = array();
 
@@ -49,18 +48,17 @@ class Request
 
     public function __construct($options = array())
     {
-        $this->hostname = $this->getOption($options, 'hostname', 'HTTP_HOST');
         $this->uri = $this->getURIFromEnvironment($options);
-        $this->method = $this->getOption($options, 'method', 'REQUEST_METHOD', 'GET');
+        $this->method = $this->getOption($options, 'method', 'requestMethod', 'GET');
 
         $this->contentType = $this->getContentType($options);
         $this->data = $this->getData($options);
 
-        $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArray($this->getOption($options, 'accept', 'HTTP_ACCEPT'))));
-        $this->acceptLang = array_unique(array_merge($this->acceptLang, $this->getAcceptArray($this->getOption($options, 'acceptLang', 'HTTP_ACCEPT_LANGUAGE'))));
+        $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArray($this->getOption($options, 'accept'))));
+        $this->acceptLanguage = array_unique(array_merge($this->acceptLanguage, $this->getAcceptArray($this->getOption($options, 'acceptLanguage'))));
 
-        $this->ifMatch = $this->getMatchArray($this->getOption($options, 'ifMatch', 'HTTP_IF_MATCH'));
-        $this->ifNoneMatch = $this->getMatchArray($this->getOption($options, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH'));
+        $this->ifMatch = $this->getMatchArray($this->getOption($options, 'ifMatch'));
+        $this->ifNoneMatch = $this->getMatchArray($this->getOption($options, 'ifNoneMatch'));
     }
 
     /**
@@ -71,26 +69,39 @@ class Request
      * @param  str   $default   Fallback value
      * @return str
      */
-    public function getOption($options, $configVar, $serverVar = NULL, $default = NULL)
+    public function getOption($options, $configVar, $header = NULL, $default = NULL)
     {
         if (isset($options[$configVar])) {
             return $options[$configVar];
-        } elseif (is_array($serverVar)) {
-            foreach ($serverVar as $var) {
-                if (isset($_SERVER[$var]) && $_SERVER[$var] != '') {
-                    return $_SERVER[$var];
-                }
-            }
-        } elseif (isset($_SERVER[$serverVar]) && $_SERVER[$serverVar] != '') {
-            return $_SERVER[$serverVar];
+        } elseif ($header && $val = $this->getHeader($header)) {
+            return $val;
+        } elseif ($configVar && $val = $this->getHeader($configVar)) {
+            return $val;
         } else {
             return $default;
         }
     }
 
+    public function __get($name)
+    {
+        return $this->getHeader($name);
+    }
+
+    private function getHeader($name)
+    {
+        $name = strtoupper(preg_replace('/([A-Z])/', '_$1', $name));
+        if (isset($_SERVER['HTTP_'.$name])) {
+            return $_SERVER['HTTP_'.$name];
+        } elseif (isset($_SERVER[$name])) {
+            return $_SERVER[$name];
+        } else {
+            return NULL;
+        }
+    }
+
     private function getContentType($options)
     {
-        $contentType = $this->getOption($options, 'contentType', array('CONTENT_TYPE', 'HTTP_CONTENT_TYPE'));
+        $contentType = $this->getOption($options, 'contentType');
         $parts = explode(';', $contentType);
 
         return $parts[0];
@@ -138,7 +149,7 @@ class Request
                 $this->accept[] = $this->mimetypes[$part];
             }
             if (preg_match('/^[a-z]{2}(-[a-z]{2})?$/', $part)) {
-                $this->acceptLang[] = $part;
+                $this->acceptLanguage[] = $part;
             }
         }
 
@@ -192,10 +203,9 @@ class Request
     public function __toString()
     {
         $accept = join(', ', $this->accept);
-        $acceptLang = join(', ', $this->acceptLang);
+        $acceptLanguage = join(', ', $this->acceptLanguage);
         $ifMatch = join(', ', $this->ifMatch);
         $ifNoneMatch = join(', ', $this->ifNoneMatch);
-        $acceptLang = join(', ', $this->acceptLang);
 
         return <<<EOF
 =============
@@ -207,7 +217,7 @@ HTTP method: $this->method
 Content type: $this->contentType
 Request data: $this->data
 Accept: $accept
-Accept language: $acceptLang
+Accept language: $acceptLanguage
 If match: $ifMatch
 If none match: $ifNoneMatch
 

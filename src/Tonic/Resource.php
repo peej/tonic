@@ -173,11 +173,11 @@ class Resource
      */
     protected function lang($language)
     {
-        $pos = array_search($language, $this->request->acceptLang);
+        $pos = array_search($language, $this->request->acceptLanguage);
         if ($pos === FALSE)
-            throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->acceptLang).'"');
+            throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->acceptLanguage).'"');
 
-        return count($this->request->acceptLang) - $pos;
+        return count($this->request->acceptLanguage) - $pos;
     }
 
     /**

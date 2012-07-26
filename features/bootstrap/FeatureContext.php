@@ -108,7 +108,7 @@ class FeatureContext extends BehatContext
     {
         $propertyMapping = array(
             'accept' => 'accept',
-            'accept language' => 'acceptLang',
+            'accept language' => 'acceptLanguage',
             'if-none-match' => 'ifNoneMatch',
             'if-match' => 'ifMatch',
             'content-type' => 'contentType'
