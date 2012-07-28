@@ -109,7 +109,7 @@ class Request
 
     private function getData($options)
     {
-        if (isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > 0) {
+        if ($this->getOption($options, 'contentLength') > 0) {
             return file_get_contents('php://input');
         } elseif (isset($options['data'])) {
             return $options['data'];
@@ -127,7 +127,7 @@ class Request
         if (!$uri) { // use given URI in config options
             if (isset($_SERVER['REDIRECT_URL']) && isset($_SERVER['SCRIPT_NAME'])) { // use redirection URL from Apache environment
                 $dirname = dirname($_SERVER['SCRIPT_NAME']);
-                $uri = substr($_SERVER['REDIRECT_URL'], strlen($dirname == '/' ? '' : $dirname));
+                $uri = substr($_SERVER['REDIRECT_URL'], strlen($dirname == DIRECTORY_SEPARATOR ? '' : $dirname));
             } elseif (isset($_SERVER['PHP_SELF']) && isset($_SERVER['SCRIPT_NAME'])) { // use PHP_SELF from Apache environment
                 $uri = substr($_SERVER['PHP_SELF'], strlen($_SERVER['SCRIPT_NAME']));
             } else { // fail
