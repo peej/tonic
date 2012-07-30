@@ -17,11 +17,24 @@ $request = new Tonic\Request();
 
 #echo $request;
 
-$resource = $app->getResource($request);
+try {
 
-#echo $resource;
+    $resource = $app->getResource($request);
 
-$response = $resource->exec();
+    #echo $resource;
+
+    $response = $resource->exec();
+
+} catch (Tonic\NotFoundException $e) {
+    $response = new Tonic\Response(404);
+
+} catch (Tonic\UnauthorizedException $e) {
+    $response = new Tonic\Response(401);
+    $response->wwwAuthenticate = 'Basic realm="My Realm"';
+
+} catch (Tonic\Exception $e) {
+    $response = new Tonic\Response(500);
+}
 
 #echo $response;
 
