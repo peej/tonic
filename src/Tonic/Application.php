@@ -88,7 +88,7 @@ class Application
     public function mount($namespaceName, $uriSpace)
     {
         foreach ($this->resources as $className => $metadata) {
-            if ($metadata['namespace'] == $namespaceName) {
+            if ($metadata['namespace'][0] == $namespaceName) {
                 foreach ($metadata['uri'] as $index => $uri) {
                     $this->resources[$className]['uri'][$index][0] = '|^'.$uriSpace.substr($uri[0], 2);
                 }
@@ -211,9 +211,9 @@ class Application
         $classReflector = new \ReflectionClass($className);
 
         $metadata['class'] = '\\'.$classReflector->getName();
-        $metadata['namespace'] = $classReflector->getNamespaceName();
+        $metadata['namespace'] = array($classReflector->getNamespaceName());
         $metadata['filename'] = $classReflector->getFileName();
-        $metadata['priority'] = 1;
+        $metadata['priority'] = array(1);
 
         // get data from docComment
         $docComment = $this->parseDocComment($classReflector->getDocComment());
@@ -236,8 +236,9 @@ class Application
      */
     private function uriTemplateToRegex($uri)
     {
-        preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
-        $return = array($uri);
+        preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri[0], $params, PREG_PATTERN_ORDER);
+        #$return = array($uri);
+        $return = $uri;
         if (isset($params[1])) {
             foreach ($params[1] as $index => $param) {
                 if (substr($param, 0, 1) == ':') {
@@ -273,7 +274,7 @@ class Application
                 foreach ($docComment as $annotationName => $value) {
                     $methodName = substr($annotationName, 1);
                     if (method_exists($className, $methodName)) {
-                        $methodMetadata[$methodName] = $value;
+                        $methodMetadata[$methodName] = $value[0];
                     }
                 }
                 $metadata[$methodReflector->getName()] = $methodMetadata;
@@ -298,9 +299,11 @@ class Application
                 if ($parts) {
                     $key = array_shift($parts);
                     if (isset($data[$key])) {
-                        $data[$key][] = trim(join(' ', $parts));
+                        //$data[$key][] = trim(join(' ', $parts));
+                        $data[$key][] = $parts;
                     } else {
-                        $data[$key] = array(trim(join(' ', $parts)));
+                        //$data[$key] = array(trim(join(' ', $parts)));
+                        $data[$key] = array($parts);
                     }
                 }
             }

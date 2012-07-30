@@ -213,7 +213,7 @@ class '.$className.' extends \Tonic\Resource {
     public function theLoadedResourceShouldHaveAClassOf($className)
     {
         $loadedClassName = get_class($this->resource);
-        if ($loadedClassName != $className) throw new Exception($loadedClassName);
+        if ($loadedClassName != $className) throw new Exception($loadedClassName.' != '.$className);
     }
 
     /**
@@ -414,6 +414,19 @@ class '.$className.' extends \Tonic\Resource {
             }
         }
         if (!$found) throw new Exception;
+    }
+
+    /**
+     * @Then /^the resource "([^"]*)" should have the condition "([^"]*)" with the parameters "([^"]*)"$/
+     */
+    public function theResourceShouldHaveTheConditionWithTheParameters($className, $conditionName, $parameters)
+    {
+        $metadata = $this->app->getResourceMetadata($className);
+        if ($parameters != join(',', $metadata['methods']['test']['foo'])) throw new Exception('Condition method not found');
+
+        $resource = new $className($this->app, new Request, array());
+        $condition = call_user_func_array(array($resource, $conditionName), explode(',', $parameters));
+        if ($condition != explode(',', $parameters)) throw new Exception('Condition parameters not returned');
     }
 
 }
