@@ -6,7 +6,8 @@ require_once '../src/Tonic/Autoloader.php';
 $config = array(
     'load' => array('../*.php', '../src/Tyrell/*.php'), // load example resources
     #'mount' => array('Tyrell' => '/nexus'), // mount in example resources at URL /nexus
-    #'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
+    #'cache' => new Tonic\MetadataCacheFile('/tmp/tonic.cache') // use the metadata cache
+    #'cache' => new Tonic\MetadataCacheAPC // use the metadata cache
 );
 
 $app = new Tonic\Application($config);
