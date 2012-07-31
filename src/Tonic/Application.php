@@ -8,6 +8,11 @@ namespace Tonic;
 class Application
 {
     /**
+     * Application configuration options
+     */
+    private $options = array();
+
+    /**
      * Metadata of the loaded resources
      */
     private $resources = array();
@@ -15,6 +20,7 @@ class Application
     public function __construct($options = array())
     {
         $this->baseUri = dirname($_SERVER['SCRIPT_NAME']);
+        $this->options = $options;
 
         // load resource metadata passed in via options array
         if (isset($options['resources']) && is_array($options['resources'])) {
