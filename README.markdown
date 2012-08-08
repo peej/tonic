@@ -374,6 +374,47 @@ can amend the front controller to catch these exceptions and handle them.
     $response->output();
 
 
+User authentication
+-------------------
+
+Need to secure a resource? Something like the following is a good pattern.
+
+    /**
+     * @uri /secret
+     */
+    class SecureResource extends Tonic\Resource {
+
+        /**
+         * @method GET
+         * @secure aUser aPassword
+         */
+        function secret() {
+            return 'My secret';
+        }
+
+        function secure($username, $password) {
+            if (
+                isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] == $username &&
+                isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_PW'] == $password
+            ) {
+                return;
+            }
+            throw new Tonic\UnauthorizedException;
+        }
+    }
+
+    $app = new Tonic\Application();
+    $request = new Tonic\Request();
+    $resource = $app->getResource($request);
+    try {
+        $response = $resource->exec();
+    } catch(Tonic\UnauthorizedException $e) {
+        $response = new Tonic\Response(401);
+        $response->wwwAuthenticate = 'Basic realm="My Realm"';
+    }
+    $response->output();
+
+
 
 For more information, read the code. Start with the dispatcher "web/dispatch.php"
 and the Hello world in the "src/Tyrell" directory.

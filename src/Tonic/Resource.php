@@ -119,9 +119,9 @@ class Resource
      * HTTP method condition must match request method
      * @param str $method
      */
-    final protected function method($method)
+    final protected function method()
     {
-        $methods = explode(' ', $method);
+        $methods = func_get_args();
         foreach ($methods as $method) {
             if (strtolower($this->request->method) == strtolower($method)) return;
         }

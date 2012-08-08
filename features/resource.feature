@@ -94,3 +94,23 @@ Feature: HTTP resource object
     When I create an application object
     And I create a request object
     Then the loaded resource "child1" should respond with the method "method1"
+
+  Scenario: Condition methods should be passed all of the annotation parameters
+    Given a class definition:
+      """
+      /**
+       * @uri /resource6
+       */
+      class Resource6 extends Tonic\Resource {
+        /**
+         * @method get
+         * @foo bar baz quux
+         */
+        function test() {}
+        function foo($bar, $baz, $quux) {
+          return array($bar, $baz, $quux);
+        }
+      }
+      """
+    When I create an application object
+    Then the resource "Resource6" should have the condition "foo" with the parameters "bar,baz,quux"
