@@ -16,6 +16,7 @@ class Request
     public $acceptLang = array();
     public $ifMatch = array();
     public $ifNoneMatch = array();
+    public $headers = array();
 
     /**
      * Map of file/URI extensions to mimetypes
@@ -61,6 +62,33 @@ class Request
 
         $this->ifMatch = $this->getMatchArray($this->getOption($options, 'ifMatch', 'HTTP_IF_MATCH'));
         $this->ifNoneMatch = $this->getMatchArray($this->getOption($options, 'ifNoneMatch', 'HTTP_IF_NONE_MATCH'));
+
+        $this->headers = $this->getHeaders($options);
+    }
+
+    public function getHeaders(array $options)
+    {
+        if(isset($options['headers']))
+            return $options['headers'];
+
+        $headersList = array_filter(array_keys($_SERVER), function ($headerName) {
+            return (0 === strpos($headerName, 'HTTP_'));
+        });
+
+        $headersList = array_intersect_key($_SERVER, array_flip($headersList));
+
+        return $headersList;
+    }
+
+    /**
+     * Get a HTTP response header
+     * @param str $name Header name, hyphens should be converted to camelcase
+     * @return str
+     */
+    public function __get($name)
+    {
+        $name = 'HTTP_' . strtoupper(preg_replace('/([A-Z])/', '_$1', $name));
+        return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
     }
 
     /**
