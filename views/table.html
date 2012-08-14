@@ -1,0 +1,21 @@
+{extends file="shell.html"}
+
+{block name=body}
+    <table border="1">
+        <tr>
+            {foreach $fields as $item}
+                <th>{$item}</th>
+            {/foreach}
+        </tr>
+        {foreach $data as $row}
+            <tr>
+                {foreach $row as $item}
+                    <td>{$item}</td>
+                {/foreach}
+            </tr>
+        {/foreach}
+    </table>
+
+    {if $page - 1 > 0}<a href="?page={$page - 1}">Previous Page</a>{/if}
+    <a href="?page={$page + 1}">Next Page</a>
+{/block}

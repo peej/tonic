@@ -1,0 +1,9 @@
+{extends file="shell.html"}
+
+{block name=body}
+    <ul>
+        {foreach $tables as $table}
+            <li><a href="{$table}">{$table}</a></li>
+        {/foreach}
+    </ul>
+{/block}
