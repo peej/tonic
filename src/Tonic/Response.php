@@ -11,9 +11,6 @@ class Response
      * HTTP response code constant
      */
     const
-        HTTPCONTINUE                    = 100,
-        SWITCHINGPROTOCOLS              = 101,
-
         OK                              = 200,
         CREATED                         = 201,
         ACCEPTED                        = 202,
@@ -57,58 +54,6 @@ class Response
         GATEWAYTIMEOUT                  = 504,
         HTTPVERSIONNOTSUPPORTED         = 505;
 
-    /**
-     * Map of HTTP response codes
-     * RFC 2616, 2324
-     */
-    protected $codes = array(
-        Response::HTTPCONTINUE                    => 'Continue',
-        Response::SWITCHINGPROTOCOLS              => 'Switching Protocols',
-
-        Response::OK                              => 'OK',
-        Response::CREATED                         => 'Created',
-        Response::ACCEPTED                        => 'Accepted',
-        Response::NONAUTHORATIVEINFORMATION       => 'Non-Authoritative Information',
-        Response::NOCONTENT                       => 'No Content',
-        Response::RESETCONTENT                    => 'Reset Content',
-        Response::PARTIALCONTENT                  => 'Partial Content',
-
-        Response::MULTIPLECHOICES                 => 'Multiple Choices',
-        Response::MOVEDPERMANENTLY                => 'Moved Permanently',
-        Response::FOUND                           => 'Found',
-        Response::SEEOTHER                        => 'See Other',
-        Response::NOTMODIFIED                     => 'Not Modified',
-        Response::USEPROXY                        => 'Use Proxy',
-        Response::TEMPORARYREDIRECT               => 'Temporary Redirect',
-
-        Response::BADREQUEST                      => 'Bad Request',
-        Response::UNAUTHORIZED                    => 'Unauthorized',
-        Response::PAYMENTREQUIRED                 => 'Payment Required',
-        Response::FORBIDDEN                       => 'Forbidden',
-        Response::NOTFOUND                        => 'Not Found',
-        Response::METHODNOTALLOWED                => 'Method Not Allowed',
-        Response::NOTACCEPTABLE                   => 'Not Acceptable',
-        Response::PROXYAUTHENTICATIONREQUIRED     => 'Proxy Authentication Required',
-        Response::REQUESTTIMEOUT                  => 'Request Timeout',
-        Response::CONFLICT                        => 'Conflict',
-        Response::GONE                            => 'Gone',
-        Response::LENGTHREQUIRED                  => 'Length Required',
-        Response::PRECONDITIONFAILED              => 'Precondition Failed',
-        Response::REQUESTENTITYTOOLARGE           => 'Request Entity Too Large',
-        Response::REQUESTURITOOLONG               => 'Request-URI Too Long',
-        Response::UNSUPPORTEDMEDIATYPE            => 'Unsupported Media Type',
-        Response::REQUESTEDRANGENOTSATISFIABLE    => 'Requested Range Not Satisfiable',
-        Response::EXPECTATIONFAILED               => 'Expectation Failed',
-        Response::IMATEAPOT                       => 'I\'m a teapot',
-
-        Response::INTERNALSERVERERROR             => 'Internal Server Error',
-        Response::NOTIMPLEMENTED                  => 'Not Implemented',
-        Response::BADGATEWAY                      => 'Bad Gateway',
-        Response::SERVICEUNAVAILABLE              => 'Service Unavailable',
-        Response::GATEWAYTIMEOUT                  => 'Gateway Timeout',
-        Response::HTTPVERSIONNOTSUPPORTED         => 'HTTP Version Not Supported',
-    );
-
     public
         $code = self::NOCONTENT,
         $body;
@@ -145,14 +90,9 @@ class Response
     }
 
     /**
-     * Get the HTTP response message of this response
-     * @return str
+     * Get the HTTP response code of this response
+     * @return int
      */
-    protected function responseMessage()
-    {
-        return isset($this->codes[$this->code]) ? $this->codes[$this->code] : '';
-    }
-
     protected function responseCode() {
         return $this->code;
     }
@@ -170,7 +110,6 @@ class Response
 
     public function __toString()
     {
-        $code = $this->code.' '.$this->responseMessage();
         $headers = array();
         foreach ($this->headers as $name => $value) {
             $headers[]  = $name.': '.$value;
@@ -181,7 +120,7 @@ class Response
 ==============
 Tonic\Response
 ==============
-Code: $code
+Code: $this->code
 Headers:
 \t$headers
 Body: $this->body
