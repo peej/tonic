@@ -415,6 +415,13 @@ Need to secure a resource? Something like the following is a good pattern.
     $response->output();
 
 
+Full example
+------------
+
+For a full project example, checkout the "example" branch which is an orphaned branch
+containing a Tonic project that exposes a MySQL database table.
+
 
 For more information, read the code. Start with the dispatcher "web/dispatch.php"
 and the Hello world in the "src/Tyrell" directory.
+
