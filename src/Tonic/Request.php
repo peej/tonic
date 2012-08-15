@@ -129,7 +129,7 @@ class Request
                 $dirname = dirname($_SERVER['SCRIPT_NAME']);
                 $uri = substr($_SERVER['REDIRECT_URL'], strlen($dirname == DIRECTORY_SEPARATOR ? '' : $dirname));
             } elseif (isset($_SERVER['REQUEST_URI'])) { // use request URI from environment
-                $uri = $_SERVER['REQUEST_URI'];
+                $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             } elseif (isset($_SERVER['PHP_SELF']) && isset($_SERVER['SCRIPT_NAME'])) { // use PHP_SELF from Apache environment
                 $uri = substr($_SERVER['PHP_SELF'], strlen($_SERVER['SCRIPT_NAME']));
             } else { // fail
