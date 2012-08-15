@@ -162,9 +162,8 @@ class Response
      */
     public function output()
     {
-        header('HTTP/1.1 '.$this->responseCode().' '.$this->responseMessage());
         foreach ($this->headers as $name => $value) {
-            header($name.': '.$value);
+            header($name.': '.$value, true, $this->responseCode());
         }
         echo $this->body;
     }
