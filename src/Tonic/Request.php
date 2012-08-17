@@ -49,7 +49,7 @@ class Request
     public function __construct($options = array())
     {
         $this->uri = $this->getURIFromEnvironment($options);
-        $this->method = $this->getOption($options, 'method', 'requestMethod', 'GET');
+        $this->method = $this->getOption($options, 'method', array('xHttpMethodOverride', 'requestMethod'), 'GET');
 
         $this->contentType = $this->getContentType($options);
         $this->data = $this->getData($options);
@@ -62,22 +62,29 @@ class Request
     }
 
     /**
-     * Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default
+     * Get an item from the given options array if it exists, otherwise fetch from HTTP header
+     * or return the given default
+     *
      * @param  str[] $options
-     * @param  str   $configVar Name of item to get
-     * @param  str   $serverVar Name of _SERVER superglobal item to use
-     * @param  str   $default   Fallback value
+     * @param  str $configVar Name of item to get
+     * @param  str|str[] $headers Name of HTTP header(s)
+     * @param  str $default Fallback value
      * @return str
      */
-    public function getOption($options, $configVar, $header = NULL, $default = NULL)
+    public function getOption($options, $configVar, $headers = NULL, $default = NULL)
     {
         if (isset($options[$configVar])) {
             return $options[$configVar];
-        } elseif ($header && $val = $this->getHeader($header)) {
-            return $val;
-        } elseif ($configVar && $val = $this->getHeader($configVar)) {
-            return $val;
         } else {
+            if (!is_array($headers)) {
+                $headers = array($headers);
+            }
+            $headers[] = $configVar;
+            foreach ($headers as $header) {
+                if ($val = $this->getHeader($header)) {
+                    return $val;
+                }
+            }
             return $default;
         }
     }
