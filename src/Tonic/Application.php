@@ -343,7 +343,7 @@ class Application
                 $uri[] = $u[0];
             }
             $uri = join(', ', $uri);
-            $r = $resource['class'].' '.$uri.' '.$resource['priority'];
+            $r = $resource['class'].' '.$uri.' '.join(', ', $resource['priority']);
             foreach ($resource['methods'] as $methodName => $method) {
                 $r .= "\n\t\t".$methodName;
                 foreach ($method as $itemName => $item) {
