@@ -63,3 +63,11 @@ Feature: A Tonic application
     And the resource "AnnotationTest" should have the URI "/annotation2"
     And the resource "AnnotationTest" should have the URI "/annotation3"
     And the resource "AnnotationTest" should have the URI "/annotation4"
+
+  Scenario: Windows style line endings shouldn't break annotations
+    Given a resource definition "windows" with URI "/windows" and windows style line endings
+    And the request URI of "/windows"
+    When I create an application object
+    And I create a request object
+    And load the resource
+    Then the loaded resource should have a class of "windows"

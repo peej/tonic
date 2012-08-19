@@ -163,35 +163,35 @@ class FeatureContext extends BehatContext
         $this->aResourceDefinition($className, $uri, 1, NULL, $namespace);
     }
 
-    private function aResourceDefinition($className, $uri, $priority = 1, $namespace = NULL, $annotationNamespace = NULL)
+    /**
+     * @Given /^a resource definition "([^"]*)" with URI "([^"]*)" and windows style line endings$/
+     */
+    public function aResourceDefinitionWithUriAndWindowsStyleLineEndings($className, $uri)
+    {
+        $this->aResourceDefinition($className, $uri, 1, NULL, NULL, "\r\n");
+    }
+
+    private function aResourceDefinition($className, $uri, $priority = 1, $namespace = NULL, $annotationNamespace = NULL, $lineEnding = "\n")
     {
         $classDefinition = '';
-        if ($namespace) $classDefinition .= 'namespace '.$namespace.";\n";
-        $classDefinition .= '
-/**
- * @uri '.$uri.'
- * @priority '.$priority.'
-';
-        if ($annotationNamespace) $classDefinition .= ' * @namespace '.$annotationNamespace."\n";
-        $classDefinition .= ' */
-class '.$className.' extends \Tonic\Resource {
-';
+        if ($namespace) $classDefinition .= 'namespace '.$namespace.';'.$lineEnding;
+        $classDefinition .= '/**'.$lineEnding.
+            ' * @uri '.$uri.$lineEnding.
+            ' * @priority '.$priority.$lineEnding;
+        if ($annotationNamespace) $classDefinition .= ' * @namespace '.$annotationNamespace.$lineEnding;
+        $classDefinition .= ' */'.$lineEnding.
+            'class '.$className.' extends \Tonic\Resource {'.$lineEnding;
         foreach ($this->createMethod as $methodData) {
-            $classDefinition .= '
-    /**'."\n";
-            $classDefinition .= '     * @method '.(isset($methodData['method']) ? $methodData['method'] : 'GET')."\n";
-            if (isset($methodData['accepts'])) $classDefinition .= '     * @accepts '.$methodData['accepts']."\n";
-            if (isset($methodData['provides'])) $classDefinition .= '     * @provides '.$methodData['provides']."\n";
-            $classDefinition .= '
-     */
-    function '.$methodData['name'].'() {
-        return "'.$methodData['name'].'";
-    }
-';
+            $classDefinition .= '    /**'.$lineEnding;
+            $classDefinition .= '     * @method '.(isset($methodData['method']) ? $methodData['method'] : 'GET').$lineEnding;
+            if (isset($methodData['accepts'])) $classDefinition .= '     * @accepts '.$methodData['accepts'].$lineEnding;
+            if (isset($methodData['provides'])) $classDefinition .= '     * @provides '.$methodData['provides'].$lineEnding;
+            $classDefinition .= $lineEnding.'     */'.$lineEnding.
+                '    function '.$methodData['name'].'() {'.$lineEnding.
+                '        return "'.$methodData['name'].'";'.$lineEnding.
+                '    }'.$lineEnding;
         }
-        $classDefinition .= '
-}
-';
+        $classDefinition .= '}'.$lineEnding;
         eval($classDefinition);
     }
 
