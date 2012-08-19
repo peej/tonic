@@ -237,13 +237,12 @@ class Application
 
     /**
      * Turn a URL template into a regular expression
-     * @param  str $uri URL template
-     * @return str Regular expression
+     * @param  str[] $uri URL template
+     * @return str[] Regular expression and parameter names
      */
     private function uriTemplateToRegex($uri)
     {
         preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri[0], $params, PREG_PATTERN_ORDER);
-        #$return = array($uri);
         $return = $uri;
         if (isset($params[1])) {
             foreach ($params[1] as $index => $param) {
@@ -258,7 +257,6 @@ class Application
         }
 
         $return[0] = '|^'.preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '([^/]+)', $return[0]).'$|';
-
         return $return;
     }
 
@@ -301,16 +299,13 @@ class Application
         preg_match_all('/^\s*\*[*\s]*(@.+)$/m', $comment, $items);
         if ($items && isset($items[1])) {
             foreach ($items[1] as $item) {
-                $parts = preg_split('/\s+/', $item);
+                $parts = preg_split('/ +/', $item);
                 if ($parts) {
-                    $key = array_shift($parts);
-                    if (isset($data[$key])) {
-                        //$data[$key][] = trim(join(' ', $parts));
-                        $data[$key][] = $parts;
-                    } else {
-                        //$data[$key] = array(trim(join(' ', $parts)));
-                        $data[$key] = array($parts);
+                    foreach ($parts as $k => $part) {
+                        $parts[$k] = trim($part);
                     }
+                    $key = array_shift($parts);
+                    $data[$key][] = $parts;
                 }
             }
         }
