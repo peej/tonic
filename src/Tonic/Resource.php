@@ -60,7 +60,7 @@ class Resource
                             } catch (Exception $e) {
                                 unset($methodPriorities[$key]);
                                 $error = $e;
-                                $error->appendMessage(' for method "'.get_class($this).'::'.$key.'"');
+                                $error->appendMessage(' in "'.get_class($this).'"');
                                 break;
                             }
                         } else {
@@ -78,7 +78,7 @@ class Resource
         }
 
         if ($methodPriorities) {
-            $methodPriorities = array_flip($methodPriorities);
+            $methodPriorities = array_flip(array_reverse($methodPriorities));
             ksort($methodPriorities);
             $methodName = array_pop($methodPriorities);
 
@@ -156,8 +156,13 @@ class Resource
     protected function provides($mimetype)
     {
         $pos = array_search($mimetype, $this->request->accept);
-        if ($pos === FALSE)
-            throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
+        if ($pos === FALSE) {
+            if (in_array('*/*', $this->request->accept)) {
+                return count($this->request->accept);
+            } else {
+                throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
+            }
+        }
         $this->addResponseAction(function ($response) use ($mimetype) {
             $response->contentType = $mimetype;
         });
