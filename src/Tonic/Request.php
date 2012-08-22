@@ -220,7 +220,6 @@ class Request
 =============
 Tonic\Request
 =============
-Hostname: $this->hostname
 URI: $this->uri
 HTTP method: $this->method
 Content type: $this->contentType
