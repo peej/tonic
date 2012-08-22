@@ -184,6 +184,7 @@ class FeatureContext extends BehatContext
         foreach ($this->createMethod as $methodData) {
             $classDefinition .= '    /**'.$lineEnding;
             $classDefinition .= '     * @method '.(isset($methodData['method']) ? $methodData['method'] : 'GET').$lineEnding;
+            if (isset($methodData['lang'])) $classDefinition .= '     * @lang '.$methodData['lang'].$lineEnding;
             if (isset($methodData['accepts'])) $classDefinition .= '     * @accepts '.$methodData['accepts'].$lineEnding;
             if (isset($methodData['provides'])) $classDefinition .= '     * @provides '.$methodData['provides'].$lineEnding;
             $classDefinition .= $lineEnding.'     */'.$lineEnding.

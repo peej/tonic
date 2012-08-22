@@ -187,7 +187,7 @@ class Request
         krsort($accept);
         foreach ($accept as $parts) {
             foreach ($parts as $part) {
-                $acceptArray[] = $part;
+                $acceptArray[] = trim($part);
             }
         }
 
