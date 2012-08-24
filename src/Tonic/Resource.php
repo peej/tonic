@@ -158,7 +158,7 @@ class Resource
         $pos = array_search($mimetype, $this->request->accept);
         if ($pos === FALSE) {
             if (in_array('*/*', $this->request->accept)) {
-                return count($this->request->accept);
+                return 0;
             } else {
                 throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
             }
@@ -219,7 +219,7 @@ class Resource
         $methods = '';
         foreach ($methodMetadata['methods'] as $methodName => $method) {
             $methods .= "\n\t".$methodName;
-            foreach ($method as $itemName => $item) {
+            foreach ($method['conditions'] as $itemName => $item) {
                 $methods .= ' '.$itemName.'="'.join(', ', $item).'"';
             }
         }
