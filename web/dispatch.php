@@ -27,10 +27,10 @@ try {
     $response = $resource->exec();
 
 } catch (Tonic\NotFoundException $e) {
-    $response = new Tonic\Response(404);
+    $response = new Tonic\Response(404, $e->getMessage());
 
 } catch (Tonic\UnauthorizedException $e) {
-    $response = new Tonic\Response(401);
+    $response = new Tonic\Response(401, $e->getMessage());
     $response->wwwAuthenticate = 'Basic realm="My Realm"';
 
 } catch (Tonic\Exception $e) {
