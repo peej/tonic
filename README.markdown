@@ -194,6 +194,7 @@ There are a number of built in conditions provided by the base resource class.
     @priority number    Higher priority method takes precident over other matches
     @accepts mimetype   Given mimetype must match request content type
     @provides mimetype  Given mimetype must be in request accept array
+    @lang language      Given language must be in request accept lang array
     @cache seconds      Send cache header for the given number of seconds
 
 
