@@ -56,10 +56,10 @@ class Resource
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
                                 if (!$condition) $condition = 0;
-                                if (is_int($condition)) {
+                                if (is_numeric($condition)) {
                                     $methodPriorities[$key] += $condition;
                                 } elseif ($condition) {
-                                    return Response::create($condition);
+                                    $resourceMetadata['methods'][$key]['response'] = $condition;
                                 }
                             } catch (Exception $e) {
                                 unset($methodPriorities[$key]);
@@ -85,10 +85,14 @@ class Resource
             ksort($methodPriorities);
             $methodName = array_pop($methodPriorities);
 
-            $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
+            if (isset($resourceMetadata['methods'][$methodName]['response'])) {
+                return Response::create($resourceMetadata['methods'][$methodName]['response']);
 
-            foreach ($this->responseActions as $action) {
-                $action($response);
+            } else {
+                $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
+                foreach ($this->responseActions as $action) {
+                    $action($response);
+                }
             }
 
             return $response;
