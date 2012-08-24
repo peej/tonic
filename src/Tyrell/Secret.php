@@ -7,6 +7,11 @@ use Tonic\Resource,
     Tonic\UnauthorizedException;
 
 /**
+ * Simple HTTP authentication example.
+ *
+ * The condition annotation @secure maps to the secure() method allowing us to easily
+ * secure the mySecret() method with the given username and password
+ *
  * @uri /secret
  */
 class Secret extends Resource {
@@ -26,6 +31,7 @@ class Secret extends Resource {
         ) {
             return;
         }
-        throw new UnauthorizedException;
+        #return new Response(401, 'No entry', array('wwwAuthenticate' => 'Basic realm="My Realm"'));
+        throw new UnauthorizedException('No entry');
     }
 }
