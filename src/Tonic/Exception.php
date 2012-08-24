@@ -7,14 +7,5 @@ namespace Tonic;
  */
 class Exception extends \Exception
 {
-    /**
-     * Append a message onto the existing exception message
-     *
-     * @param str $msg
-     */
-    public function appendMessage($msg)
-    {
-        $this->message .= $msg;
-    }
-
+    protected $message = 'An unknown Tonic exception occurred';
 }
