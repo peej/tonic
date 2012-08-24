@@ -56,11 +56,14 @@ class Resource
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
                                 if (!$condition) $condition = 0;
-                                $methodPriorities[$key] += $condition;
+                                if (is_int($condition)) {
+                                    $methodPriorities[$key] += $condition;
+                                } elseif ($condition) {
+                                    return Response::create($condition);
+                                }
                             } catch (Exception $e) {
                                 unset($methodPriorities[$key]);
                                 $error = $e;
-                                $error->appendMessage(' in "'.get_class($this).'"');
                                 break;
                             }
                         } else {
@@ -82,16 +85,7 @@ class Resource
             ksort($methodPriorities);
             $methodName = array_pop($methodPriorities);
 
-            $response = call_user_func_array(array($this, $methodName), $this->params);
-            if (is_array($response)) {
-                $response = new Response($response[0], $response[1]);
-            } elseif (is_int($response)) {
-                $response = new Response($response);
-            } elseif (is_string($response)) {
-                $response = new Response(200, $response);
-            } elseif (!is_a($response, 'Tonic\Response')) {
-                $response = new Response;
-            }
+            $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
 
             foreach ($this->responseActions as $action) {
                 $action($response);

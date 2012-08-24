@@ -56,15 +56,42 @@ class Response
 
     public
         $code = self::NOCONTENT,
-        $body;
+        $body = null;
 
     protected
         $headers = array('content-type' => 'text/html');
 
-    public function __construct($code = null, $body = null)
+    public function __construct($code = null, $body = null, $headers = array())
     {
-        $code and $this->code = $code;
-        $body and $this->body = $body;
+        if (is_int($code)) {
+            $this->code = $code;
+            $this->body = $body;
+        } elseif ($code && !$body) {
+            $this->code = self::OK;
+            $this->body = $code;
+        }
+        foreach ($headers as $name => $value) {
+            $this->$name = $value;
+        }
+    }
+
+    /**
+     * Factory method to create a Response from a variety of inputs
+     *
+     * @param mixed $response
+     */
+    public static function create($response)
+    {
+        if (is_array($response)) {
+            return new Response($response[0], $response[1]);
+        } elseif (is_int($response)) {
+            return new Response($response);
+        } elseif (is_string($response)) {
+            return new Response(200, $response);
+        } elseif ($response instanceof Response) {
+            return $response;
+        }
+        return new Response;
     }
 
     /**
