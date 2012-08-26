@@ -113,7 +113,11 @@ class Hello extends Resource
         });
         $this->after(function ($response) {
             $response->contentType = "application/json";
-            $response->body = json_encode($response->body);
+            if (isset($_GET['jsonp'])) {
+                $response->body = $_GET['jsonp'].'('.json_encode($response->body).');';
+            } else {
+                $response->body = json_encode($response->body);
+            }
         });
     }
 
