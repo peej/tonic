@@ -114,3 +114,38 @@ Feature: HTTP resource object
       """
     When I create an application object
     Then the resource "Resource6" should have the condition "foo" with the parameters "bar,baz,quux"
+
+  Scenario: Before and after filters
+    Given a class definition:
+      """
+      /**
+       * @uri /resource7
+       */
+      class Resource7 extends Tonic\Resource {
+        /**
+         * @method get
+         * @myBeforeFilter
+         * @myAfterFilter
+         */
+        function test() {}
+        function myBeforeFilter() {
+          $this->before(function ($request) {
+            $request->data = 'foo';
+          });
+        }
+        function myAfterFilter() {
+          $this->after(function ($response) {
+            $response->body = 'bar';
+          });
+        }
+      }
+      """
+    And the request URI of "/resource7"
+    And the request method of "GET"
+    When I create an application object
+    And I create a request object
+    And load the resource
+    And execute the resource
+    Then the resource "Resource7" should have the condition "myBeforeFilter" with the parameters ""
+    And I should see body data of "foo"
+    And response should be "bar"

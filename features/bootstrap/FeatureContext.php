@@ -423,11 +423,15 @@ class FeatureContext extends BehatContext
     public function theResourceShouldHaveTheConditionWithTheParameters($className, $conditionName, $parameters)
     {
         $metadata = $this->app->getResourceMetadata($className);
-        if ($parameters != join(',', $metadata['methods']['test']['foo'])) throw new Exception('Condition method not found');
-
-        $resource = new $className($this->app, new Request, array());
-        $condition = call_user_func_array(array($resource, $conditionName), explode(',', $parameters));
-        if ($condition != explode(',', $parameters)) throw new Exception('Condition parameters not returned');
+        if ($parameters) {
+            if ($parameters != join(',', $metadata['methods']['test'][$conditionName])) throw new Exception('Condition method not found');
+            
+            $resource = new $className($this->app, new Request, array());
+            $condition = call_user_func_array(array($resource, $conditionName), explode(',', $parameters));
+            if ($condition != explode(',', $parameters)) throw new Exception('Condition parameters not returned');
+        } else {
+            if (!isset($metadata['methods']['test'][$conditionName])) throw new Exception('Condition method not found');
+        }
     }
 
 }

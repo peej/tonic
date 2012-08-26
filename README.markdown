@@ -197,6 +197,30 @@ There are a number of built in conditions provided by the base resource class.
     @lang language      Given language must be in request accept lang array
     @cache seconds      Send cache header for the given number of seconds
 
+You can also add code to a condition to be executed before and after the resource method.
+For example you might want to JSON decode the request input and JSON encode the response
+output of your resource method in a reusable way:
+
+    /**
+     * @method GET
+     * @json
+     */
+    function exampleMethod() {
+        ...
+    }
+
+    function json() {
+        $this->before(function ($request) {
+            if ($request->contentType == "application/json") {
+                $request->data = json_decode($request->data);
+            }
+        });
+        $this->after(function ($response) {
+            $response->contentType = "application/json";
+            $response->body = json_encode($response->body);
+        });
+    }
+
 
 Response exceptions
 -------------------

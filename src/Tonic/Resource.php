@@ -9,7 +9,8 @@ class Resource
 {
     protected $app, $request;
     public $params;
-    protected $responseActions = array();
+    private $currentMethodName;
+    protected $before = array(), $after = array();
 
     public function __construct(Application $app, Request $request, array $urlParams)
     {
@@ -49,6 +50,7 @@ class Resource
                     $methodPriorities[$key] = 0;
                     foreach ($methodMetadata as $conditionName => $params) { // process each method condition
                         if (method_exists($this, $conditionName)) {
+                            $this->currentMethodName = $key;
                             try {
                                 if (is_array($params)) {
                                     $condition = call_user_func_array(array($this, $conditionName), $params);
@@ -89,9 +91,16 @@ class Resource
                 return Response::create($resourceMetadata['methods'][$methodName]['response']);
 
             } else {
+                if (isset($this->before[$methodName])) {
+                    foreach ($this->before[$methodName] as $action) {
+                        $action($this->request);
+                    }
+                }
                 $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
-                foreach ($this->responseActions as $action) {
-                    $action($response);
+                if (isset($this->after[$methodName])) {
+                    foreach ($this->after[$methodName] as $action) {
+                        $action($response);
+                    }
                 }
             }
 
@@ -102,14 +111,26 @@ class Resource
     }
 
     /**
-     * Add a function to execute on the response before it is returned
+     * Add a function to execute on the request before the resource method is called
      *
      * @param callable $action
      */
-    final protected function addResponseAction($action)
+    final protected function before($action)
     {
         if (is_callable($action)) {
-            $this->responseActions[] = $action;
+            $this->before[$this->currentMethodName][] = $action;
+        }
+    }
+
+    /**
+     * Add a function to execute on the response after the resource method is called
+     *
+     * @param callable $action
+     */
+    final protected function after($action)
+    {
+        if (is_callable($action)) {
+            $this->after[$this->currentMethodName][] = $action;
         }
     }
 
@@ -161,7 +182,7 @@ class Resource
                 throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
             }
         }
-        $this->addResponseAction(function ($response) use ($mimetype) {
+        $this->after(function ($response) use ($mimetype) {
             $response->contentType = $mimetype;
         });
 

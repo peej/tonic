@@ -78,7 +78,7 @@ class Hello extends Resource
      *
      * Only allow specific :name parameter to access the method
      */
-    public function only($allowedName)
+    protected function only($allowedName)
     {
         if (strtolower($allowedName) != strtolower($this->name)) throw new ConditionException;
     }
@@ -90,14 +90,31 @@ class Hello extends Resource
      *
      * @method GET
      * @provides application/json
+     * @json
      * @return Tonic\Response
      */
     public function sayHelloComputer()
     {
-        return new Response(200, json_encode(array(
+        return new Response(200, array(
             'hello' => $this->name,
             'url' => $this->app->uri($this, $this->name)
-        )));
+        ));
+    }
+
+    /**
+     * Condition method to turn output into JSON
+     */
+    protected function json()
+    {
+        $this->before(function ($request) {
+            if ($request->contentType == "application/json") {
+                $request->data = json_decode($request->data);
+            }
+        });
+        $this->after(function ($response) {
+            $response->contentType = "application/json";
+            $response->body = json_encode($response->body);
+        });
     }
 
     /**
@@ -109,6 +126,7 @@ class Hello extends Resource
      * @method POST
      * @accepts application/json
      * @provides application/json
+     * @json
      * @return Response
      */
     public function feedTheComputer()
