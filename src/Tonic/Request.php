@@ -9,7 +9,7 @@ class Request
 {
     public $uri;
     public $method;
-    public $contentType = 'application/x-www-form-urlencoded';
+    public $contentType;
     public $data;
     public $accept = array();
     public $acceptLanguage = array();

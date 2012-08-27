@@ -16,7 +16,7 @@ class MyResource extends Tonic\Resource {
      * @accepts application/x-www-form-urlencoded
      * @accepts application/multipart
      * @provides text/html
-     * @condition myCondition
+     * @myCondition
      * @param  str $name
      * @return Response
      */

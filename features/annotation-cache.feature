@@ -13,7 +13,7 @@ Feature: Caching of annotation information
           "uri": "|^/cache$|",
           "methods": {
             "method1": {
-              "method": "GET"
+              "method": ["GET"]
             }
           }
         }

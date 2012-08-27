@@ -12,6 +12,8 @@ class Application
      */
     private $options = array();
 
+    private $baseUri= '';
+
     /**
      * Metadata of the loaded resources
      */
@@ -19,7 +21,11 @@ class Application
 
     public function __construct($options = array())
     {
-        $this->baseUri = dirname($_SERVER['SCRIPT_NAME']);
+        if (isset($options['baseUri'])) {
+            $this->baseUri = $options['baseUri'];
+        } elseif (isset($_SERVER['DOCUMENT_URI'])) {
+            $this->baseUri = dirname($_SERVER['DOCUMENT_URI']);
+        }
         $this->options = $options;
 
         // load resource metadata passed in via options array
@@ -69,7 +75,7 @@ class Application
      * Load the metadata for all loaded resource classes
      * @param str $uriSpace Optional URI-space to mount the resources into
      */
-    public function loadResourceMetadata($uriSpace = NULL)
+    private function loadResourceMetadata($uriSpace = NULL)
     {
         foreach (get_declared_classes() as $className) {
             if (
@@ -260,7 +266,7 @@ class Application
         return $return;
     }
 
-    public function readMethodAnnotations($className)
+    private function readMethodAnnotations($className)
     {
         if (isset($this->resources[$className]) && isset($this->resources[$className]['methods'])) {
             return $this->resources[$className]['methods'];
@@ -278,7 +284,9 @@ class Application
                 foreach ($docComment as $annotationName => $value) {
                     $methodName = substr($annotationName, 1);
                     if (method_exists($className, $methodName)) {
-                        $methodMetadata[$methodName] = $value[0];
+                        foreach ($value as $v) {
+                            $methodMetadata[$methodName][] = $v;
+                        }
                     }
                 }
                 $metadata[$methodReflector->getName()] = $methodMetadata;

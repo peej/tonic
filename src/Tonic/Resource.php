@@ -33,24 +33,24 @@ class Resource
      * Execute the resource, that is, find the correct resource method to call
      * based upon the request and then call it.
      *
-     * @param str methodName Optional name of method to execute, bypasing annotations, useful for debugging
      * @return Tonic\Response
      */
-    final public function exec($methodName = NULL)
+    final public function exec()
     {
         // get the annotation metadata for this resource
         $resourceMetadata = $this->app->getResourceMetadata($this);
 
-        $error = new NotAcceptableException;
         $methodPriorities = array();
 
         if (isset($resourceMetadata['methods'])) {
             foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
-                if (!$methodName || $methodName == $key) {
-                    $methodPriorities[$key] = 0;
-                    foreach ($methodMetadata as $conditionName => $params) { // process each method condition
-                        if (method_exists($this, $conditionName)) {
-                            $this->currentMethodName = $key;
+                foreach ($methodMetadata as $conditionName => $conditions) { // process each method condition
+                    if (method_exists($this, $conditionName)) {
+                        $this->currentMethodName = $key;
+                        $methodPriorities[$key] = 0;
+                        $conditionValue = -1;
+                        $error = null;
+                        foreach ($conditions as $params) {
                             try {
                                 if (is_array($params)) {
                                     $condition = call_user_func_array(array($this, $conditionName), $params);
@@ -59,25 +59,30 @@ class Resource
                                 }
                                 if (!$condition) $condition = 0;
                                 if (is_numeric($condition)) {
-                                    $methodPriorities[$key] += $condition;
+                                    if ($condition > $conditionValue) {
+                                        $conditionValue = $condition;
+                                    }
                                 } elseif ($condition) {
                                     $resourceMetadata['methods'][$key]['response'] = $condition;
                                 }
+                                $error = null;
                             } catch (Exception $e) {
-                                unset($methodPriorities[$key]);
                                 $error = $e;
-                                break;
                             }
-                        } else {
-                            throw new \Exception(sprintf(
-                                'Condition method "%s" not found in Resource class "%s"',
-                                $conditionName,
-                                get_class($this)
-                            ));
                         }
+                        if ($conditionValue > -1) {
+                            $methodPriorities[$key] += $conditionValue;
+                        } elseif ($error) {
+                            unset($methodPriorities[$key]);
+                            break;
+                        }
+                    } else {
+                        throw new \Exception(sprintf(
+                            'Condition method "%s" not found in Resource class "%s"',
+                            $conditionName,
+                            get_class($this)
+                        ));
                     }
-                } else {
-                    unset($methodPriorities[$key]);
                 }
             }
         }
@@ -138,13 +143,10 @@ class Resource
      * HTTP method condition must match request method
      * @param str $method
      */
-    final protected function method()
+    final protected function method($method)
     {
-        $methods = func_get_args();
-        foreach ($methods as $method) {
-            if (strtolower($this->request->method) == strtolower($method)) return;
-        }
-        throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
+        if (strtolower($this->request->method) != strtolower($method))
+            throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
     }
 
     /**
@@ -174,6 +176,7 @@ class Resource
      */
     protected function provides($mimetype)
     {
+        if (count($this->request->accept) == 0) return 0;
         $pos = array_search($mimetype, $this->request->accept);
         if ($pos === FALSE) {
             if (in_array('*/*', $this->request->accept)) {
@@ -181,12 +184,12 @@ class Resource
             } else {
                 throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
             }
+        } else {
+            $this->after(function ($response) use ($mimetype) {
+                $response->contentType = $mimetype;
+            });
+            return count($this->request->accept) - $pos;
         }
-        $this->after(function ($response) use ($mimetype) {
-            $response->contentType = $mimetype;
-        });
-
-        return count($this->request->accept) - $pos;
     }
 
     /**

@@ -424,7 +424,7 @@ class FeatureContext extends BehatContext
     {
         $metadata = $this->app->getResourceMetadata($className);
         if ($parameters) {
-            if ($parameters != join(',', $metadata['methods']['test'][$conditionName])) throw new Exception('Condition method not found');
+            if ($parameters != join(',', $metadata['methods']['test'][$conditionName][0])) throw new Exception('Condition method not found');
             
             $resource = new $className($this->app, new Request, array());
             $condition = call_user_func_array(array($resource, $conditionName), explode(',', $parameters));
