@@ -5,5 +5,5 @@ php:
 before_install:
   - composer install --dev
 script:
-  - php behat.phar
+  - php vendor/behat/behat/bin/behat
   - php vendor/phpspec/phpspec/scripts/phpspec.php spec
