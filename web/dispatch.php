@@ -34,7 +34,7 @@ try {
     $response->wwwAuthenticate = 'Basic realm="My Realm"';
 
 } catch (Tonic\Exception $e) {
-    $response = new Tonic\Response(500, $e->getMessage());
+    $response = new Tonic\Response($e->getCode(), $e->getMessage());
 }
 
 #echo $response;
