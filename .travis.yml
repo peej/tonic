@@ -3,9 +3,7 @@ php:
   - 5.3
   - 5.4
 before_install:
-  - wget https://github.com/downloads/Behat/Behat/behat.phar
-  - pear channel-discover pear.phpspec.net
-  - pear install pear.phpspec.net/PHPSpec
+  - composer install --dev
 script:
   - php behat.phar
-  - phpspec spec
+  - php vendor/phpspec/phpspec/scripts/phpspec.php spec
