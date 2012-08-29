@@ -3,7 +3,20 @@
 require_once dirname(__FILE__).'/../src/Tonic/Autoloader.php';
 
 class DescribeTonicRequest extends \PHPSpec\Context
-{ 
+{
+
+    function after()
+    {
+        unset($_SERVER);
+    }
+
+    private function createRequest($options = NULL)
+    {
+        if (!isset($options['uri'])) {
+            $options['uri'] = '/foo/bar';
+        }
+        return new Tonic\Request($options);
+    }
 
     function itShouldHaveTheRequestUriFromOptions()
     {
@@ -65,6 +78,7 @@ class DescribeTonicRequest extends \PHPSpec\Context
     function itShouldHaveTheRequestMethodFromOptions()
     {
         $request = new Tonic\Request(array(
+            'uri' => '/foo/bar',
             'method' => 'POST'
         ));
         $this->spec($request->method)->should->be('POST');
@@ -73,37 +87,38 @@ class DescribeTonicRequest extends \PHPSpec\Context
     function itShouldHaveTheRequestMethodFromRequestMethodHeader()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $request = new Tonic\Request;
+        $request = $this->createRequest();
         $this->spec($request->method)->should->be('POST');
     }
 
     function itShouldHaveTheRequestMethodFromMethodOverrideHeader()
     {
         $_SERVER['X_HTTP_METHOD_OVERRIDE'] = 'POST';
-        $request = new Tonic\Request;
+        $request = $this->createRequest();
         $this->spec($request->method)->should->be('POST');
     }
 
     function itShouldHaveTheRequestContentType()
     {
         $request = new Tonic\Request(array(
+            'uri' => '/foo/bar',
             'contentType' => 'text/html'
         ));
         $this->spec($request->contentType)->should->be('text/html');
         
         $_SERVER['CONTENT_TYPE'] = 'text/html';
-        $request = new Tonic\Request;
+        $request = $this->createRequest();
         $this->spec($request->contentType)->should->be('text/html');
         
         $_SERVER['CONTENT_TYPE'] = 'text/html; charset=ISO-8859-4';
-        $request = new Tonic\Request;
+        $request = $this->createRequest();
         $this->spec($request->contentType)->should->be('text/html');
     }
 
     function itShouldHaveTheAcceptMimetypes()
     {
         $_SERVER['ACCEPT'] = 'text/html,application/xhtml+xml;q=0.8,application/xml;q=0.9,*/*;q=0.7';
-        $request = new Tonic\Request;
+        $request = $this->createRequest();
         $this->spec($request->accept[0])->should->be('text/html');
         $this->spec($request->accept[2])->should->be('application/xhtml+xml');
         $this->spec($request->accept[1])->should->be('application/xml');
@@ -113,7 +128,7 @@ class DescribeTonicRequest extends \PHPSpec\Context
     function itShouldHaveTheAcceptLanguages()
     {
         $_SERVER['ACCEPT_LANGUAGE'] = 'en-GB,en;q=0.8,nl;q=0.9';
-        $request = new Tonic\Request;
+        $request = $this->createRequest();
         $this->spec($request->acceptLanguage[0])->should->be('en-gb');
         $this->spec($request->acceptLanguage[2])->should->be('en');
         $this->spec($request->acceptLanguage[1])->should->be('nl');
