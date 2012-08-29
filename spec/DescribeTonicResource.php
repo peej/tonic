@@ -15,15 +15,29 @@ class MyOtherResource extends Tonic\Resource {
      * @accepts application/multipart
      * @provides text/html
      * @myCondition
+     * @beforeCondition
+     * @afterCondition
      * @param  str $name
-     * @return Response
+     * @return str[]
      */
     function myMethod() {
         return array(200, 'Hello');
     }
 
     function myCondition() {
-        return TRUE;
+        if (isset($_GET['error'])) throw Tonic\ConditionException;
+    }
+
+    function beforeCondition() {
+        $this->before(function ($request) {
+            $request->foo = 'bar';
+        });
+    }
+
+    function afterCondition() {
+        $this->after(function ($response) {
+            $response->baz = 'quux';
+        });
     }
 
 }
@@ -96,6 +110,18 @@ class DescribeTonicResource extends \PHPSpec\Context
         $this->spec(function() use ($resource) {
             $resource->exec();
         })->should->throwException('Tonic\UnsupportedMediaTypeException');
+    }
+
+    function itShouldExecuteTheBeforeAndAfterConditions()
+    {
+        $request = new Tonic\Request(array(
+            'uri' => '/baz/quux',
+            'contentType' => 'application/x-www-form-urlencoded'
+        ));
+        $resource = $this->createResource($request);
+        $response = $resource->exec();
+        $this->spec($request->foo)->should->be('bar');
+        $this->spec($response->baz)->should->be('quux');
     }
 
 }
