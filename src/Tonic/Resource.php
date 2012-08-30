@@ -66,6 +66,8 @@ class Resource
                                     $resourceMetadata['methods'][$key]['response'] = $condition;
                                 }
                                 $error = null;
+                            } catch (ConditionException $e) {
+                                break;
                             } catch (Exception $e) {
                                 $error = $e;
                             }

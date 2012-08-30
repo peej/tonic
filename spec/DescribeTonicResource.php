@@ -20,21 +20,27 @@ class MyOtherResource extends Tonic\Resource {
      * @param  str $name
      * @return str[]
      */
-    function myMethod() {
+    function myMethod()
+    {
         return array(200, 'Hello');
     }
 
-    function myCondition() {
-        if (isset($_GET['error'])) throw Tonic\ConditionException;
+    function myCondition()
+    {
+        $this->xyzzy = 'thud';
+        if (isset($_GET['error'])) throw new Tonic\ConditionException;
+        $this->wibble = 'wobble';
     }
 
-    function beforeCondition() {
+    function beforeCondition()
+    {
         $this->before(function ($request) {
             $request->foo = 'bar';
         });
     }
 
-    function afterCondition() {
+    function afterCondition()
+    {
         $this->after(function ($response) {
             $response->baz = 'quux';
         });
@@ -43,7 +49,12 @@ class MyOtherResource extends Tonic\Resource {
 }
 
 class DescribeTonicResource extends \PHPSpec\Context
-{ 
+{
+
+    function before()
+    {
+        unset($_GET);
+    }
 
     private function createResource($request = NULL)
     {
@@ -122,6 +133,21 @@ class DescribeTonicResource extends \PHPSpec\Context
         $response = $resource->exec();
         $this->spec($request->foo)->should->be('bar');
         $this->spec($response->baz)->should->be('quux');
+    }
+
+    function itShouldNeverThrowAConditionException()
+    {
+        $_GET['error'] = true;
+        $request = new Tonic\Request(array(
+            'uri' => '/baz/quux',
+            'contentType' => 'application/x-www-form-urlencoded'
+        ));
+        $resource = $this->createResource($request);
+        $this->spec(function() use ($resource) {
+            $resource->exec();
+        })->shouldNot->throwException('Tonic\ConditionException');
+        $this->spec($resource->xyzzy)->should->be('thud');
+        $this->spec($resource->wibble)->shouldNot->be('wobble');
     }
 
 }
