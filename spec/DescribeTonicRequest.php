@@ -133,4 +133,21 @@ class DescribeTonicRequest extends \PHPSpec\Context
         $this->spec($request->acceptLanguage[2])->should->be('en');
         $this->spec($request->acceptLanguage[1])->should->be('nl');
     }
+
+    function itShouldHaveTheIfMatchHeader()
+    {
+        $_SERVER['IF_MATCH'] = 'quux, "xyzzy"';
+        $request = $this->createRequest();
+        $this->spec($request->ifMatch[0])->should->be('quux');
+        $this->spec($request->ifMatch[1])->should->be('xyzzy');
+    }
+
+    function itShouldHaveTheIfNoneMatchHeader()
+    {
+        $_SERVER['IF_NONE_MATCH'] = 'quux, "xyzzy"';
+        $request = $this->createRequest();
+        $this->spec($request->ifNoneMatch[0])->should->be('quux');
+        $this->spec($request->ifNoneMatch[1])->should->be('xyzzy');
+    }
+
 }
