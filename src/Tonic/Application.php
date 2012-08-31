@@ -349,8 +349,13 @@ class Application
             $r = $resource['class'].' '.$uri.' '.join(', ', $resource['priority']);
             foreach ($resource['methods'] as $methodName => $method) {
                 $r .= "\n\t\t".$methodName;
-                foreach ($method as $itemName => $item) {
-                    $r .= ' '.$itemName.'="'.join(', ', $item).'"';
+                foreach ($method as $itemName => $items) {
+                    foreach ($items as $item) {
+                        $r .= ' '.$itemName;
+                        if ($item) {
+                            $r .= '="'.join(', ', $item).'"';
+                        }
+                    }
                 }
             }
             $resources[] = $r;
