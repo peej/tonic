@@ -30,12 +30,11 @@ class Resource
     }
 
     /**
-     * Execute the resource, that is, find the correct resource method to call
-     * based upon the request and then call it.
+     * Get the method name of the best matching resource method.
      *
-     * @return Tonic\Response
+     * @return str
      */
-    final public function exec()
+    private function calculateMethodPriorities()
     {
         // get the annotation metadata for this resource
         $resourceMetadata = $this->app->getResourceMetadata($this);
@@ -44,11 +43,10 @@ class Resource
 
         if (isset($resourceMetadata['methods'])) {
             foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
+                $methodPriorities[$key] = 0;
                 foreach ($methodMetadata as $conditionName => $conditions) { // process each method condition
                     if (method_exists($this, $conditionName)) {
                         $this->currentMethodName = $key;
-                        $methodPriorities[$key] = 0;
-                        $conditionValue = -1;
                         $error = null;
                         foreach ($conditions as $params) {
                             try {
@@ -59,24 +57,17 @@ class Resource
                                 }
                                 if (!$condition) $condition = 0;
                                 if (is_numeric($condition)) {
-                                    if ($condition > $conditionValue) {
-                                        $conditionValue = $condition;
-                                    }
+                                    $methodPriorities[$key] += $condition;
                                 } elseif ($condition) {
                                     $resourceMetadata['methods'][$key]['response'] = $condition;
                                 }
                                 $error = null;
                             } catch (ConditionException $e) {
+                                unset($methodPriorities[$key]);
                                 break;
                             } catch (Exception $e) {
                                 $error = $e;
                             }
-                        }
-                        if ($conditionValue > -1) {
-                            $methodPriorities[$key] += $conditionValue;
-                        } elseif ($error) {
-                            unset($methodPriorities[$key]);
-                            break;
                         }
                     } else {
                         throw new \Exception(sprintf(
@@ -90,31 +81,47 @@ class Resource
         }
 
         if ($methodPriorities) {
-            $methodPriorities = array_flip(array_reverse($methodPriorities));
-            ksort($methodPriorities);
-            $methodName = array_pop($methodPriorities);
-
-            if (isset($resourceMetadata['methods'][$methodName]['response'])) {
-                return Response::create($resourceMetadata['methods'][$methodName]['response']);
-
-            } else {
-                if (isset($this->before[$methodName])) {
-                    foreach ($this->before[$methodName] as $action) {
-                        $action($this->request);
-                    }
-                }
-                $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
-                if (isset($this->after[$methodName])) {
-                    foreach ($this->after[$methodName] as $action) {
-                        $action($response);
-                    }
-                }
-            }
-
-            return $response;
+            return $methodPriorities;
         }
 
         throw $error;
+    }
+
+    /**
+     * Execute the resource, that is, find the correct resource method to call
+     * based upon the request and then call it.
+     *
+     * @return Tonic\Response
+     */
+    final public function exec()
+    {
+
+        $resourceMetadata = $this->app->getResourceMetadata($this);
+
+        $methodPriorities = $this->calculateMethodPriorities();
+
+        $methodPriorities = array_flip(array_reverse($methodPriorities));
+        ksort($methodPriorities);
+        $methodName = array_pop($methodPriorities);
+        
+        if (isset($resourceMetadata['methods'][$methodName]['response'])) {
+            return Response::create($resourceMetadata['methods'][$methodName]['response']);
+
+        } else {
+            if (isset($this->before[$methodName])) {
+                foreach ($this->before[$methodName] as $action) {
+                    $action($this->request);
+                }
+            }
+            $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
+            if (isset($this->after[$methodName])) {
+                foreach ($this->after[$methodName] as $action) {
+                    $action($response);
+                }
+            }
+        }
+
+        return $response;
     }
 
     /**
@@ -157,7 +164,7 @@ class Resource
      */
     final protected function priority($priority)
     {
-        return $priority;
+        return intval($priority);
     }
 
     /**
@@ -233,18 +240,25 @@ class Resource
             }
         }
         $params = join(', ', $params);
-        $methodMetadata = $this->app->getResourceMetadata($this);
-        $class = $methodMetadata['class'];
+        $metadata = $this->app->getResourceMetadata($this);
+        $class = $metadata['class'];
         $uri = array();
-        foreach ($methodMetadata['uri'] as $u) {
+        foreach ($metadata['uri'] as $u) {
             $uri[] = $u[0];
         }
         $uri = join(', ', $uri);
+
+        $priorities = $this->calculateMethodPriorities();
         $methods = '';
-        foreach ($methodMetadata['methods'] as $methodName => $method) {
-            $methods .= "\n\t".$methodName;
-            foreach ($method['conditions'] as $itemName => $item) {
-                $methods .= ' '.$itemName.'="'.join(', ', $item).'"';
+        foreach ($metadata['methods'] as $methodName => $method) {
+            $methods .= "\n\t".'['.(isset($priorities[$methodName])?$priorities[$methodName]:'-').'] '.$methodName;
+            foreach ($method as $itemName => $items) {
+                foreach ($items as $item) {
+                    $methods .= ' '.$itemName;
+                    if ($item) {
+                        $methods .= '="'.join(', ', $item).'"';
+                    }
+                }
             }
         }
 
