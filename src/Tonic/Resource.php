@@ -43,11 +43,10 @@ class Resource
 
         if (isset($resourceMetadata['methods'])) {
             foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
-                $methodPriorities[$key] = 0;
                 foreach ($methodMetadata as $conditionName => $conditions) { // process each method condition
                     if (method_exists($this, $conditionName)) {
                         $this->currentMethodName = $key;
-                        $error = null;
+                        $success = false;
                         foreach ($conditions as $params) {
                             try {
                                 if (is_array($params)) {
@@ -55,19 +54,24 @@ class Resource
                                 } else {
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
+                                if (!isset($methodPriorities[$key])) $methodPriorities[$key] = 0;
                                 if (!$condition) $condition = 0;
                                 if (is_numeric($condition)) {
                                     $methodPriorities[$key] += $condition;
                                 } elseif ($condition) {
                                     $resourceMetadata['methods'][$key]['response'] = $condition;
                                 }
-                                $error = null;
+                                $success = true;
                             } catch (ConditionException $e) {
                                 unset($methodPriorities[$key]);
-                                break;
+                                break 2;
                             } catch (Exception $e) {
                                 $error = $e;
                             }
+                        }
+                        if (!$success) {
+                            unset($methodPriorities[$key]);
+                            break;
                         }
                     } else {
                         throw new \Exception(sprintf(
@@ -173,8 +177,9 @@ class Resource
      */
     protected function accepts($mimetype)
     {
-        if (strtolower($this->request->contentType) != strtolower($mimetype))
+        if (strtolower($this->request->contentType) != strtolower($mimetype)) {
             throw new UnsupportedMediaTypeException('No matching method for content type "'.$this->request->contentType.'"');
+        }
     }
 
     /**
@@ -248,7 +253,9 @@ class Resource
         }
         $uri = join(', ', $uri);
 
-        $priorities = $this->calculateMethodPriorities();
+        try {
+            $priorities = $this->calculateMethodPriorities();
+        } catch (Exception $e) {}
         $methods = '';
         foreach ($metadata['methods'] as $methodName => $method) {
             $methods .= "\n\t".'['.(isset($priorities[$methodName])?$priorities[$methodName]:'-').'] '.$methodName;
