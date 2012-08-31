@@ -107,7 +107,8 @@ class Resource
             return $response;
         }
 
-        throw $error;
+        if(is_a($error,'Exception'))
+			throw $error;
     }
 
     /**
