@@ -12,7 +12,7 @@ class Application
      */
     private $options = array();
 
-    private $baseUri= '';
+    private $baseUri = '';
 
     /**
      * Metadata of the loaded resources

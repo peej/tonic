@@ -12,17 +12,17 @@ $config = array(
 
 $app = new Tonic\Application($config);
 
-#echo $app;
+#echo $app; die;
 
 $request = new Tonic\Request();
 
-#echo $request;
+#echo $request; die;
 
 try {
 
     $resource = $app->getResource($request);
 
-    #echo $resource;
+    #echo $resource; die;
 
     $response = $resource->exec();
 

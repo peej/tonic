@@ -32,13 +32,11 @@ class Resource
     /**
      * Get the method name of the best matching resource method.
      *
+     * @param str[] $resourceMetadata
      * @return str
      */
-    private function calculateMethodPriorities()
+    private function calculateMethodPriorities($resourceMetadata)
     {
-        // get the annotation metadata for this resource
-        $resourceMetadata = $this->app->getResourceMetadata($this);
-
         $methodPriorities = array();
 
         if (isset($resourceMetadata['methods'])) {
@@ -100,9 +98,10 @@ class Resource
     final public function exec()
     {
 
+        // get the annotation metadata for this resource
         $resourceMetadata = $this->app->getResourceMetadata($this);
 
-        $methodPriorities = $this->calculateMethodPriorities();
+        $methodPriorities = $this->calculateMethodPriorities($resourceMetadata);
 
         $methodPriorities = array_flip(array_reverse($methodPriorities));
         ksort($methodPriorities);
@@ -254,7 +253,7 @@ class Resource
         $uri = join(', ', $uri);
 
         try {
-            $priorities = $this->calculateMethodPriorities();
+            $priorities = $this->calculateMethodPriorities($metadata);
         } catch (Exception $e) {}
         $methods = '';
         foreach ($metadata['methods'] as $methodName => $method) {
