@@ -17,12 +17,19 @@ class MyOtherResource extends Tonic\Resource {
      * @myCondition
      * @beforeCondition
      * @afterCondition
-     * @param  str $name
-     * @return str[]
      */
     function myMethod()
     {
         return array(200, 'Hello');
+    }
+
+    /**
+     * @method GET
+     * @hasQuerystring foo
+     */
+    function otherMethod()
+    {
+        return array(200, 'Goodbye');
     }
 
     function myCondition()
@@ -44,6 +51,11 @@ class MyOtherResource extends Tonic\Resource {
         $this->after(function ($response) {
             $response->baz = 'quux';
         });
+    }
+
+    function hasQuerystring($name)
+    {
+        if (!isset($_GET[$name])) throw new Tonic\ConditionException;
     }
 
 }
@@ -148,6 +160,17 @@ class DescribeTonicResource extends \PHPSpec\Context
         })->shouldNot->throwException('Tonic\ConditionException');
         $this->spec($resource->xyzzy)->should->be('thud');
         $this->spec($resource->wibble)->shouldNot->be('wobble');
+    }
+
+    function itShouldExecuteTheBestMatchingResourceMethod()
+    {
+        $_GET['foo'] = true;
+        $request = new Tonic\Request(array(
+            'uri' => '/baz/quux'
+        ));
+        $resource = $this->createResource($request);
+        $response= $resource->exec();
+        $this->spec($response->body)->should->be('Goodbye');
     }
 
 }

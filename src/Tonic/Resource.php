@@ -46,16 +46,18 @@ class Resource
                         $this->currentMethodName = $key;
                         $success = false;
                         foreach ($conditions as $params) {
+                            if (!isset($methodPriorities[$key]['value'])) {
+                                $methodPriorities[$key]['value'] = 0;
+                            }
                             try {
                                 if (is_array($params)) {
                                     $condition = call_user_func_array(array($this, $conditionName), $params);
                                 } else {
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
-                                if (!isset($methodPriorities[$key])) $methodPriorities[$key] = 0;
-                                if (!$condition) $condition = 0;
+                                if (!$condition) $condition = 1;
                                 if (is_numeric($condition)) {
-                                    $methodPriorities[$key] += $condition;
+                                    $methodPriorities[$key]['value'] += $condition;
                                 } elseif ($condition) {
                                     $resourceMetadata['methods'][$key]['response'] = $condition;
                                 }
@@ -68,7 +70,7 @@ class Resource
                             }
                         }
                         if (!$success) {
-                            unset($methodPriorities[$key]);
+                            $methodPriorities[$key]['exception'] = $error;
                             break;
                         }
                     } else {
@@ -82,11 +84,7 @@ class Resource
             }
         }
 
-        if ($methodPriorities) {
-            return $methodPriorities;
-        }
-
-        throw $error;
+        return $methodPriorities;
     }
 
     /**
@@ -103,12 +101,23 @@ class Resource
 
         $methodPriorities = $this->calculateMethodPriorities($resourceMetadata);
 
-        $methodPriorities = array_flip(array_reverse($methodPriorities));
-        ksort($methodPriorities);
-        $methodName = array_pop($methodPriorities);
-        
-        if (isset($resourceMetadata['methods'][$methodName]['response'])) {
-            return Response::create($resourceMetadata['methods'][$methodName]['response']);
+        $methodName = null;
+        $bestMatch = 0;
+        foreach ($methodPriorities as $name => $priority) {
+            if ($priority['value'] >= $bestMatch) {
+                $bestMatch = $priority['value'];
+                $methodName = $name;
+            }
+        }
+
+        if (!$methodName) {
+            throw new Exception;
+            
+        } elseif (isset($resourceMetadata['methods'][$methodName]['response'])) {
+            $response = Response::create($resourceMetadata['methods'][$methodName]['response']);
+
+        } elseif (isset($methodPriorities[$methodName]['exception'])) {
+            throw $methodPriorities[$methodName]['exception'];
 
         } else {
             if (isset($this->before[$methodName])) {
@@ -257,7 +266,17 @@ class Resource
         } catch (Exception $e) {}
         $methods = '';
         foreach ($metadata['methods'] as $methodName => $method) {
-            $methods .= "\n\t".'['.(isset($priorities[$methodName])?$priorities[$methodName]:'-').'] '.$methodName;
+            $methods .= "\n\t".'[';
+            if (isset($priorities[$methodName])) {
+                if (isset($priorities[$methodName]['exception'])) {
+                    $methods .= get_class($priorities[$methodName]['exception']);
+                } else {
+                    $methods .= $priorities[$methodName]['value'];
+                }
+            } else {
+                $methods .= '-';
+            }
+            $methods .= '] '.$methodName;
             foreach ($method as $itemName => $items) {
                 foreach ($items as $item) {
                     $methods .= ' '.$itemName;
