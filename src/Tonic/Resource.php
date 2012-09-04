@@ -112,7 +112,7 @@ class Resource
 
         if (!$methodName) {
             throw new Exception;
-            
+
         } elseif (isset($resourceMetadata['methods'][$methodName]['response'])) {
             $response = Response::create($resourceMetadata['methods'][$methodName]['response']);
 
@@ -122,13 +122,13 @@ class Resource
         } else {
             if (isset($this->before[$methodName])) {
                 foreach ($this->before[$methodName] as $action) {
-                    $action($this->request);
+                    $action($this->request, $methodName);
                 }
             }
             $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
             if (isset($this->after[$methodName])) {
                 foreach ($this->after[$methodName] as $action) {
-                    $action($response);
+                    $action($response, $methodName);
                 }
             }
         }
