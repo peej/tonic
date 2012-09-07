@@ -79,19 +79,21 @@ class Response
      * Factory method to create a Response from a variety of inputs
      *
      * @param mixed $response
+     * @return Response
      */
-    public static function create($response)
+    public static function factory($response)
     {
         if (is_array($response)) {
-            return new Response($response[0], $response[1]);
+            return new static($response[0], $response[1]);
         } elseif (is_int($response)) {
-            return new Response($response);
+            return new static($response);
         } elseif (is_string($response)) {
-            return new Response(200, $response);
-        } elseif ($response instanceof Response) {
+            return new static(static::OK, $response);
+        } elseif ($response instanceof static) {
             return $response;
         }
-        return new Response;
+
+        return new static;
     }
 
     /**
