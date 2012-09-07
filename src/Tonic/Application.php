@@ -152,7 +152,7 @@ class Application
     {
         $matchedResource = NULL;
         if (!$request) {
-            $request= new Request();
+            $request= $this->factory('Request');
         }
         foreach ($this->resources as $className => $resourceMetadata) {
             if (isset($resourceMetadata['uri'])) {
@@ -319,6 +319,41 @@ class Application
         }
 
         return $data;
+    }
+
+    /**
+     * Factory method for creating framework classes.
+     *
+     * Accepts first parameter as class name, all other arguments are sent
+     * to class "factory" method (if exists) or constructor.
+     *
+     * @param string $className Class name to instantiate. If first character is
+     * not a backslash, then the namespace of an Application class is prepended.
+     *
+     * @return mixed Instantiated $className
+     */
+    public function factory($className/*, $param1, $param2 ... */)
+    {
+        if (strpos($className, '\\') !== 0) {
+            // class is not in the root namespace, prepend current Application
+            // namespace to it
+            $calledClass = explode('\\', get_called_class());
+            $namespace = implode('\\', array_slice($calledClass, 0, count($calledClass) - 1));
+            $className = class_exists("$namespace\\$className") ?
+                "$namespace\\$className" : __NAMESPACE__ . "\\$className";
+        }
+
+        $arguments = func_get_args();
+        $arguments = array_splice($arguments, 1);
+
+        // if class provides its own factory method - use that one
+        if (method_exists($className, 'factory')) {
+            return call_user_func_array(array($className, 'factory'), $arguments);
+        }
+
+        // otherwise call constructor with provided arguments
+        $class = new \ReflectionClass($className);
+        return $class->newInstanceArgs($arguments);
     }
 
     public function __toString()

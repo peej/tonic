@@ -114,7 +114,7 @@ class Resource
             throw new Exception;
 
         } elseif (isset($resourceMetadata['methods'][$methodName]['response'])) {
-            $response = Response::create($resourceMetadata['methods'][$methodName]['response']);
+            $response = $this->app->factory('Response', $resourceMetadata['methods'][$methodName]['response']);
 
         } elseif (isset($methodPriorities[$methodName]['exception'])) {
             throw $methodPriorities[$methodName]['exception'];
@@ -125,7 +125,7 @@ class Resource
                     $action($this->request, $methodName);
                 }
             }
-            $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
+            $response = $this->app->factory('Response', call_user_func_array(array($this, $methodName), $this->params));
             if (isset($this->after[$methodName])) {
                 foreach ($this->after[$methodName] as $action) {
                     $action($response, $methodName);
