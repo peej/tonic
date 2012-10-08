@@ -101,8 +101,10 @@ class Application
     {
         foreach ($this->resources as $className => $metadata) {
             if ($metadata['namespace'][0] == $namespaceName) {
-                foreach ($metadata['uri'] as $index => $uri) {
-                    $this->resources[$className]['uri'][$index][0] = '|^'.$uriSpace.substr($uri[0], 2);
+                if (array_key_exists("uri", $metadata)) {
+                    foreach ($metadata['uri'] as $index => $uri) {
+                        $this->resources[$className]['uri'][$index][0] = '|^'.$uriSpace.substr($uri[0], 2);
+                    }
                 }
             }
         }
