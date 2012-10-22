@@ -175,7 +175,7 @@ class Application
                     if (
                         ($matchedResource == NULL || $matchedResource[0]['priority'] < $resourceMetadata['priority'])
                     &&
-                        preg_match($uriRegex, $request->uri, $params)
+                        false !== preg_match($uriRegex, $request->uri, $params)
                     ) {
                         if (count($uri) > 1) { // has params within URI
                             $params = array_combine($uri, $params);
