@@ -56,9 +56,7 @@ class Response
 
     public
         $code = self::NOCONTENT,
-        $body = null;
-
-    protected
+        $body = null,
         $headers = array('content-type' => 'text/html');
 
     public function __construct($code = null, $body = null, $headers = array())
@@ -94,6 +92,10 @@ class Response
         return new Response;
     }
 
+    private function getHeaderName($name) {
+        return strtolower($name[0].preg_replace('/([A-Z])/', '-$1', substr($name, 1)));
+    }
+
     /**
      * Get a HTTP response header
      * @param  str $name Header name, hyphens should be converted to camelcase
@@ -101,8 +103,7 @@ class Response
      */
     public function __get($name)
     {
-        $name = strtolower(preg_replace('/([A-Z])/', '-$1', $name));
-
+        $name = $this->getHeaderName($name);
         return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
     }
 
@@ -113,7 +114,7 @@ class Response
      */
     public function __set($name, $value)
     {
-        $this->headers[strtolower(preg_replace('/([A-Z])/', '-$1', $name))] = $value;
+        $this->headers[strtolower(preg_replace('/([A-Z])/', '-$1', $this->getHeaderName($name)))] = $value;
     }
 
     /**
