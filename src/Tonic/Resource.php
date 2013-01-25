@@ -122,13 +122,13 @@ class Resource
         } else {
             if (isset($this->before[$methodName])) {
                 foreach ($this->before[$methodName] as $action) {
-                    $action($this->request, $methodName);
+                    call_user_func($action, $this->request, $methodName);
                 }
             }
             $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
             if (isset($this->after[$methodName])) {
                 foreach ($this->after[$methodName] as $action) {
-                    $action($response, $methodName);
+                    call_user_func($action, $response, $methodName);
                 }
             }
         }
