@@ -9,7 +9,13 @@ namespace Tonic;
  */
 class MetadataCacheAPC implements MetadataCache
 {
-    const CACHENAME = 'tonicCache';
+    private $cacheName = 'tonicCache';
+
+    public function __construct($cacheName = null){
+        if ($cacheName) {
+            $this->cacheName = $cacheName;
+        }
+    }
 
     /**
      * Is there already cache file
@@ -17,7 +23,7 @@ class MetadataCacheAPC implements MetadataCache
      */
     public function isCached()
     {
-        return apc_exists(self::CACHENAME);
+        return apc_exists($this->cacheName);
     }
 
     /**
@@ -26,7 +32,7 @@ class MetadataCacheAPC implements MetadataCache
      */
     public function load()
     {
-        return apc_fetch(self::CACHENAME);
+        return apc_fetch($this->cacheName);
     }
 
     /**
@@ -36,12 +42,12 @@ class MetadataCacheAPC implements MetadataCache
      */
     public function save($resources)
     {
-        return apc_store(self::CACHENAME, $resources);
+        return apc_store($this->cacheName, $resources);
     }
 
     public function clear()
     {
-        apc_delete(self::CACHENAME);
+        apc_delete($this->cacheName);
     }
 
     public function __toString()
