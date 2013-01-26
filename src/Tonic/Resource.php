@@ -55,7 +55,7 @@ class Resource
                                 } else {
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
-                                if (!$condition) $condition = 1;
+                                if (!$condition) $condition = 0;
                                 if (is_numeric($condition)) {
                                     $methodPriorities[$key]['value'] += $condition;
                                 } elseif ($condition) {
@@ -71,6 +71,7 @@ class Resource
                         }
                         if (!$success) {
                             $methodPriorities[$key]['exception'] = $error;
+                            $methodPriorities[$key]['value'] = -1;
                             break;
                         }
                     } else {
@@ -102,9 +103,9 @@ class Resource
         $methodPriorities = $this->calculateMethodPriorities($resourceMetadata);
 
         $methodName = null;
-        $bestMatch = 0;
+        $bestMatch = -2;
         foreach ($methodPriorities as $name => $priority) {
-            if ($priority['value'] >= $bestMatch) {
+            if ($priority['value'] > $bestMatch) {
                 $bestMatch = $priority['value'];
                 $methodName = $name;
             }
