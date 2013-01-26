@@ -277,12 +277,14 @@ class Application
         $metadata = array();
 
         foreach (get_class_methods($className) as $methodName) {
-            $methodMetadata = array();
 
             $methodReflector = new \ReflectionMethod($className, $methodName);
+            if ($methodReflector->isPublic() && $methodReflector->getDeclaringClass()->name != 'Tonic\Resource') {
 
-            $docComment = $this->parseDocComment($methodReflector->getDocComment());
-            if (isset($docComment['@method'])) {
+                $methodMetadata = array();
+
+                $docComment = $this->parseDocComment($methodReflector->getDocComment());
+
                 foreach ($docComment as $annotationName => $value) {
                     $methodName = substr($annotationName, 1);
                     if (method_exists($className, $methodName)) {
