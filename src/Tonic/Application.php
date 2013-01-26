@@ -14,6 +14,8 @@ class Application
 
     private $baseUri = '';
 
+    private $methodAnnotations = array();
+
     /**
      * Metadata of the loaded resources
      */
@@ -31,6 +33,17 @@ class Application
         // load resource metadata passed in via options array
         if (isset($options['resources']) && is_array($options['resources'])) {
             $this->resources = $options['resources'];
+        }
+
+        if (array_key_exists('methodAnnotations', $options)) {
+            $this->methodAnnotations = $options['methodAnnotations'];
+            if (!is_array($this->methodAnnotations))
+                $this->methodAnnotations = (array) $this->methodAnnotations;
+        } else {
+            $this->methodAnnotations = array(
+                'method',
+                'routeMethod'
+            );
         }
 
         $cache = isset($options['cache']) ? $options['cache'] : NULL;
@@ -56,7 +69,7 @@ class Application
 
     /**
      * Include PHP files containing resources in the given filename globs
-     * @paramstr[] $filenames Array of filename globs
+     * @param str[] $filenames Array of filename globs
      */
     private function loadResourceFiles($filenames)
     {
@@ -282,16 +295,19 @@ class Application
             $methodReflector = new \ReflectionMethod($className, $methodName);
 
             $docComment = $this->parseDocComment($methodReflector->getDocComment());
-            if (isset($docComment['@method'])) {
-                foreach ($docComment as $annotationName => $value) {
-                    $methodName = substr($annotationName, 1);
-                    if (method_exists($className, $methodName)) {
-                        foreach ($value as $v) {
-                            $methodMetadata[$methodName][] = $v;
+            foreach ($this->methodAnnotations as $annotation) {
+                if (array_key_exists('@'.$annotation, $docComment)) {
+                    foreach ($docComment as $annotationName => $value) {
+                        $methodName = substr($annotationName, 1);
+                        if (method_exists($className, $methodName)) {
+                            foreach ($value as $v) {
+                                $methodMetadata[$methodName][] = $v;
+                            }
                         }
                     }
+                    $metadata[$methodReflector->getName()] = $methodMetadata;
+                    break;
                 }
-                $metadata[$methodReflector->getName()] = $methodMetadata;
             }
         }
 
