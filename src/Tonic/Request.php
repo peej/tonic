@@ -116,7 +116,9 @@ class Request
 
     private function getData($options)
     {
-        if ($this->getOption($options, 'contentLength') > 0) {
+        if ($this->getContentType($options) == 'multipart/form-data') {
+            return $_POST + $_FILES;
+        } elseif ($this->getOption($options, 'contentLength') > 0) {
             return file_get_contents('php://input');
         } elseif (isset($options['data'])) {
             return $options['data'];
@@ -215,6 +217,18 @@ class Request
         $acceptLanguage = join(', ', $this->acceptLanguage);
         $ifMatch = join(', ', $this->ifMatch);
         $ifNoneMatch = join(', ', $this->ifNoneMatch);
+        if (is_array($this->data)) {
+            $data = '';
+            foreach($this->data as $field => $value) {
+                if (is_array($value)) {
+                    $data .= "\n\t".$field.' = "'.join(', ', $value).'"';
+                } else {
+                    $data .= "\n\t".$field.' = "'.$value.'"';
+                }
+            }
+        } else {
+            $data = $this->data;
+        }
 
         return <<<EOF
 =============
@@ -223,7 +237,7 @@ Tonic\Request
 URI: $this->uri
 HTTP method: $this->method
 Content type: $this->contentType
-Request data: $this->data
+Request data: $data
 Accept: $accept
 Accept language: $acceptLanguage
 If match: $ifMatch

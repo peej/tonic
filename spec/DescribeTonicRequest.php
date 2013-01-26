@@ -8,6 +8,8 @@ class DescribeTonicRequest extends \PHPSpec\Context
     function after()
     {
         unset($_SERVER);
+        unset($_POST);
+        unset($_FILES);
     }
 
     private function createRequest($options = NULL)
@@ -150,4 +152,27 @@ class DescribeTonicRequest extends \PHPSpec\Context
         $this->spec($request->ifNoneMatch[1])->should->be('xyzzy');
     }
 
+    function itShouldHaveMultipartFormData()
+    {
+        $_POST['woo'] = 'yay';
+        $_FILES['foo'] = array(
+            'name' => 'bar.txt',
+            'type' => 'text/plain',
+            'tmp_name' => '/tmp/foobar',
+            'error' => 0,
+            'size' => 1234
+        );
+        $_SERVER['CONTENT_TYPE'] = 'multipart/form-data';
+        $request = $this->createRequest();
+        $this->spec($request->data)->should->be(array(
+            'woo' => 'yay',
+            'foo' => array(
+                'name' => 'bar.txt',
+                'type' => 'text/plain',
+                'tmp_name' => '/tmp/foobar',
+                'error' => 0,
+                'size' => 1234
+            )
+        ));
+    }
 }
