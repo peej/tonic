@@ -18,7 +18,7 @@ use Tonic\Application,
 class FeatureContext extends BehatContext
 {
 
-    private $app, $request, $resource, $response, $exception;
+    private $app, $request, $resource, $response, $exception, $error;
 
     private $createMethod = array();
     private $data;
@@ -96,7 +96,9 @@ class FeatureContext extends BehatContext
             'accept language' => 'HTTP_ACCEPT_LANGUAGE',
             'if-none-match' => 'HTTP_IF_NONE_MATCH',
             'if-match' => 'HTTP_IF_MATCH',
-            'content-type' => 'CONTENT_TYPE'
+            'content-type' => 'CONTENT_TYPE',
+            'auth user' => 'PHP_AUTH_USER',
+            'auth password' => 'PHP_AUTH_PW'
         );
         $_SERVER[$headerMapping[$header]] = $value;
     }
@@ -231,6 +233,9 @@ class FeatureContext extends BehatContext
      */
     public function executeTheResource()
     {
+        set_error_handler(function ($level, $message, $file, $line) {
+            throw new ErrorException($message, $level);
+        });
         try {
             if ($this->resource) {
                 $this->response = $this->resource->exec();
@@ -239,7 +244,11 @@ class FeatureContext extends BehatContext
             }
         } catch (Tonic\Exception $e) {
             $this->exception = get_class($e);
+        } catch (ErrorException $e) {
+            $this->exception = get_class($e);
+            $this->error = $e->getCode();
         }
+        restore_error_handler();
     }
 
     /**
@@ -308,6 +317,22 @@ class FeatureContext extends BehatContext
     public function aShouldBeThrown($exception)
     {
         if ($exception != $this->exception) throw new Exception($this->exception);
+    }
+
+    /**
+     * @Then /^a PHP warning should occur$/
+     */
+    public function aPhpWarningShouldOccur()
+    {
+        if ($this->error != E_WARNING) throw new Exception('No PHP warning');
+    }
+
+    /**
+     * @Then /^a PHP notice should occur$/
+     */
+    public function aPhpNoticeShouldOccur()
+    {
+        if ($this->error != E_NOTICE) throw new Exception('No PHP notice');
     }
 
     /**
@@ -432,6 +457,14 @@ class FeatureContext extends BehatContext
         } else {
             if (!isset($metadata['methods']['test'][$conditionName])) throw new Exception('Condition method not found');
         }
+    }
+
+    /**
+     * @Given /^an issue "([^"]*)"$/
+     */
+    public function anIssue($issue)
+    {
+        require_once dirname(__FILE__).'/../../issues/'.$issue.'.php';
     }
 
 }

@@ -55,11 +55,12 @@ class Resource
                                 } else {
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
-                                if (!$condition) $condition = 0;
+                                if ($condition === null || $condition === true) $condition = 1;
                                 if (is_numeric($condition)) {
                                     $methodPriorities[$key]['value'] += $condition;
                                 } elseif ($condition) {
-                                    $resourceMetadata['methods'][$key]['response'] = $condition;
+                                    $methodPriorities[$key]['value']++;
+                                    $methodPriorities[$key]['response'] = $condition;
                                 }
                                 $success = true;
                             } catch (ConditionException $e) {
@@ -114,8 +115,8 @@ class Resource
         if (!$methodName) {
             throw new Exception;
 
-        } elseif (isset($resourceMetadata['methods'][$methodName]['response'])) {
-            $response = Response::create($resourceMetadata['methods'][$methodName]['response']);
+        } elseif (isset($methodPriorities[$methodName]['response'])) {
+            $response = Response::create($methodPriorities[$methodName]['response']);
 
         } elseif (isset($methodPriorities[$methodName]['exception'])) {
             throw $methodPriorities[$methodName]['exception'];
