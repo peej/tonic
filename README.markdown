@@ -42,8 +42,9 @@ The best place to get started is to get the hello world example running on your
 system, to do this you will need a web server running PHP5.3+.
 
 To bootstrap Tonic, include the src/Tonic/Autoloader.php file and create an instance
-Tonic\Request. After you have defined your resource classes, load the matching
-resource, execute it, and output the response.
+of Tonic\Application and pass it's getResource() method a Tonic\Request instance.
+After you have defined your resource classes, load the matching resource, execute it,
+and output the response.
 
     require_once '../src/Tonic/Autoloader.php';
 
