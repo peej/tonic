@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:24 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
 <link rel="start" href="../../../overview-summary.html">
@@ -43,18 +43,12 @@
 <a name="line5"></a><span style="color: #009933; font-style: italic;">/**
 <a name="line6"></a> * Base exception class for Tonic exceptions
 <a name="line7"></a> */</span>
-<a name="line8"></a><span style="color: #000000; font-weight: bold;">class</span> Exception <span style="color: #000000; font-weight: bold;">extends</span> \Exception <span style="color: #009900;">&#123;</span>
-<a name="line9"></a>&nbsp;
-<a name="line10"></a>    <span style="color: #009933; font-style: italic;">/**
-<a name="line11"></a>     * Append a message onto the existing exception message
-<a name="line12"></a>     *
-<a name="line13"></a>     * @param str $msg
-<a name="line14"></a>     */</span>
-<a name="line15"></a>    <span style="color: #000000; font-weight: bold;">function</span> appendMessage<span style="color: #009900;">&#40;</span><span style="color: #000088;">$msg</span><span style="color: #009900;">&#41;</span> <span style="color: #009900;">&#123;</span>
-<a name="line16"></a>        <span style="color: #000088;">$this</span><span style="color: #339933;">-&gt;</span><span style="color: #004000;">message</span> <span style="color: #339933;">.=</span> <span style="color: #000088;">$msg</span><span style="color: #339933;">;</span>
-<a name="line17"></a>    <span style="color: #009900;">&#125;</span>
-<a name="line18"></a>&nbsp;
-<a name="line19"></a><span style="color: #009900;">&#125;</span></pre>
+<a name="line8"></a><span style="color: #000000; font-weight: bold;">class</span> Exception <span style="color: #000000; font-weight: bold;">extends</span> \Exception
+<a name="line9"></a><span style="color: #009900;">&#123;</span>
+<a name="line10"></a>    protected <span style="color: #000088;">$message</span>  <span style="color: #339933;">=</span> <span style="color: #0000ff;">'An unknown Tonic exception occurred'</span><span style="color: #339933;">;</span>
+<a name="line11"></a>    protected <span style="color: #000088;">$code</span>     <span style="color: #339933;">=</span> <span style="color: #cc66cc;">500</span><span style="color: #339933;">;</span>
+<a name="line12"></a><span style="color: #009900;">&#125;</span>
+<a name="line13"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

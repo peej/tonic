@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:21 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:26 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -63,7 +63,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 <tr>
 <td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#acceptLang">$acceptLang</a></p></td>
+<td class="description"><p class="name"><a href="#acceptLanguage">$acceptLanguage</a></p></td>
 </tr>
 <tr>
 <td class="type"> mixed</td>
@@ -72,10 +72,6 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr>
 <td class="type"> mixed</td>
 <td class="description"><p class="name"><a href="#data">$data</a></p></td>
-</tr>
-<tr>
-<td class="type"> mixed</td>
-<td class="description"><p class="name"><a href="#hostname">$hostname</a></p></td>
 </tr>
 <tr>
 <td class="type"> mixed</td>
@@ -111,12 +107,13 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> str</td>
-<td class="description"><p class="name"><a href="#getOption()">getOption</a>(str options, str configVar, str serverVar, str default)</p><p class="description">Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default</p></td>
+<td class="description"><p class="name"><a href="#getOption()">getOption</a>(str options, str configVar, str|str headers, str default)</p><p class="description">Get an item from the given options array if it exists, otherwise fetch from HTTP header
+or return the given default</p></td>
 </tr>
 </table>
 
 <h2 id="detail_field">Field Detail</h2>
-<a href="../source/src/tonic/request.php.html#line15" class="location">src/Tonic/Request.php at line 15</a>
+<a href="../source/src/tonic/request.php.html#line14" class="location">src/Tonic/Request.php at line 14</a>
 
 <h3 id="accept">accept</h3>
 <code class="signature">public  mixed <strong>$accept</strong> = array()</code>
@@ -125,25 +122,25 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/request.php.html#line16" class="location">src/Tonic/Request.php at line 16</a>
+<a href="../source/src/tonic/request.php.html#line15" class="location">src/Tonic/Request.php at line 15</a>
 
-<h3 id="acceptLang">acceptLang</h3>
-<code class="signature">public  mixed <strong>$acceptLang</strong> = array()</code>
+<h3 id="acceptLanguage">acceptLanguage</h3>
+<code class="signature">public  mixed <strong>$acceptLanguage</strong> = array()</code>
+<div class="details">
+</div>
+
+<hr>
+
+<a href="../source/src/tonic/request.php.html#line12" class="location">src/Tonic/Request.php at line 12</a>
+
+<h3 id="contentType">contentType</h3>
+<code class="signature">public  mixed <strong>$contentType</strong></code>
 <div class="details">
 </div>
 
 <hr>
 
 <a href="../source/src/tonic/request.php.html#line13" class="location">src/Tonic/Request.php at line 13</a>
-
-<h3 id="contentType">contentType</h3>
-<code class="signature">public  mixed <strong>$contentType</strong> = 'application/x-www-form-urlencoded'</code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/src/tonic/request.php.html#line14" class="location">src/Tonic/Request.php at line 14</a>
 
 <h3 id="data">data</h3>
 <code class="signature">public  mixed <strong>$data</strong></code>
@@ -152,16 +149,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/request.php.html#line10" class="location">src/Tonic/Request.php at line 10</a>
-
-<h3 id="hostname">hostname</h3>
-<code class="signature">public  mixed <strong>$hostname</strong></code>
-<div class="details">
-</div>
-
-<hr>
-
-<a href="../source/src/tonic/request.php.html#line17" class="location">src/Tonic/Request.php at line 17</a>
+<a href="../source/src/tonic/request.php.html#line16" class="location">src/Tonic/Request.php at line 16</a>
 
 <h3 id="ifMatch">ifMatch</h3>
 <code class="signature">public  mixed <strong>$ifMatch</strong> = array()</code>
@@ -170,7 +158,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/request.php.html#line18" class="location">src/Tonic/Request.php at line 18</a>
+<a href="../source/src/tonic/request.php.html#line17" class="location">src/Tonic/Request.php at line 17</a>
 
 <h3 id="ifNoneMatch">ifNoneMatch</h3>
 <code class="signature">public  mixed <strong>$ifNoneMatch</strong> = array()</code>
@@ -179,7 +167,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/request.php.html#line12" class="location">src/Tonic/Request.php at line 12</a>
+<a href="../source/src/tonic/request.php.html#line11" class="location">src/Tonic/Request.php at line 11</a>
 
 <h3 id="method">method</h3>
 <code class="signature">public  mixed <strong>$method</strong></code>
@@ -188,7 +176,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/request.php.html#line24" class="location">src/Tonic/Request.php at line 24</a>
+<a href="../source/src/tonic/request.php.html#line23" class="location">src/Tonic/Request.php at line 23</a>
 
 <h3 id="mimetypes">mimetypes</h3>
 <code class="signature">public  str[] <strong>$mimetypes</strong> = array(...)</code>
@@ -197,7 +185,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/request.php.html#line11" class="location">src/Tonic/Request.php at line 11</a>
+<a href="../source/src/tonic/request.php.html#line10" class="location">src/Tonic/Request.php at line 10</a>
 
 <h3 id="uri">uri</h3>
 <code class="signature">public  mixed <strong>$uri</strong></code>
@@ -207,7 +195,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/src/tonic/request.php.html#line26" class="location">src/Tonic/Request.php at line 26</a>
+<a href="../source/src/tonic/request.php.html#line25" class="location">src/Tonic/Request.php at line 25</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(mixed options)</code>
@@ -217,16 +205,17 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/src/tonic/request.php.html#line54" class="location">src/Tonic/Request.php at line 54</a>
+<a href="../source/src/tonic/request.php.html#line50" class="location">src/Tonic/Request.php at line 50</a>
 
 <h3 id="getOption()">getOption</h3>
-<code class="signature">public  str <strong>getOption</strong>(str options, str configVar, str serverVar, str default)</code>
+<code class="signature">public  str <strong>getOption</strong>(str options, str configVar, str|str headers, str default)</code>
 <div class="details">
-<p>Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default</p><dl>
+<p>Get an item from the given options array if it exists, otherwise fetch from HTTP header
+or return the given default</p><dl>
 <dt>Parameters:</dt>
 <dd></dd>
 <dd>configVar - Name of item to get</dd>
-<dd>serverVar - Name of _SERVER superglobal item to use</dd>
+<dd>headers - Name of HTTP header(s)</dd>
 <dd>default - Fallback value</dd>
 </dl>
 </div>

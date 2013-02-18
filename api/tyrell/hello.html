@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:21 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:26 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -88,7 +88,7 @@ annotations allow this resource to match multiple URLs.</p></div>
 <td class="description"><p class="name"><a href="#iveSeenThings()">iveSeenThings</a>()</p><p class="description"></p></td>
 </tr>
 <tr>
-<td class="type"> void</td>
+<td class="type">protected  void</td>
 <td class="description"><p class="name"><a href="#only()">only</a>(mixed allowedName)</p><p class="description">Condition method for above methods.
 </p></td>
 </tr>
@@ -99,6 +99,10 @@ header or URL extension (ie: /hello.json) and causes the response to automatical
 contain the correct content-type response header.</p></td>
 </tr>
 <tr>
+<td class="type">protected  void</td>
+<td class="description"><p class="name"><a href="#json()">json</a>()</p><p class="description">Condition method to turn output into JSON</p></td>
+</tr>
+<tr>
 <td class="type"> <a href="../tonic/response.html">Response</a></td>
 <td class="description"><p class="name"><a href="#feedTheComputer()">feedTheComputer</a>()</p><p class="description">All HTTP methods are supported. </p></td>
 </tr>
@@ -106,7 +110,7 @@ contain the correct content-type response header.</p></td>
 
 <table class="inherit">
 <tr><th colspan="2">Methods inherited from Tonic\Resource</th></tr>
-<tr><td><a href="../tonic/resource.html#__construct()">__construct</a>, <a href="../tonic/resource.html#accepts()">accepts</a>, <a href="../tonic/resource.html#addResponseAction()">addResponseAction</a>, <a href="../tonic/resource.html#cache()">cache</a>, <a href="../tonic/resource.html#exec()">exec</a>, <a href="../tonic/resource.html#lang()">lang</a>, <a href="../tonic/resource.html#method()">method</a>, <a href="../tonic/resource.html#priority()">priority</a>, <a href="../tonic/resource.html#provides()">provides</a></td></tr></table>
+<tr><td><a href="../tonic/resource.html#__construct()">__construct</a>, <a href="../tonic/resource.html#accepts()">accepts</a>, <a href="../tonic/resource.html#after()">after</a>, <a href="../tonic/resource.html#before()">before</a>, <a href="../tonic/resource.html#cache()">cache</a>, <a href="../tonic/resource.html#exec()">exec</a>, <a href="../tonic/resource.html#lang()">lang</a>, <a href="../tonic/resource.html#method()">method</a>, <a href="../tonic/resource.html#priority()">priority</a>, <a href="../tonic/resource.html#provides()">provides</a></td></tr></table>
 
 <h2 id="detail_method">Method Detail</h2>
 <a href="../source/src/tyrell/hello.php.html#line33" class="location">src/Tyrell/Hello.php at line 33</a>
@@ -124,7 +128,7 @@ response body, or a full Tonic\Response object.</p><dl>
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line43" class="location">src/Tyrell/Hello.php at line 43</a>
+<a href="../source/src/tyrell/hello.php.html#line44" class="location">src/Tyrell/Hello.php at line 44</a>
 
 <h3 id="sayHelloInFrench()">sayHelloInFrench</h3>
 <code class="signature">public  str <strong>sayHelloInFrench</strong>(str name)</code>
@@ -139,7 +143,7 @@ response body, or a full Tonic\Response object.</p><dl>
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line58" class="location">src/Tyrell/Hello.php at line 58</a>
+<a href="../source/src/tyrell/hello.php.html#line60" class="location">src/Tyrell/Hello.php at line 60</a>
 
 <h3 id="replicants()">replicants</h3>
 <code class="signature">public  str <strong>replicants</strong>()</code>
@@ -157,7 +161,7 @@ throwing an exception allowing the addition of an arbitary condition to this met
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line68" class="location">src/Tyrell/Hello.php at line 68</a>
+<a href="../source/src/tyrell/hello.php.html#line71" class="location">src/Tyrell/Hello.php at line 71</a>
 
 <h3 id="iveSeenThings()">iveSeenThings</h3>
 <code class="signature">public  str <strong>iveSeenThings</strong>()</code>
@@ -174,16 +178,16 @@ throwing an exception allowing the addition of an arbitary condition to this met
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line77" class="location">src/Tyrell/Hello.php at line 77</a>
+<a href="../source/src/tyrell/hello.php.html#line81" class="location">src/Tyrell/Hello.php at line 81</a>
 
 <h3 id="only()">only</h3>
-<code class="signature">public  void <strong>only</strong>(mixed allowedName)</code>
+<code class="signature">protected  void <strong>only</strong>(mixed allowedName)</code>
 <div class="details">
 <p>Condition method for above methods.</p><p>Only allow specific :name parameter to access the method</p></div>
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line90" class="location">src/Tyrell/Hello.php at line 90</a>
+<a href="../source/src/tyrell/hello.php.html#line96" class="location">src/Tyrell/Hello.php at line 96</a>
 
 <h3 id="sayHelloComputer()">sayHelloComputer</h3>
 <code class="signature">public  <a href="../tonic/response.html">Response</a> <strong>sayHelloComputer</strong>()</code>
@@ -195,12 +199,22 @@ contain the correct content-type response header.</p><dl>
 <dd>GET</dd>
 <dt>Provides:</dt>
 <dd>application/json</dd>
+<dt>Json.</dt>
 </dl>
 </div>
 
 <hr>
 
-<a href="../source/src/tyrell/hello.php.html#line108" class="location">src/Tyrell/Hello.php at line 108</a>
+<a href="../source/src/tyrell/hello.php.html#line107" class="location">src/Tyrell/Hello.php at line 107</a>
+
+<h3 id="json()">json</h3>
+<code class="signature">protected  void <strong>json</strong>()</code>
+<div class="details">
+<p>Condition method to turn output into JSON</p></div>
+
+<hr>
+
+<a href="../source/src/tyrell/hello.php.html#line136" class="location">src/Tyrell/Hello.php at line 136</a>
 
 <h3 id="feedTheComputer()">feedTheComputer</h3>
 <code class="signature">public  <a href="../tonic/response.html">Response</a> <strong>feedTheComputer</strong>()</code>
@@ -213,6 +227,7 @@ request body content-type matches.</p><p>curl -i -H "Content-Type: application/j
 <dd>application/json</dd>
 <dt>Provides:</dt>
 <dd>application/json</dd>
+<dt>Json.</dt>
 </dl>
 </div>
 

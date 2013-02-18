@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
 
-<title>MetadataCache (Tonic)</title>
+<title>MetadataCacheFile (Tonic)</title>
 
 </head>
 <body id="definition" onload="parent.document.title=document.title;">
@@ -32,7 +32,7 @@
 
 <div class="small_links">
 <a href="../index.html" target="_top">Frames</a>
-<a href="../tonic/metadatacache.html" target="_top">No frames</a>
+<a href="../tonic/metadatacachefile.html" target="_top">No frames</a>
 </div>
 <div class="small_links">
 Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>
@@ -40,20 +40,33 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </div>
 <hr>
 
-<div class="qualifiedName">Tonic\MetadataCache</div>
-<a href="../source/src/tonic/metadatacache.php.html#line8" class="location">src/Tonic/MetadataCache.php at line 8</a>
+<div class="qualifiedName">Tonic\MetadataCacheFile</div>
+<a href="../source/src/tonic/metadatacachefile.php.html#line10" class="location">src/Tonic/MetadataCacheFile.php at line 10</a>
 
-<h1>Interface MetadataCache</h1>
+<h1>Class MetadataCacheFile</h1>
 
-<pre class="tree"><strong>MetadataCache</strong><br /></pre>
+<pre class="tree"><strong>MetadataCacheFile</strong><br /></pre>
+
+<dl>
+<dt>All Implemented Interfaces:</dt>
+<dd><a href="../tonic/metadatacache.html">MetadataCache</a> </dd>
+</dl>
 
 <hr>
 
-<p class="signature">public  interface <strong>MetadataCache</strong></p>
+<p class="signature">public  class <strong>MetadataCacheFile</strong></p>
 
-<div class="comment" id="overview_description"><p>Cache resource metadata between invocations</p></div>
+<div class="comment" id="overview_description"><p>Cache resource metadata between invocations</p><p>This class serializes the resource metadata and writes it to disk for reading in a later request.</p></div>
 
 <hr>
+
+<table id="summary_constructor">
+<tr><th colspan="2">Constructor Summary</th></tr>
+<tr>
+<td class="type"> void</td>
+<td class="description"><p class="name"><a href="#__construct()">__construct</a>(mixed filename)</p></td>
+</tr>
+</table>
 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
@@ -71,12 +84,22 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 </tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#clear()">clear</a>()</p><p class="description">Clear the cache</p></td>
+<td class="description"><p class="name"><a href="#clear()">clear</a>()</p></td>
 </tr>
 </table>
 
+<h2 id="detail_method">Constructor Detail</h2>
+<a href="../source/src/tonic/metadatacachefile.php.html#line14" class="location">src/Tonic/MetadataCacheFile.php at line 14</a>
+
+<h3 id="__construct()">__construct</h3>
+<code class="signature">public  void <strong>__construct</strong>(mixed filename)</code>
+<div class="details">
+</div>
+
+<hr>
+
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/src/tonic/metadatacache.php.html#line14" class="location">src/Tonic/MetadataCache.php at line 14</a>
+<a href="../source/src/tonic/metadatacachefile.php.html#line23" class="location">src/Tonic/MetadataCacheFile.php at line 23</a>
 
 <h3 id="isCached()">isCached</h3>
 <code class="signature">public  boolean <strong>isCached</strong>()</code>
@@ -85,7 +108,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/metadatacache.php.html#line20" class="location">src/Tonic/MetadataCache.php at line 20</a>
+<a href="../source/src/tonic/metadatacachefile.php.html#line32" class="location">src/Tonic/MetadataCacheFile.php at line 32</a>
 
 <h3 id="load()">load</h3>
 <code class="signature">public  str[] <strong>load</strong>()</code>
@@ -94,7 +117,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/metadatacache.php.html#line27" class="location">src/Tonic/MetadataCache.php at line 27</a>
+<a href="../source/src/tonic/metadatacachefile.php.html#line42" class="location">src/Tonic/MetadataCacheFile.php at line 42</a>
 
 <h3 id="save()">save</h3>
 <code class="signature">public  boolean <strong>save</strong>(str resources)</code>
@@ -107,12 +130,12 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <hr>
 
-<a href="../source/src/tonic/metadatacache.php.html#line32" class="location">src/Tonic/MetadataCache.php at line 32</a>
+<a href="../source/src/tonic/metadatacachefile.php.html#line47" class="location">src/Tonic/MetadataCacheFile.php at line 47</a>
 
 <h3 id="clear()">clear</h3>
 <code class="signature">public  void <strong>clear</strong>()</code>
 <div class="details">
-<p>Clear the cache</p></div>
+</div>
 
 <hr>
 
@@ -132,7 +155,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <div class="small_links">
 <a href="../index.html" target="_top">Frames</a>
-<a href="../tonic/metadatacache.html" target="_top">No frames</a>
+<a href="../tonic/metadatacachefile.html" target="_top">No frames</a>
 </div>
 <div class="small_links">
 Summary: <a href="#summary_field">Field</a> | <a href="#summary_method">Method</a> | <a href="#summary_constr">Constr</a>

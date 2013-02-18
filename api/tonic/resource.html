@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:21 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:26 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -49,7 +49,7 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 
 <dl>
 <dt>All Known Subclasses:</dt>
-<dd><a href="../tyrell/hello.html">Tyrell\Hello</a> </dd>
+<dd><a href="../tyrell/hello.html">Tyrell\Hello</a> <a href="../tyrell/secret.html">Tyrell\Secret</a> </dd>
 </dl>
 
 <hr>
@@ -79,20 +79,24 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <table id="summary_method">
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
-<td class="type">final  <a href="../tonic/response.html">Response</a></td>
-<td class="description"><p class="name"><a href="#exec()">exec</a>(str methodName)</p><p class="description">Execute the resource, that is, find the correct resource method to call
+<td class="type"> <a href="../tonic/response.html">Response</a></td>
+<td class="description"><p class="name"><a href="#exec()">exec</a>()</p><p class="description">Execute the resource, that is, find the correct resource method to call
 based upon the request and then call it.</p></td>
 </tr>
 <tr>
-<td class="type">protected final  void</td>
-<td class="description"><p class="name"><a href="#addResponseAction()">addResponseAction</a>(callable action)</p><p class="description">Add a function to execute on the response before it is returned</p></td>
+<td class="type">protected  void</td>
+<td class="description"><p class="name"><a href="#before()">before</a>(callable action)</p><p class="description">Add a function to execute on the request before the resource method is called</p></td>
 </tr>
 <tr>
-<td class="type">protected final  void</td>
+<td class="type">protected  void</td>
+<td class="description"><p class="name"><a href="#after()">after</a>(callable action)</p><p class="description">Add a function to execute on the response after the resource method is called</p></td>
+</tr>
+<tr>
+<td class="type">protected  void</td>
 <td class="description"><p class="name"><a href="#method()">method</a>(str method)</p><p class="description">HTTP method condition must match request method</p></td>
 </tr>
 <tr>
-<td class="type">protected final  void</td>
+<td class="type">protected  void</td>
 <td class="description"><p class="name"><a href="#priority()">priority</a>(int priority)</p><p class="description">Higher priority method takes precident over other matches</p></td>
 </tr>
 <tr>
@@ -126,7 +130,7 @@ based on the priority of the match.</p></td>
 <hr>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/src/tonic/resource.php.html#line14" class="location">src/Tonic/Resource.php at line 14</a>
+<a href="../source/src/tonic/resource.php.html#line15" class="location">src/Tonic/Resource.php at line 15</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(<a href="../tonic/application.html">Application</a> app, <a href="../tonic/request.html">Request</a> request, mixed urlParams)</code>
@@ -136,48 +140,53 @@ based on the priority of the match.</p></td>
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/src/tonic/resource.php.html#line36" class="location">src/Tonic/Resource.php at line 36</a>
+<a href="../source/src/tonic/resource.php.html#line98" class="location">src/Tonic/Resource.php at line 98</a>
 
 <h3 id="exec()">exec</h3>
-<code class="signature">public final  <a href="../tonic/response.html">Response</a> <strong>exec</strong>(str methodName)</code>
+<code class="signature">public  <a href="../tonic/response.html">Response</a> <strong>exec</strong>()</code>
 <div class="details">
 <p>Execute the resource, that is, find the correct resource method to call
-based upon the request and then call it.</p><dl>
-<dt>Parameters:</dt>
-<dd>methodName - Optional name of method to execute, bypasing annotations, useful for debugging</dd>
-</dl>
-</div>
+based upon the request and then call it.</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line109" class="location">src/Tonic/Resource.php at line 109</a>
+<a href="../source/src/tonic/resource.php.html#line146" class="location">src/Tonic/Resource.php at line 146</a>
 
-<h3 id="addResponseAction()">addResponseAction</h3>
-<code class="signature">protected final  void <strong>addResponseAction</strong>(callable action)</code>
+<h3 id="before()">before</h3>
+<code class="signature">protected  void <strong>before</strong>(callable action)</code>
 <div class="details">
-<p>Add a function to execute on the response before it is returned</p></div>
+<p>Add a function to execute on the request before the resource method is called</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line119" class="location">src/Tonic/Resource.php at line 119</a>
+<a href="../source/src/tonic/resource.php.html#line158" class="location">src/Tonic/Resource.php at line 158</a>
+
+<h3 id="after()">after</h3>
+<code class="signature">protected  void <strong>after</strong>(callable action)</code>
+<div class="details">
+<p>Add a function to execute on the response after the resource method is called</p></div>
+
+<hr>
+
+<a href="../source/src/tonic/resource.php.html#line169" class="location">src/Tonic/Resource.php at line 169</a>
 
 <h3 id="method()">method</h3>
-<code class="signature">protected final  void <strong>method</strong>(str method)</code>
+<code class="signature">protected  void <strong>method</strong>(str method)</code>
 <div class="details">
 <p>HTTP method condition must match request method</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line131" class="location">src/Tonic/Resource.php at line 131</a>
+<a href="../source/src/tonic/resource.php.html#line179" class="location">src/Tonic/Resource.php at line 179</a>
 
 <h3 id="priority()">priority</h3>
-<code class="signature">protected final  void <strong>priority</strong>(int priority)</code>
+<code class="signature">protected  void <strong>priority</strong>(int priority)</code>
 <div class="details">
 <p>Higher priority method takes precident over other matches</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line139" class="location">src/Tonic/Resource.php at line 139</a>
+<a href="../source/src/tonic/resource.php.html#line188" class="location">src/Tonic/Resource.php at line 188</a>
 
 <h3 id="accepts()">accepts</h3>
 <code class="signature">protected  void <strong>accepts</strong>(str mimetype)</code>
@@ -186,7 +195,7 @@ based upon the request and then call it.</p><dl>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line150" class="location">src/Tonic/Resource.php at line 150</a>
+<a href="../source/src/tonic/resource.php.html#line201" class="location">src/Tonic/Resource.php at line 201</a>
 
 <h3 id="provides()">provides</h3>
 <code class="signature">protected  int <strong>provides</strong>(str mimetype)</code>
@@ -196,7 +205,7 @@ based on the priority of the match.</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line166" class="location">src/Tonic/Resource.php at line 166</a>
+<a href="../source/src/tonic/resource.php.html#line225" class="location">src/Tonic/Resource.php at line 225</a>
 
 <h3 id="lang()">lang</h3>
 <code class="signature">protected  int <strong>lang</strong>(str language)</code>
@@ -206,7 +215,7 @@ based on the priority of the match.</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/resource.php.html#line177" class="location">src/Tonic/Resource.php at line 177</a>
+<a href="../source/src/tonic/resource.php.html#line238" class="location">src/Tonic/Resource.php at line 238</a>
 
 <h3 id="cache()">cache</h3>
 <code class="signature">protected  void <strong>cache</strong>(int length)</code>

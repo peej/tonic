@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:22 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:26 +0000">
 
 <link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rel="start" href="overview-summary.html">
@@ -33,12 +33,14 @@
 <a href="index-all.html" target="_top">No frames</a>
 </div>
 <a href="#letterA">A</a>
+<a href="#letterB">B</a>
 <a href="#letterC">C</a>
 <a href="#letterE">E</a>
 <a href="#letterF">F</a>
 <a href="#letterG">G</a>
 <a href="#letterH">H</a>
 <a href="#letterI">I</a>
+<a href="#letterJ">J</a>
 <a href="#letterL">L</a>
 <a href="#letterM">M</a>
 <a href="#letterN">N</a>
@@ -53,11 +55,8 @@
 <dl>
 <dt><a href="tonic/resource.html#accepts()">accepts()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
 <dd>Accepts condition mimetype must match request content type</dd>
-<dt><a href="tonic/resource.html#addResponseAction()">addResponseAction()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
-<dd>Add a function to execute on the response before it is returned</dd>
-<dt><a href="tonic/package-globals.html#app">app()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
-<dt><a href="tonic/exception.html#appendMessage()">appendMessage()</a> - Method in class <a href="tonic/exception.html">Tonic\Exception</a></dt>
-<dd>Append a message onto the existing exception message</dd>
+<dt><a href="tonic/resource.html#after()">after()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
+<dd>Add a function to execute on the response after the resource method is called</dd>
 <dt><a href="tonic/application.html">Application()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>A Tonic application</dd>
 <dt><a href="tonic/autoloader.html#autoload()">autoload()</a> - Method in class <a href="tonic/autoloader.html">Tonic\Autoloader</a></dt>
@@ -65,13 +64,23 @@
 <dt><a href="tonic/autoloader.html">Autoloader()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Autoload</dd>
 </dl>
+<h1 id="letterB">B</h1>
+<dl>
+<dt><a href="tonic/resource.html#before()">before()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
+<dd>Add a function to execute on the request before the resource method is called</dd>
+</dl>
 <h1 id="letterC">C</h1>
 <dl>
 <dt><a href="tonic/resource.html#cache()">cache()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
 <dd>Set cache control header on response</dd>
+<dt><a href="tonic/metadatacacheapc.html#clear()">clear()</a> - Method in class <a href="tonic/metadatacacheapc.html">Tonic\MetadataCacheAPC</a></dt>
+<dt><a href="tonic/metadatacachefile.html#clear()">clear()</a> - Method in class <a href="tonic/metadatacachefile.html">Tonic\MetadataCacheFile</a></dt>
+<dt><a href="tonic/metadatacache.html#clear()">clear()</a> - Method in class <a href="tonic/metadatacache.html">Tonic\MetadataCache</a></dt>
+<dd>Clear the cache</dd>
 <dt><a href="tonic/conditionexception.html">ConditionException()</a> - Exception in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Exception to be thrown when a resource method condition fails</dd>
-<dt><a href="tonic/package-globals.html#config">config()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dt><a href="tonic/response.html#create()">create()</a> - Method in class <a href="tonic/response.html">Tonic\Response</a></dt>
+<dd>Factory method to create a Response from a variety of inputs</dd>
 </dl>
 <h1 id="letterE">E</h1>
 <dl>
@@ -89,7 +98,8 @@
 <h1 id="letterG">G</h1>
 <dl>
 <dt><a href="tonic/request.html#getOption()">getOption()</a> - Method in class <a href="tonic/request.html">Tonic\Request</a></dt>
-<dd>Get an item from the given array if it exists otherwise look up in _SERVER superglobal or return default</dd>
+<dd>Get an item from the given options array if it exists, otherwise fetch from HTTP header
+ or return the given default</dd>
 <dt><a href="tonic/application.html#getResource()">getResource()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
 <dd>Given the request data and the loaded resource metadata, pick the best matching
  resource to handle the request based on URI and priority.</dd>
@@ -105,24 +115,41 @@
 </dl>
 <h1 id="letterI">I</h1>
 <dl>
+<dt><a href="tonic/metadatacacheapc.html#isCached()">isCached()</a> - Method in class <a href="tonic/metadatacacheapc.html">Tonic\MetadataCacheAPC</a></dt>
+<dd>Is there already cache file</dd>
 <dt><a href="tonic/metadatacache.html#isCached()">isCached()</a> - Method in class <a href="tonic/metadatacache.html">Tonic\MetadataCache</a></dt>
+<dd>Is there already cache file</dd>
+<dt><a href="tonic/metadatacachefile.html#isCached()">isCached()</a> - Method in class <a href="tonic/metadatacachefile.html">Tonic\MetadataCacheFile</a></dt>
 <dd>Is there already cache file</dd>
 <dt><a href="tyrell/hello.html#iveSeenThings()">iveSeenThings()</a> - Method in class <a href="tyrell/hello.html">Tyrell\Hello</a></dt>
 <dd></dd>
+</dl>
+<h1 id="letterJ">J</h1>
+<dl>
+<dt><a href="tyrell/hello.html#json()">json()</a> - Method in class <a href="tyrell/hello.html">Tyrell\Hello</a></dt>
+<dd>Condition method to turn output into JSON</dd>
 </dl>
 <h1 id="letterL">L</h1>
 <dl>
 <dt><a href="tonic/resource.html#lang()">lang()</a> - Method in class <a href="tonic/resource.html">Tonic\Resource</a></dt>
 <dd>Lang condition language code must be in request accept lang array, returns a number
  based on the priority of the match.</dd>
+<dt><a href="tonic/metadatacacheapc.html#load()">load()</a> - Method in class <a href="tonic/metadatacacheapc.html">Tonic\MetadataCacheAPC</a></dt>
+<dd>Load the resource metadata from disk</dd>
+<dt><a href="tonic/metadatacachefile.html#load()">load()</a> - Method in class <a href="tonic/metadatacachefile.html">Tonic\MetadataCacheFile</a></dt>
+<dd>Load the resource metadata from disk</dd>
 <dt><a href="tonic/metadatacache.html#load()">load()</a> - Method in class <a href="tonic/metadatacache.html">Tonic\MetadataCache</a></dt>
 <dd>Load the resource metadata from disk</dd>
-<dt><a href="tonic/application.html#loadResourceMetadata()">loadResourceMetadata()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
-<dd>Load the metadata for all loaded resource classes</dd>
 </dl>
 <h1 id="letterM">M</h1>
 <dl>
-<dt><a href="tonic/metadatacache.html">MetadataCache()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dt><a href="tonic/metadatacache.html">MetadataCache()</a> - Interface in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dd>Cache resource metadata between invocations</dd>
+<dt><a href="tonic/metadatacacheapc.html">MetadataCacheAPC()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dd>Cache resource metadata between invocations
+
+ This class writes the resource metadata to APC for reading in a later request.</dd>
+<dt><a href="tonic/metadatacachefile.html">MetadataCacheFile()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Cache resource metadata between invocations
 
  This class serializes the resource metadata and writes it to disk for reading in a later request.</dd>
@@ -132,6 +159,8 @@
 <dd>Base exception class for Tonic exceptions</dd>
 <dt><a href="tonic/application.html#mount()">mount()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
 <dd>Add a namespace to a specific URI-space</dd>
+<dt><a href="tyrell/secret.html#mySecret()">mySecret()</a> - Method in class <a href="tyrell/secret.html">Tyrell\Secret</a></dt>
+<dd></dd>
 </dl>
 <h1 id="letterN">N</h1>
 <dl>
@@ -158,22 +187,24 @@
 </dl>
 <h1 id="letterR">R</h1>
 <dl>
-<dt><a href="tonic/application.html#readMethodAnnotations()">readMethodAnnotations()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>
 <dt><a href="tyrell/hello.html#replicants()">replicants()</a> - Method in class <a href="tyrell/hello.html">Tyrell\Hello</a></dt>
 <dd>The @priority annotation makes this method take priority over the above method.
 </dd>
-<dt><a href="tonic/package-globals.html#request">request()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dt><a href="tonic/request.html">Request()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Model a HTTP request</dd>
-<dt><a href="tonic/package-globals.html#resource">resource()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dt><a href="tonic/resource.html">Resource()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Model a HTTP resource</dd>
-<dt><a href="tonic/package-globals.html#response">response()</a> - Global in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dt><a href="tonic/response.html">Response()</a> - Class in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Model a HTTP response</dd>
+<dt><a href="tonic/response.html#responseCode()">responseCode()</a> - Method in class <a href="tonic/response.html">Tonic\Response</a></dt>
+<dd>Get the HTTP response code of this response</dd>
 </dl>
 <h1 id="letterS">S</h1>
 <dl>
+<dt><a href="tonic/metadatacachefile.html#save()">save()</a> - Method in class <a href="tonic/metadatacachefile.html">Tonic\MetadataCacheFile</a></dt>
+<dd>Save resource metadata to disk</dd>
+<dt><a href="tonic/metadatacacheapc.html#save()">save()</a> - Method in class <a href="tonic/metadatacacheapc.html">Tonic\MetadataCacheAPC</a></dt>
+<dd>Save resource metadata to disk</dd>
 <dt><a href="tonic/metadatacache.html#save()">save()</a> - Method in class <a href="tonic/metadatacache.html">Tonic\MetadataCache</a></dt>
 <dd>Save resource metadata to disk</dd>
 <dt><a href="tyrell/hello.html#sayHello()">sayHello()</a> - Method in class <a href="tyrell/hello.html">Tyrell\Hello</a></dt>
@@ -185,9 +216,15 @@
  contain the correct content-type response header.</dd>
 <dt><a href="tyrell/hello.html#sayHelloInFrench()">sayHelloInFrench()</a> - Method in class <a href="tyrell/hello.html">Tyrell\Hello</a></dt>
 <dd></dd>
+<dt><a href="tyrell/secret.html">Secret()</a> - Class in namespace <a href="tyrell/package-summary.html">Tyrell</a></dt>
+<dd>Simple HTTP authentication example.
+</dd>
+<dt><a href="tyrell/secret.html#secure()">secure()</a> - Method in class <a href="tyrell/secret.html">Tyrell\Secret</a></dt>
 </dl>
 <h1 id="letterU">U</h1>
 <dl>
+<dt><a href="tonic/unauthorizedexception.html">UnauthorizedException()</a> - Exception in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
+<dd>Base exception class for Tonic exceptions</dd>
 <dt><a href="tonic/unsupportedmediatypeexception.html">UnsupportedMediaTypeException()</a> - Exception in namespace <a href="tonic/package-summary.html">Tonic</a></dt>
 <dd>Base exception class for Tonic exceptions</dd>
 <dt><a href="tonic/application.html#uri()">uri()</a> - Method in class <a href="tonic/application.html">Tonic\Application</a></dt>

@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:21 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:26 +0000">
 
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
 <link rel="start" href="../overview-summary.html">
@@ -67,10 +67,6 @@ Detail: <a href="#detail_field">Field</a> | <a href="#detail_method">Method</a> 
 <tr><th colspan="2">Method Summary</th></tr>
 <tr>
 <td class="type"> void</td>
-<td class="description"><p class="name"><a href="#loadResourceMetadata()">loadResourceMetadata</a>(str uriSpace)</p><p class="description">Load the metadata for all loaded resource classes</p></td>
-</tr>
-<tr>
-<td class="type"> void</td>
 <td class="description"><p class="name"><a href="#mount()">mount</a>(str namespaceName, str uriSpace)</p><p class="description">Add a namespace to a specific URI-space</p></td>
 </tr>
 <tr>
@@ -86,14 +82,10 @@ resource to handle the request based on URI and priority.</p></td>
 <td class="type"> str[]</td>
 <td class="description"><p class="name"><a href="#getResourceMetadata()">getResourceMetadata</a>(Tonic/Resource resource)</p><p class="description">Get the already loaded resource annotation metadata</p></td>
 </tr>
-<tr>
-<td class="type"> void</td>
-<td class="description"><p class="name"><a href="#readMethodAnnotations()">readMethodAnnotations</a>(mixed className)</p></td>
-</tr>
 </table>
 
 <h2 id="detail_method">Constructor Detail</h2>
-<a href="../source/src/tonic/application.php.html#line15" class="location">src/Tonic/Application.php at line 15</a>
+<a href="../source/src/tonic/application.php.html#line22" class="location">src/Tonic/Application.php at line 22</a>
 
 <h3 id="__construct()">__construct</h3>
 <code class="signature">public  void <strong>__construct</strong>(mixed options)</code>
@@ -103,20 +95,7 @@ resource to handle the request based on URI and priority.</p></td>
 <hr>
 
 <h2 id="detail_method">Method Detail</h2>
-<a href="../source/src/tonic/application.php.html#line63" class="location">src/Tonic/Application.php at line 63</a>
-
-<h3 id="loadResourceMetadata()">loadResourceMetadata</h3>
-<code class="signature">public  void <strong>loadResourceMetadata</strong>(str uriSpace)</code>
-<div class="details">
-<p>Load the metadata for all loaded resource classes</p><dl>
-<dt>Parameters:</dt>
-<dd>uriSpace - Optional URI-space to mount the resources into</dd>
-</dl>
-</div>
-
-<hr>
-
-<a href="../source/src/tonic/application.php.html#line84" class="location">src/Tonic/Application.php at line 84</a>
+<a href="../source/src/tonic/application.php.html#line100" class="location">src/Tonic/Application.php at line 100</a>
 
 <h3 id="mount()">mount</h3>
 <code class="signature">public  void <strong>mount</strong>(str namespaceName, str uriSpace)</code>
@@ -125,7 +104,7 @@ resource to handle the request based on URI and priority.</p></td>
 
 <hr>
 
-<a href="../source/src/tonic/application.php.html#line101" class="location">src/Tonic/Application.php at line 101</a>
+<a href="../source/src/tonic/application.php.html#line120" class="location">src/Tonic/Application.php at line 120</a>
 
 <h3 id="uri()">uri</h3>
 <code class="signature">public  str <strong>uri</strong>(str className, str params)</code>
@@ -134,7 +113,7 @@ resource to handle the request based on URI and priority.</p></td>
 
 <hr>
 
-<a href="../source/src/tonic/application.php.html#line132" class="location">src/Tonic/Application.php at line 132</a>
+<a href="../source/src/tonic/application.php.html#line153" class="location">src/Tonic/Application.php at line 153</a>
 
 <h3 id="getResource()">getResource</h3>
 <code class="signature">public  <a href="../tonic/resource.html">Resource</a> <strong>getResource</strong>(<a href="../tonic/request.html">Request</a> request)</code>
@@ -144,21 +123,12 @@ resource to handle the request based on URI and priority.</p></div>
 
 <hr>
 
-<a href="../source/src/tonic/application.php.html#line182" class="location">src/Tonic/Application.php at line 182</a>
+<a href="../source/src/tonic/application.php.html#line205" class="location">src/Tonic/Application.php at line 205</a>
 
 <h3 id="getResourceMetadata()">getResourceMetadata</h3>
 <code class="signature">public  str[] <strong>getResourceMetadata</strong>(Tonic/Resource resource)</code>
 <div class="details">
 <p>Get the already loaded resource annotation metadata</p></div>
-
-<hr>
-
-<a href="../source/src/tonic/application.php.html#line244" class="location">src/Tonic/Application.php at line 244</a>
-
-<h3 id="readMethodAnnotations()">readMethodAnnotations</h3>
-<code class="signature">public  void <strong>readMethodAnnotations</strong>(mixed className)</code>
-<div class="details">
-</div>
 
 <hr>
 

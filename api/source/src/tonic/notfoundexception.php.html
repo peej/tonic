@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:26 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:29 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
 <link rel="start" href="../../../overview-summary.html">
@@ -40,9 +40,12 @@
 <a name="line2"></a>&nbsp;
 <a name="line3"></a><span style="color: #000000; font-weight: bold;">namespace</span> Tonic<span style="color: #339933;">;</span>
 <a name="line4"></a>&nbsp;
-<a name="line5"></a><span style="color: #000000; font-weight: bold;">class</span> NotFoundException <span style="color: #000000; font-weight: bold;">extends</span> Exception <span style="color: #009900;">&#123;</span>
-<a name="line6"></a>    protected <span style="color: #000088;">$code</span> <span style="color: #339933;">=</span> <span style="color: #cc66cc;">404</span><span style="color: #339933;">;</span>
-<a name="line7"></a><span style="color: #009900;">&#125;</span></pre>
+<a name="line5"></a><span style="color: #000000; font-weight: bold;">class</span> NotFoundException <span style="color: #000000; font-weight: bold;">extends</span> Exception
+<a name="line6"></a><span style="color: #009900;">&#123;</span>
+<a name="line7"></a>    protected <span style="color: #000088;">$code</span> <span style="color: #339933;">=</span> <span style="color: #cc66cc;">404</span><span style="color: #339933;">;</span>
+<a name="line8"></a>    protected <span style="color: #000088;">$message</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'The server has not found anything matching the Request-URI'</span><span style="color: #339933;">;</span>
+<a name="line9"></a><span style="color: #009900;">&#125;</span>
+<a name="line10"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>

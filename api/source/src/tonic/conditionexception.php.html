@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="generator" content="PHPDoctor 2RC4 (http://peej.github.com/phpdoctor/)">
-<meta name="when" content="Fri, 29 Jun 2012 21:52:23 +0000">
+<meta name="when" content="Mon, 18 Feb 2013 22:01:27 +0000">
 
 <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
 <link rel="start" href="../../../overview-summary.html">
@@ -43,8 +43,11 @@
 <a name="line5"></a><span style="color: #009933; font-style: italic;">/**
 <a name="line6"></a> * Exception to be thrown when a resource method condition fails
 <a name="line7"></a> */</span>
-<a name="line8"></a><span style="color: #000000; font-weight: bold;">class</span> ConditionException <span style="color: #000000; font-weight: bold;">extends</span> Exception <span style="color: #009900;">&#123;</span><span style="color: #009900;">&#125;</span>
-<a name="line9"></a>&nbsp;</pre>
+<a name="line8"></a><span style="color: #000000; font-weight: bold;">class</span> ConditionException <span style="color: #000000; font-weight: bold;">extends</span> Exception
+<a name="line9"></a><span style="color: #009900;">&#123;</span>
+<a name="line10"></a>    protected <span style="color: #000088;">$message</span> <span style="color: #339933;">=</span> <span style="color: #0000ff;">'A method condition failed'</span><span style="color: #339933;">;</span>
+<a name="line11"></a><span style="color: #009900;">&#125;</span>
+<a name="line12"></a>&nbsp;</pre>
 <div class="header">
 <h1>Tonic</h1>
 <ul>
