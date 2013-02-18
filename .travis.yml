@@ -1,6 +1,0 @@
-language: php
-php:
-  - 5.3
-  - 5.4
-before_install: wget https://github.com/downloads/Behat/Behat/behat.phar
-script: php behat.phar
