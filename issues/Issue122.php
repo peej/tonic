@@ -2,7 +2,12 @@
 
 namespace Tonic;
 
-class BaseResource extends Resource {
+class Issue122Base extends Resource {
+
+    protected function routemethod($method)
+    {
+        parent::method($method);
+    }
 
 }
 
@@ -10,12 +15,7 @@ class BaseResource extends Resource {
  *
  * @uri /issue122
  */
-class Issue122 extends BaseResource {
-
-    protected function routemethod($method)
-    {
-        parent::method($method);
-    }
+class Issue122 extends Issue122Base {
 
     /**
      * @routemethod get
