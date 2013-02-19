@@ -87,7 +87,7 @@ class FeatureContext extends BehatContext
     }
 
     /**
-     * @Given /^an? "([^"]*)" header of '([^']*)'$/
+     * @Given /^an? "([^"]*)" header of ['"]([^']*)['"]$/
      */
     public function aHeaderOf($header, $value)
     {
