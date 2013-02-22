@@ -467,4 +467,13 @@ class FeatureContext extends BehatContext
         require_once dirname(__FILE__).'/../../issues/'.$issue.'.php';
     }
 
+    /**
+     * @Given /^the method priority for "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theMethodPriorityForShouldBe($methodName, $value)
+    {
+        if (!preg_match('/\['.$value.'\] '.$methodName.'/', (string)$this->resource)) throw new Exception;
+    }
+
+
 }

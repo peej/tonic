@@ -37,5 +37,6 @@ class Issue107 extends Resource {
 
     public function only($allowedName) {
         if (strtolower($allowedName) != strtolower($this->id)) throw new ConditionException;
+        return true;
     }
 }

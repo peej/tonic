@@ -55,7 +55,7 @@ class Resource
                                 } else {
                                     $condition = call_user_func(array($this, $conditionName), $params);
                                 }
-                                if ($condition === null || $condition === true) $condition = 1;
+                                if ($condition === true) $condition = 1;
                                 if (is_numeric($condition)) {
                                     $methodPriorities[$key]['value'] += $condition;
                                 } elseif ($condition) {

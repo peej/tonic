@@ -149,3 +149,46 @@ Feature: HTTP resource object
     Then the resource "Resource7" should have the condition "myBeforeFilter" with the parameters ""
     And I should see body data of "foo"
     And response should be "bar"
+  
+  Scenario: Custom conditions shouldn't increase match likelihood
+    Given a class definition:
+      """
+      /**
+       * @uri /resource8
+       */
+      class Resource8 extends Tonic\Resource {
+        /**
+         * @method get
+         * @foo
+         */
+        function test() {}
+        function foo() {}
+        /**
+         * @method get
+         * @bar
+         */
+        function test2() {}
+        function bar() { return true; }
+        /**
+         * @method get
+         * @baz
+         */
+        function test3() {}
+        function baz() { return false; }
+        /**
+         * @method get
+         * @quux
+         */
+        function test4() {}
+        function quux() { return 10; }
+      }
+      """
+    And the request URI of "/resource8"
+    And the request method of "GET"
+    When I create an application object
+    And I create a request object
+    And load the resource
+    Then the method priority for "test" should be "0"
+    And the method priority for "test2" should be "1"
+    And the method priority for "test3" should be "0"
+    And the method priority for "test4" should be "10"
