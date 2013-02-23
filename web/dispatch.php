@@ -1,10 +1,10 @@
 <?php
 
 // load autoloader (delete as appropriate)
-if (!@include('../src/Tonic/Autoloader.php')) {
-    if (!@include('../vendor/autoload.php')) {
-        die('Could not find autoloader');
-    }
+if (@include('../src/Tonic/Autoloader.php')) { // use Tonic autoloader
+    #new Tonic\Autoloader('myNamespace'); // add another namespace
+} elseif (!@include('../vendor/autoload.php')) { // use Composer autoloader
+    die('Could not find autoloader');
 }
 
 $config = array(
