@@ -13,17 +13,15 @@ class Autoloader
      */
     public static function autoload($className)
     {
-        if ('Tonic\\' === substr($className, 0, strlen('Tonic\\'))) {
-            $fileName = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
-            $namespace = '';
-            if (false !== ($lastNsPos = strripos($className, '\\'))) {
-                $namespace = substr($className, 0, $lastNsPos);
-                $className = substr($className, $lastNsPos + 1);
-                $fileName .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-            }
-            $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-            require $fileName;
+        $fileName = dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+        $namespace = '';
+        if (false !== ($lastNsPos = strripos($className, '\\'))) {
+            $namespace = substr($className, 0, $lastNsPos);
+            $className = substr($className, $lastNsPos + 1);
+            $fileName .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
+        $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+        require $fileName;
     }
 
 }
