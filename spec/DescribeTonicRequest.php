@@ -8,6 +8,7 @@ class DescribeTonicRequest extends \PHPSpec\Context
     function after()
     {
         unset($_SERVER);
+        unset($_GET);
     }
 
     private function createRequest($options = NULL)
@@ -93,9 +94,58 @@ class DescribeTonicRequest extends \PHPSpec\Context
 
     function itShouldHaveTheRequestMethodFromMethodOverrideHeader()
     {
-        $_SERVER['X_HTTP_METHOD_OVERRIDE'] = 'POST';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['X_HTTP_METHOD_OVERRIDE'] = 'PUT';
         $request = $this->createRequest();
-        $this->spec($request->method)->should->be('POST');
+        $this->spec($request->method)->should->be('PUT');
+    }
+
+    function itShouldHaveTheRequestMethodFromMethodOverrideHeaderOnlyIfActualMethodIsPost()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['X_HTTP_METHOD_OVERRIDE'] = 'PUT';
+        $request = $this->createRequest();
+        $this->spec($request->method)->should->be('GET');
+    }
+
+    function itShouldHaveTheRequestMethodFromUrl()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $request = $this->createRequest(array(
+            'uri' => '/foo/bar!DELETE',
+            'uriMethodOverride' => true
+        ));
+        $this->spec($request->uri)->should->be('/foo/bar');
+        $this->spec($request->method)->should->be('DELETE');
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_GET['_method'] = 'delete';
+        $request = $this->createRequest(array(
+            'uri' => '/foo/bar',
+            'uriMethodOverride' => true
+        ));
+        $this->spec($request->uri)->should->be('/foo/bar');
+        $this->spec($request->method)->should->be('DELETE');
+    }
+
+    function itShouldHaveTheRequestMethodFromUrlOnlyIfActualMethodIsPost()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $request = $this->createRequest(array(
+            'uri' => '/foo/bar!DELETE',
+            'uriMethodOverride' => true
+        ));
+        $this->spec($request->uri)->should->be('/foo/bar!DELETE');
+        $this->spec($request->method)->should->be('GET');
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['_method'] = 'delete';
+        $request = $this->createRequest(array(
+            'uri' => '/foo/bar',
+            'uriMethodOverride' => true
+        ));
+        $this->spec($request->uri)->should->be('/foo/bar');
+        $this->spec($request->method)->should->be('GET');
     }
 
     function itShouldHaveTheRequestContentType()
