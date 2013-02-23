@@ -32,7 +32,7 @@ class Hello extends Resource
      */
     public function sayHello($name = 'World')
     {
-        return 'Hello '.$name;
+        return 'Hello '.htmlspecialchars(ucwords($name));
     }
 
     /**
@@ -43,7 +43,7 @@ class Hello extends Resource
      */
     public function sayHelloInFrench($name = 'Monde')
     {
-        return 'Bonjour '.$name;
+        return 'Bonjour '.htmlspecialchars(ucwords($name));
     }
 
     /**
@@ -102,7 +102,11 @@ class Hello extends Resource
     }
 
     /**
-     * Condition method to turn output into JSON
+     * Condition method to turn output into JSON.
+     *
+     * This condition sets a before and an after filter for the request and response. The
+     * before filter decodes the request body if the request content type is JSON, while the
+     * after filter encodes the response body into JSON.
      */
     protected function json()
     {
