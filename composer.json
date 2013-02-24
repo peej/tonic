@@ -3,7 +3,8 @@
         "php": ">=5.3.0",
         "peej/tonic": "3.*@dev",
         "smarty/smarty": "3.*",
-        "pimple/pimple": "1.*"
+        "pimple/pimple": "1.*",
+        "nocarrier/hal": "dev-master"
     },
     "autoload": {
         "psr-0": {

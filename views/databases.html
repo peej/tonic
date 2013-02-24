@@ -1,0 +1,12 @@
+{extends file="shell.html"}
+
+{block name=body}
+    <h1>Databases</h1>
+    <ul>
+        {foreach $databases as $database}
+            <li><a href="{$database}" rel="{$rel}">{$database}</a></li>
+        {foreachelse}
+            <li>No databases found in server.</li>
+        {/foreach}
+    </ul>
+{/block}

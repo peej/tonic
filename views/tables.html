@@ -1,9 +1,14 @@
 {extends file="shell.html"}
 
+{block name=title}{$database}{/block}
+
 {block name=body}
+    <h1>Database: {$database}</h1>
     <ul>
         {foreach $tables as $table}
-            <li><a href="{$table}">{$table}</a></li>
+            <li><a href="{$database}/{$table}" rel="{$rel}">{$table}</a></li>
+        {foreachelse}
+            <li>No tables found in database.</li>
         {/foreach}
     </ul>
 {/block}
