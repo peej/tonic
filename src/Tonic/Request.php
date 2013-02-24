@@ -48,6 +48,12 @@ class Request
 
     public function __construct($options = array())
     {
+        if (isset($options['mimetypes']) && is_array($options['mimetypes'])) {
+            foreach ($options['mimetypes'] as $ext => $mimetype) {
+                $this->mimetypes[$ext] = $mimetype;
+            }
+        }
+
         $this->uri = $this->getURIFromEnvironment($options);
         $this->method = $this->getMethod($options);
 
