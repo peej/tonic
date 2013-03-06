@@ -17,13 +17,25 @@ use Tonic\Resource,
 class Secret extends Resource {
 
     /**
+     * Resource method to handle GET request and return the secret only if the user
+     * has the credentials specified in the @secure annotation.
+     *
      * @method GET
      * @secure aUser aPassword
+     * @return str
      */
     function mySecret() {
         return 'My secret';
     }
 
+    /**
+     * Condition method for the @secure annotation that checks the requests HTTP
+     * authentication details against the username and password given in the annotation.
+     *
+     * @param str $username
+     * @param str $password
+     * @throws UnauthorizedException
+     */
     function secure($username, $password) {
         if (
             isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] == $username &&
