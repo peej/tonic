@@ -30,6 +30,16 @@ class Resource
     }
 
     /**
+     * Get a URL parameter as defined by this resource and it's URI
+     * @param  str $name Name of the parameter
+     * @return str
+     */
+    public function __isset($name)
+    {
+        return isset($this->params[$name]);
+    }
+
+    /**
      * Get the method name of the best matching resource method.
      *
      * @param str[] $resourceMetadata

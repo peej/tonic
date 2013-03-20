@@ -84,7 +84,10 @@ class DescribeTonicResource extends \PHPSpec\Context
     function itShouldExposeTheUriParameters()
     {
         $resource = $this->createResource();
+        $this->spec(isset($resource->foo))->should->be(true);
         $this->spec($resource->foo)->should->be('bar');
+        $this->spec(isset($resource->baz))->should->be(false);
+        $this->spec($resource->baz)->should->be(null);
     }
 
     function itShouldExecuteTheResourceByCallingMyMethod()
