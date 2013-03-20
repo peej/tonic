@@ -196,9 +196,10 @@ class Request
         foreach ($parts as $part) {
             if (isset($this->mimetypes[$part])) {
                 $this->accept[] = $this->mimetypes[$part];
-            }
-            if (preg_match('/^[a-z]{2}(-[a-z]{2})?$/', $part)) {
+            } elseif (preg_match('/^[a-z]{2}(-[a-z]{2})?$/', $part)) {
                 $this->acceptLanguage[] = $part;
+            } else {
+                $uri .= '.'.$part;
             }
         }
 
