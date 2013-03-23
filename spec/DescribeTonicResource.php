@@ -17,6 +17,7 @@ class MyOtherResource extends Tonic\Resource {
      * @myCondition
      * @beforeCondition
      * @afterCondition
+     * @parameterCondition param1 "param 2"
      */
     function myMethod()
     {
@@ -56,6 +57,12 @@ class MyOtherResource extends Tonic\Resource {
     function hasQuerystring($name)
     {
         if (!isset($_GET[$name])) throw new Tonic\ConditionException;
+    }
+
+    function parameterCondition($param1, $param2)
+    {
+        $this->param1 = $param1;
+        $this->param2 = $param2;
     }
 
 }
@@ -174,6 +181,20 @@ class DescribeTonicResource extends \PHPSpec\Context
         $resource = $this->createResource($request);
         $response= $resource->exec();
         $this->spec($response->body)->should->be('Goodbye');
+    }
+
+    function itShouldHandleConditionParametersContainingSpaces()
+    {
+        $request = new Tonic\Request(array(
+            'uri' => '/baz/quux',
+            'contentType' => 'application/x-www-form-urlencoded'
+        ));
+        $resource = $this->createResource($request);
+        $this->spec(function() use ($resource) {
+            $resource->exec();
+        });
+        $this->spec($resource->param1)->should->be('param1');
+        $this->spec($resource->param2)->should->be('param 2');
     }
 
 }

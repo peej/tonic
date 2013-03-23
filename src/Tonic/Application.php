@@ -311,14 +311,10 @@ class Application
         preg_match_all('/^\s*\*[*\s]*(@.+)$/m', $comment, $items);
         if ($items && isset($items[1])) {
             foreach ($items[1] as $item) {
-                $parts = preg_split('/ +/', $item);
-                if ($parts) {
-                    foreach ($parts as $k => $part) {
-                        $parts[$k] = trim($part);
-                    }
-                    $key = array_shift($parts);
-                    $data[$key][] = $parts;
-                }
+                preg_match_all('/"[^"]+"|[^\s]+/', $item, $parts);
+                $key = array_shift($parts[0]);
+                array_walk($parts[0], create_function('&$v', '$v = trim($v, \'"\');'));
+                $data[$key][] = $parts[0];
             }
         }
 
