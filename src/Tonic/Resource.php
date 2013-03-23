@@ -30,7 +30,7 @@ class Resource
     }
 
     /**
-     * Get a URL parameter as defined by this resource and it's URI
+     * Check if a URL parameter exists
      * @param  str $name Name of the parameter
      * @return str
      */
