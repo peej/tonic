@@ -26,6 +26,16 @@ class FeatureContext extends BehatContext
     private $options = array();
 
     /**
+     * @BeforeFeature
+     */
+    public static function setupFeature()
+    {
+        unset($_SERVER);
+        unset($_GET);
+        unset($_POST);
+    }
+
+    /**
      * @Given /^the request URI of "([^"]*)"$/
      */
     public function theRequestUriOf($uri)
