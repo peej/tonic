@@ -378,6 +378,14 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^a resource file "([^"]*)" to load$/
+     */
+    public function aResourceFileToLoad($filename)
+    {
+        $this->options['load'][] = $filename;
+    }
+
+    /**
      * @Given /^the cache object should contain "([^"]*)" "([^"]*)"$/
      */
     public function theCacheObjectShouldContain($className, $methodName)

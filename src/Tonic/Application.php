@@ -65,8 +65,11 @@ class Application
         }
 
         foreach ($filenames as $glob) {
-            foreach (glob($glob) as $filename) {
-                require_once $filename;
+            $globs = glob(preg_replace('/(\*|\?|\[)/', '[$1]', $glob));
+            if ($globs) {
+                foreach ($globs as $filename) {
+                    require_once $filename;
+                }
             }
         }
     }
