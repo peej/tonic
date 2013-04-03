@@ -1,0 +1,32 @@
+{
+    "name": "peej/tonic",
+    "description": "The RESTful Web App PHP Micro-Framework",
+    "keywords": ["rest", "microframework"],
+    "homepage": "http://peej.github.com/tonic",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Paul James",
+            "email": "paul@peej.co.uk"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "1.*",
+        "behat/behat": "2.*"
+    },
+    "suggest": {
+        "pimple/pimple": "A simple dependancy injection container to handle your services",
+        "smarty/smarty": "PHP templating engine for building response representations"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "Tonic": "src/"
+        }
+    }
+}

@@ -3,187 +3,32 @@ Feature: HTTP request object
   As a PHP developer
   I want a PHP object that represents the state of the incoming HTTP request
   
-  Scenario: Have access to the request URI
-    Given the request URI of "/something/otherthing"
+  Scenario: Have access to the request data
+    Given the request URI of "/request1.jpg"
+    And the request method of "POST"
+    And an "accept" header of 'text/html,application/xml;q=0.9,application/xhtml+xml,*/*;q=0.8'
+    And an "accept language" header of 'en;q=0.8,en-GB'
+    And an "if-none-match" header of '"xyzzy", "quux"'
+    And an "if-match" header of '"quux"'
+    And a "content-type" header of 'text/plain'
+    And body data of 'woo yay'
     When I create a request object
-    Then I should see a request URI of "/something/otherthing"
-    
-  Scenario: Query string is ignored
-	Given the request URI of "/something/otherthing?foo=bar"
-	When I create a request object
-    Then I should see a request URI of "/something/otherthing"
-	And I should see the request data ""
+    Then I should see a request URI of "/request1"
+    And I should see a request method of "POST"
+    And I should see an "accept" string of "image/jpeg,text/html,application/xhtml+xml,application/xml,*/*"
+    And I should see an "accept language" string of "en-gb,en"
+    And I should see an "if-none-match" string of "xyzzy,quux"
+    And I should see an "if-match" string of "quux"
+    And I should see a "content-type" string of "text/plain"
+    And I should see body data of "woo yay"
 
-  Scenario: Have access to the HTTP request method
-    Given the request method of "GET"
+  Scenario: Querystrings should be ignored from request URIs
+    Given the request URI of "/request3?foo=bar"
     When I create a request object
-    Then I should see a request method of "GET"
+    Then I should see a request URI of "/request3"
 
-  Scenario: Have access to the HTTP request method
-    Given the request method of "post"
-    And the request data of "some data"
+  Scenario: Request content type contains encoding data
+    Given the request URI of "/request4"
+    And a "content-type" header of 'application/json; charset=UTF-8'
     When I create a request object
-    Then I should see a request method of "POST"
-    And I should see the request data "some data"
-    
-  Scenario: Have access to the HTTP request data
-    Given the request method of "PUT"
-    And the request data of "some data"
-    When I create a request object
-    Then I should see a request method of "PUT"
-    And I should see the request data "some data"
-    
-  Scenario: Have bare request URI content negotiated correctly
-    Given the request URI of "/requesttest/one/two"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two"
-    
-  Scenario: Have extension request URI content negotiated correctly
-    Given the request URI of "/requesttest/one/two.html"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two.html,/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two.html,/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two.html,/requesttest/one/two"
-    
-  Scenario: Have bare request URI with accept header content negotiated correctly
-    Given the request URI of "/requesttest/one/two"
-    And the accept header of "image/png;q=0.5,text/html"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.png,/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.png,/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two"
-    
-  Scenario: Have extension request URI with accept header content negotiated correctly
-    Given the request URI of "/requesttest/one/two.html"
-    And the accept header of "image/png;q=0.5,text/html"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.png.html,/requesttest/one/two.png,/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.png,/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two.html,/requesttest/one/two"
-    
-  Scenario: Have bare request URI with language accept header content negotiated correctly
-    Given the request URI of "/requesttest/one/two"
-    And the language accept header of "fr;q=0.5,en"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    
-  Scenario: Have extension request URI with language accept header content negotiated correctly
-    Given the request URI of "/requesttest/one/two.html"
-    And the language accept header of "fr;q=0.5,en"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two.html.en,/requesttest/one/two.html.fr,/requesttest/one/two.html,/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two.html,/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    
-  Scenario: Have bare request URI with accept and language header content negotiated correctly
-    Given the request URI of "/requesttest/one/two"
-    And the accept header of "image/png;q=0.5,text/html"
-    And the language accept header of "fr;q=0.5,en"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two.html.en,/requesttest/one/two.html.fr,/requesttest/one/two.html,/requesttest/one/two.png.en,/requesttest/one/two.png.fr,/requesttest/one/two.png,/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.png,/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    
-  Scenario: Have extension request URI with accept and language header content negotiated correctly
-    Given the request URI of "/requesttest/one/two.html"
-    And the accept header of "image/png;q=0.5,text/html"
-    And the language accept header of "fr;q=0.5,en"
-    When I create a request object
-    Then I should see a request URI of "/requesttest/one/two"
-    And I should see a negotiated URI of "/requesttest/one/two.html.en,/requesttest/one/two.html.fr,/requesttest/one/two.html,/requesttest/one/two.png.html,/requesttest/one/two.png.en,/requesttest/one/two.png.fr,/requesttest/one/two.png,/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    And I should see a format negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.png,/requesttest/one/two"
-    And I should see a language negotiated URI of "/requesttest/one/two.html,/requesttest/one/two.en,/requesttest/one/two.fr,/requesttest/one/two"
-    
-  Scenario: Have if match header
-    Given an if match header of '123123'
-    When I create a request object
-    Then I should see an if match header of "123123"
-    And if match should match "123123"
-    
-  Scenario: Have if match header in quotes
-    Given an if match header of '"123123"'
-    When I create a request object
-    Then I should see an if match header of "123123"
-    And if match should match "123123"
-    
-  Scenario: Have multiple if match headers in quotes
-    Given an if match header of '"123123","456456"'
-    When I create a request object
-    Then I should see an if match header of "123123,456456"
-    And if match should match "123123"
-    And if match should match "456456"
-    
-  Scenario: Have star if match header
-    Given an if match header of '*'
-    When I create a request object
-    Then I should see an if match header of "*"
-    And if match should match "123123"
-    And if match should match "123456"
-    
-  Scenario: Have if none match header
-    Given an if none match header of '123123'
-    When I create a request object
-    Then I should see an if none match header of "123123"
-    And if none match should match "123123"
-    
-  Scenario: Have multiple if none match headers in quotes
-    Given an if none match header of '"123123","456456"'
-    When I create a request object
-    Then I should see an if none match header of "123123,456456"
-    And if none match should match "123123"
-    And if none match should match "456456"
-  
-  Scenario: Have star if none match header
-    Given an if none match header of '*'
-    When I create a request object
-    Then I should see an if none match header of "*"
-    And if none match should not match "123123"
-    And if none match should not match "123456"
-    
-  Scenario: Load a non-existent resource
-    Given the request URI of "/three"
-    When I create a request object
-    Then I should fail to load the resource
-    
-  Scenario: Load a resource
-    Given the request URI of "/requesttest/one"
-    When I create a request object
-    And I load the resource
-    Then I should have a response of type "NewResource"
-    
-  Scenario: Load a child resource
-    Given the request URI of "/requesttest/one/two"
-    When I create a request object
-    And I load the resource
-    Then I should have a response of type "ChildResource"
-    
-  Scenario: Load a resource with a regex match URI
-    Given the request URI of "/requesttest/three/something/four"
-    When I create a request object
-    And I load the resource
-    Then I should have a response of type "NewResource"
-  
-  Scenario: Resource data loading
-    Given the request URI of "/requesttest/one/two"
-    When I create a request object
-    Then I should see resource "namespace" metadata of "Tonic\Tests"
-    And I should see resource "class" metadata of "ChildResource"
-    And I should see resource "priority" metadata of "0"
-    
-  Scenario: Mounting in a namespace to a URI
-    Given the request URI of "/foo/bar/requesttest/one"
-    And a mounting of "Tonic\Tests" to "/foo/bar"
-    When I create a request object
-    And I load the resource
-    Then I should have a response of type "NewResource"
+    Then I should see a "content-type" string of "application/json"
