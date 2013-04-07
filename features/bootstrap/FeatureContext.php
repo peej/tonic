@@ -493,5 +493,12 @@ class FeatureContext extends BehatContext
         if (!preg_match('/\['.$value.'\] '.$methodName.'/', (string)$this->resource)) throw new Exception;
     }
 
+    /**
+     * @Then /^the response should have the header "([^"]*)" with the value "([^"]*)"$/
+     */
+    public function theResponseShouldHaveTheHeaderWithTheValue($name, $value)
+    {
+        if ($this->response->headers[$name] != $value) throw new Exception('Response header '.$name.' does not equal '.$value);
+    }
 
 }

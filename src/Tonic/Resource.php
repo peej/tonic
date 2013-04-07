@@ -247,7 +247,7 @@ class Resource
      */
     protected function cache($length)
     {
-        $this->addResponseAction(function ($response) use ($length) {
+        $this->after(function ($response) use ($length) {
             if ($length == 0) {
                 $response->cacheControl = 'no-cache';
             } else {
