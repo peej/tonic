@@ -123,7 +123,7 @@ class Resource
         }
 
         if (!$methodName) {
-            throw new Exception;
+            throw new Exception('No method matches request method');
 
         } elseif (isset($methodPriorities[$methodName]['response'])) {
             $response = Response::create($methodPriorities[$methodName]['response']);

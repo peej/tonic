@@ -216,7 +216,7 @@ class FeatureContext extends BehatContext
         try {
             $this->resource = $this->app->getResource($this->request);
         } catch (Tonic\Exception $e) {
-            $this->exception = get_class($e);
+            $this->exception = $e;
         }
     }
 
@@ -253,9 +253,9 @@ class FeatureContext extends BehatContext
                 throw new Exception('Resource not loaded');
             }
         } catch (Tonic\Exception $e) {
-            $this->exception = get_class($e);
+            $this->exception = $e;
         } catch (ErrorException $e) {
-            $this->exception = get_class($e);
+            $this->exception = $e;
             $this->error = $e->getCode();
         }
         restore_error_handler();
@@ -326,7 +326,7 @@ class FeatureContext extends BehatContext
      */
     public function aShouldBeThrown($exception)
     {
-        if ($exception != $this->exception) throw new Exception($this->exception);
+        if ($exception != get_class($this->exception)) throw new Exception($this->exception->getMessage());
     }
 
     /**
