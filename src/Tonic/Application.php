@@ -271,10 +271,14 @@ class Application
         return $return;
     }
 
-    private function readMethodAnnotations($className)
+    private function readMethodAnnotations($className, $targetClass = null)
     {
         if (isset($this->resources[$className]) && isset($this->resources[$className]['methods'])) {
             return $this->resources[$className]['methods'];
+        }
+
+        if (!$targetClass) {
+            $targetClass = $className;
         }
 
         $metadata = array();
@@ -289,15 +293,26 @@ class Application
                 $docComment = $this->parseDocComment($methodReflector->getDocComment());
 
                 foreach ($docComment as $annotationName => $value) {
-                    $methodName = substr($annotationName, 1);
-                    if (method_exists($className, $methodName)) {
+                    $annotationMethodName = substr($annotationName, 1);
+                    if (method_exists($targetClass, $annotationMethodName)) {
                         foreach ($value as $v) {
-                            $methodMetadata[$methodName][] = $v;
+                            $methodMetadata[$annotationMethodName][] = $v;
                         }
                     }
                 }
                 $metadata[$methodReflector->getName()] = $methodMetadata;
             }
+        }
+
+        // recurse through parent classes and merge in parent class metadata
+        $classReflector = new \ReflectionClass($className);
+        $parentReflector = $classReflector->getParentClass();
+        if ($parentReflector) {
+            $metadata = array_merge($metadata, $this->readMethodAnnotations($parentReflector->name, $targetClass));
+        }
+        $interfaces = $classReflector->getInterfaceNames();
+        foreach ($interfaces as $interface) {
+            $metadata = array_merge($metadata, $this->readMethodAnnotations($interface, $targetClass));
         }
 
         return $metadata;
