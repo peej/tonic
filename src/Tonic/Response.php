@@ -68,8 +68,10 @@ class Response
             $this->code = self::OK;
             $this->body = $code;
         }
-        foreach ($headers as $name => $value) {
-            $this->$name = $value;
+        if (is_array($headers)) {
+            foreach ($headers as $name => $value) {
+                $this->$name = $value;
+            }
         }
     }
 
