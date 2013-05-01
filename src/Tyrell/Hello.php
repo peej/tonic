@@ -36,6 +36,8 @@ class Hello extends Resource
     }
 
     /**
+     * Respond with hello in French.
+     *
      * @method GET
      * @lang fr
      * @param  str $name
@@ -47,7 +49,7 @@ class Hello extends Resource
     }
 
     /**
-     * The @priority annotation makes this method take priority over the above method.
+     * The @priority annotation makes this method take priority over {@link sayHello}.
      *
      * The custom @only annotation requires the matching class method to execute without
      * throwing an exception allowing the addition of an arbitary condition to this method.
@@ -63,6 +65,11 @@ class Hello extends Resource
     }
 
     /**
+     * The @priority annotation makes this method take priority over {@link sayHello}.
+     *
+     * The custom @only annotation requires the matching class method to execute without
+     * throwing an exception allowing the addition of an arbitary condition to this method.
+     *
      * @method GET
      * @priority 2
      * @only roy
