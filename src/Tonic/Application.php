@@ -87,7 +87,7 @@ class Application
             ) {
                 $this->resources[$className] = $this->readResourceAnnotations($className);
                 if ($uriSpace) {
-                    $this->resources[$className]['uri'][0] = '|^'.$uriSpace.substr($this->resources[$className]['uri'][0], 2);
+                    $this->resources[$className]['uri'][0] = $uriSpace.$this->resources[$className]['uri'][0];
                 }
                 $this->resources[$className]['methods'] = $this->readMethodAnnotations($className);
             }
@@ -106,7 +106,7 @@ class Application
             if ($metadata['namespace'][0] == $namespaceName) {
                 if (isset($metadata['uri'])) {
                     foreach ($metadata['uri'] as $index => $uri) {
-                        $this->resources[$className]['uri'][$index][0] = '|^'.$uriSpace.substr($uri[0], 2);
+                        $this->resources[$className]['uri'][$index][0] = $uriSpace.$uri[0];
                     }
                 }
             }
@@ -140,7 +140,7 @@ class Application
                         }
                     }
 
-                    return $this->baseUri.substr($path, 2, -2);
+                    return $this->baseUri.$path;
                 }
             }
         }
@@ -168,7 +168,7 @@ class Application
                     if (!is_array($uri)) {
                         $uri = array($uri);
                     }
-                    $uriRegex = $uri[0];
+                    $uriRegex = '|^'.$uri[0].'$|';
                     if (!isset($resourceMetadata['priority'])) {
                         $resourceMetadata['priority'] = 1;
                     }
@@ -267,7 +267,7 @@ class Application
             }
         }
 
-        $return[0] = '|^'.preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '([^/]+)', $return[0]).'$|';
+        $return[0] = preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '([^/]+)', $return[0]);
         return $return;
     }
 

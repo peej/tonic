@@ -51,7 +51,7 @@ class DescribeTonicApplication extends \PHPSpec\Context
     {
         $metadata = $this->app->getResourceMetadata('MyResource');
         $this->spec($metadata['class'])->should->be('\\MyResource');
-        $this->spec($metadata['uri'][0][0])->should->be('|^/foo/bar$|');
+        $this->spec($metadata['uri'][0][0])->should->be('/foo/bar');
         $this->spec($metadata['priority'][0])->should->be('10');
         $this->spec($metadata['namespace'][0])->should->be('myNamespace');
         $this->spec($metadata['methods']['myMethod']['method'][0][0])->should->be('GET');
@@ -66,7 +66,7 @@ class DescribeTonicApplication extends \PHPSpec\Context
     {
         $this->app->mount('myNamespace', '/baz');
         $metadata = $this->app->getResourceMetadata('MyResource');
-        $this->spec($metadata['uri'][0][0])->should->be('|^/baz/foo/bar$|');
+        $this->spec($metadata['uri'][0][0])->should->be('/baz/foo/bar');
     }
 
     public function ItShouldProduceTheUriToAGivenResource()

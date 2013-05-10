@@ -402,7 +402,7 @@ class FeatureContext extends BehatContext
         $this->options['cache']->save(array(
             $className => array(
                 'class' => $className,
-                'uri' => '|^'.$uri.'$|',
+                'uri' => $uri,
                 'methods' => array(
                     $methodName => array(
                         'method' => array(
@@ -429,7 +429,8 @@ class FeatureContext extends BehatContext
     public function fetchingTheUriForTheResourceShouldGet($className, $params, $url)
     {
         $params = explode(':', $params);
-        if ($this->app->uri($className, $params) != $url) throw new Exception;
+        if ($this->app->uri($className, $params) != $url)
+            throw new Exception($this->app->uri($className, $params).' != '.$url);
     }
 
     /**
@@ -452,7 +453,7 @@ class FeatureContext extends BehatContext
         $found = FALSE;
         $metadata = $this->app->getResourceMetadata($resourceName);
         foreach ($metadata['uri'] as $uri) {
-            if ($uri[0] == '|^'.$url.'$|') {
+            if ($uri[0] == $url) {
                 $found = TRUE;
                 break;
             }
