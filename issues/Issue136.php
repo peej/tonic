@@ -12,6 +12,12 @@ class Issue136Base extends Resource {
         return 'base';
     }
 
+    function callMeSuper() {
+        $this->after(function ($response) {
+            $response->body .= ' call me super!';
+        });
+    }
+
 }
 
 interface Issue136Interface {
@@ -27,11 +33,23 @@ interface Issue136Interface {
  */
 class Issue136 extends Issue136Base implements Issue136Interface {
 
+    /**
+     * @callMe
+     */
     function get()
     {
         return 'get';
     }
 
+    function callMe() {
+        $this->after(function ($response) {
+            $response->body .= ' call me maybe?';
+        });
+    }
+
+    /**
+     * @callMeSuper
+     */
     function post()
     {
         return 'post';

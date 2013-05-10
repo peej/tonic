@@ -308,11 +308,11 @@ class Application
         $classReflector = new \ReflectionClass($className);
         $parentReflector = $classReflector->getParentClass();
         if ($parentReflector) {
-            $metadata = array_merge($metadata, $this->readMethodAnnotations($parentReflector->name, $targetClass));
+            $metadata = array_merge_recursive($metadata, $this->readMethodAnnotations($parentReflector->name, $targetClass));
         }
         $interfaces = $classReflector->getInterfaceNames();
         foreach ($interfaces as $interface) {
-            $metadata = array_merge($metadata, $this->readMethodAnnotations($interface, $targetClass));
+            $metadata = array_merge_recursive($metadata, $this->readMethodAnnotations($interface, $targetClass));
         }
 
         return $metadata;

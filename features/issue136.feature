@@ -11,7 +11,7 @@ Feature: Issue 136
     And I create a request object
     And load the resource
     And execute the resource
-    Then response should be "get"
+    Then response should be "get call me maybe?"
 
   Scenario: Implementing an interface should inherit method annotations
     Given an issue "Issue136"
@@ -21,4 +21,4 @@ Feature: Issue 136
     And I create a request object
     And load the resource
     And execute the resource
-    Then response should be "post"
+    Then response should be "post call me super!"
