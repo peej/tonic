@@ -215,7 +215,7 @@ class Request
     {
         $accept = $acceptArray = array();
         foreach (explode(',', strtolower($acceptString)) as $part) {
-            $parts = explode(';q=', $part);
+            $parts = preg_split('/\s*;\s*q=/', $part);
             if (isset($parts) && isset($parts[1]) && $parts[1]) {
                 $num = $parts[1] * 10;
             } else {
