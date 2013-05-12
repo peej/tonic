@@ -12,11 +12,11 @@ class Resource
     private $currentMethodName;
     protected $before = array(), $after = array();
 
-    public function __construct(Application $app, Request $request, array $urlParams)
+    public function __construct(Application $app, Request $request)
     {
         $this->app = $app;
         $this->request = $request;
-        $this->params = $urlParams;
+        $this->params = $request->params;
     }
 
     /**

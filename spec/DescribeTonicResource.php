@@ -3,7 +3,7 @@
 require_once dirname(__FILE__).'/../src/Tonic/Autoloader.php';
 
 /**
- * @uri /baz/quux
+ * @uri /baz/:foo
  * @priority 10
  * @namespace myNamespace
  */
@@ -75,22 +75,19 @@ class DescribeTonicResource extends \PHPSpec\Context
         unset($_GET);
     }
 
-    private function createResource($request = NULL)
+    private function createResource($request)
     {
         $app = new Tonic\Application;
-        if (!$request) {
-            $request = new Tonic\Request(array(
-                'uri' => '/baz/quux'
-            ));
-        }
-        return new MyOtherResource($app, $request, array(
-            'foo' => 'bar'
-        ));
+        return new MyOtherResource($app, $request);
     }
 
     function itShouldExposeTheUriParameters()
     {
-        $resource = $this->createResource();
+        $request = new Tonic\Request(array(
+            'uri' => '/baz/bar',
+            'params' => array('foo' => 'bar')
+        ));
+        $resource = $this->createResource($request);
         $this->spec(isset($resource->foo))->should->be(true);
         $this->spec($resource->foo)->should->be('bar');
         $this->spec(isset($resource->baz))->should->be(false);

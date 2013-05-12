@@ -8,6 +8,7 @@ namespace Tonic;
 class Request
 {
     public $uri;
+    public $params = array();
     public $method;
     public $contentType;
     public $data;
@@ -55,6 +56,7 @@ class Request
         }
 
         $this->uri = $this->getURIFromEnvironment($options);
+        $this->params = $this->getOption($options, 'params', null, array());
         $this->method = $this->getMethod($options);
 
         $this->contentType = $this->getContentType($options);

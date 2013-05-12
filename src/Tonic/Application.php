@@ -193,7 +193,7 @@ class Application
             if (isset($matchedResource[0]['filename']) && is_readable($matchedResource[0]['filename'])) {
                 require_once($matchedResource[0]['filename']);
             }
-
+            $request->params = $matchedResource[1];
             return new $matchedResource[0]['class']($this, $request, $matchedResource[1]);
         } else {
             throw new NotFoundException(sprintf('Resource matching URI "%s" not found', $request->uri));
