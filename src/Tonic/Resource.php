@@ -42,7 +42,7 @@ class Resource
     /**
      * Get the method name of the best matching resource method.
      *
-     * @param str[] $resourceMetadata
+     * @param  str[] $resourceMetadata
      * @return str
      */
     private function calculateMethodPriorities($resourceMetadata)
@@ -100,6 +100,11 @@ class Resource
     }
 
     /**
+     * Run resource setup actions before executing the matched resource method.
+     */
+    public function setup() {}
+
+    /**
      * Execute the resource, that is, find the correct resource method to call
      * based upon the request and then call it.
      *
@@ -107,6 +112,7 @@ class Resource
      */
     public function exec()
     {
+        $this->setup();
 
         // get the annotation metadata for this resource
         $resourceMetadata = $this->app->getResourceMetadata($this);
@@ -222,6 +228,7 @@ class Resource
             $this->after(function ($response) use ($mimetype) {
                 $response->contentType = $mimetype;
             });
+
             return count($this->request->accept) - $pos;
         }
     }
