@@ -18,6 +18,15 @@ class Issue136Base extends Resource {
         });
     }
 
+    /**
+     * @method OTHERTHING
+     */
+    function override()
+    {
+        return 'base';
+    }
+
+
 }
 
 interface Issue136Interface {
@@ -53,6 +62,15 @@ class Issue136 extends Issue136Base implements Issue136Interface {
     function post()
     {
         return 'post';
+    }
+
+    /**
+     * @method PUT
+     * @method WOOT
+     */
+    function override()
+    {
+        return 'override';
     }
 
 }
