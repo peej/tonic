@@ -15,15 +15,14 @@
     },
     "require-dev": {
         "phpspec/phpspec": "1.*",
-        "behat/behat": "2.*"
+        "behat/behat": "2.*",
+        "peej/phpdoctor": "dev-master"
     },
     "suggest": {
         "pimple/pimple": "A simple dependancy injection container to handle your services",
         "smarty/smarty": "PHP templating engine for building response representations"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
+    "bin": ["web/dispatch.php"],
     "autoload": {
         "psr-0": {
             "Tonic": "src/"
