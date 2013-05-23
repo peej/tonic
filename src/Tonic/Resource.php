@@ -82,7 +82,6 @@ class Resource
                         }
                         if (!$success) {
                             $methodPriorities[$key]['exception'] = $error;
-                            $methodPriorities[$key]['value'] = -1;
                             break;
                         }
                     } else {
@@ -180,6 +179,7 @@ class Resource
     {
         if (strtolower($this->request->method) != strtolower($method))
             throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
+        return true;
     }
 
     /**
@@ -200,6 +200,7 @@ class Resource
         if (strtolower($this->request->contentType) != strtolower($mimetype)) {
             throw new UnsupportedMediaTypeException('No matching method for content type "'.$this->request->contentType.'"');
         }
+        return true;
     }
 
     /**
@@ -281,10 +282,9 @@ class Resource
             $methods .= "\n\t".'[';
             if (isset($priorities[$methodName])) {
                 if (isset($priorities[$methodName]['exception'])) {
-                    $methods .= get_class($priorities[$methodName]['exception']);
-                } else {
-                    $methods .= $priorities[$methodName]['value'];
+                    $methods .= get_class($priorities[$methodName]['exception']).' ';
                 }
+                $methods .= $priorities[$methodName]['value'];
             } else {
                 $methods .= '-';
             }
