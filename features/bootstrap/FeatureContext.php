@@ -108,7 +108,8 @@ class FeatureContext extends BehatContext
             'if-match' => 'HTTP_IF_MATCH',
             'content-type' => 'CONTENT_TYPE',
             'auth user' => 'PHP_AUTH_USER',
-            'auth password' => 'PHP_AUTH_PW'
+            'auth password' => 'PHP_AUTH_PW',
+            'x-authentication' => 'HTTP_X_AUTHENTICATION'
         );
         $_SERVER[$headerMapping[$header]] = $value;
     }
