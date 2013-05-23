@@ -176,6 +176,32 @@ By using the @priority annotation with a number, of all the matching resources,
 the one with the highest postfixed number will be used.
 
 
+Request object
+--------------
+
+Resource methods have access to the incoming HTTP request via the Request object.
+
+The Request object exposes all elements of the request as public properties, including
+the HTTP method, request data and content type.
+
+Request headers are accessable via public properties named afer a camelcasing of the
+headers name.
+
+    /**
+     * @uri /example
+     */
+    class ExampleResource extends Tonic\Resource {
+
+        /**
+         * @method GET
+         */
+        function exampleMethod() {
+            echo $this->request->userAgent;
+        }
+    }
+
+
+
 Mount points
 ------------
 

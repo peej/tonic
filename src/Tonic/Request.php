@@ -95,6 +95,16 @@ class Request
         }
     }
 
+    /**
+     * Magic PHP method to retrieve a HTTP request header.
+     *
+     * For example, to retrieve the content-type header, camelcase the header name:
+     *
+     *   $request->userAgent
+     *
+     * @param str name
+     * @return str
+     */
     public function __get($name)
     {
         return $this->getHeader($name);
