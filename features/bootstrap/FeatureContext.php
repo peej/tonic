@@ -268,7 +268,7 @@ class FeatureContext extends BehatContext
     public function responseShouldBe($responseString)
     {
         if (!$this->response) throw new Exception('Response not loaded due to '.$this->exception);
-        if ($this->response->body != $responseString) throw new Exception($this->response->body);
+        if ($this->response->body != $responseString) throw new Exception('The response body is: "'.$this->response->body.'"');
     }
 
     /**

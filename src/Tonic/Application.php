@@ -271,6 +271,23 @@ class Application
         return $return;
     }
 
+    private function mergeMetadata($array1, $array2) {
+        foreach ($array2 as $method => $metadata) {
+            foreach ($metadata as $annotation => $values) {
+                foreach ($values as $value) {
+                    if (isset($array1[$method][$annotation])) {
+                        if (!in_array($value, $array1[$method][$annotation])) {
+                            $array1[$method][$annotation][] = $value;
+                        }
+                    } else {
+                        $array1[$method][$annotation] = array($value);
+                    }
+                }
+            }
+        }
+        return $array1;
+    }
+
     private function readMethodAnnotations($className, $targetClass = null)
     {
         if (isset($this->resources[$className]) && isset($this->resources[$className]['methods'])) {
@@ -308,11 +325,11 @@ class Application
         $classReflector = new \ReflectionClass($className);
         $parentReflector = $classReflector->getParentClass();
         if ($parentReflector) {
-            $metadata = array_merge_recursive($metadata, $this->readMethodAnnotations($parentReflector->name, $targetClass));
+            $metadata = $this->mergeMetadata($metadata, $this->readMethodAnnotations($parentReflector->name, $targetClass));
         }
         $interfaces = $classReflector->getInterfaceNames();
         foreach ($interfaces as $interface) {
-            $metadata = array_merge_recursive($metadata, $this->readMethodAnnotations($interface, $targetClass));
+            $metadata = $this->mergeMetadata($metadata, $this->readMethodAnnotations($interface, $targetClass));
         }
 
         return $metadata;
