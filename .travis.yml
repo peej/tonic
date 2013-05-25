@@ -4,7 +4,7 @@ php:
   - 5.4
 before_script:
   - mkdir ~/.composer
-  -> echo '{ "config": { "github-oauth": { "github.com": "'$GITHUB_TOKEN'" } } }' > ~/.composer/config.json
+  - 'echo \'{ "config": { "github-oauth": { "github.com": "\'$GITHUB_TOKEN\'" } } }\' > ~/.composer/config.json'
   - composer install --dev
 script:
   - php vendor/behat/behat/bin/behat
