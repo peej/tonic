@@ -11,4 +11,4 @@ Feature: Issue 147
     And I create a request object
     And load the resource
     And execute the resource
-    Then response should be "1"
+    Then response should be "1bar"

@@ -21,7 +21,7 @@ class Issue147Foundation extends Resource {
      * @otherthing foo
      */
     public function tother() {
-        return (string)$this->thing;
+        return (string)$this->thing.$this->otherthing;
     }
 
 }
