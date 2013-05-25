@@ -2,13 +2,12 @@ language: php
 php:
   - 5.3
   - 5.4
-before_script:
+before_install:
   - mkdir -p ~/.composer
   - cp .travis.composer.config.json ~/.composer/config.json
-before_install:
+  - sh -c "if $TRAVIS_SECURE_ENV_VARS; then php composer.phar config github-oauth.github.com $GITHUB_TOKEN; fi"
   - composer install --dev
 script:
-  - sh -c "if $TRAVIS_SECURE_ENV_VARS; then php composer.phar config github-oauth.github.com $GITHUB_TOKEN; fi"
   - php vendor/behat/behat/bin/behat
   - php vendor/phpspec/phpspec/scripts/phpspec.php spec
 env:
