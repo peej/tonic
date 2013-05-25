@@ -2,13 +2,9 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
 before_script:
-  - mkdir ~/.composer
-  - 'echo \'{ "config": { "github-oauth": { "github.com": "\'$GITHUB_TOKEN\'" } } }\' > ~/.composer/config.json'
-  - composer install --dev
+  - composer install --dev --prefer-source
 script:
   - php vendor/behat/behat/bin/behat
   - php vendor/phpspec/phpspec/scripts/phpspec.php spec
-env:
-  global:
-    - secure: "pQf1U0xajr2rUR5Se1PgI+tRJApJzeiFppCmVEmcWCN+fGtvz+Zfb/Sh9C2b\nfvGILtN50U5VIw5oXOXWp0AiMc1jPSS0dYgx4W3WY5aLX4ewFYvBEhcB7s7/\nm7S3oY541NRk0i/9RKZ/Nvm2SMlauh5k83jZnQC1i5tvNy0PEig="
