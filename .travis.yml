@@ -2,7 +2,7 @@ language: php
 php:
   - 5.3
   - 5.4
-before_install:
+before_script:
   - mkdir -p ~/.composer
   - cp .travis.composer.config.json ~/.composer/config.json
   - sh -c "if $TRAVIS_SECURE_ENV_VARS; then php composer.phar config github-oauth.github.com $GITHUB_TOKEN; fi"
