@@ -188,7 +188,7 @@ Feature: HTTP resource object
     When I create an application object
     And I create a request object
     And load the resource
-    Then the method priority for "test" should be "0"
-    And the method priority for "test2" should be "1"
-    And the method priority for "test3" should be "0"
-    And the method priority for "test4" should be "10"
+    Then the method priority for "test" should be "1"
+    And the method priority for "test2" should be "2"
+    And the method priority for "test3" should be "1"
+    And the method priority for "test4" should be "11"

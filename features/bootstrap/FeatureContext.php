@@ -108,7 +108,8 @@ class FeatureContext extends BehatContext
             'if-match' => 'HTTP_IF_MATCH',
             'content-type' => 'CONTENT_TYPE',
             'auth user' => 'PHP_AUTH_USER',
-            'auth password' => 'PHP_AUTH_PW'
+            'auth password' => 'PHP_AUTH_PW',
+            'x-authentication' => 'HTTP_X_AUTHENTICATION'
         );
         $_SERVER[$headerMapping[$header]] = $value;
     }
@@ -267,7 +268,7 @@ class FeatureContext extends BehatContext
     public function responseShouldBe($responseString)
     {
         if (!$this->response) throw new Exception('Response not loaded due to '.$this->exception);
-        if ($this->response->body != $responseString) throw new Exception($this->response->body);
+        if ($this->response->body != $responseString) throw new Exception('The response body is: "'.$this->response->body.'"');
     }
 
     /**
@@ -491,7 +492,11 @@ class FeatureContext extends BehatContext
      */
     public function theMethodPriorityForShouldBe($methodName, $value)
     {
-        if (!preg_match('/\['.$value.'\] '.$methodName.'/', (string)$this->resource)) throw new Exception;
+        preg_match('/\[([0-9-]+)\] '.$methodName.'/', (string)$this->resource, $matches);
+        if (!$matches)
+            throw new Exception('"'.$methodName.'" not found');
+        if ($matches[1] != $value)
+            throw new Exception('"'.$methodName.'" has the priortiy of '.$matches[1]);
     }
 
     /**
@@ -501,5 +506,14 @@ class FeatureContext extends BehatContext
     {
         if ($this->response->headers[$name] != $value) throw new Exception('Response header '.$name.' does not equal '.$value);
     }
+
+    /**
+     * @Then /^output the "([^"]*)"$/
+     */
+    public function outputThe($thing)
+    {
+        echo $this->$thing;
+    }
+
 
 }

@@ -41,24 +41,62 @@ How to get started
 The best place to get started is to get the hello world example running on your
 system, to do this you will need a web server running PHP5.3+.
 
-To bootstrap Tonic, include the src/Tonic/Autoloader.php file and create an instance
-of Tonic\Application and pass it's getResource() method a Tonic\Request instance.
-After you have defined your resource classes, load the matching resource, execute it,
-and output the response.
 
-    require_once '../src/Tonic/Autoloader.php';
+Installation
+------------
 
-    $app = new Tonic\Application();
+The easiest way to install Tonic is via [Composer](http://getcomposer.org), if you
+are not using or familiar with Composer I recommend you go read up on it.
+
+Add Tonic to your composer.json file and run composer install/update:
+
+    #composer.json
+    {
+        "require": {
+            "peej/tonic": "3.*"
+        }
+    }
+
+    $ curl -sS https://getcomposer.org/installer | php
+    $ php composer.phar install
+
+Alternatively you can download Tonic from Github and manually place it within your
+project.
+
+
+Bootstrapping
+-------------
+
+To bootstrap Tonic, use the provided web/dispatch.php script and configure your Web
+server to push all requests to it via the provided .htaccess file.
+
+For development purposes you can use PHP's built in Web server by running the following
+command:
+
+    $ php -S 127.0.0.1:8080 vendor/bin/dispatch.php
+
+or:
+
+    $ php -S 127.0.0.1:8080 web/dispatch.php
+
+Once you need more, you can write your own dispatcher with your own custom behaviour.
+
+The basic premise is to create an instance of Tonic\Application and pass it's
+getResource() method a Tonic\Request instance. Then an incoming request will match
+and load one of your resource classes, execute it, and output the response.
+
+A very basic minimal dispatcher looks something like this:
+
+    require_once '../vendor/autoload.php';
+
+    $app = new Tonic\Application(array(
+        'load' => 'example.php'
+    ));
     $request = new Tonic\Request();
-
-    require_once 'example.php';
 
     $resource = $app->getResource($request);
     $response = $resource->exec();
     $response->output();
-
-Finally you need to route all incoming requests to this script. Have a look in the
-web directory for an example to get you going.
 
 
 Features
@@ -138,6 +176,32 @@ By using the @priority annotation with a number, of all the matching resources,
 the one with the highest postfixed number will be used.
 
 
+Request object
+--------------
+
+Resource methods have access to the incoming HTTP request via the Request object.
+
+The Request object exposes all elements of the request as public properties, including
+the HTTP method, request data and content type.
+
+Request headers are accessable via public properties named afer a camelcasing of the
+headers name.
+
+    /**
+     * @uri /example
+     */
+    class ExampleResource extends Tonic\Resource {
+
+        /**
+         * @method GET
+         */
+        function exampleMethod() {
+            echo $this->request->userAgent;
+        }
+    }
+
+
+
 Mount points
 ------------
 
@@ -146,7 +210,7 @@ by providing a namespace name to URL-space mapping. Every resource within that
 namespace will in effect have the URL-space prefixed to their @uri annotation.
 
     $app = new Tonic\Application(array(
-        'mount' => array('namespaceName' => '/some/mounted/uri')
+        'mount' => array('myBlog' => '/blog')
     ));
 
 
@@ -274,23 +338,21 @@ resource, adjust your dispatcher.php as such:
 
     require_once '../src/Tonic/Autoloader.php';
     require_once '/path/to/Pimple.php';
+    
+    $app = new Tonic\Application();
 
     // set up the container
-    $container = new Pimple();
-    $container['dsn'] = 'mysql://user:pass@localhost/my_db';
-    $container['database'] = function ($c) {
+    $app->container = new Pimple();
+    $app->container['dsn'] = 'mysql://user:pass@localhost/my_db';
+    $app->container['database'] = function ($c) {
         return new DB($c['dsn']);
     };
-    $container['dataStore'] = function ($c) {
+    $app->container['dataStore'] = function ($c) {
         return new DataStore($c['database']);
     };
 
-    $app = new Tonic\Application();
     $request = new Tonic\Request();
     $resource = $app->getResource($request);
-
-    // make the container available to the resource before executing it
-    $resource->container = $container;
 
     $response = $resource->exec();
     $response->output();

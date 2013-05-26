@@ -22,3 +22,13 @@ Feature: Issue 136
     And load the resource
     And execute the resource
     Then response should be "post call me super!"
+
+  Scenario: Extending a parent class should inherit method annotations but override conflicts
+    Given an issue "Issue136"
+    And the request URI of "/issue136"
+    And the request method of "PUT"
+    When I create an application object
+    And I create a request object
+    And load the resource
+    And execute the resource
+    Then response should be "override"
