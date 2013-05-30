@@ -524,6 +524,36 @@ Need to secure a resource? Something like the following is a good pattern.
     }
     $response->output();
 
+If you want to secure a whole collection of resources and don't want to annotate them
+all, you can add the annotation to a parent class and it will be inherited to overridden
+child methods, or you can add the security logic to the resource's constructor so that
+all of its request methods are secured regardless of annotations.
+
+    /**
+     * @uri /secret
+     */
+    class SecureResource extends Tonic\Resource {
+
+        private $username = 'aUser';
+        private $password = 'aPassword';
+
+        function setup() {
+            if (
+                !isset($_SERVER['PHP_AUTH_USER']) || $_SERVER['PHP_AUTH_USER'] != $this->username ||
+                !isset($_SERVER['PHP_AUTH_PW']) || $_SERVER['PHP_AUTH_PW'] != $this->password
+            ) {
+                throw new Tonic\UnauthorizedException;
+            }
+        }
+
+        /**
+         * @method GET
+         */
+        function secret() {
+            return 'My secret';
+        }
+    }
+
 
 Response templating
 -------------------

@@ -38,7 +38,8 @@ class Welcome extends Resource
 <p><a href="hello/roy">Roy</a> - Say hello to Roy Batty</p>
 
 <h2>Simple HTTP authentication - src/Tyrell/Secret.php</h2>
-<p><a href="secret">Simple HTTP authentication example</a> - use aUser/aPassword to see the secret</p>
+<p><a href="secret">Secure a single resource method</a> - use aUser/aPassword to see the secret</p>
+<p><a href="secret2">Secure an entire resource</a> - use aUser2/aPassword2 to see the secret</p>
 
 <hr>
 <p>Make sure you read the <a href="https://github.com/peej/tonic/blob/master/README.markdown">README.markdown</a> file.</p>
