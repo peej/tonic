@@ -525,6 +525,48 @@ Need to secure a resource? Something like the following is a good pattern.
     $response->output();
 
 
+Response templating
+-------------------
+
+The use of a templating engine for generation of output is a popular way to separate
+views from application logic. You can easily create a method condition that adds an
+after filter to pass the response through a templating engine like Smarty or Twig.
+
+    /**
+     * @uri /templated
+     */
+    class Templated extends Tonic\Resource {
+
+        /**
+         * @method GET
+         * @template myView.html
+         */
+        function pretty() {
+            return new Tonic\Response(200, array(
+                'title' => 'All you pretty things',
+                'foo' => 'bar'
+            ));
+        }
+
+        function template($templateName) {
+            $this->after(function ($response) use ($templateName) {
+                $smarty = $this->app->smarty;
+                if (is_array($response->body)) {
+                    $smarty->assign($response->body);
+                }
+                $response->body = $smarty->fetch($templateName);
+            });
+        }
+    }
+
+    $app = new Tonic\Application();
+    $app->smarty = new Smarty\Smarty();
+    $request = new Tonic\Request();
+    $resource = $app->getResource($request);
+    $response = $resource->exec();
+    $response->output();
+
+
 Full example
 ------------
 
