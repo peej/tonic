@@ -67,6 +67,40 @@ class MyOtherResource extends Tonic\Resource {
 
 }
 
+/**
+ * @uri /quux
+ */
+class MyResourceWide extends Tonic\Resource {
+
+    protected function setup()
+    {
+        $this->before(function ($request) {
+            $request->foo = 'bar';
+        });
+        $this->after(function ($response) {
+            $response->baz = 'quux';
+        });
+    }
+
+    /**
+     * @method GET
+     * @provides something
+     */
+    function something()
+    {
+        return 'Something';
+    }
+
+    /**
+     * @method GET
+     * @provides otherthing
+     */
+    function otherthing()
+    {
+        return 'Otherthing';
+    }
+}
+
 class DescribeTonicResource extends \PHPSpec\Context
 {
 
@@ -151,6 +185,20 @@ class DescribeTonicResource extends \PHPSpec\Context
         $resource = $this->createResource($request);
         $response = $resource->exec();
         $this->spec($request->foo)->should->be('bar');
+        $this->spec($response->baz)->should->be('quux');
+    }
+
+    function itShouldExecuteTheResourceWideBeforeAndAfterConditions()
+    {
+        $request = new Tonic\Request(array(
+            'uri' => '/quux',
+            'contentType' => 'application/x-www-form-urlencoded'
+        ));
+        $app = new Tonic\Application;
+        $resource = new MyResourceWide($app, $request);
+        $response = $resource->exec();
+        $this->spec($request->foo)->should->be('bar');
+        $this->spec($response->body)->should->be('Something');
         $this->spec($response->baz)->should->be('quux');
     }
 

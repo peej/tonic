@@ -9,7 +9,7 @@ class Resource
 {
     protected $app, $request;
     public $params;
-    private $currentMethodName;
+    private $currentMethodName = '*';
     protected $before = array(), $after = array();
 
     public function __construct(Application $app, Request $request)
@@ -138,15 +138,19 @@ class Resource
             throw $methodPriorities[$methodName]['exception'];
 
         } else {
-            if (isset($this->before[$methodName])) {
-                foreach ($this->before[$methodName] as $action) {
-                    call_user_func($action, $this->request, $methodName);
+            foreach (array('*', $methodName) as $mn) {
+                if (isset($this->before[$mn])) {
+                    foreach ($this->before[$mn] as $action) {
+                        call_user_func($action, $this->request, $mn);
+                    }
                 }
             }
             $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
-            if (isset($this->after[$methodName])) {
-                foreach ($this->after[$methodName] as $action) {
-                    call_user_func($action, $response, $methodName);
+            foreach (array('*', $methodName) as $mn) {
+                if (isset($this->after[$mn])) {
+                    foreach ($this->after[$mn] as $action) {
+                        call_user_func($action, $response, $mn);
+                    }
                 }
             }
         }
