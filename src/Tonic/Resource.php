@@ -102,7 +102,7 @@ class Resource
     /**
      * Run resource setup actions before executing the matched resource method.
      */
-    public function setup() {}
+    protected function setup() {}
 
     /**
      * Execute the resource, that is, find the correct resource method to call
