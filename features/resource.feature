@@ -192,3 +192,45 @@ Feature: HTTP resource object
     And the method priority for "test2" should be "2"
     And the method priority for "test3" should be "1"
     And the method priority for "test4" should be "11"
+
+  Scenario: Conditions that throw exceptions should still generate the expected priority
+    Given a class definition:
+      """
+      /**
+       * @uri /resource9
+       */
+      class Resource9 extends Tonic\Resource {
+        /**
+         * @method get
+         * @foo
+         */
+        function test() {}
+        function foo() {
+          throw new Tonic\NotFoundException;
+        }
+        /**
+         * @method get
+         * @bar
+         */
+        function test2() {}
+        function bar() {
+          throw new Tonic\UnauthorizedException;
+        }
+        /**
+         * @method get
+         * @baz
+         */
+        function test3() {}
+        function baz() {
+          throw new Tonic\ConditionException;
+        }
+      }
+      """
+    And the request URI of "/resource9"
+    And the request method of "GET"
+    When I create an application object
+    And I create a request object
+    And load the resource
+    Then the method priority for "test" should be "1"
+    And the method priority for "test2" should be "1"
+    And the method priority for "test3" should be "-"

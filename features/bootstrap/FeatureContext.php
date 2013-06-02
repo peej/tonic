@@ -492,7 +492,7 @@ class FeatureContext extends BehatContext
      */
     public function theMethodPriorityForShouldBe($methodName, $value)
     {
-        preg_match('/\[([0-9-]+)\] '.$methodName.'/', (string)$this->resource, $matches);
+        preg_match('/[\[ ]([0-9-]+)\] '.$methodName.' /', (string)$this->resource, $matches);
         if (!$matches)
             throw new Exception('"'.$methodName.'" not found');
         if ($matches[1] != $value)

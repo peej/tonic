@@ -81,7 +81,6 @@ class Resource
                             }
                         }
                         if (!$success) {
-                            $methodPriorities[$key]['value']--;
                             $methodPriorities[$key]['exception'] = $error;
                             break;
                         }

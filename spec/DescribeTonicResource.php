@@ -57,6 +57,7 @@ class MyOtherResource extends Tonic\Resource {
     function hasQuerystring($name)
     {
         if (!isset($_GET[$name])) throw new Tonic\ConditionException;
+        return true;
     }
 
     function parameterCondition($param1, $param2)
