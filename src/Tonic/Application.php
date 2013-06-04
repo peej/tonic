@@ -194,6 +194,7 @@ class Application
                 require_once($matchedResource[0]['filename']);
             }
             $request->params = $matchedResource[1];
+
             return new $matchedResource[0]['class']($this, $request, $matchedResource[1]);
         } else {
             throw new NotFoundException(sprintf('Resource matching URI "%s" not found', $request->uri));
@@ -268,10 +269,12 @@ class Application
         }
 
         $return[0] = preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '([^/]+)', $return[0]);
+
         return $return;
     }
 
-    private function mergeMetadata($array1, $array2) {
+    private function mergeMetadata($array1, $array2)
+    {
         foreach ($array2 as $method => $metadata) {
             foreach ($metadata as $annotation => $values) {
                 foreach ($values as $value) {
@@ -285,6 +288,7 @@ class Application
                 }
             }
         }
+
         return $array1;
     }
 

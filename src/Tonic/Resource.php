@@ -169,7 +169,7 @@ class Resource
     /**
      * Add a function to execute on the request before the resource method is called
      *
-     * @param callable $action
+     * @param callable $action The function to execute
      */
     protected function before($action)
     {
@@ -181,7 +181,7 @@ class Resource
     /**
      * Add a function to execute on the response after the resource method is called
      *
-     * @param callable $action
+     * @param callable $action The function to execute
      */
     protected function after($action)
     {
@@ -198,6 +198,7 @@ class Resource
     {
         if (strtolower($this->request->method) != strtolower($method))
             throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
+
         return true;
     }
 
@@ -219,6 +220,7 @@ class Resource
         if (strtolower($this->request->contentType) != strtolower($mimetype)) {
             throw new UnsupportedMediaTypeException('No matching method for content type "'.$this->request->contentType.'"');
         }
+
         return true;
     }
 
