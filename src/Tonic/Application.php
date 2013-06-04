@@ -300,10 +300,12 @@ class Application
 
         $metadata = array();
 
-        foreach (get_class_methods($className) as $methodName) {
+        $methodNames = get_class_methods($className);
+        $methodNames[] = 'setup';
+        foreach ($methodNames as $methodName) {
 
             $methodReflector = new \ReflectionMethod($className, $methodName);
-            if ($methodReflector->isPublic() && $methodReflector->getDeclaringClass()->name != 'Tonic\Resource') {
+            if (($methodReflector->isPublic() || $methodName == 'setup') && $methodReflector->getDeclaringClass()->name != 'Tonic\Resource') {
 
                 $methodMetadata = array();
 

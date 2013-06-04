@@ -51,45 +51,51 @@ class Resource
 
         if (isset($resourceMetadata['methods'])) {
             foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
-                foreach ($methodMetadata as $conditionName => $conditions) { // process each method condition
-                    if (method_exists($this, $conditionName)) {
-                        $this->currentMethodName = $key;
-                        $success = false;
-                        foreach ($conditions as $params) {
-                            if (!isset($methodPriorities[$key]['value'])) {
-                                $methodPriorities[$key]['value'] = 0;
-                            }
-                            try {
-                                if (is_array($params)) {
-                                    $condition = call_user_func_array(array($this, $conditionName), $params);
-                                } else {
-                                    $condition = call_user_func(array($this, $conditionName), $params);
+                if ($key != 'setup') {
+                    $mmd = $methodMetadata;
+                    if (isset($resourceMetadata['methods']['setup'])) {
+                        $mmd += $resourceMetadata['methods']['setup'];
+                    }
+                    foreach ($mmd as $conditionName => $conditions) { // process each method condition
+                        if (method_exists($this, $conditionName)) {
+                            $this->currentMethodName = $key;
+                            $success = false;
+                            foreach ($conditions as $params) {
+                                if (!isset($methodPriorities[$key]['value'])) {
+                                    $methodPriorities[$key]['value'] = 0;
                                 }
-                                if ($condition === true) $condition = 1;
-                                if (is_numeric($condition)) {
-                                    $methodPriorities[$key]['value'] += $condition;
-                                } elseif ($condition) {
-                                    $methodPriorities[$key]['value']++;
-                                    $methodPriorities[$key]['response'] = $condition;
+                                try {
+                                    if (is_array($params)) {
+                                        $condition = call_user_func_array(array($this, $conditionName), $params);
+                                    } else {
+                                        $condition = call_user_func(array($this, $conditionName), $params);
+                                    }
+                                    if ($condition === true) $condition = 1;
+                                    if (is_numeric($condition)) {
+                                        $methodPriorities[$key]['value'] += $condition;
+                                    } elseif ($condition) {
+                                        $methodPriorities[$key]['value']++;
+                                        $methodPriorities[$key]['response'] = $condition;
+                                    }
+                                    $success = true;
+                                } catch (ConditionException $e) {
+                                    unset($methodPriorities[$key]);
+                                    break 2;
+                                } catch (Exception $e) {
+                                    $error = $e;
                                 }
-                                $success = true;
-                            } catch (ConditionException $e) {
-                                unset($methodPriorities[$key]);
-                                break 2;
-                            } catch (Exception $e) {
-                                $error = $e;
                             }
+                            if (!$success) {
+                                $methodPriorities[$key]['exception'] = $error;
+                                break;
+                            }
+                        } else {
+                            throw new \Exception(sprintf(
+                                'Condition method "%s" not found in Resource class "%s"',
+                                $conditionName,
+                                get_class($this)
+                            ));
                         }
-                        if (!$success) {
-                            $methodPriorities[$key]['exception'] = $error;
-                            break;
-                        }
-                    } else {
-                        throw new \Exception(sprintf(
-                            'Condition method "%s" not found in Resource class "%s"',
-                            $conditionName,
-                            get_class($this)
-                        ));
                     }
                 }
             }
@@ -100,6 +106,9 @@ class Resource
 
     /**
      * Run resource setup actions before executing the matched resource method.
+     *
+     * Condition annotations applied to the setup() method will be applied to all
+     * resource methods within the class.
      */
     protected function setup() {}
 
@@ -290,21 +299,26 @@ class Resource
         } catch (Exception $e) {}
         $methods = '';
         foreach ($metadata['methods'] as $methodName => $method) {
-            $methods .= "\n\t".'[';
-            if (isset($priorities[$methodName])) {
-                if (isset($priorities[$methodName]['exception'])) {
-                    $methods .= get_class($priorities[$methodName]['exception']).' ';
+            if ($methodName != 'setup') {
+                $methods .= "\n\t".'[';
+                if (isset($priorities[$methodName])) {
+                    if (isset($priorities[$methodName]['exception'])) {
+                        $methods .= get_class($priorities[$methodName]['exception']).' ';
+                    }
+                    $methods .= $priorities[$methodName]['value'];
+                } else {
+                    $methods .= '-';
                 }
-                $methods .= $priorities[$methodName]['value'];
-            } else {
-                $methods .= '-';
-            }
-            $methods .= '] '.$methodName;
-            foreach ($method as $itemName => $items) {
-                foreach ($items as $item) {
-                    $methods .= ' '.$itemName;
-                    if ($item) {
-                        $methods .= '="'.join(', ', $item).'"';
+                $methods .= '] '.$methodName;
+                if (isset($metadata['methods']['setup'])) {
+                    $method += $metadata['methods']['setup'];
+                }
+                foreach ($method as $itemName => $items) {
+                    foreach ($items as $item) {
+                        $methods .= ' '.$itemName;
+                        if ($item) {
+                            $methods .= '="'.join(', ', $item).'"';
+                        }
                     }
                 }
             }
