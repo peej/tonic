@@ -47,7 +47,7 @@ class DescribeTonicApplication extends \PHPSpec\Context
         $this->spec($this->app->getResource($this->request))->should->beAnInstanceOf('MyResource');
     }
 
-    public function ItShouldGetMetadataAboutAResource()
+    public function itShouldGetMetadataAboutAResource()
     {
         $metadata = $this->app->getResourceMetadata('MyResource');
         $this->spec($metadata['class'])->should->be('\\MyResource');
@@ -62,14 +62,14 @@ class DescribeTonicApplication extends \PHPSpec\Context
         $this->spec($metadata['methods']['myMethod']['myCondition'])->shouldNot->beNull();
     }
 
-    public function ItShouldBeAbleToMountANamespaceToAUri()
+    public function itShouldBeAbleToMountANamespaceToAUri()
     {
         $this->app->mount('myNamespace', '/baz');
         $metadata = $this->app->getResourceMetadata('MyResource');
         $this->spec($metadata['uri'][0][0])->should->be('/baz/foo/bar');
     }
 
-    public function ItShouldProduceTheUriToAGivenResource()
+    public function itShouldProduceTheUriToAGivenResource()
     {
         $this->spec($this->app->uri('MyResource'))->should->be('/foo/bar');
     }
@@ -83,6 +83,15 @@ class DescribeTonicApplication extends \PHPSpec\Context
         $this->spec(function() use ($app, $request) {
             $app->getResource($request);
         })->should->throwException('Tonic\NotFoundException');
+    }
+
+    public function itShouldIncludeBaseUriInResourceUri()
+    {
+        $this->app = new Tonic\Application(array(
+            'baseUri' => '/baseUri'
+        ));
+        $metadata = $this->app->getResourceMetadata('MyResource');
+        $this->spec($metadata['uri'][0][0])->should->be('/baseUri/foo/bar');
     }
 
 }

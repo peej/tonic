@@ -86,8 +86,13 @@ class Application
                 is_subclass_of($className, 'Tonic\Resource')
             ) {
                 $this->resources[$className] = $this->readResourceAnnotations($className);
-                if ($uriSpace) {
-                    $this->resources[$className]['uri'][0] = $uriSpace.$this->resources[$className]['uri'][0];
+                if (isset($this->resources[$className]['uri'])) {
+                    foreach ($this->resources[$className]['uri'] as $k => $uri) {
+                        if ($uriSpace) {
+                            $this->resources[$className]['uri'][$k][0] = $uriSpace.$this->resources[$className]['uri'][$k][0];
+                        }
+                        $this->resources[$className]['uri'][$k][0] = $this->baseUri.$this->resources[$className]['uri'][$k][0];
+                    }
                 }
                 $this->resources[$className]['methods'] = $this->readMethodAnnotations($className);
             }
@@ -307,23 +312,25 @@ class Application
         $methodNames = get_class_methods($className);
         $methodNames[] = 'setup';
         foreach ($methodNames as $methodName) {
+            if (method_exists($className, $methodName)) {
 
-            $methodReflector = new \ReflectionMethod($className, $methodName);
-            if (($methodReflector->isPublic() || $methodName == 'setup') && $methodReflector->getDeclaringClass()->name != 'Tonic\Resource') {
+                $methodReflector = new \ReflectionMethod($className, $methodName);
+                if (($methodReflector->isPublic() || $methodName == 'setup') && $methodReflector->getDeclaringClass()->name != 'Tonic\Resource') {
 
-                $methodMetadata = array();
+                    $methodMetadata = array();
 
-                $docComment = $this->parseDocComment($methodReflector->getDocComment());
+                    $docComment = $this->parseDocComment($methodReflector->getDocComment());
 
-                foreach ($docComment as $annotationName => $value) {
-                    $annotationMethodName = substr($annotationName, 1);
-                    if (method_exists($targetClass, $annotationMethodName)) {
-                        foreach ($value as $v) {
-                            $methodMetadata[$annotationMethodName][] = $v;
+                    foreach ($docComment as $annotationName => $value) {
+                        $annotationMethodName = substr($annotationName, 1);
+                        if (method_exists($targetClass, $annotationMethodName)) {
+                            foreach ($value as $v) {
+                                $methodMetadata[$annotationMethodName][] = $v;
+                            }
                         }
                     }
+                    $metadata[$methodReflector->getName()] = $methodMetadata;
                 }
-                $metadata[$methodReflector->getName()] = $methodMetadata;
             }
         }
 
