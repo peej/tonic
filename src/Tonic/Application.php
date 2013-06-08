@@ -40,7 +40,9 @@ class Application
             if (isset($options['load'])) { // load given resource class files
                 $this->loadResourceFiles($options['load']);
             }
-            $this->loadResourceMetadata();
+
+            $this->loadResourceMetadata($this->baseUri);
+
             if ($cache) { // save metadata into annotation cache
                 $cache->save($this->resources);
             }
@@ -86,8 +88,10 @@ class Application
                 is_subclass_of($className, 'Tonic\Resource')
             ) {
                 $this->resources[$className] = $this->readResourceAnnotations($className);
-                if ($uriSpace) {
-                    $this->resources[$className]['uri'][0] = '|^'.$uriSpace.substr($this->resources[$className]['uri'][0], 2);
+                if ($uriSpace && isset($this->resources[$className]['uri'])) {
+                    foreach ($this->resources[$className]['uri'] as $idx => $uri){
+                        $this->resources[$className]['uri'][$idx] =  $uriSpace .   $uri;
+                    }
                 }
                 $this->resources[$className]['methods'] = $this->readMethodAnnotations($className);
             }
@@ -106,7 +110,7 @@ class Application
             if ($metadata['namespace'][0] == $namespaceName) {
                 if (isset($metadata['uri'])) {
                     foreach ($metadata['uri'] as $index => $uri) {
-                        $this->resources[$className]['uri'][$index][0] = '|^'.$uriSpace.substr($uri[0], 2);
+                        $this->resources[$className]['uri'][] = $uriSpace . $uri[0];
                     }
                 }
             }
@@ -178,7 +182,7 @@ class Application
                     if (
                         ($matchedResource == NULL || $matchedResource[0]['priority'] < $resourceMetadata['priority'])
                     &&
-                        preg_match($uriRegex, $request->uri, $params)
+                        preg_match('|^' . $uriRegex . '$|' , $request->uri, $params)
                     ) {
                         if (count($uri) > 1) { // has params within URI
                             $params = array_combine($uri, $params);
@@ -237,7 +241,7 @@ class Application
 
         if (isset($docComment['@uri'])) {
             foreach ($docComment['@uri'] as $uri) {
-                $metadata['uri'][] = $this->uriTemplateToRegex($uri);
+                $metadata['uri'][] = $this->uriTemplateToRegex($uri[0]);
             }
         }
         if (isset($docComment['@namespace'])) $metadata['namespace'] = $docComment['@namespace'][0];
@@ -253,21 +257,21 @@ class Application
      */
     private function uriTemplateToRegex($uri)
     {
-        preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri[0], $params, PREG_PATTERN_ORDER);
+        preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
         $return = $uri;
         if (isset($params[1])) {
             foreach ($params[1] as $index => $param) {
                 if (substr($param, 0, 1) == ':') {
-                    $return[] = substr($param, 1);
+                    $return = substr($param, 1);
                 } elseif (substr($param, 0, 1) == '{' && substr($param, -1, 1) == '}') {
-                    $return[] = substr($param, 1, -1);
+                    $return = substr($param, 1, -1);
                 } else {
-                    $return[] = $index;
+                    $return = $index;
                 }
             }
         }
 
-        $return[0] = '|^'.preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '([^/]+)', $return[0]).'$|';
+        $return  = preg_replace('#((?<!\?):[^(/]+|{[^0-9][^}]*})#', '([^/]+)', $uri);
         return $return;
     }
 
