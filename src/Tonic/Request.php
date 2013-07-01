@@ -197,7 +197,7 @@ class Request
         }
 
         // get mimetype
-        $parts = explode('/', rtrim($uri, '/'));
+        $parts = explode('/', $uri);
         $lastPart = array_pop($parts);
         $uri = join('/', $parts);
 
