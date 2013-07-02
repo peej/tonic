@@ -4,7 +4,7 @@
 require_once '../vendor/autoload.php';
 
 $config = array(
-    'load' => array('../src/*.php') // load resources
+    'load' => array('../src/ExampleResources/*.php') // load resources
 );
 
 $app = new Tonic\Application($config);
@@ -38,14 +38,14 @@ try {
     $response = $resource->exec();
 
 } catch (Tonic\NotFoundException $e) {
-    $response = new Tonic\Response(404, 'Not found');
+    $response = new Tonic\Response(404, $e->getMessage());
 
 } catch (Tonic\UnauthorizedException $e) {
-    $response = new Tonic\Response(401, 'Unauthorized');
+    $response = new Tonic\Response(401, $e->getMessage());
     $response->wwwAuthenticate = 'Basic realm="My Realm"';
 
 } catch (Tonic\Exception $e) {
-    $response = new Tonic\Response(500, 'Server error');
+    $response = new Tonic\Response($e->getCode(), $e->getMessage());
 }
 
 #$response->contentType = 'text/plain';

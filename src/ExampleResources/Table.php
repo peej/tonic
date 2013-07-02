@@ -1,4 +1,9 @@
 <?php
+namespace ExampleResources;
+
+use PDO;
+use Nocarrier\Hal;
+use Tonic\NotFoundException;
 
 /**
  *  @uri /:database/:table
@@ -12,7 +17,7 @@ class Table extends Base
 
         $statement = $db->query('SELECT * FROM '.$table.' LIMIT '.$page.',10;');
         if (!$statement) {
-            throw new Tonic\NotFoundException;
+            throw new NotFoundException;
         }
 
         $data = array();
@@ -56,7 +61,7 @@ class Table extends Base
         $page = $this->getPage();
         $data = $this->fetchTableData($database, $table, $page);
 
-        $hal = new Nocarrier\Hal('/tables/'.$table, $data);
+        $hal = new Hal('/tables/'.$table, $data);
 
         if ($page > 1) $hal->addLink('prev', '/'.$database.'/'.$table.'.hal?page='.($page - 1), 'Previous page');
         $hal->addLink('next', '/'.$database.'/'.$table.'.hal?page='.($page + 1), 'Next page');

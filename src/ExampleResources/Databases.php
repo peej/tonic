@@ -1,4 +1,8 @@
 <?php
+namespace ExampleResources;
+
+use PDO;
+use Nocarrier\Hal;
 
 /**
  *  @uri /
@@ -36,7 +40,7 @@ class Databases extends Base
      */
     function hal()
     {
-        $hal = new Nocarrier\Hal('/');
+        $hal = new Hal('/');
 
         $rel = $this->getRel('database');
 

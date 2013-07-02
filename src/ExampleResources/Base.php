@@ -1,6 +1,12 @@
 <?php
+namespace ExampleResources;
 
-class Base extends Tonic\Resource
+use Exception;
+use PDO;
+use Tonic\NotFoundException;
+use Tonic\Resource;
+
+class Base extends Resource
 {
 
     protected function getRel($name)
@@ -14,7 +20,7 @@ class Base extends Tonic\Resource
         try {
             return new PDO($dsn, $this->container['db_config']['username'], $this->container['db_config']['password']);
         } catch (Exception $e) {
-            throw new Tonic\NotFoundException;
+            throw new NotFoundException;
         }
     }
 

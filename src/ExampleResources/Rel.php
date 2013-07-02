@@ -1,9 +1,14 @@
 <?php
+namespace ExampleResources;
+
+use Exception;
+use Tonic\NotFoundException;
+use Tonic\Resource;
 
 /**
  *  @uri /rel/:name
  */
-class Rel extends Tonic\Resource
+class Rel extends Resource
 {
 
     /**
@@ -16,7 +21,7 @@ class Rel extends Tonic\Resource
         try {
             return $smarty->fetch('rel-'.$name.'.html');
         } catch (Exception $e) {
-            throw new Tonic\NotFoundException;
+            throw new NotFoundException;
         }
     }
 
