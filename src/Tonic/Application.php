@@ -8,11 +8,15 @@ namespace Tonic;
 class Application
 {
     /**
+     * The base of the URI of all resources in this Tonic Application.
+     * It should usually match the value of Apache's mod_rewrite RewriteBase.
+     */
+    public $baseUri = '';
+
+    /**
      * Application configuration options
      */
     private $options = array();
-
-    private $baseUri = '';
 
     /**
      * Metadata of the loaded resources
