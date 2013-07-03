@@ -515,5 +515,26 @@ class FeatureContext extends BehatContext
         echo $this->$thing;
     }
 
+    /**
+     * @Then /^the application has a resource for class "([^"]*)", URI "([^"]*)", and priority (\d+)$/
+     */
+    public function theApplicationHasAResourceForClassUriAndPriority($className, $uri, $priority)
+    {
+        if (!class_exists($className)) throw new Exception('Class ' . $className . ' does not exist');
+        $match =  '\\' . $className . ' ' . addslashes($uri) . ' ' . $priority;
+        if (strpos((string) $this->app, $match) === false) {
+            throw new Exception('Application does not have resource definition "' . $match . '"');
+        }
+    }
 
+    /**
+     * @Then /^the application does not have a resource for class "([^"]*)"$/
+     */
+    public function theApplicationDoesNotHaveAResourceForClass($className)
+    {
+        preg_match('/' . preg_quote('\\' . $className) . '/', (string) $this->app, $matches);
+        if ($matches) {
+            throw new Exception('Application has a resource for class "' . $className . '"');
+        }
+    }
 }
