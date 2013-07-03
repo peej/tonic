@@ -85,16 +85,17 @@ class Application
                 !isset($this->resources[$className]) &&
                 is_subclass_of($className, 'Tonic\Resource')
             ) {
-                $this->resources[$className] = $this->readResourceAnnotations($className);
-                if (isset($this->resources[$className]['uri'])) {
-                    foreach ($this->resources[$className]['uri'] as $k => $uri) {
+                $resource = $this->readResourceAnnotations($className);
+                if (isset($resource['uri'])) {
+                    foreach ($resource['uri'] as $k => $uri) {
                         if ($uriSpace) {
-                            $this->resources[$className]['uri'][$k][0] = $uriSpace.$this->resources[$className]['uri'][$k][0];
+                            $resource['uri'][$k][0] = $uriSpace . $resource['uri'][$k][0];
                         }
-                        $this->resources[$className]['uri'][$k][0] = $this->baseUri.$this->resources[$className]['uri'][$k][0];
+                        $resource['uri'][$k][0] = $this->baseUri . $resource['uri'][$k][0];
                     }
+                    $resource['methods'] = $this->readMethodAnnotations($className);
+                    $this->resources[$className] = $resource;
                 }
-                $this->resources[$className]['methods'] = $this->readMethodAnnotations($className);
             }
         }
     }
