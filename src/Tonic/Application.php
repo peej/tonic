@@ -46,6 +46,33 @@ class Application
                 $options['load'] = array($options['load']);
             }
 
+            // recursively search for resource class files in the given directories and queue them for loading
+            if(isset($options['loadDir']) && is_array($options['loadDir'])) {
+                foreach($options['loadDir'] as $dir) {
+                    if(is_array($dir)){
+                        $options['load'][] = rtrim($dir[0], '/').'/'.$dir[1];
+
+                        $dirIterator = new \RecursiveDirectoryIterator($dir[0], \RecursiveDirectoryIterator::SKIP_DOTS);
+                        $iterator = new \RecursiveIteratorIterator($dirIterator, \RecursiveIteratorIterator::SELF_FIRST);
+
+                        foreach ($iterator as $fileInfo)
+                        {
+                            if($fileInfo->isDir()) {
+                                $options['load'][] = $fileInfo->getPathname().'/'.$dir[1];
+                            }
+                        }
+                    }
+                    else {
+                        $dirIterator = new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
+                        $iterator = new \RecursiveIteratorIterator($dirIterator);
+                        foreach ($iterator as $fileInfo)
+                        {
+                            $options['load'][] = $fileInfo->getPathname();
+                        }
+                    }
+                }
+            }
+
             if (isset($options['load'])) { // load given resource class files
                 $this->loadResourceFiles($options['load']);
             }
