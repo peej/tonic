@@ -41,6 +41,11 @@ class Application
         if ($cache && $cache->isCached()) { // if we've been given a annotation cache, use it
             $this->resources = $cache->load();
         } else { // otherwise load from loaded resource files
+            // loadResourceFiles is expecting an array anyway so we straighten this out ASAP
+            if (isset($options['load']) && !is_array($options['load'])) {
+                $options['load'] = array($options['load']);
+            }
+
             if (isset($options['load'])) { // load given resource class files
                 $this->loadResourceFiles($options['load']);
             }
@@ -64,10 +69,6 @@ class Application
      */
     private function loadResourceFiles($filenames)
     {
-        if (!is_array($filenames)) {
-            $filenames = array($filenames);
-        }
-
         foreach ($filenames as $glob) {
             $globs = glob(str_replace('[', '[[]', $glob));
             if ($globs) {
