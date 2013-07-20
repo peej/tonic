@@ -15,6 +15,7 @@ $config = array(
     #'mount' => array('Tyrell' => '/nexus'), // mount in example resources at URL /nexus
     #'cache' => new Tonic\MetadataCacheFile('/tmp/tonic.cache') // use the metadata cache
     #'cache' => new Tonic\MetadataCacheAPC // use the metadata cache
+    #'cache' => new Tonic\MetadataCacheInclude('/tmp/tonic-cache.php') // use the metadata cache
 );
 
 $app = new Tonic\Application($config);
