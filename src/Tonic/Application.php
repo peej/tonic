@@ -190,10 +190,13 @@ class Application
                     &&
                         preg_match($uriRegex, $request->uri, $params)
                     ) {
-                        if (count($uri) > 1) { // has params within URI
-                            $params = array_combine($uri, $params);
-                        }
                         array_shift($params);
+                        if (count($uri) > 1) { // has params within URI
+                            array_shift($uri);
+                            foreach ($uri as $key => $name) {
+                                $params[$name] = $params[$key];
+                            }
+                        }
                         $matchedResource = array($resourceMetadata, $params);
                     }
                 }
