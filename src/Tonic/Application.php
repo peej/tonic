@@ -195,6 +195,7 @@ class Application
                             array_shift($uri);
                             foreach ($uri as $key => $name) {
                                 $params[$name] = $params[$key];
+                                unset($params[$key]);
                             }
                         }
                         $matchedResource = array($resourceMetadata, $params);
