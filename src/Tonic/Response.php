@@ -95,7 +95,7 @@ class Response
     }
 
     private function getHeaderName($name) {
-        return strtolower($name[0].preg_replace('/([A-Z])/', '-$1', substr($name, 1)));
+        return strtoupper($name[0]).preg_replace('/([A-Z][a-z])/', '-$1', substr($name, 1));
     }
 
     /**
@@ -116,7 +116,7 @@ class Response
      */
     public function __set($name, $value)
     {
-        $this->headers[strtolower(preg_replace('/([A-Z])/', '-$1', $this->getHeaderName($name)))] = $value;
+        $this->headers[$this->getHeaderName($name)] = $value;
     }
 
     /**

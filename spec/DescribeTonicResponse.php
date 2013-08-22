@@ -36,14 +36,21 @@ class DescribeTonicResponse extends \PHPSpec\Context
     {
         $response = new Tonic\Response;
         $response->myHeader = 'woo';
-        $this->spec($response->headers['my-header'])->should->be('woo');
+        $this->spec($response->headers['My-Header'])->should->be('woo');
     }
 
     function itShouldAllowHeadersToBeAddedWhichStartWithCaps()
     {
         $response = new Tonic\Response;
         $response->MyHeaderIsMuchlyCamelCase = 'woo';
-        $this->spec($response->headers['my-header-is-muchly-camel-case'])->should->be('woo');
+        $this->spec($response->headers['My-Header-Is-Muchly-Camel-Case'])->should->be('woo');
+    }
+
+    function itShouldAllowHeadersToBeAbbreviations()
+    {
+        $response = new Tonic\Response;
+        $response->FOO = 'woo';
+        $this->spec($response->headers['FOO'])->should->be('woo');
     }
 
 }

@@ -11,7 +11,7 @@ Feature: Issue 134
     And I create a request object
     And load the resource
     And execute the resource
-    Then the response should have the header "cache-control" with the value "no-cache"
+    Then the response should have the header "Cache-Control" with the value "no-cache"
 
   Scenario: Adding a cache life condition should set the correct cache header
     Given an issue "Issue134"
@@ -21,4 +21,4 @@ Feature: Issue 134
     And I create a request object
     And load the resource
     And execute the resource
-    Then the response should have the header "cache-control" with the value "max-age=10, must-revalidate"
+    Then the response should have the header "Cache-Control" with the value "max-age=10, must-revalidate"
