@@ -288,7 +288,7 @@ class Resource
                 $allowedMethods[] = strtoupper($method[0]);
             }
         }
-        return array_unique($allowedMethods);
+        return array_values(array_unique($allowedMethods));
     }
 
     public function __toString()
