@@ -40,6 +40,10 @@ try {
     $response = new Tonic\Response(401, $e->getMessage());
     $response->wwwAuthenticate = 'Basic realm="My Realm"';
 
+} catch (Tonic\MethodNotAllowedException $e) {
+    $response = new Tonic\Response($e->getCode(), $e->getMessage());
+    $response->allow = implode(', ', $resource->allowedMethods());
+
 } catch (Tonic\Exception $e) {
     $response = new Tonic\Response($e->getCode(), $e->getMessage());
 }
