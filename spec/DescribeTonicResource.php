@@ -66,6 +66,21 @@ class MyOtherResource extends Tonic\Resource {
         $this->param2 = $param2;
     }
 
+    /**
+     * @method PUT
+     */
+    function putThing()
+    {
+        return 'Putthing';
+    }
+
+    /**
+     * @method DELETE
+     */
+    function deleteThing()
+    {
+        return 'Deletething';
+    }
 }
 
 /**
@@ -241,6 +256,15 @@ class DescribeTonicResource extends \PHPSpec\Context
         });
         $this->spec($resource->param1)->should->be('param1');
         $this->spec($resource->param2)->should->be('param 2');
+    }
+
+    function itShouldKnowItsAllowedMethods()
+    {
+        $request = new Tonic\Request(array(
+            'uri' => '/baz/quux'
+        ));
+        $resource = $this->createResource($request);
+        $this->spec($resource->allowedMethods())->should->be(array('GET', 'PUT', 'DELETE'));
     }
 
 }

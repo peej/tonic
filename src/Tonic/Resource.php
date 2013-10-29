@@ -279,6 +279,18 @@ class Resource
         });
     }
 
+    public function allowedMethods()
+    {
+        $metadata = $this->app->getResourceMetadata($this);
+        $allowedMethods = array();
+        foreach ($metadata['methods'] as $method => $properties) {
+            foreach ($properties['method'] as $method) {
+                $allowedMethods[] = strtoupper($method[0]);
+            }
+        }
+        return array_unique($allowedMethods);
+    }
+
     public function __toString()
     {
         $params = array();
