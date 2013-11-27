@@ -7,15 +7,15 @@ namespace Tonic;
  */
 class Request
 {
-    public $uri;
-    public $params = array();
-    public $method;
-    public $contentType;
-    public $data;
-    public $accept = array();
-    public $acceptLanguage = array();
-    public $ifMatch = array();
-    public $ifNoneMatch = array();
+    private $uri;
+    private $params = array();
+    private $method;
+    private $contentType;
+    private $data;
+    private $accept = array();
+    private $acceptLanguage = array();
+    private $ifMatch = array();
+    private $ifNoneMatch = array();
 
     /**
      * Map of file/URI extensions to mimetypes
@@ -57,16 +57,16 @@ class Request
 
         $this->uri = $this->getURIFromEnvironment($options);
         $this->params = $this->getOption($options, 'params', null, array());
-        $this->method = $this->getMethod($options);
+        $this->method = $this->getMethodFromEnvironment($options);
 
-        $this->contentType = $this->getContentType($options);
-        $this->data = $this->getData($options);
+        $this->contentType = $this->getContentTypeFromEnvironment($options);
+        $this->data = $this->getDataFromEnvironment($options);
 
-        $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArray($this->getOption($options, 'accept'))));
-        $this->acceptLanguage = array_unique(array_merge($this->acceptLanguage, $this->getAcceptArray($this->getOption($options, 'acceptLanguage'))));
+        $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArrayFromEnvironment($this->getOption($options, 'accept'))));
+        $this->acceptLanguage = array_unique(array_merge($this->acceptLanguage, $this->getAcceptArrayFromEnvironment($this->getOption($options, 'acceptLanguage'))));
 
-        $this->ifMatch = $this->getMatchArray($this->getOption($options, 'ifMatch'));
-        $this->ifNoneMatch = $this->getMatchArray($this->getOption($options, 'ifNoneMatch'));
+        $this->ifMatch = $this->getMatchArrayFromEnvironment($this->getOption($options, 'ifMatch'));
+        $this->ifNoneMatch = $this->getMatchArrayFromEnvironment($this->getOption($options, 'ifNoneMatch'));
     }
 
     /**
@@ -109,7 +109,18 @@ class Request
      */
     public function __get($name)
     {
+        if (in_array($name, array_keys(get_class_vars(__CLASS__)))) {
+            return $this->{'get'.ucfirst($name)}();
+        }
         return $this->getHeader($name);
+    }
+
+    public function __call($name, $args)
+    {
+        if (substr($name, 0, 3) == 'get') {
+            $paramName = lcfirst(substr($name, 3));
+            return $this->$paramName;
+        }
     }
 
     private function getHeader($name)
@@ -124,7 +135,7 @@ class Request
         }
     }
 
-    private function getMethod($options)
+    private function getMethodFromEnvironment($options)
     {
         // get HTTP method from HTTP header
         $method = strtoupper($this->getHeader('requestMethod'));
@@ -158,7 +169,7 @@ class Request
         return $this->getOption($options, 'method', null, $method);
     }
 
-    private function getContentType($options)
+    private function getContentTypeFromEnvironment($options)
     {
         $contentType = $this->getOption($options, 'contentType');
         $parts = explode(';', $contentType);
@@ -166,7 +177,7 @@ class Request
         return $parts[0];
     }
 
-    private function getData($options)
+    private function getDataFromEnvironment($options)
     {
         if ($this->getOption($options, 'contentLength') > 0) {
             return file_get_contents('php://input');
@@ -223,7 +234,7 @@ class Request
      * @param  str   $acceptString
      * @return str[]
      */
-    private function getAcceptArray($acceptString)
+    private function getAcceptArrayFromEnvironment($acceptString)
     {
         $accept = $acceptArray = array();
         foreach (explode(',', strtolower($acceptString)) as $part) {
@@ -252,7 +263,7 @@ class Request
      * @param  str   $matchString
      * @return str[]
      */
-    private function getMatchArray($matchString)
+    private function getMatchArrayFromEnvironment($matchString)
     {
         $matches = array();
         foreach (explode(',', $matchString) as $etag) {
