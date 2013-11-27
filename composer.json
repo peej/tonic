@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "phpspec/phpspec": "1.*",
+        "phpspec/phpspec2": "dev-master",
         "behat/behat": "2.*",
         "peej/phpdoctor": "dev-master"
     },
