@@ -2,9 +2,9 @@
 
 namespace spec\Tonic;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
-class Request extends ObjectBehavior
+class RequestSpec extends ObjectBehavior
 {
     function letgo()
     {

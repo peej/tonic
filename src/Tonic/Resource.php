@@ -16,7 +16,7 @@ class Resource
     {
         $this->app = $app;
         $this->request = $request;
-        $this->params = $request->params;
+        $this->params = $request->getParams();
     }
 
     /**
@@ -49,53 +49,53 @@ class Resource
     {
         $methodPriorities = array();
 
-        if (isset($resourceMetadata['methods'])) {
-            foreach ($resourceMetadata['methods'] as $key => $methodMetadata) {
-                if ($key != 'setup') {
-                    $mmd = $methodMetadata;
-                    if (isset($resourceMetadata['methods']['setup'])) {
-                        $mmd += $resourceMetadata['methods']['setup'];
-                    }
-                    foreach ($mmd as $conditionName => $conditions) { // process each method condition
-                        if (method_exists($this, $conditionName)) {
-                            $this->currentMethodName = $key;
-                            $success = false;
-                            foreach ($conditions as $params) {
-                                if (!isset($methodPriorities[$key]['value'])) {
-                                    $methodPriorities[$key]['value'] = 0;
-                                }
-                                try {
-                                    if (is_array($params)) {
-                                        $condition = call_user_func_array(array($this, $conditionName), $params);
-                                    } else {
-                                        $condition = call_user_func(array($this, $conditionName), $params);
-                                    }
-                                    if ($condition === true) $condition = 1;
-                                    if (is_numeric($condition)) {
-                                        $methodPriorities[$key]['value'] += $condition;
-                                    } elseif ($condition) {
-                                        $methodPriorities[$key]['value']++;
-                                        $methodPriorities[$key]['response'] = $condition;
-                                    }
-                                    $success = true;
-                                } catch (ConditionException $e) {
-                                    unset($methodPriorities[$key]);
-                                    break 2;
-                                } catch (Exception $e) {
-                                    $error = $e;
-                                }
+        foreach ($resourceMetadata->getMethods() as $key => $methodMetadata) {
+            if ($key != 'setup') {
+                /*$mmd = $methodMetadata;
+                if ($resourceMetadata->getMethods('setup')) {
+                    $mmd += $resourceMetadata->getMethods('setup');
+                }*/
+                #var_dump($key, $methodMetadata->getConditions());
+                foreach ($methodMetadata->getConditions() as $conditionName => $conditionValues) {
+                    if (method_exists($this, $conditionName)) {
+                        $this->currentMethodName = $key;
+                        $success = false;
+                        $error = null;
+                        foreach ($conditionValues as $params) {
+                            if (!isset($methodPriorities[$key]['value'])) {
+                                $methodPriorities[$key]['value'] = 0;
                             }
-                            if (!$success) {
-                                $methodPriorities[$key]['exception'] = $error;
-                                break;
+                            try {
+                                if (is_array($params)) {
+                                    $condition = call_user_func_array(array($this, $conditionName), $params);
+                                } else {
+                                    $condition = call_user_func(array($this, $conditionName), $params);
+                                }
+                                if ($condition === true) $condition = 1;
+                                if (is_numeric($condition)) {
+                                    $methodPriorities[$key]['value'] += $condition;
+                                } elseif ($condition) {
+                                    $methodPriorities[$key]['value']++;
+                                    $methodPriorities[$key]['response'] = $condition;
+                                }
+                                $success = true;
+                            } catch (ConditionException $e) {
+                                unset($methodPriorities[$key]);
+                                break 2;
+                            } catch (Exception $e) {
+                                $error = $e;
                             }
-                        } else {
-                            throw new \Exception(sprintf(
-                                'Condition method "%s" not found in Resource class "%s"',
-                                $conditionName,
-                                get_class($this)
-                            ));
                         }
+                        if (!$success && $error) {
+                            $methodPriorities[$key]['exception'] = $error;
+                            break;
+                        }
+                    } else {
+                        throw new \Exception(sprintf(
+                            'Condition method "%s" not found in Resource class "%s"',
+                            $conditionName,
+                            get_class($this)
+                        ));
                     }
                 }
             }
@@ -196,9 +196,9 @@ class Resource
      */
     protected function method($method)
     {
-        if (strtolower($this->request->method) != strtolower($method))
-            throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->method.'"');
-
+        if (strtolower($this->request->getMethod()) != strtolower($method)) {
+            throw new MethodNotAllowedException('No matching method for HTTP method "'.$this->request->getMethod().'"');
+        }
         return true;
     }
 
@@ -217,8 +217,8 @@ class Resource
      */
     protected function accepts($mimetype)
     {
-        if (strtolower($this->request->contentType) != strtolower($mimetype)) {
-            throw new UnsupportedMediaTypeException('No matching method for content type "'.$this->request->contentType.'"');
+        if (strtolower($this->request->getContentType()) != strtolower($mimetype)) {
+            throw new UnsupportedMediaTypeException('No matching method for content type "'.$this->request->getContentType().'"');
         }
 
         return true;
@@ -232,20 +232,20 @@ class Resource
      */
     protected function provides($mimetype)
     {
-        if (count($this->request->accept) == 0) return 0;
-        $pos = array_search($mimetype, $this->request->accept);
+        if (count($this->request->getAccept()) == 0) return 0;
+        $pos = array_search($mimetype, $this->request->getAccept());
         if ($pos === FALSE) {
-            if (in_array('*/*', $this->request->accept)) {
+            if (in_array('*/*', $this->request->getAccept())) {
                 return 0;
             } else {
-                throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->accept).'"');
+                throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->getAccept()).'"');
             }
         } else {
             $this->after(function ($response) use ($mimetype) {
                 $response->contentType = $mimetype;
             });
 
-            return count($this->request->accept) - $pos;
+            return count($this->request->getAccept()) - $pos;
         }
     }
 
@@ -257,11 +257,11 @@ class Resource
      */
     protected function lang($language)
     {
-        $pos = array_search($language, $this->request->acceptLanguage);
-        if ($pos === FALSE)
-            throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->acceptLanguage).'"');
-
-        return count($this->request->acceptLanguage) - $pos;
+        $pos = array_search($language, $this->request->getAcceptLanguage());
+        if ($pos === FALSE) {
+            throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->getAcceptLanguage()).'"');
+        }
+        return count($this->request->getAcceptLanguage()) - $pos;
     }
 
     /**

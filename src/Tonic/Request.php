@@ -115,12 +115,44 @@ class Request
         return $this->getHeader($name);
     }
 
-    public function __call($name, $args)
+    public function getUri()
     {
-        if (substr($name, 0, 3) == 'get') {
-            $paramName = lcfirst(substr($name, 3));
-            return $this->$paramName;
-        }
+        return $this->uri;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    public function getAccept()
+    {
+        return $this->accept;
+    }
+
+    public function getAcceptLanguage()
+    {
+        return $this->acceptLanguage;
+    }
+
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    public function getIfMatch()
+    {
+        return $this->ifMatch;
+    }
+
+    public function getIfNoneMatch()
+    {
+        return $this->ifNoneMatch;
     }
 
     private function getHeader($name)

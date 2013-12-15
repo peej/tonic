@@ -13,7 +13,7 @@ class ResourceMetadata
             $uriParams = array(),
             $methods = array();
 
-    function __construct($app, $className, $uriSpace)
+    public function __construct($app, $className, $uriSpace = null)
     {
         $this->app = $app;
 
@@ -40,13 +40,14 @@ class ResourceMetadata
             $this->namespace = $docComment['@namespace'][0][0];
         }
         if (isset($docComment['@priority'])) {
-            $this->priority = (int)$docComment['@priority'][0][0];
+            $this->priority = (int) $docComment['@priority'][0][0];
         }
 
         $this->methods = $this->readMethodAnnotations($className);
     }
 
-    function __call($name, $params)
+/*
+    public function __call($name, $params)
     {
         if (substr($name, 0, 3) == 'get') {
             $property = strtolower(substr($name, 3, 1)).substr($name, 4);
@@ -66,46 +67,76 @@ class ResourceMetadata
             }
         }
     }
+    */
 
-    function getUri($index = null)
+    public function getUri($index = null)
     {
         if ($index !== null) {
             return isset($this->uri[$index]) ? $this->app->baseUri.$this->uri[$index] : null;
         }
+
         return $this->uri;
     }
 
-    function getUriParams($index = null)
-    {
-        if ($index !== null) {
-            return isset($this->uriParams[$index]) ? $this->uriParams[$index] : null;
-        }
-        return $this->uriParams;
-    }
-
-    function getMethod($methodName)
-    {
-        if (isset($this->methods[$methodName])) {
-            return $this->methods[$methodName];
-        }
-        return null;
-    }
-
-    function hasUri($uri)
+    public function hasUri($uri)
     {
         foreach ($this->uri as $index => $u) {
             if (preg_match('#^'.$this->getUri($index).'$#', $uri)) {
                 return true;
             }
         }
+
         return false;
+    }
+
+    public function getUriParams($index = null)
+    {
+        if ($index !== null) {
+            return isset($this->uriParams[$index]) ? $this->uriParams[$index] : null;
+        }
+
+        return $this->uriParams;
+    }
+
+    public function getMethod($methodName)
+    {
+        if (isset($this->methods[$methodName])) {
+            return $this->methods[$methodName];
+        }
+
+        return null;
+    }
+
+    public function getMethods()
+    {
+        return $this->methods;
+    }
+
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    public function getNamespace()
+    {
+        return $this->namespace;
     }
 
     /**
      * Append the given URI-space to the resources URLs
      * @param str $uriSpace
      */
-    function mount($uriSpace)
+    public function mount($uriSpace)
     {
         foreach ($this->uri as $index => $uri) {
             $this->uri[$index] = $uriSpace.$this->uri[$index];

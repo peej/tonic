@@ -2,7 +2,7 @@
 
 namespace spec\Tonic;
 
-use PHPSpec2\ObjectBehavior;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @uri /foo/bar
@@ -32,7 +32,7 @@ class ExampleResource extends \Tonic\Resource
     }
 }
 
-class Application extends ObjectBehavior
+class ApplicationSpec extends ObjectBehavior
 {
     function it_should_be_initializable()
     {
@@ -45,6 +45,7 @@ class Application extends ObjectBehavior
     function it_should_load_a_resource($request)
     {
         $request->getUri()->willReturn('/foo/bar');
+        $request->getParams()->willReturn(null);
         $this->getResource($request)->shouldHaveType('Tonic\Resource');
     }
 
@@ -62,7 +63,7 @@ class Application extends ObjectBehavior
         $metadata->getMethod('myMethod')->hasAccepts('application/x-www-form-urlencoded')->shouldBe(true);
         $metadata->getMethod('myMethod')->hasAccepts('application/multipart')->shouldBe(true);
         $metadata->getMethod('myMethod')->hasProvides('text/html')->shouldBe(true);
-        $metadata->getMethod('myMethod')->getMyCondition()->shouldNotBe(null);
+        $metadata->getMethod('myMethod')->getCondition('myCondition')->shouldNotBe(null);
     }
 
     function it_should_be_able_to_mount_a_namespace_to_a_uri()

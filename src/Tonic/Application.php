@@ -82,7 +82,7 @@ class Application
      * Load the metadata for all loaded resource classes
      * @param str $uriSpace Optional URI-space to mount the resources into
      */
-    private function loadResourceMetadata($uriSpace = NULL)
+    private function loadResourceMetadata($uriSpace = null)
     {
         foreach (get_declared_classes() as $className) {
             if (
