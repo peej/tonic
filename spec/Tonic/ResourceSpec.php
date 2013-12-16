@@ -6,10 +6,6 @@ use PhpSpec\ObjectBehavior;
 
 class ResourceSpec extends ObjectBehavior
 {
-    function myMethod()
-    {
-        return 'Example';
-    }
 
     /**
      * @param \Tonic\Application $app

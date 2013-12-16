@@ -145,6 +145,11 @@ class Request
         return $this->contentType;
     }
 
+    public function getData()
+    {
+        return $this->data;
+    }
+
     public function getIfMatch()
     {
         return $this->ifMatch;

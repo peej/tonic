@@ -13,7 +13,7 @@ class HelloSpec extends ObjectBehavior
      * @param \Tonic\Request $request
      * @param \Tonic\ResourceMetadata $resourceMetadata
      */
-    function let($app, $request, $resourceMetadata, $sayHello, $sayHelloInFrench, $replicants, $iveSeenThings, $sayHelloComputer)
+    function let($app, $request, $resourceMetadata, $sayHello, $sayHelloInFrench, $replicants, $iveSeenThings, $sayHelloComputer, $feedTheComputer)
     {
         $request->getMethod()->willReturn('GET');
         $request->getParams()->willReturn(array());
@@ -52,12 +52,24 @@ class HelloSpec extends ObjectBehavior
             'json' => array()
         ));
 
+        $feedTheComputer->beADoubleOf('\Tonic\MethodMetadata');
+        $feedTheComputer->getConditions()->willReturn(array(
+            'method' => array('POST'),
+            'accepts' => array('application/json'),
+            'provides' => array('application/json'),
+            'json' => array()
+        ));
+
+        $resourceMetadata->getClass()->willReturn('\\Tyrell\\Hello');
+        $resourceMetadata->getUri()->willReturn(array(array('/hello')));
+        $resourceMetadata->getMethod('setup')->willReturn(null);
         $resourceMetadata->getMethods()->willReturn(array(
             'sayHello' => $sayHello,
             'sayHelloInFrench' => $sayHelloInFrench,
             'replicants' => $replicants,
             'iveSeenThings' => $iveSeenThings,
-            'sayHelloComputer' => $sayHelloComputer
+            'sayHelloComputer' => $sayHelloComputer,
+            'feedTheComputer' => $feedTheComputer
         ));
         $resourceMetadata->getMethod('setup')->willReturn(null);
         $app->getResourceMetadata(\Prophecy\Argument::any())->willReturn($resourceMetadata);
@@ -170,5 +182,47 @@ class HelloSpec extends ObjectBehavior
             'hello' => null,
             'url' => '/hello'
         ));
+    }
+
+    /**
+     * @param \Tonic\Application $app
+     * @param \Tonic\Request $request
+     */
+    function it_should_feed_the_computer($app, $request)
+    {
+        $request->getMethod()->willReturn('POST');
+        $request->getContentType()->willReturn('application/json');
+        $request->getData()->willReturn('{"hello": "computer"}');
+        $request->getAccept()->willReturn(array('application/json'));
+
+        $response = $this->exec();
+
+        $response->code->shouldBe(200);
+        $response->body->shouldBe('{"hello": "computer"}');
+    }
+
+    /**
+     * @param \Tonic\Application $app
+     * @param \Tonic\Request $request
+     */
+    function it_can_turn_itself_into_a_string($app, $request)
+    {
+        $this->__toString()->shouldBe(<<<EOF
+==============
+Tonic\Resource
+==============
+Class: \Tyrell\Hello
+URI regex: /hello
+Params: 
+Methods: 
+\t[1] sayHello
+\t[Tonic\NotAcceptableException 1] sayHelloInFrench
+\t[-] replicants
+\t[-] iveSeenThings
+\t[1] sayHelloComputer
+\t[Tonic\MethodNotAllowedException 0] feedTheComputer
+
+EOF
+);
     }
 }

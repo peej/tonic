@@ -289,9 +289,9 @@ class Resource
         }
         $params = join(', ', $params);
         $metadata = $this->app->getResourceMetadata($this);
-        $class = $metadata['class'];
+        $class = $metadata->getClass();
         $uri = array();
-        foreach ($metadata['uri'] as $u) {
+        foreach ($metadata->getUri() as $u) {
             $uri[] = $u[0];
         }
         $uri = join(', ', $uri);
@@ -300,7 +300,7 @@ class Resource
             $priorities = $this->calculateMethodPriorities($metadata);
         } catch (Exception $e) {}
         $methods = '';
-        foreach ($metadata['methods'] as $methodName => $method) {
+        foreach ($metadata->getMethods() as $methodName => $method) {
             if ($methodName != 'setup') {
                 $methods .= "\n\t".'[';
                 if (isset($priorities[$methodName])) {
@@ -312,8 +312,8 @@ class Resource
                     $methods .= '-';
                 }
                 $methods .= '] '.$methodName;
-                if (isset($metadata['methods']['setup'])) {
-                    $method += $metadata['methods']['setup'];
+                if ($metadata->getMethod('setup')) {
+                    $method += $metadata->getMethod('setup');
                 }
                 foreach ($method as $itemName => $items) {
                     foreach ($items as $item) {
