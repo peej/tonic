@@ -70,7 +70,7 @@ class Response
         }
         if (is_array($headers)) {
             foreach ($headers as $name => $value) {
-                $this->$name = $value;
+                $this->headers[$name] = $value;
             }
         }
     }
@@ -106,7 +106,7 @@ class Response
     public function __get($name)
     {
         $name = $this->getHeaderName($name);
-        return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
+        return isset($this->headers[$name]) ? $this->headers[$name] : null;
     }
 
     /**
