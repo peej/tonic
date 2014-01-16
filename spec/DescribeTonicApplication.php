@@ -51,14 +51,14 @@ class DescribeTonicApplication extends \PHPSpec\Context
     {
         $metadata = $this->app->getResourceMetadata('MyResource');
         $this->spec($metadata['class'])->should->be('\\MyResource');
-        $this->spec($metadata['uri'][0][0])->should->be('/foo/bar');
-        $this->spec($metadata['priority'][0])->should->be('10');
-        $this->spec($metadata['namespace'][0])->should->be('myNamespace');
-        $this->spec($metadata['methods']['myMethod']['method'][0][0])->should->be('GET');
+        $this->spec($metadata['uri'][0])->should->be('/foo/bar');
+        $this->spec($metadata['priority'])->should->be(10);
+        $this->spec($metadata['namespace'])->should->be('myNamespace');
+        $this->spec($metadata['methods']['myMethod']['method'][0])->should->be('GET');
         $this->spec($metadata['methods']['myMethod']['accepts'])->should->be(array(
-            array('application/x-www-form-urlencoded'), array('application/multipart')
+            'application/x-www-form-urlencoded', 'application/multipart'
         ));
-        $this->spec($metadata['methods']['myMethod']['provides'][0][0])->should->be('text/html');
+        $this->spec($metadata['methods']['myMethod']['provides'][0])->should->be('text/html');
         $this->spec($metadata['methods']['myMethod']['myCondition'])->shouldNot->beNull();
     }
 
@@ -66,7 +66,7 @@ class DescribeTonicApplication extends \PHPSpec\Context
     {
         $this->app->mount('myNamespace', '/baz');
         $metadata = $this->app->getResourceMetadata('MyResource');
-        $this->spec($metadata['uri'][0][0])->should->be('/baz/foo/bar');
+        $this->spec($metadata['uri'][0])->should->be('/baz/foo/bar');
     }
 
     public function itShouldProduceTheUriToAGivenResource()
@@ -90,8 +90,7 @@ class DescribeTonicApplication extends \PHPSpec\Context
         $this->app = new Tonic\Application(array(
             'baseUri' => '/baseUri'
         ));
-        $metadata = $this->app->getResourceMetadata('MyResource');
-        $this->spec($metadata['uri'][0][0])->should->be('/baseUri/foo/bar');
+        $this->spec($this->app->uri('MyResource'))->should->be('/baseUri/foo/bar');
     }
 
 }
