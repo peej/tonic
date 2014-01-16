@@ -111,8 +111,10 @@ class Request
      */
     public function __get($name)
     {
-        if (in_array($name, array_keys(get_class_vars(__CLASS__)))) {
+        if (method_exists($this, $name)) {
             return $this->{'get'.ucfirst($name)}();
+        } elseif (isset($this->$name)) {
+            return $this->$name;
         }
         return $this->getHeader($name);
     }
@@ -125,9 +127,7 @@ class Request
      */
     public function __set($name, $value)
     {
-        if (in_array($name, array_keys(get_class_vars(__CLASS__)))) {
-            $this->$name = $value;
-        }
+        $this->$name = $value;
     }
 
     public function getUri()
