@@ -95,4 +95,13 @@ class ApplicationSpec extends ObjectBehavior
         $metadata = $this->getResourceMetadata('spec\Tonic\ExampleResource');
         $metadata->hasUri('/baz/foo/bar')->shouldBe(true);
     }
+
+    function it_should_include_base_uri_in_resource_uri()
+    {
+        $this->beConstructedWith(array(
+            'baseUri' => '/baseUri'
+        ));
+        $this->mount('myNamespace', '/baz');
+        $this->uri('spec\Tonic\ExampleResource')->shouldBe('/baseUri/baz/foo/bar');
+    }
 }

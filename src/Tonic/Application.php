@@ -133,7 +133,6 @@ class Application
         }
         foreach ($this->resources[$className]->getUri() as $index => $uri) {
             if (count($params) == count($this->resources[$className]->getUriParams($index))) {
-                $uri = $this->baseUri.$uri;
                 $parts = explode('([^/]+)', $uri);
                 $path = '';
                 foreach ($parts as $key => $part) {
