@@ -51,11 +51,6 @@ class Resource
 
         foreach ($resourceMetadata->getMethods() as $key => $methodMetadata) {
             if ($key != 'setup') {
-                /*$mmd = $methodMetadata;
-                if ($resourceMetadata->getMethods('setup')) {
-                    $mmd += $resourceMetadata->getMethods('setup');
-                }*/
-                #var_dump($key, $methodMetadata->getConditions());
                 foreach ($methodMetadata->getConditions() as $conditionName => $conditionValues) {
                     if (method_exists($this, $conditionName)) {
                         $this->currentMethodName = $key;
@@ -69,7 +64,7 @@ class Resource
                                 $methodPriorities[$key]['value'] = 0;
                             }
                             try {
-                                $condition = call_user_func_array(array($this, $conditionName), explode(' ', $params));
+                                $condition = call_user_func_array(array($this, $conditionName), str_getcsv($params, ' '));
                                 if ($condition === true) $condition = 1;
                                 if (is_numeric($condition)) {
                                     $methodPriorities[$key]['value'] += $condition;

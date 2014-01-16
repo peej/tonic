@@ -240,3 +240,30 @@ Feature: HTTP resource object
     Then the method priority for "test" should be "1"
     And the method priority for "test2" should be "1"
     And the method priority for "test3" should be "-"
+
+  Scenario: Condition annotations that have quotes around the parameters should be treated as a single variable when passed to the condition method
+    Given a class definition:
+      """
+      /**
+       * @uri /resource10
+       */
+      class Resource10 extends Tonic\Resource {
+        /**
+         * @method get
+         * @foo param1 "param 2"
+         */
+        function test() {}
+        function foo($param1, $param2) {
+          $this->after(function ($response) use ($param1, $param2) {
+            $response->body = $param1.','.$param2;
+          });
+        }
+      }
+      """
+    And the request URI of "/resource10"
+    And the request method of "GET"
+    When I create an application object
+    And I create a request object
+    And load the resource
+    And execute the resource
+    Then response should be "param1,param 2"
