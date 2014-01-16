@@ -2,7 +2,7 @@
 
 namespace Tonic;
 
-class ResourceMetadata
+class ResourceMetadata implements \ArrayAccess
 {
     private $class,
             $namespace,
@@ -41,6 +41,28 @@ class ResourceMetadata
         }
 
         $this->methods = $this->readMethodAnnotations($className);
+    }
+
+    public function offsetExists($name)
+    {
+        return isset($this->$name);
+    }
+
+    public function offsetGet($name)
+    {
+        return isset($this->$name) ? $this->$name : null;
+    }
+
+    public function offsetSet($name, $value)
+    {
+        if (!is_null($name)) {
+            $this->$name = $value;
+        }
+    }
+
+    public function offsetUnset($name)
+    {
+        $this->$name = null;
     }
 
     public function getUri($index = null)

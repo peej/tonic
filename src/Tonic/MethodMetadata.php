@@ -2,7 +2,7 @@
 
 namespace Tonic;
 
-class MethodMetadata
+class MethodMetadata implements \ArrayAccess
 {
     private $class,
             $name,
@@ -23,6 +23,28 @@ class MethodMetadata
                 }
             }
         }
+    }
+
+    public function offsetExists($name)
+    {
+        return isset($this->conditions[$name]);
+    }
+
+    public function offsetGet($name)
+    {
+        return isset($this->conditions[$name]) ? $this->conditions[$name] : null;
+    }
+
+    public function offsetSet($name, $value)
+    {
+        if (!is_null($name)) {
+            $this->conditions[$name] = $value;
+        }
+    }
+
+    public function offsetUnset($name)
+    {
+        $this->conditions[$name] = null;
     }
 
     public function addCondition($condition, $value)
