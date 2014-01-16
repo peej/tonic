@@ -174,14 +174,18 @@ class HelloSpec extends ObjectBehavior
     {
         $app->uri(Argument::any(), Argument::any())->willReturn('/hello');
         $request->getAccept()->willReturn(array('application/json'));
+        $request->getContentType()->willReturn('application/json');
+        $request->getData()->willReturn(null);
+        $request->setData(Argument::any())->willReturn(null);
 
         $response = $this->exec();
 
         $response->code->shouldBe(200);
-        $response->body->shouldBe(array(
+        $response->contentType->shouldBe('application/json');
+        $response->body->shouldBe(json_encode(array(
             'hello' => null,
             'url' => '/hello'
-        ));
+        )));
     }
 
     /**
@@ -193,12 +197,18 @@ class HelloSpec extends ObjectBehavior
         $request->getMethod()->willReturn('POST');
         $request->getContentType()->willReturn('application/json');
         $request->getData()->willReturn('{"hello": "computer"}');
+        $request->setData(Argument::any())->will(function ($args) {
+            $this->getData()->willReturn($args[0]);
+        });
         $request->getAccept()->willReturn(array('application/json'));
 
         $response = $this->exec();
 
         $response->code->shouldBe(200);
-        $response->body->shouldBe('{"hello": "computer"}');
+        $response->contentType->shouldBe('application/json');
+        $response->body->shouldBe(json_encode(array(
+            'hello' => 'computer'
+        )));
     }
 
     /**

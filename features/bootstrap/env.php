@@ -50,6 +50,6 @@ class MockMetadataCache {
     }
 
     function contains($className, $methodName) {
-        return isset($this->cacheValue[$className]) && isset($this->cacheValue[$className]['methods'][$methodName]);
+        return isset($this->cacheValue[$className]) && $this->cacheValue[$className]->getMethod($methodName);
     }
 }

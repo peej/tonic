@@ -4,8 +4,7 @@ namespace Tonic;
 
 class ResourceMetadata
 {
-    private $app,
-            $class,
+    private $class,
             $namespace,
             $filename,
             $priority = 1,
@@ -13,10 +12,8 @@ class ResourceMetadata
             $uriParams = array(),
             $methods = array();
 
-    public function __construct($app, $className, $uriSpace = null)
+    public function __construct($className)
     {
-        $this->app = $app;
-
         $metadata = array();
 
         // get data from reflector
@@ -32,47 +29,24 @@ class ResourceMetadata
         if (isset($docComment['@uri'])) {
             foreach ($docComment['@uri'] as $uri) {
                 $parsedUri = $this->uriTemplateToRegex($uri);
-                $this->uri[] = $parsedUri[0];
-                $this->uriParams[] = isset($parsedUri[1]) ? $parsedUri[1] : array();
+                $this->uri[] = array_shift($parsedUri);
+                $this->uriParams[] = $parsedUri;
             }
         }
         if (isset($docComment['@namespace'])) {
-            $this->namespace = $docComment['@namespace'][0][0];
+            $this->namespace = $docComment['@namespace'][0];
         }
         if (isset($docComment['@priority'])) {
-            $this->priority = (int) $docComment['@priority'][0][0];
+            $this->priority = (int) $docComment['@priority'][0];
         }
 
         $this->methods = $this->readMethodAnnotations($className);
     }
 
-/*
-    public function __call($name, $params)
-    {
-        if (substr($name, 0, 3) == 'get') {
-            $property = strtolower(substr($name, 3, 1)).substr($name, 4);
-            if (is_array($this->$property) && isset($params[0])) {
-                return isset($this->$property[$params[0]]) ? $this->$property[$params[0]] : null;
-            } else {
-                return $this->$property;
-            }
-        } elseif (substr($name, 0, 3) == 'has' && isset($params[0])) {
-            $property = strtolower(substr($name, 3, 1)).substr($name, 4);
-            if (isset($this->$property)) {
-                if (is_array($this->$property)) {
-                    return in_array($params[0], $this->$property);
-                } else {
-                    return $this->$property == $params[0];
-                }
-            }
-        }
-    }
-    */
-
     public function getUri($index = null)
     {
         if ($index !== null) {
-            return isset($this->uri[$index]) ? $this->app->baseUri.$this->uri[$index] : null;
+            return isset($this->uri[$index]) ? $this->uri[$index] : null;
         }
 
         return $this->uri;
@@ -154,10 +128,9 @@ class ResourceMetadata
         preg_match_all('/^\s*\*[*\s]*(@.+)$/m', $comment, $items);
         if ($items && isset($items[1])) {
             foreach ($items[1] as $item) {
-                preg_match_all('/"[^"]+"|[^\s]+/', $item, $parts);
-                $key = array_shift($parts[0]);
-                array_walk($parts[0], create_function('&$v', '$v = trim($v, \'"\');'));
-                $data[$key][] = $parts[0];
+                $parts = explode(' ', $item);
+                $key = array_shift($parts);
+                $data[$key][] = trim(implode(' ', $parts));
             }
         }
 
@@ -171,8 +144,8 @@ class ResourceMetadata
      */
     private function uriTemplateToRegex($uri)
     {
-        preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri[0], $params, PREG_PATTERN_ORDER);
-        $return = $uri;
+        preg_match_all('#((?<!\?):[^/]+|{[^0-9][^}]*}|\(.+?\))#', $uri, $params, PREG_PATTERN_ORDER);
+        $return = array($uri);
         if (isset($params[1])) {
             foreach ($params[1] as $index => $param) {
                 if (substr($param, 0, 1) == ':') {
@@ -219,16 +192,17 @@ class ResourceMetadata
                 }
             }
         }
+        
 
         // recurse through parent classes and merge in parent class metadata
         $classReflector = new \ReflectionClass($className);
         $parentReflector = $classReflector->getParentClass();
         if ($parentReflector) {
-            #$metadata = $this->mergeMetadata($this->readMethodAnnotations($parentReflector->name, $targetClass), $metadata);
+            $metadata = $this->mergeMetadata($this->readMethodAnnotations($parentReflector->name, $targetClass), $metadata);
         }
         $interfaces = $classReflector->getInterfaceNames();
         foreach ($interfaces as $interface) {
-            #$metadata = $this->mergeMetadata($this->readMethodAnnotations($interface, $targetClass), $metadata);
+            $metadata = $this->mergeMetadata($this->readMethodAnnotations($interface, $targetClass), $metadata);
         }
 
         return $metadata;
@@ -237,19 +211,13 @@ class ResourceMetadata
     private function mergeMetadata($array1, $array2)
     {
         foreach ($array2 as $method => $metadata) {
-            foreach ($metadata as $annotation => $values) {
-                foreach ($values as $value) {
-                    if (isset($array1[$method][$annotation])) {
-                        if (!in_array($value, $array1[$method][$annotation])) {
-                            $array1[$method][$annotation][] = $value;
-                        }
-                    } else {
-                        $array1[$method][$annotation] = array($value);
-                    }
+            foreach ($metadata->getConditions() as $conditionName => $values) {
+                if (!isset($array1[$method])) {
+                    $array1[$method] = new MethodMetadata($this->class, $method);
                 }
+                $array1[$method]->setCondition($conditionName, $values);
             }
         }
-
         return $array1;
     }
 

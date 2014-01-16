@@ -21,7 +21,7 @@ class Application
     /**
      * Metadata of the loaded resources
      */
-    private $resources = array();
+    public $resources = array();
 
     public function __construct($options = array())
     {
@@ -34,7 +34,9 @@ class Application
 
         // load resource metadata passed in via options array
         if (isset($options['resources']) && is_array($options['resources'])) {
-            $this->resources = $options['resources'];
+            foreach ($options['resources'] as $resourceMetadata) {
+                $this->resources[] = $resourceMetadata;
+            }
         }
 
         $cache = isset($options['cache']) ? $options['cache'] : NULL;
@@ -80,16 +82,18 @@ class Application
 
     /**
      * Load the metadata for all loaded resource classes
-     * @param str $uriSpace Optional URI-space to mount the resources into
      */
-    private function loadResourceMetadata($uriSpace = null)
+    private function loadResourceMetadata()
     {
         foreach (get_declared_classes() as $className) {
             if (
                 !isset($this->resources[$className]) &&
                 is_subclass_of($className, 'Tonic\Resource')
             ) {
-                $this->resources[$className] = new ResourceMetadata($this, $className, $uriSpace);
+                $rm = new ResourceMetadata($className);
+                if ($rm->getUri()) {
+                    $this->resources[$className] = $rm;
+                }
             }
         }
     }
@@ -129,6 +133,7 @@ class Application
         }
         foreach ($this->resources[$className]->getUri() as $index => $uri) {
             if (count($params) == count($this->resources[$className]->getUriParams($index))) {
+                $uri = $this->baseUri.$uri;
                 $parts = explode('([^/]+)', $uri);
                 $path = '';
                 foreach ($parts as $key => $part) {
@@ -178,7 +183,7 @@ class Application
             if ($matchedResource[0]->getFilename() && is_readable($matchedResource[0]->getFilename())) {
                 require_once($matchedResource[0]->getFilename());
             }
-            $request->params = $matchedResource[1];
+            $request->setParams($matchedResource[1]);
 
             $className = $matchedResource[0]->getClass();
             return new $className($this, $request, $matchedResource[1]);
@@ -226,12 +231,12 @@ class Application
         $resources = array();
         foreach ($this->resources as $resource) {
             $uri = array();
-            foreach ($resource['uri'] as $u) {
-                $uri[] = $u[0];
+            foreach ($resource->getUri() as $u) {
+                $uri[] = $u;
             }
             $uri = join(', ', $uri);
-            $r = $resource['class'].' '.$uri.' '.join(', ', $resource['priority']);
-            foreach ($resource['methods'] as $methodName => $method) {
+            $r = $resource->getClass().' '.$uri.' '.$resource->getPriority();
+            foreach ($resource->getMethods() as $methodName => $method) {
                 $r .= "\n\t\t".$methodName;
                 foreach ($method as $itemName => $items) {
                     foreach ($items as $item) {

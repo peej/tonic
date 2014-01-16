@@ -108,12 +108,19 @@ Feature: HTTP resource object
          */
         function test() {}
         function foo($bar, $baz, $quux) {
-          return array($bar, $baz, $quux);
+          $this->after(function ($response) use ($bar, $baz, $quux) {
+            $response->body = $bar.$baz.$quux;
+          });
         }
       }
       """
+    And the request URI of "/resource6"
+    And the request method of "GET"
     When I create an application object
-    Then the resource "Resource6" should have the condition "foo" with the parameters "bar,baz,quux"
+    And I create a request object
+    And load the resource
+    And execute the resource
+    Then response should be "barbazquux"
 
   Scenario: Before and after filters
     Given a class definition:
@@ -146,8 +153,7 @@ Feature: HTTP resource object
     And I create a request object
     And load the resource
     And execute the resource
-    Then the resource "Resource7" should have the condition "myBeforeFilter" with the parameters ""
-    And I should see body data of "foo"
+    Then I should see body data of "foo"
     And response should be "bar"
   
   Scenario: Custom conditions shouldn't increase match likelihood

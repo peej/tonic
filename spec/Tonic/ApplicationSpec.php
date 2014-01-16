@@ -46,6 +46,7 @@ class ApplicationSpec extends ObjectBehavior
     {
         $request->getUri()->willReturn('/foo/bar');
         $request->getParams()->willReturn(null);
+        $request->setParams(array())->willReturn(null);
         $this->getResource($request)->shouldHaveType('Tonic\Resource');
     }
 
@@ -88,23 +89,10 @@ class ApplicationSpec extends ObjectBehavior
         $this->shouldThrow('\Tonic\NotFoundException')->duringGetResource($request);
     }
 
-    function it_should_include_base_uri_in_resource_uri()
+    function it_should_include_urispace_in_resource_uri_when_urispace_mounted()
     {
-        $this->beConstructedWith(array(
-            'baseUri' => '/baseUri'
-        ));
-        $metadata = $this->getResourceMetadata('spec\Tonic\ExampleResource');
-        $metadata->hasUri('/baseUri/foo/bar')->shouldBe(true);
-        $metadata->hasUri('/baseUri/quux/something')->shouldBe(true);
-    }
-
-    function it_should_include_base_uri_in_resource_uri_when_urispace_mounted()
-    {
-        $this->beConstructedWith(array(
-            'baseUri' => '/baseUri'
-        ));
         $this->mount('myNamespace', '/baz');
         $metadata = $this->getResourceMetadata('spec\Tonic\ExampleResource');
-        $metadata->hasUri('/baseUri/baz/foo/bar')->shouldBe(true);
+        $metadata->hasUri('/baz/foo/bar')->shouldBe(true);
     }
 }

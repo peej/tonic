@@ -8,19 +8,35 @@ class MethodMetadata
             $name,
             $conditions = array();
 
-    function __construct($className, $methodName, $docComment)
+    function __construct($className, $methodName, $docComment = null)
     {
         $this->class = $className;
         $this->name = $methodName;
 
-        foreach ($docComment as $annotationName => $value) {
-            $annotationMethodName = substr($annotationName, 1);
-            if (method_exists($className, $annotationMethodName)) {
-                foreach ($value as $v) {
-                    $this->conditions[$annotationMethodName][] = isset($v[0]) ? $v[0] : null;
+        if (is_array($docComment)) {
+            foreach ($docComment as $annotationName => $values) {
+                $annotationMethodName = substr($annotationName, 1);
+                if (method_exists($className, $annotationMethodName)) {
+                    foreach ($values as $value) {
+                        $this->addCondition($annotationMethodName, $value);
+                    }
                 }
             }
         }
+    }
+
+    public function addCondition($condition, $value)
+    {
+        if (isset($this->conditions[$condition])) {
+            $this->conditions[$condition][] = $value;
+        } else {
+            $this->conditions[$condition] = array($value);
+        }
+    }
+
+    public function setCondition($condition, $value)
+    {
+        $this->conditions[$condition] = $value;
     }
 
     public function hasCondition($condition, $value)

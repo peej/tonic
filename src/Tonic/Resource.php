@@ -61,16 +61,15 @@ class Resource
                         $this->currentMethodName = $key;
                         $success = false;
                         $error = null;
+                        if (!$conditionValues) { // empty condition, process once for null value
+                            $conditionValues[] = null;
+                        }
                         foreach ($conditionValues as $params) {
                             if (!isset($methodPriorities[$key]['value'])) {
                                 $methodPriorities[$key]['value'] = 0;
                             }
                             try {
-                                if (is_array($params)) {
-                                    $condition = call_user_func_array(array($this, $conditionName), $params);
-                                } else {
-                                    $condition = call_user_func(array($this, $conditionName), $params);
-                                }
+                                $condition = call_user_func_array(array($this, $conditionName), explode(' ', $params));
                                 if ($condition === true) $condition = 1;
                                 if (is_numeric($condition)) {
                                     $methodPriorities[$key]['value'] += $condition;

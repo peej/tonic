@@ -104,6 +104,8 @@ class Request
      *
      *   $request->userAgent
      *
+     * Also gets private member via getter without explicitly using the getter.
+     *
      * @param str name
      * @return str
      */
@@ -115,6 +117,19 @@ class Request
         return $this->getHeader($name);
     }
 
+    /**
+     * Magic PHP method to set a private member without explicitly using the setter.
+     *
+     * @param str name
+     * @param mixed value
+     */
+    public function __set($name, $value)
+    {
+        if (in_array($name, array_keys(get_class_vars(__CLASS__)))) {
+            $this->$name = $value;
+        }
+    }
+
     public function getUri()
     {
         return $this->uri;
@@ -123,6 +138,11 @@ class Request
     public function getParams()
     {
         return $this->params;
+    }
+
+    public function setParams($params)
+    {
+        $this->params = $params;
     }
 
     public function getMethod()
@@ -148,6 +168,11 @@ class Request
     public function getData()
     {
         return $this->data;
+    }
+
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 
     public function getIfMatch()
