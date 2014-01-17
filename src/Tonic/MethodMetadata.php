@@ -80,7 +80,7 @@ class MethodMetadata implements \ArrayAccess
 
     public function getCondition($condition)
     {
-        return isset($this->getConditions()[$condition]) ? $this->getConditions()[$condition] : null;
+        return isset($this->conditions[$condition]) ? $this->conditions[$condition] : null;
     }
 
     public function getMethod()
