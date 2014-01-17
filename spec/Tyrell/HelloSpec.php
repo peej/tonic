@@ -197,8 +197,8 @@ class HelloSpec extends ObjectBehavior
         $request->getMethod()->willReturn('POST');
         $request->getContentType()->willReturn('application/json');
         $request->getData()->willReturn('{"hello": "computer"}');
-        $request->setData(Argument::any())->will(function ($args) {
-            $this->getData()->willReturn($args[0]);
+        $request->setData(Argument::any())->will(function ($args) use ($request) {
+            $request->getData()->willReturn($args[0]);
         });
         $request->getAccept()->willReturn(array('application/json'));
 
