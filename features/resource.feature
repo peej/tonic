@@ -137,7 +137,7 @@ Feature: HTTP resource object
         function test() {}
         function myBeforeFilter() {
           $this->before(function ($request) {
-            $request->data = 'foo';
+            $request->setData('foo');
           });
         }
         function myAfterFilter() {

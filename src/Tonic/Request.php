@@ -111,10 +111,8 @@ class Request
      */
     public function __get($name)
     {
-        if (method_exists($this, $name)) {
+        if (method_exists($this, 'get'.ucfirst($name))) {
             return $this->{'get'.ucfirst($name)}();
-        } elseif (isset($this->$name)) {
-            return $this->$name;
         }
         return $this->getHeader($name);
     }
@@ -127,7 +125,10 @@ class Request
      */
     public function __set($name, $value)
     {
-        $this->$name = $value;
+        if (method_exists($this, 'set'.ucfirst($name))) {
+            return $this->{'set'.ucfirst($name)}($value);
+        }
+        throw new Exception('Could not set property "'.$name.'"');
     }
 
     public function getUri()
