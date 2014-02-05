@@ -16,7 +16,8 @@
     "require-dev": {
         "phpspec/phpspec": "2.0.*@dev",
         "behat/behat": "2.*",
-        "peej/phpdoctor": "dev-master"
+        "peej/phpdoctor": "dev-master",
+        "henrikbjorn/phpspec-code-coverage" : "1.*@dev"
     },
     "suggest": {
         "pimple/pimple": "A simple dependancy injection container to handle your services",
