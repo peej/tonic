@@ -126,7 +126,7 @@ class Application
             $className = get_class($className);
         }
         if (!isset($this->resources[$className])) {
-            throw \Exception('Resource class "'.$className.'" not found');
+            throw new \Exception('Resource class "'.$className.'" not found');
         }
         if ($params && !is_array($params)) {
             $params = array($params);
@@ -204,7 +204,7 @@ class Application
             $className = $resource;
         }
         if (!isset($this->resources[$className])) {
-            throw \Exception('Resource class "'.$className.'" not found');
+            throw new \Exception('Resource class "'.$className.'" not found');
         }
         return $this->resources[$className];
     }
