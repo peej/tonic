@@ -537,4 +537,20 @@ class FeatureContext extends BehatContext
             throw new Exception('Application has a resource for class "' . $className . '"');
         }
     }
+    /**
+     * @Given /^a response object$/
+     */
+    public function aResponseObject()
+    {
+        $this->response = new Response;
+    }
+
+    /**
+     * @When /^set the response header of "([^"]*)" to "([^"]*)"$/
+     */
+    public function setTheResponseHeaderOfTo($name, $value)
+    {
+        $this->response->$name = $value;
+    }
+
 }
