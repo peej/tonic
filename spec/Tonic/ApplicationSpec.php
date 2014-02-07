@@ -151,4 +151,29 @@ class ApplicationSpec extends ObjectBehavior
         $this->uri('spec\Tonic\ExampleResource')->shouldBe('/baseUri/baz/foo/bar');
     }
     
+    /**
+     * @
+     */
+    function it_should_output_itself_as_a_string()
+    {
+        $this->beConstructedWith(array(
+            'baseUri' => '/baseUri',
+            'load' => 'resources/*.php',
+            'mount' => array('myNamespace' => '/baz')
+        ));
+        
+        #var_dump((string)$this->getWrappedObject());
+        $this->__toString()->shouldBe("=================
+Tonic\Application
+=================
+Base URI: /baseUri
+Load path: resources/*.php
+Mount points: myNamespace=\"/baz\"
+Annotation cache: 
+Loaded resources:
+\t\spec\Tonic\ExampleResource /baz/foo/bar, /baz/quux/([^/]+) 10
+\t\tmyMethod method=\"GET\" method=\"PUT\" accepts=\"application/x-www-form-urlencoded\" accepts=\"application/multipart\" provides=\"text/html\" myCondition
+");
+    }
+    
 }

@@ -213,8 +213,12 @@ class Application
     {
         $baseUri = $this->baseUri;
 
-        if (isset($this->options['load']) && is_array($this->options['load'])) {
-            $loadPath = join(', ', $this->options['load']);
+        if (isset($this->options['load'])) {
+            if (is_array($this->options['load'])) {
+                $loadPath = join(', ', $this->options['load']);
+            } else {
+                $loadPath = $this->options['load'];
+            }
         } else $loadPath = '';
 
         $mount = array();
@@ -237,11 +241,11 @@ class Application
             $r = $resource->getClass().' '.$uri.' '.$resource->getPriority();
             foreach ($resource->getMethods() as $methodName => $method) {
                 $r .= "\n\t\t".$methodName;
-                foreach ($method as $itemName => $items) {
+                foreach ($method->getConditions() as $itemName => $items) {
                     foreach ($items as $item) {
                         $r .= ' '.$itemName;
                         if ($item) {
-                            $r .= '="'.join(', ', $item).'"';
+                            $r .= '="'.$item.'"';
                         }
                     }
                 }
