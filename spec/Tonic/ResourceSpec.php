@@ -31,4 +31,32 @@ class ResourceSpec extends ObjectBehavior
         $this->baz->shouldBe(null);
     }
 
+    /**
+     * @param \Tonic\Application $app
+     * @param \Tonic\Request $request
+     * @param \Tonic\ResourceMetadata $resourceMetadata
+     * @param \Tonic\MethodMetadata $methodMetadata
+     */
+    function it_shows_options($app, $request, $resourceMetadata, $methodMetadata)
+    {
+        $request->getMethod()->willReturn('options');
+        $request->getParams()->willReturn(array());
+
+        $methodMetadata->getConditions()->willReturn(array(
+            'method' => array('options')
+        ));
+        $resourceMetadata->getMethods()->willReturn(array(
+            'options' => $methodMetadata
+        ));
+        $app->getResourceMetadata(\Prophecy\Argument::any())->willReturn($resourceMetadata);
+
+        $response = $this->exec();
+
+        $response->code->shouldBe(200);
+        $response->getHeader('Allow')->shouldBe('OPTIONS');
+        $response->body->shouldBe(array(
+            'OPTIONS'
+        ));
+    }
+
 }

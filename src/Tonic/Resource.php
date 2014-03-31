@@ -161,6 +161,26 @@ class Resource
     }
 
     /**
+     * Show a options HTTP method response
+     *
+     * @method OPTIONS
+     */
+    public function options()
+    {
+        $options = array();
+
+        $resourceMetadata = $this->app->getResourceMetadata($this);
+
+        foreach ($resourceMetadata->getMethods() as $method => $methodMetadata) {
+            $options[] = strtoupper($method);
+        }
+
+        return new Response(200, $options, array(
+            'Allow' => implode(',', $options)
+        ));
+    }
+
+    /**
      * Add a function to execute on the request before the resource method is called
      *
      * @param callable $action The function to execute
