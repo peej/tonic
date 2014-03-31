@@ -96,7 +96,7 @@ class Response
 
     private function getHeaderName($name)
     {
-        return strtoupper($name[0]).preg_replace('/([A-Z][a-z])/', '-$1', substr($name, 1));
+        return strtoupper($name[0]).preg_replace('/([a-z])([A-Z])/', '$1-$2', substr($name, 1));
     }
 
     /**
@@ -106,7 +106,6 @@ class Response
      */
     public function getHeader($name)
     {
-        $name = $this->getHeaderName($name);
         return isset($this->headers[$name]) ? $this->headers[$name] : null;
     }
 
@@ -117,7 +116,7 @@ class Response
      */
     public function setHeader($name, $value)
     {
-        $this->headers[$this->getHeaderName($name)] = $value;
+        $this->headers[$name] = $value;
     }
 
     /**
@@ -128,7 +127,7 @@ class Response
      */
     public function __get($name)
     {
-        return $this->getHeader($name);
+        return $this->getHeader($this->getHeaderName($name));
     }
 
     /**
@@ -139,7 +138,7 @@ class Response
      */
     public function __set($name, $value)
     {
-        $this->setHeader($name, $value);
+        $this->setHeader($this->getHeaderName($name), $value);
     }
 
     /**
