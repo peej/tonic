@@ -17,9 +17,9 @@ class ExampleResource extends \Tonic\Resource
      * @method PUT
      * @accepts application/x-www-form-urlencoded
      * @accepts application/multipart
+     * @provides text/plain
      * @provides text/html
      * @myCondition
-     * @return Response
      */
     function myMethod()
     {
@@ -85,6 +85,7 @@ class ApplicationSpec extends ObjectBehavior
         $metadata->getMethod('myMethod')->hasAccepts('application/x-www-form-urlencoded')->shouldBe(true);
         $metadata->getMethod('myMethod')->hasAccepts('application/multipart')->shouldBe(true);
         $metadata->getMethod('myMethod')->hasProvides('text/html')->shouldBe(true);
+        $metadata->getMethod('myMethod')->hasProvides('text/plain')->shouldBe(true);
         $metadata->getMethod('myMethod')->getCondition('myCondition')->shouldNotBe(null);
         
         $this->getResourceMetadata(new ExampleResource(new \Tonic\Application, new \Tonic\Request(array('uri' => '/'))))->shouldHaveType('Tonic\ResourceMetadata');
@@ -150,10 +151,25 @@ class ApplicationSpec extends ObjectBehavior
         $this->mount('myNamespace', '/baz');
         $this->uri('spec\Tonic\ExampleResource')->shouldBe('/baseUri/baz/foo/bar');
     }
-    
+
     /**
-     * @
+     * @param \Tonic\Request $request
      */
+    function it_should_set_the_correct_response_mimetype($request)
+    {
+        $request->getUri()->willReturn('/foo/bar');
+        $request->getMethod()->willReturn('GET');
+        $request->getContentType()->willReturn('application/x-www-form-urlencoded');
+        $request->getAccept()->willReturn(array('text/plain'));
+        $request->getParams()->willReturn(array());
+        $request->setParams(array())->willReturn(null);
+        $resource = $this->getResource($request);
+        $response = $resource->exec();
+        $response->shouldHaveType('Tonic\Response');
+        $response->body->shouldBe('Example');
+        $response->contentType->shouldBe('text/plain');
+    }
+    
     function it_should_output_itself_as_a_string()
     {
         $this->beConstructedWith(array(
@@ -172,7 +188,7 @@ Mount points: myNamespace=\"/baz\"
 Annotation cache: 
 Loaded resources:
 \t\spec\Tonic\ExampleResource /baz/foo/bar, /baz/quux/([^/]+) 10
-\t\tmyMethod method=\"GET\" method=\"PUT\" accepts=\"application/x-www-form-urlencoded\" accepts=\"application/multipart\" provides=\"text/html\" myCondition
+\t\tmyMethod method=\"GET\" method=\"PUT\" accepts=\"application/x-www-form-urlencoded\" accepts=\"application/multipart\" provides=\"text/plain\" provides=\"text/html\" myCondition
 ");
     }
     
