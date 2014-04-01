@@ -92,15 +92,7 @@ class ResourceMetadataSpec extends ObjectBehavior
  * @priority 4 10
  * @priority 6
  */
-class exampleClass
-{
-    /**
-     * Example method
-     *
-     * @method get
-     * @method post put
-     * @something otherthing
-     */
+class exampleClass {
     function exampleMethod() {}
 }
 

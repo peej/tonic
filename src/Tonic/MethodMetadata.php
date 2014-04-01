@@ -58,6 +58,9 @@ class MethodMetadata implements \ArrayAccess
 
     public function setCondition($condition, $value)
     {
+        if (!is_array($value)) {
+            $value = array($value);
+        }
         $this->conditions[$condition] = $value;
     }
 
