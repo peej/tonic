@@ -18,7 +18,7 @@ class ResourceMetadata implements \ArrayAccess
 
         // get data from reflector
         $classReflector = new \ReflectionClass($className);
-
+        
         $this->class = '\\'.$classReflector->getName();
         $this->namespace = $classReflector->getNamespaceName();
         $this->filename = $classReflector->getFileName();
@@ -26,6 +26,13 @@ class ResourceMetadata implements \ArrayAccess
         // get data from docComment
         $docComment = $this->parseDocComment($classReflector->getDocComment());
 
+        if (isset($docComment['@url'])) {
+            if (isset($docComment['@uri'])) {
+                $docComment['@uri'] = array_merge($docComment['@uri'], $docComment['@url']);
+            } else {
+                $docComment['@uri'] = $docComment['@url'];
+            }
+        }
         if (isset($docComment['@uri'])) {
             foreach ($docComment['@uri'] as $uri) {
                 $parsedUri = $this->uriTemplateToRegex($uri);
