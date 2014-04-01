@@ -18,7 +18,8 @@ class ResourceMetadataSpec extends ObjectBehavior
     {
         $this->beConstructedWith('\spec\Tonic\exampleClass');
         $this->getUri()->shouldHaveCount(4);
-        $this->getUri()[0]->shouldBe('/url1');
+        $uris = $this->getUri();
+        $uris[0]->shouldBe('/url1');
         $this->getUri(0)->shouldBe('/url1');
         $this->getUri(1)->shouldBe('/url2');
         $this->getUri(2)->shouldBe('/url3 /url4');
