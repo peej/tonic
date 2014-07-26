@@ -38,6 +38,7 @@ class Request
         'png' => 'image/png',
         'jpg' => 'image/jpeg',
         'ico' => 'image/x-icon',
+        'svg' => 'image/svg+xml',        
         'swf' => 'application/x-shockwave-flash',
         'flv' => 'video/x-flv',
         'avi' => 'video/mpeg',
