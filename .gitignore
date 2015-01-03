@@ -3,3 +3,4 @@ composer.lock
 bin
 vendor
 apidocs
+coverage

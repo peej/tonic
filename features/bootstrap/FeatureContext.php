@@ -148,8 +148,8 @@ class FeatureContext extends BehatContext
      */
     public function iShouldSeeBodyDataOf($data)
     {
-        if ($this->request->data != $data)
-            throw new Exception();
+        if ($this->request->getData() != $data)
+            throw new Exception('The request data "'.$this->request->getData().'" does not equal "'.$data.'"');
     }
 
     /**
@@ -367,7 +367,7 @@ class FeatureContext extends BehatContext
      */
     public function iSetTheRequestOptionTo($option, PyStringNode $json)
     {
-        $this->options[$option] = json_decode($json, TRUE);
+        $this->options[$option] = json_decode($json, true);
     }
 
     /**
@@ -392,6 +392,17 @@ class FeatureContext extends BehatContext
     public function theCacheObjectShouldContain($className, $methodName)
     {
         if (!$this->options['cache']->contains($className, $methodName)) throw new Exception;
+    }
+
+    /**
+     * @Given /^a cache object containing the class "([^"]*)"$/
+     */
+    public function aCacheObjectContainingTheClass($className)
+    {
+        $this->options['cache'] = new MockMetadataCache();
+        $this->options['cache']->save(array(
+            $className => new \Tonic\ResourceMetadata($className)
+        ));
     }
 
     /**
@@ -421,7 +432,7 @@ class FeatureContext extends BehatContext
     public function theLoadedResourceShouldRespondToWithTheMethod($className, $methodName)
     {
         $metadata = $this->app->getResourceMetadata($className);
-        if (!isset($metadata['methods'][$methodName])) throw new Exception;
+        if (!$metadata->getMethod($methodName)) throw new Exception;
     }
 
     /**
@@ -453,30 +464,13 @@ class FeatureContext extends BehatContext
     {
         $found = FALSE;
         $metadata = $this->app->getResourceMetadata($resourceName);
-        foreach ($metadata['uri'] as $uri) {
-            if ($uri[0] == $url) {
+        foreach ($metadata->getUri() as $uri) {
+            if ($uri == $url) {
                 $found = TRUE;
                 break;
             }
         }
-        if (!$found) throw new Exception;
-    }
-
-    /**
-     * @Then /^the resource "([^"]*)" should have the condition "([^"]*)" with the parameters "([^"]*)"$/
-     */
-    public function theResourceShouldHaveTheConditionWithTheParameters($className, $conditionName, $parameters)
-    {
-        $metadata = $this->app->getResourceMetadata($className);
-        if ($parameters) {
-            if ($parameters != join(',', $metadata['methods']['test'][$conditionName][0])) throw new Exception('Condition method not found');
-            
-            $resource = new $className($this->app, new Request, array());
-            $condition = call_user_func_array(array($resource, $conditionName), explode(',', $parameters));
-            if ($condition != explode(',', $parameters)) throw new Exception('Condition parameters not returned');
-        } else {
-            if (!isset($metadata['methods']['test'][$conditionName])) throw new Exception('Condition method not found');
-        }
+        if (!$found) throw new Exception('The URI is "'.join('", "', $metadata->getUri()).'" not "'.$url.'"');
     }
 
     /**
@@ -492,7 +486,7 @@ class FeatureContext extends BehatContext
      */
     public function theMethodPriorityForShouldBe($methodName, $value)
     {
-        preg_match('/[\[ ]([0-9-]+)\] '.$methodName.' /', (string)$this->resource, $matches);
+        preg_match('/[\[ ]([0-9-]+)\] '.$methodName.'\n/', (string)$this->resource, $matches);
         if (!$matches)
             throw new Exception('"'.$methodName.'" not found');
         if ($matches[1] != $value)

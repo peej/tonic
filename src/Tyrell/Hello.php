@@ -118,12 +118,12 @@ class Hello extends Resource
     protected function json()
     {
         $this->before(function ($request) {
-            if ($request->contentType == "application/json") {
-                $request->data = json_decode($request->data);
+            if ($request->getContentType() == 'application/json') {
+                $request->setData(json_decode($request->getData(), true));
             }
         });
         $this->after(function ($response) {
-            $response->contentType = "application/json";
+            $response->contentType = 'application/json';
             if (isset($_GET['jsonp'])) {
                 $response->body = $_GET['jsonp'].'('.json_encode($response->body).');';
             } else {
@@ -146,7 +146,7 @@ class Hello extends Resource
      */
     public function feedTheComputer()
     {
-        return new Response(200, $this->request->data);
+        return new Response(200, $this->request->getData());
     }
 
 }

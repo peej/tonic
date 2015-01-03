@@ -7,15 +7,15 @@ namespace Tonic;
  */
 class Request
 {
-    public $uri;
-    public $params = array();
-    public $method;
-    public $contentType;
-    public $data;
-    public $accept = array();
-    public $acceptLanguage = array();
-    public $ifMatch = array();
-    public $ifNoneMatch = array();
+    protected $uri;
+    protected $params = array();
+    protected $method;
+    protected $contentType;
+    protected $data;
+    protected $accept = array();
+    protected $acceptLanguage = array();
+    protected $ifMatch = array();
+    protected $ifNoneMatch = array();
 
     /**
      * Map of file/URI extensions to mimetypes
@@ -57,16 +57,16 @@ class Request
 
         $this->uri = $this->getURIFromEnvironment($options);
         $this->params = $this->getOption($options, 'params', null, array());
-        $this->method = $this->getMethod($options);
+        $this->method = $this->getMethodFromEnvironment($options);
 
-        $this->contentType = $this->getContentType($options);
-        $this->data = $this->getData($options);
+        $this->contentType = $this->getContentTypeFromEnvironment($options);
+        $this->data = $this->getDataFromEnvironment($options);
 
-        $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArray($this->getOption($options, 'accept'))));
-        $this->acceptLanguage = array_unique(array_merge($this->acceptLanguage, $this->getAcceptArray($this->getOption($options, 'acceptLanguage'))));
+        $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArrayFromEnvironment($this->getOption($options, 'accept'))));
+        $this->acceptLanguage = array_unique(array_merge($this->acceptLanguage, $this->getAcceptArrayFromEnvironment($this->getOption($options, 'acceptLanguage'))));
 
-        $this->ifMatch = $this->getMatchArray($this->getOption($options, 'ifMatch'));
-        $this->ifNoneMatch = $this->getMatchArray($this->getOption($options, 'ifNoneMatch'));
+        $this->ifMatch = $this->getMatchArrayFromEnvironment($this->getOption($options, 'ifMatch'));
+        $this->ifNoneMatch = $this->getMatchArrayFromEnvironment($this->getOption($options, 'ifNoneMatch'));
     }
 
     /**
@@ -104,12 +104,86 @@ class Request
      *
      *   $request->userAgent
      *
+     * Also gets private member via getter without explicitly using the getter.
+     *
      * @param str name
      * @return str
      */
     public function __get($name)
     {
+        if (method_exists($this, 'get'.ucfirst($name))) {
+            return $this->{'get'.ucfirst($name)}();
+        }
         return $this->getHeader($name);
+    }
+
+    /**
+     * Magic PHP method to set a private member without explicitly using the setter.
+     *
+     * @param str name
+     * @param mixed value
+     */
+    public function __set($name, $value)
+    {
+        if (method_exists($this, 'set'.ucfirst($name))) {
+            return $this->{'set'.ucfirst($name)}($value);
+        }
+        throw new Exception('Could not set property "'.$name.'"');
+    }
+
+    public function getUri()
+    {
+        return $this->uri;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    public function setParams($params)
+    {
+        $this->params = $params;
+    }
+
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    public function getAccept()
+    {
+        return $this->accept;
+    }
+
+    public function getAcceptLanguage()
+    {
+        return $this->acceptLanguage;
+    }
+
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    public function getIfMatch()
+    {
+        return $this->ifMatch;
+    }
+
+    public function getIfNoneMatch()
+    {
+        return $this->ifNoneMatch;
     }
 
     private function getHeader($name)
@@ -124,7 +198,7 @@ class Request
         }
     }
 
-    private function getMethod($options)
+    private function getMethodFromEnvironment($options)
     {
         // get HTTP method from HTTP header
         $method = strtoupper($this->getHeader('requestMethod'));
@@ -158,7 +232,7 @@ class Request
         return $this->getOption($options, 'method', null, $method);
     }
 
-    private function getContentType($options)
+    private function getContentTypeFromEnvironment($options)
     {
         $contentType = $this->getOption($options, 'contentType');
         $parts = explode(';', $contentType);
@@ -166,7 +240,7 @@ class Request
         return $parts[0];
     }
 
-    private function getData($options)
+    private function getDataFromEnvironment($options)
     {
         if ($this->getOption($options, 'contentLength') > 0) {
             return file_get_contents('php://input');
@@ -223,7 +297,7 @@ class Request
      * @param  str   $acceptString
      * @return str[]
      */
-    private function getAcceptArray($acceptString)
+    private function getAcceptArrayFromEnvironment($acceptString)
     {
         $accept = $acceptArray = array();
         foreach (explode(',', strtolower($acceptString)) as $part) {
@@ -252,7 +326,7 @@ class Request
      * @param  str   $matchString
      * @return str[]
      */
-    private function getMatchArray($matchString)
+    private function getMatchArrayFromEnvironment($matchString)
     {
         $matches = array();
         foreach (explode(',', $matchString) as $etag) {

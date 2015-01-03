@@ -70,7 +70,7 @@ class Response
         }
         if (is_array($headers)) {
             foreach ($headers as $name => $value) {
-                $this->$name = $value;
+                $this->headers[$name] = $value;
             }
         }
     }
@@ -94,8 +94,9 @@ class Response
         return new Response;
     }
 
-    private function getHeaderName($name) {
-        return strtoupper($name[0]).preg_replace('/([A-Z][a-z])/', '-$1', substr($name, 1));
+    private function getHeaderName($name)
+    {
+        return strtoupper($name[0]).preg_replace('/([a-z])([A-Z])/', '$1-$2', substr($name, 1));
     }
 
     /**
@@ -103,10 +104,9 @@ class Response
      * @param  str $name Header name, hyphens should be converted to camelcase
      * @return str
      */
-    public function __get($name)
+    public function getHeader($name)
     {
-        $name = $this->getHeaderName($name);
-        return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
+        return isset($this->headers[$name]) ? $this->headers[$name] : null;
     }
 
     /**
@@ -114,9 +114,31 @@ class Response
      * @param str $name  Header name, hyphens should be converted to camelcase
      * @param str $value Header content
      */
+    public function setHeader($name, $value)
+    {
+        $this->headers[$name] = $value;
+    }
+
+    /**
+     * Magic PHP method to get a HTTP response header.
+     *
+     * @param str name
+     * @return str
+     */
+    public function __get($name)
+    {
+        return $this->getHeader($this->getHeaderName($name));
+    }
+
+    /**
+     * Magic PHP method to set a HTTP response header.
+     *
+     * @param str name
+     * @param str value
+     */
     public function __set($name, $value)
     {
-        $this->headers[$this->getHeaderName($name)] = $value;
+        $this->setHeader($this->getHeaderName($name), $value);
     }
 
     /**

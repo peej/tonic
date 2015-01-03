@@ -223,15 +223,16 @@ caching), a cache can be used to store the resource annotation data.
 
 Passing a cache object into the Application object at construction will cause that cache to
 be used to read and store the resource annotation metadata rather than read it from the
-source code tokens. Tonic comes with a single cache class that stores the cache on disk.
+source code tokens. Tonic comes with two cache classes, one that stores the cache on disk
+and the other which uses the APC data store.
 
 Then rather than including your resource class files explicitly, the Application object
-will load them for you if you pass in the "load" option if it can't load the metadata
-from the cache.
+will load them for you based on the path stored in the cache and ignore the "load"
+configuration option.
 
     $app = new Tonic\Application(array(
         'load' => '../resources/*.php', // look for resource classes in here
-        'cache' => new Tonic\MetadataCache('/tmp/tonic.cache') // use the metadata cache
+        'cache' => new Tonic\MetadataCacheFile('/tmp/tonic.cache') // use the metadata cache
     ));
 
 
@@ -409,7 +410,7 @@ resource and an "object" resource to store within it:
          * @provides application/json
          */
         function list() {
-            $ds = $this->container['dataStore'];
+            $ds = $this->app->container['dataStore'];
             return json_encode($ds->fetchAll());
         }
 
@@ -418,7 +419,7 @@ resource and an "object" resource to store within it:
          * @accepts application/json
          */
         function add() {
-            $ds = $this->container['dataStore'];
+            $ds = $this->app->container['dataStore'];
             $data = json_decode($this->request->data);
             $ds->add($data);
             return new Tonic\Response(Tonic\Response::CREATED);
@@ -435,7 +436,7 @@ resource and an "object" resource to store within it:
          * @provides application/json
          */
         function display() {
-            $ds = $this->container['dataStore'];
+            $ds = $this->app->container['dataStore'];
             return json_encode($ds->fetch($this->id));
         }
 
@@ -445,7 +446,7 @@ resource and an "object" resource to store within it:
          * @provides application/json
          */
         function update() {
-            $ds = $this->container['dataStore'];
+            $ds = $this->app->container['dataStore'];
             $data = json_decode($this->request->data);
             $ds->update($this->id, $data);
             return $this->display();
@@ -455,7 +456,7 @@ resource and an "object" resource to store within it:
          * @method DELETE
          */
         function remove() {
-            $ds = $this->container['dataStore'];
+            $ds = $this->app->container['dataStore'];
             $ds->delete($this->id);
             return new Tonic\Response(Tonic\Response::NOCONTENT);
         }

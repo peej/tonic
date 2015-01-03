@@ -108,12 +108,19 @@ Feature: HTTP resource object
          */
         function test() {}
         function foo($bar, $baz, $quux) {
-          return array($bar, $baz, $quux);
+          $this->after(function ($response) use ($bar, $baz, $quux) {
+            $response->body = $bar.$baz.$quux;
+          });
         }
       }
       """
+    And the request URI of "/resource6"
+    And the request method of "GET"
     When I create an application object
-    Then the resource "Resource6" should have the condition "foo" with the parameters "bar,baz,quux"
+    And I create a request object
+    And load the resource
+    And execute the resource
+    Then response should be "barbazquux"
 
   Scenario: Before and after filters
     Given a class definition:
@@ -130,7 +137,7 @@ Feature: HTTP resource object
         function test() {}
         function myBeforeFilter() {
           $this->before(function ($request) {
-            $request->data = 'foo';
+            $request->setData('foo');
           });
         }
         function myAfterFilter() {
@@ -146,8 +153,7 @@ Feature: HTTP resource object
     And I create a request object
     And load the resource
     And execute the resource
-    Then the resource "Resource7" should have the condition "myBeforeFilter" with the parameters ""
-    And I should see body data of "foo"
+    Then I should see body data of "foo"
     And response should be "bar"
   
   Scenario: Custom conditions shouldn't increase match likelihood
@@ -234,3 +240,30 @@ Feature: HTTP resource object
     Then the method priority for "test" should be "1"
     And the method priority for "test2" should be "1"
     And the method priority for "test3" should be "-"
+
+  Scenario: Condition annotations that have quotes around the parameters should be treated as a single variable when passed to the condition method
+    Given a class definition:
+      """
+      /**
+       * @uri /resource10
+       */
+      class Resource10 extends Tonic\Resource {
+        /**
+         * @method get
+         * @foo param1 "param 2"
+         */
+        function test() {}
+        function foo($param1, $param2) {
+          $this->after(function ($response) use ($param1, $param2) {
+            $response->body = $param1.','.$param2;
+          });
+        }
+      }
+      """
+    And the request URI of "/resource10"
+    And the request method of "GET"
+    When I create an application object
+    And I create a request object
+    And load the resource
+    And execute the resource
+    Then response should be "param1,param 2"
