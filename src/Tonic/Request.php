@@ -7,15 +7,15 @@ namespace Tonic;
  */
 class Request
 {
-    private $uri;
-    private $params = array();
-    private $method;
-    private $contentType;
-    private $data;
-    private $accept = array();
-    private $acceptLanguage = array();
-    private $ifMatch = array();
-    private $ifNoneMatch = array();
+    protected $uri;
+    protected $params = array();
+    protected $method;
+    protected $contentType;
+    protected $data;
+    protected $accept = array();
+    protected $acceptLanguage = array();
+    protected $ifMatch = array();
+    protected $ifNoneMatch = array();
 
     /**
      * Map of file/URI extensions to mimetypes
