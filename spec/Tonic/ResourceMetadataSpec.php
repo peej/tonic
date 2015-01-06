@@ -96,7 +96,7 @@ class exampleClass {
     function exampleMethod() {}
 }
 
-/**
+/***
  * @namespace exampleNamespace
  */
 class exampleClass2 {}

@@ -22,9 +22,20 @@ class ResourceMetadata implements \ArrayAccess
         $this->class = '\\'.$classReflector->getName();
         $this->namespace = $classReflector->getNamespaceName();
         $this->filename = $classReflector->getFileName();
+        $commentString = $classReflector->getDocComment();
+
+        if (!$commentString) {
+            $startline = $classReflector->getStartLine();
+            $fileLines = file($this->filename);
+            $lineNumber = $startline - 1;
+            while (isset($fileLines[$lineNumber]) && substr($fileLines[$lineNumber], 0, 3) != '/**') {
+                $lineNumber--;
+            }
+            $commentString = join(array_slice($fileLines, $lineNumber));
+        }
 
         // get data from docComment
-        $docComment = $this->parseDocComment($classReflector->getDocComment());
+        $docComment = $this->parseDocComment($commentString);
 
         if (isset($docComment['@url'])) {
             if (isset($docComment['@uri'])) {
