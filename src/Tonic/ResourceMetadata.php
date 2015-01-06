@@ -22,7 +22,7 @@ class ResourceMetadata implements \ArrayAccess
         $this->class = '\\'.$classReflector->getName();
         $this->namespace = $classReflector->getNamespaceName();
         $this->filename = $classReflector->getFileName();
-        $commentString = $classReflector->getDocComment();
+        $commentString = $this->getDocComment($classReflector);
 
         if (!$commentString) {
             $startline = $classReflector->getStartLine();
@@ -155,6 +155,27 @@ class ResourceMetadata implements \ArrayAccess
         foreach ($this->uri as $index => $uri) {
             $this->uri[$index] = $uriSpace.$this->uri[$index];
         }
+    }
+
+    /**
+     * Get the class doccomment from the reflector or from the source file.
+     * @return str
+     */
+    private function getDocComment($classReflector)
+    {
+        $commentString = $classReflector->getDocComment();
+
+        if (!$commentString) {
+            $startline = $classReflector->getStartLine();
+            $fileLines = file($classReflector->getFileName());
+            $lineNumber = $startline - 1;
+            while (isset($fileLines[$lineNumber]) && substr($fileLines[$lineNumber], 0, 3) != '/**') {
+                $lineNumber--;
+            }
+            $commentString = join(array_slice($fileLines, $lineNumber));
+        }
+
+        return $commentString;
     }
 
     /**
