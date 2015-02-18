@@ -47,6 +47,21 @@ class ApplicationSpec extends ObjectBehavior
     /**
      * @param \Tonic\Request $request
      */
+    function it_should_route_a_request($request)
+    {
+        $request->getUri()->willReturn('/foo/bar');
+        $request->getParams()->willReturn(null);
+        $request->setParams(array())->willReturn(null);
+        
+        $route = $this->route($request);
+        
+        $route->shouldHaveType('Tonic\ResourceMetadata');
+        $route->getClass()->shouldBe('\spec\Tonic\ExampleResource');
+    }
+
+    /**
+     * @param \Tonic\Request $request
+     */
     function it_should_load_a_resource($request)
     {
         $request->getUri()->willReturn('/foo/bar');

@@ -150,14 +150,39 @@ class Application
      * Given the request data and the loaded resource metadata, pick the best matching
      * resource to handle the request based on URI and priority.
      *
+     * @deprecated You should use the route method instead.
      * @param  Request  $request
      * @return Resource
      */
     public function getResource($request = NULL)
     {
+        if (!$request) {
+            $request = new Request();
+        }
+
+        $route = $this->route($request);
+        $filename = $route->getFilename();
+        $className = $route->getClass();
+
+        if ($filename && is_readable($filename)) {
+            require_once($filename);
+        }
+
+        return new $className($this, $request);
+    }
+
+    /**
+     * Given the request data and the loaded resource metadata, pick the best matching
+     * resource to handle the request based on URI and priority.
+     *
+     * @param  Request $request
+     * @return ResourceMetadata
+     */
+    public function route($request = NULL)
+    {
         $matchedResource = NULL;
         if (!$request) {
-            $request= new Request();
+            $request = new Request();
         }
         foreach ($this->resources as $className => $resourceMetadata) {
             foreach ($resourceMetadata->getUri() as $index => $uri) {
@@ -179,13 +204,9 @@ class Application
             }
         }
         if ($matchedResource) {
-            if ($matchedResource[0]->getFilename() && is_readable($matchedResource[0]->getFilename())) {
-                require_once($matchedResource[0]->getFilename());
-            }
             $request->setParams($matchedResource[1]);
 
-            $className = $matchedResource[0]->getClass();
-            return new $className($this, $request, $matchedResource[1]);
+            return $matchedResource[0];
         } else {
             throw new NotFoundException(sprintf('Resource matching URI "%s" not found', $request->uri));
         }
@@ -194,7 +215,7 @@ class Application
     /**
      * Get the already loaded resource annotation metadata
      * @param  Tonic/Resource $resource
-     * @return str[]
+     * @return ResourceMetadata
      */
     public function getResourceMetadata($resource)
     {
