@@ -136,6 +136,11 @@ class Request
         return $this->uri;
     }
 
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
+    }
+
     public function getParams()
     {
         return $this->params;
@@ -151,9 +156,23 @@ class Request
         return $this->method;
     }
 
+    public function setMethod($methodName)
+    {
+        $this->method = $methodName;
+    }
+
     public function getAccept()
     {
         return $this->accept;
+    }
+
+    public function setAccept($value)
+    {
+        if (is_array($value)) {
+            $this->accept = $value;
+        } else {
+            $this->accept[] = $value;
+        }
     }
 
     public function getAcceptLanguage()
@@ -161,9 +180,23 @@ class Request
         return $this->acceptLanguage;
     }
 
+    public function setAcceptLanguage($value)
+    {
+        if (is_array($value)) {
+            $this->acceptLanguage = $value;
+        } else {
+            $this->acceptLanguage[] = $value;
+        }
+    }
+
     public function getContentType()
     {
         return $this->contentType;
+    }
+
+    public function setContentType($mimetype)
+    {
+        $this->contentType = $mimetype;
     }
 
     public function getData()

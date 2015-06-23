@@ -227,4 +227,69 @@ class RequestSpec extends ObjectBehavior
         $this->ifNoneMatch->shouldBe(array('quux', 'xyzzy'));
     }
 
+    function it_should_be_able_to_set_the_url()
+    {
+        $this->beConstructedWith(array(
+            'uri' => '/foo/bar'
+        ));
+        $this->uri = '/example';
+        $this->uri->shouldBe('/example');
+    }
+
+    function it_should_be_able_to_set_the_method()
+    {
+        $this->beConstructedWith(array(
+            'uri' => '/foo/bar'
+        ));
+        $this->method = 'CUSTOM';
+        $this->method->shouldBe('CUSTOM');
+    }
+
+    function it_should_be_able_to_set_the_accept_header()
+    {
+        $this->beConstructedWith(array(
+            'uri' => '/foo/bar'
+        ));
+        $this->accept = array('something');
+        $this->accept->shouldBe(array('something'));
+        $this->accept = array('otherthing');
+        $this->accept->shouldBe(array('otherthing'));
+        $this->accept = 'something';
+        $this->accept->shouldBe(array('otherthing', 'something'));
+        $this->accept = array('something');
+        $this->accept->shouldBe(array('something'));
+    }
+
+    function it_should_be_able_to_set_the_accept_language_header()
+    {
+        $this->beConstructedWith(array(
+            'uri' => '/foo/bar'
+        ));
+        $this->acceptLanguage = array('something');
+        $this->acceptLanguage->shouldBe(array('something'));
+        $this->acceptLanguage = array('otherthing');
+        $this->acceptLanguage->shouldBe(array('otherthing'));
+        $this->acceptLanguage = 'something';
+        $this->acceptLanguage->shouldBe(array('otherthing', 'something'));
+        $this->acceptLanguage = array('something');
+        $this->acceptLanguage->shouldBe(array('something'));
+    }
+
+    function it_should_be_able_to_set_the_content_type()
+    {
+        $this->beConstructedWith(array(
+            'uri' => '/foo/bar'
+        ));
+        $this->contentType = 'text/example';
+        $this->contentType->shouldBe('text/example');
+    }
+
+    function it_should_be_able_to_set_request_data()
+    {
+        $this->beConstructedWith(array(
+            'uri' => '/foo/bar'
+        ));
+        $this->data = 'example';
+        $this->data->shouldBe('example');
+    }
 }
