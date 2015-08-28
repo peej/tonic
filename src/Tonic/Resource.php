@@ -302,11 +302,10 @@ class Resource
                         continue;
                     }
                     $allowedMethods[] = $value;
-
                 }
             }
         }
-        return array_values(array_unique($allowedMethods));
+        return array_unique($allowedMethods);
     }
 
     public function __toString()
