@@ -167,17 +167,12 @@ class Resource
      */
     public function options()
     {
-        $options = array();
-
-        $resourceMetadata = $this->app->getResourceMetadata($this);
-
-        foreach ($resourceMetadata->getMethods() as $method => $methodMetadata) {
-            $options[] = strtoupper($method);
-        }
-
-        return new Response(200, $options, array(
-            'Allow' => implode(',', $options)
+        $options = implode(',', $this->allowedMethods());
+        $response = new Response(200, $options, array(
+            'Allow' => $options
         ));
+        $response->contentType = 'text/plain';
+        return $response;
     }
 
     /**
@@ -297,9 +292,18 @@ class Resource
     {
         $metadata = $this->app->getResourceMetadata($this);
         $allowedMethods = array();
-        foreach ($metadata['methods'] as $method => $properties) {
-            foreach ($properties['method'] as $method) {
-                $allowedMethods[] = strtoupper($method[0]);
+        foreach ($metadata->getMethods() as $method => $methodMetadata) {
+            foreach ($methodMetadata->getConditions() as $key => $values) {
+                if ($key !== 'method') {
+                    continue;
+                }
+                foreach ($values as $value) {
+                    if (in_array($value, $allowedMethods)) {
+                        continue;
+                    }
+                    $allowedMethods[] = $value;
+
+                }
             }
         }
         return array_values(array_unique($allowedMethods));
