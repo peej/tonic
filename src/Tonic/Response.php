@@ -57,7 +57,7 @@ class Response
     public
         $code = self::NOCONTENT,
         $body = null,
-        $headers = array('content-type' => 'text/html');
+        $headers = array('Content-Type' => 'text/html');
 
     public function __construct($code = null, $body = null, $headers = array())
     {

@@ -13,6 +13,7 @@ class Request
     protected $contentType;
     protected $data;
     protected $accept = array();
+    protected $acceptParams = array();
     protected $acceptLanguage = array();
     protected $ifMatch = array();
     protected $ifNoneMatch = array();
@@ -62,7 +63,9 @@ class Request
         $this->contentType = $this->getContentTypeFromEnvironment($options);
         $this->data = $this->getDataFromEnvironment($options);
 
-        $this->accept = array_unique(array_merge($this->accept, $this->getAcceptArrayFromEnvironment($this->getOption($options, 'accept'))));
+        $accept = $this->getAcceptArrayFromEnvironment($this->getOption($options, 'accept'), $acceptParams);
+        $this->acceptParams = $acceptParams;
+        $this->accept = array_merge($this->accept, $accept);
         $this->acceptLanguage = array_unique(array_merge($this->acceptLanguage, $this->getAcceptArrayFromEnvironment($this->getOption($options, 'acceptLanguage'))));
 
         $this->ifMatch = $this->getMatchArrayFromEnvironment($this->getOption($options, 'ifMatch'));
@@ -175,6 +178,11 @@ class Request
         }
     }
 
+    public function getAcceptParams()
+    {
+        return $this->acceptParams;
+    }
+
     public function getAcceptLanguage()
     {
         return $this->acceptLanguage;
@@ -243,7 +251,7 @@ class Request
         $override = strtoupper($this->getHeader('xHttpMethodOverride'));
         if ($override && $method == 'POST') {
             $method = $override;
-        
+
         } else {
             // get override value from URL and use if applicable
             if (
@@ -254,7 +262,7 @@ class Request
                 if (preg_match('/![A-Z]+$/', $this->uri, $match, PREG_OFFSET_CAPTURE)) {
                     $method = strtoupper(substr($this->uri, $match[0][1] + 1));
                     $this->uri = substr($this->uri, 0, $match[0][1]);
-                
+
                 // get override value from _method querystring
                 } elseif (isset($_GET['_method'])) {
                     $method = strtoupper($_GET['_method']);
@@ -326,28 +334,51 @@ class Request
     }
 
     /**
-     * Get accepted content mimetypes from request header
-     * @param  str   $acceptString
+     * Get accepted content mimetypes and accept parameters from request header
+     * @param str $acceptString accept string
+     * @param array $params accept parameters
      * @return str[]
      */
-    private function getAcceptArrayFromEnvironment($acceptString)
+    private function getAcceptArrayFromEnvironment($acceptString, &$acceptParamArray = array())
     {
-        $accept = $acceptArray = array();
-        foreach (explode(',', strtolower($acceptString)) as $part) {
-            $parts = preg_split('/\s*;\s*q=/', $part);
-            if (isset($parts) && isset($parts[1]) && $parts[1]) {
-                $num = $parts[1] * 10;
-            } else {
-                $num = 10;
+        $accept = $acceptArray = $acceptParam = $acceptParamArray = array();
+        $parts = preg_split('/\s*,\s*/', strtolower($acceptString));
+        foreach ($parts as $part) {
+            if (empty($part)) {
+                continue;
             }
-            if ($parts[0]) {
-                $accept[$num][] = $parts[0];
+            $partParams = preg_split('/\s*;\s*/', $part);
+            $type = array_shift($partParams);
+            $num = 10;
+            $acceptParams = array();
+            foreach ($partParams as $param) {
+                $keyValue = preg_split('/\s*=\s*/', $param);
+                if ($keyValue[0] === 'q') {
+                    if (array_key_exists(1, $keyValue) && is_numeric($keyValue[1]) && (int)$keyValue[1] >= 0
+                        && (int)$keyValue[1] <= 1) {
+                        $num = $keyValue[1] * 10;
+                    }
+                } else {
+                    $key = $keyValue[0];
+                    $value = array_key_exists(1, $keyValue) ? $keyValue[1] : null;
+                    $acceptParams[] = $key . '=' . $value;
+                }
+            }
+            // quality of 0 is not acceptable to the client - rfc2616 sec 3.9
+            if ($num === 0) {
+                $type = null;
+            }
+            if ($type) {
+                $accept[$num][] = $type;
+                $acceptParam[$num][] = $acceptParams;
             }
         }
         krsort($accept);
-        foreach ($accept as $parts) {
-            foreach ($parts as $part) {
-                $acceptArray[] = trim($part);
+        krsort($acceptParam);
+        foreach ($accept as $i => $parts) {
+            foreach ($parts as $j => $part) {
+                $acceptArray[] = $part;
+                $acceptParamArray[] = $acceptParam[$i][$j];
             }
         }
 

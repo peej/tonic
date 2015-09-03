@@ -167,17 +167,12 @@ class Resource
      */
     public function options()
     {
-        $options = array();
-
-        $resourceMetadata = $this->app->getResourceMetadata($this);
-
-        foreach ($resourceMetadata->getMethods() as $method => $methodMetadata) {
-            $options[] = strtoupper($method);
-        }
-
-        return new Response(200, $options, array(
-            'Allow' => implode(',', $options)
+        $options = implode(',', $this->allowedMethods());
+        $response = new Response(200, $options, array(
+            'Allow' => $options
         ));
+        $response->contentType = 'text/plain';
+        return $response;
     }
 
     /**
@@ -241,18 +236,48 @@ class Resource
     /**
      * Provides condition mimetype must be in request accept array, returns a number
      * based on the priority of the match.
-     * @param  str $mimetype
+     * @param str $mimetype
+     * @param str $parameter variable number of key=value parameters to check for in the accept header
      * @return int
      */
-    protected function provides($mimetype)
+    protected function provides()
     {
-        if (count($this->request->getAccept()) == 0) return 0;
-        $pos = array_search($mimetype, $this->request->getAccept());
+        $params = func_get_args();
+        $mimetype = array_shift($params);
+
+        if (count($this->request->getAccept()) == 0) {
+            return 0;
+        }
+        $acceptParams = $this->request->getAcceptParams();
+        $pos = false;
+        foreach ($this->request->getAccept() as $i => $acceptMimetype) {
+            if ($mimetype === $acceptMimetype) {
+                foreach ($acceptParams[$i] as $acceptParam) {
+                    if (array_search($acceptParam, $params) === false) {
+                        continue 2;
+                    }
+                }
+                $pos = $i;
+                break;
+            }
+        }
         if ($pos === FALSE) {
             if (in_array('*/*', $this->request->getAccept())) {
                 return 0;
             } else {
-                throw new NotAcceptableException('No matching method for response type "'.join(', ', $this->request->getAccept()).'"');
+                $responseTypes = array();
+
+                foreach ($this->request->getAccept() as $i => $acceptMimetype) {
+                    $responseType = $acceptMimetype;
+                    foreach ($acceptParams[$i] as $acceptParam) {
+                        if (! empty($acceptParam)) {
+                            $responseType .= ';' . $acceptParam;
+                        }
+                    }
+                    $responseTypes[] = $responseType;
+                }
+
+                throw new NotAcceptableException('No matching method for response type "'.join(', ', $responseTypes).'"');
             }
         } else {
             $this->after(function ($response) use ($mimetype) {
@@ -297,12 +322,20 @@ class Resource
     {
         $metadata = $this->app->getResourceMetadata($this);
         $allowedMethods = array();
-        foreach ($metadata['methods'] as $method => $properties) {
-            foreach ($properties['method'] as $method) {
-                $allowedMethods[] = strtoupper($method[0]);
+        foreach ($metadata->getMethods() as $method => $methodMetadata) {
+            foreach ($methodMetadata->getConditions() as $key => $values) {
+                if ($key !== 'method') {
+                    continue;
+                }
+                foreach ($values as $value) {
+                    if (in_array($value, $allowedMethods)) {
+                        continue;
+                    }
+                    $allowedMethods[] = $value;
+                }
             }
         }
-        return array_values(array_unique($allowedMethods));
+        return array_unique($allowedMethods);
     }
 
     public function __toString()
