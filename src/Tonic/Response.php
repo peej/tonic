@@ -84,6 +84,8 @@ class Response
     {
         if (is_array($response)) {
             return new Response($response[0], $response[1]);
+        } elseif (is_bool($response)) {
+            return new Response($response);
         } elseif (is_int($response)) {
             return new Response($response);
         } elseif (is_string($response)) {
