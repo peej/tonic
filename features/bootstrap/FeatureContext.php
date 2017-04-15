@@ -387,6 +387,22 @@ class FeatureContext extends BehatContext
     }
 
     /**
+     * @Given /^a resource directory "([^"]*)" to load$/
+     */
+    public function aResourceDirectoryToLoad($dirName)
+    {
+        $this->options['loadDir'][] = $dirName;
+    }
+
+    /**
+     * @Given /^a resource directory "([^"]*)" with filename mask "([^"]*)" to load$/
+     */
+    public function aResourceDirectoryWithFilenameToLoad($dirName, $fileName)
+    {
+        $this->options['loadDir'][] = array($dirName, $fileName);
+    }
+
+    /**
      * @Given /^the cache object should contain "([^"]*)" "([^"]*)"$/
      */
     public function theCacheObjectShouldContain($className, $methodName)
