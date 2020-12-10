@@ -18,7 +18,7 @@ class ResourceMetadata implements \ArrayAccess
 
         // get data from reflector
         $classReflector = new \ReflectionClass($className);
-        
+
         $this->class = '\\'.$classReflector->getName();
         $this->namespace = $classReflector->getNamespaceName();
         $this->filename = $classReflector->getFileName();
@@ -244,7 +244,7 @@ class ResourceMetadata implements \ArrayAccess
                 $methodReflector = new \ReflectionMethod($className, $methodName);
                 $methodName = $methodReflector->getName();
 
-                if (($methodReflector->isPublic() || $methodName == 'setup') && $methodReflector->getDeclaringClass()->name != 'Tonic\Resource') {
+                if ($methodReflector->isPublic() || $methodName == 'setup') {
                     $metadata[$methodName] = new MethodMetadata(
                         $targetClass,
                         $methodName,
@@ -253,7 +253,7 @@ class ResourceMetadata implements \ArrayAccess
                 }
             }
         }
-        
+
 
         // recurse through parent classes and merge in parent class metadata
         $classReflector = new \ReflectionClass($className);
