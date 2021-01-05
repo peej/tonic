@@ -197,6 +197,7 @@ class Application
                     if ($uriParams) { // has params within URI
                         foreach ($uriParams as $key => $name) {
                             $params[$name] = $params[$key];
+                            unset($params[$key]);
                         }
                     }
                     $matchedResource = array($resourceMetadata, $params);
