@@ -147,7 +147,7 @@ class Resource
                     }
                 }
             }
-            $response = Response::create(call_user_func_array(array($this, $methodName), $this->params));
+            $response = Response::create(call_user_func_array(array($this, $methodName), array_filter($this->params, fn ($key) => is_numeric($key), ARRAY_FILTER_USE_KEY)));
             foreach (array('*', $methodName) as $mn) {
                 if (isset($this->after[$mn])) {
                     foreach ($this->after[$mn] as $action) {
